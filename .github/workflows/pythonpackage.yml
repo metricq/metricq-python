@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install .[lint,test]
+        pip install .[typing,lint,test]
     - name: Lint with flake8
       run: |
         flake8 .
@@ -33,6 +33,14 @@ jobs:
     - name: Sort imports with isort
       run: |
         isort --diff --check .
+    - name: Build protobuf files
+      run: python setup.py build_protobuf
+    - name: Run mypy
+      uses: kolonialno/mypy-action@v1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        max-errors: 1
+        paths: metricq
 
   build:
     needs: [test]
@@ -58,18 +66,18 @@ jobs:
       with:
         name: distribution-packages
         path: dist/
-     
+
   release:
     needs: [build]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
-    
+
     steps:
     - name: Download distribution artifacts
       uses: actions/download-artifact@v1
       with:
         name: distribution-packages
-        path: dist/  
+        path: dist/
     - name: Publish a Python distribution to PyPI
       uses: pypa/gh-action-pypi-publish@master
       with:
