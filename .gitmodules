@@ -1,0 +1,3 @@
+[submodule "lib/metricq-protobuf"]
+	path = lib/metricq-protobuf
+	url = git@github.com:metricq/metricq-protobuf.git

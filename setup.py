@@ -84,6 +84,6 @@ setup(
         "examples": ["aiomonitor", "click", "click-log", "click-completion"]
     },
     cmdclass={"build_py": ProtoBuildPy, "develop": ProtoDevelop},
-    package_dir={"": "python", "metricq_proto": "src"},
+    package_dir={"": "python", "metricq_proto": "lib/metricq-protobuf"},
     test_suite="examples",
 )
