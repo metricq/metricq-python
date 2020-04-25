@@ -1,1 +1,2 @@
 include lib/metricq-protobuf/*.proto
+include pyproject.toml
