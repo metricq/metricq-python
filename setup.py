@@ -43,7 +43,14 @@ def make_proto(command):
     proto_dir = command.get_package_dir("metricq_proto")
     init_submodule(proto_dir)
     print("[protobuf] {}".format(proto_dir))
-    for proto_file in filter(lambda x: x.endswith(".proto"), os.listdir(proto_dir)):
+
+    proto_files = set(filter(lambda x: x.endswith(".proto"), os.listdir(proto_dir)))
+
+    if not proto_files:
+        sys.stderr.write("error: no protobuf files found in {}\n".format(proto_dir))
+        sys.exit(1)
+
+    for proto_file in proto_files:
         source = os.path.join(proto_dir, proto_file)
         out_file = os.path.join(out_dir, proto_file.replace(".proto", "_pb2.py"))
 
