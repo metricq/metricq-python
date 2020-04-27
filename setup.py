@@ -39,17 +39,17 @@ def init_submodule(path: os.PathLike):
 
 
 def make_proto(command):
+    out_dir = command.get_package_dir("metricq")
     proto_dir = command.get_package_dir("metricq_proto")
     init_submodule(proto_dir)
     print("[protobuf] {}".format(proto_dir))
     for proto_file in filter(lambda x: x.endswith(".proto"), os.listdir(proto_dir)):
         source = os.path.join(proto_dir, proto_file)
-        out_file = source.replace(".proto", "_pb2.py")
+        out_file = os.path.join(out_dir, proto_file.replace(".proto", "_pb2.py"))
 
         if not os.path.exists(out_file) or os.path.getmtime(source) > os.path.getmtime(
                 out_file
         ):
-            out_dir = command.get_package_dir("metricq")
             sys.stderr.write("[protobuf] {} -> {}\n".format(source, out_dir))
             subprocess.check_call(
                 [
