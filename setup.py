@@ -27,8 +27,20 @@ def find_protoc():
     return protoc
 
 
+def init_submodule(path: os.PathLike):
+    try:
+        subprocess.check_call(["git", "submodule", "update", "--init", path])
+    except subprocess.CalledProcessError as e:
+        sys.stderr.write(
+            "warning: failed to initialize submodule at {} (process returned {})".format(
+                path, e.returncode
+            )
+        )
+
+
 def make_proto(command):
     proto_dir = command.get_package_dir("metricq_proto")
+    init_submodule(proto_dir)
     print("[protobuf] {}".format(proto_dir))
     for proto_file in filter(lambda x: x.endswith(".proto"), os.listdir(proto_dir)):
         source = os.path.join(proto_dir, proto_file)
