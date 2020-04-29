@@ -27,17 +27,36 @@ def find_protoc():
     return protoc
 
 
+def init_submodule(path: os.PathLike):
+    try:
+        subprocess.check_call(["git", "submodule", "update", "--init", path])
+    except subprocess.CalledProcessError as e:
+        sys.stderr.write(
+            "warning: failed to initialize submodule at {} (process returned {})".format(
+                path, e.returncode
+            )
+        )
+
+
 def make_proto(command):
+    out_dir = command.get_package_dir("metricq")
     proto_dir = command.get_package_dir("metricq_proto")
+    init_submodule(proto_dir)
     print("[protobuf] {}".format(proto_dir))
-    for proto_file in filter(lambda x: x.endswith(".proto"), os.listdir(proto_dir)):
+
+    proto_files = set(filter(lambda x: x.endswith(".proto"), os.listdir(proto_dir)))
+
+    if not proto_files:
+        sys.stderr.write("error: no protobuf files found in {}\n".format(proto_dir))
+        sys.exit(1)
+
+    for proto_file in proto_files:
         source = os.path.join(proto_dir, proto_file)
-        out_file = source.replace(".proto", "_pb2.py")
+        out_file = os.path.join(out_dir, proto_file.replace(".proto", "_pb2.py"))
 
         if not os.path.exists(out_file) or os.path.getmtime(source) > os.path.getmtime(
                 out_file
         ):
-            out_dir = command.get_package_dir("metricq")
             sys.stderr.write("[protobuf] {} -> {}\n".format(source, out_dir))
             subprocess.check_call(
                 [
