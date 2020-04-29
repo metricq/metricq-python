@@ -32,9 +32,13 @@ def init_submodule(path: os.PathLike):
         subprocess.check_call(["git", "submodule", "update", "--init", path])
     except subprocess.CalledProcessError as e:
         sys.stderr.write(
-            "warning: failed to initialize submodule at {} (process returned {})".format(
+            "warning: failed to initialize submodule at {} (process returned {})\n".format(
                 path, e.returncode
             )
+        )
+    except Exception as e:
+        sys.stderr.write(
+            "warning: failed to initialize submodule at {} ({})\n".format(path, e)
         )
 
 
