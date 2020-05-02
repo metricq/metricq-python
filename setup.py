@@ -158,8 +158,7 @@ setup(
     packages=["metricq", "metricq_proto"],
     scripts=[],
     install_requires=[
-        "aio-pika~=6.0,>=6.4.0",
-        "aiormq~=3.0",  # TODO: remove once aio-pika reexports ChannelInvalidStateError
+        "aio-pika~=6.6",
         get_protobuf_requirement(),
         "yarl",
         "setuptools",

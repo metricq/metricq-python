@@ -41,7 +41,7 @@ from contextlib import suppress
 from typing import Awaitable, Optional, Union
 
 import aio_pika
-from aiormq import ChannelInvalidStateError
+from aio_pika.exceptions import ChannelInvalidStateError
 from yarl import URL
 
 from .connection_watchdog import ConnectionWatchdog
