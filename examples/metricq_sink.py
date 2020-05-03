@@ -28,6 +28,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import logging
+from typing import List
 
 import click
 import click_completion
@@ -47,29 +48,29 @@ logger.handlers[0].formatter = logging.Formatter(
 click_completion.init()
 
 
-# To implement a MetricQ Sink, define a custom class and derive from metricq.Sink
+# To implement a MetricQ Sink, subclass metricq.Sink
 class DummySink(metricq.Sink):
+    """A simple :term:`Sink` which, given a list of Metrics, will print their values as they arrive from the MetricQ network."""
 
-    # The constructor extracts metrics parameter
-    def __init__(self, metrics, *args, **kwargs):
+    def __init__(self, metrics: List[str], *args, **kwargs):
         logger.info("initializing DummySink")
+        # `metrics` contains the names of Metrics for which this Sink should print values
         self._metrics = metrics
         super().__init__(*args, **kwargs)
 
-    # We override connect() to fiddle with the connection process
+    # Override connect() to subscribe to the Metrics of interest after a connection has been established.
     async def connect(self):
-        # First, let the actual connect() happen
+        # First, let the base class connect to the MetricQ network.
         await super().connect()
 
-        # After the connection is established, we subscribe to the list of requested metrics
-        # We will receive every data points for every subscribed metric, which will be submitted
-        # into MetricQ from this time on.
+        # After the connection is established, subscribe to the list of
+        # requested metrics.  For each metric, we will receive every data point
+        # which sent is to MetricQ from this point on.
         await self.subscribe(self._metrics)
 
-    # The data handler, this method is called for every received data point
-    async def on_data(self, metric, timestamp, value):
-
-        # For thisexample, we just print the datapoints to the console
+    # The data handler, this method is called for every data point we receive
+    async def on_data(self, metric: str, timestamp: metricq.Timestamp, value: float):
+        # For this example, we just print the datapoints to standard output
         click.echo(
             click.style("{}: {}, {}".format(metric, timestamp, value), fg="bright_blue")
         )
@@ -81,11 +82,12 @@ class DummySink(metricq.Sink):
 @click.option("-m", "--metrics", multiple=True, required=True)
 @click_log.simple_verbosity_option(logger)
 def source(server, token, metrics):
-    # initialize the DummySink class
-    src = DummySink(metrics=metrics, token=token, management_url=server)
+    # Initialize the DummySink class with a list of metrics given on the
+    # command line.
+    sink = DummySink(metrics=metrics, token=token, management_url=server)
 
-    # run the sink. This call will block until the connection is closed.
-    src.run()
+    # Run the sink.  This call will block until the connection is closed.
+    sink.run()
 
 
 if __name__ == "__main__":
