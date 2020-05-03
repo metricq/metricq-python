@@ -38,6 +38,7 @@ skip_glob = [
     "**/*_pb2.pyi",
 ]
 skip = [
+    "docs/conf.py",
     ".eggs",
     ".git",
     ".hg",
