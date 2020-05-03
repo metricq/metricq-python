@@ -217,8 +217,7 @@ class Agent(RPCDispatcher):
     def run(
         self, catch_signals=("SIGINT", "SIGTERM"), cancel_on_exception=False
     ) -> None:
-        """Run an Agent by calling :py:meth:`connect` and waiting for it to be
-        :py:meth:`stop`ped.
+        """Run an Agent by calling :py:meth:`connect` and waiting for it to be stopped via :meth:`stop`.
 
         If :py:meth:`connect` raises an exception, ConnectFailedError is
         raised, with the offending exception attached as a cause.  Any
@@ -303,13 +302,13 @@ class Agent(RPCDispatcher):
         :param exchange:
         :param routing_key:
         :param response_callback:
-        If given (not None), this function will be called with any response once it arrives
-        rpc will then not wait for the response and return None
-        If omitted (or None), rpc will return the (first) response instead
+            If given (not None), this function will be called with any response once it arrives
+            rpc will then not wait for the response and return None
+            If omitted (or None), rpc will return the (first) response instead
         :param timeout: After the timeout, a response will not be dispatched to the handler
         :param cleanup_on_response: If set, only the first response will be dispatched
         :param kwargs: any additional arguments are given to the RPC itself
-        Remember that we use javaScriptSnakeCase
+            Remember that we use javaScriptSnakeCase
         :return:
         """
         function = kwargs.get("function")
@@ -442,12 +441,12 @@ class Agent(RPCDispatcher):
         loop.create_task(self.stop(exception=exception))
 
     async def stop(self, exception: Optional[Exception] = None):
-        """Stop a :py:meth:`run`ning Agent.
+        """Stop a running Agent.
 
         :param exception:
             An optional exception that will be raised by :py:meth:`run` if given.
             If the Agent was not started from :py:meth:`run`, see :py:meth:`stopped`
-            how to retrieve the exception.
+            how to retrieve this exception.
         """
         if self._stop_in_progress:
             logger.debug("Stop in progress! ({})", exception)
@@ -475,12 +474,12 @@ class Agent(RPCDispatcher):
                     self._stop_future.set_exception(exception)
 
     async def stopped(self):
-        """Wait for the :py:class:`Agent` to stop.
+        """Wait for this Agent to stop.
 
         If the agent stopped unexpectedly, this method raises an exception.
 
         :raises AgentStoppedError:
-            if the Agent was :py:meth:`stop`ped with an exception
+            if the Agent was stopped via :meth:`stop` and an exception was passed
         :raises Exception:
             if the Agent encountered any other unhandled exception
         """

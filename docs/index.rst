@@ -10,6 +10,8 @@ Welcome to MetricQ's documentation!
     :maxdepth: 2
     :caption: Contents:
 
+    howto/index
+    api/index
     glossary
 
 

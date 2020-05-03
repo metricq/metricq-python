@@ -28,7 +28,7 @@
 
 from abc import abstractmethod
 from asyncio import CancelledError, Task
-from typing import Optional, Set
+from typing import Optional, Set, Union
 
 import aio_pika
 from aio_pika.queue import Queue
@@ -50,6 +50,16 @@ class SinkResubscribeError(SinkError):
 
 
 class Sink(DataClient):
+    """A base class intended to be subclassed to create user-defined :term:`Sinks<Sink>`.
+
+    See :ref:`sink-how-to` for an introduction how to implement a Sink.
+
+    Args:
+        add_uuid:
+            whether to append a randomly generated UUID to this Sink's :term:`Token`.
+            This is useful to distinguish different instances of the same Sink.
+    """
+
     def __init__(self, *args, add_uuid=True, **kwargs):
         super().__init__(*args, add_uuid=add_uuid, **kwargs)
 
@@ -118,19 +128,33 @@ class Sink(DataClient):
             self._on_data_message, consumer_tag=self._data_consumer_tag
         )
 
-    async def subscribe(self, metrics, **kwargs):
+    async def subscribe(
+        self,
+        metrics,
+        expires: Union[None, int, float] = None,
+        metadata: Optional[bool] = None,
+        **kwargs,
+    ):
         """Subscribe to a list of metrics.
 
-        :param metrics:
-            names of the metrics to subscribe to
-        :param expires:
-            (optional) queue expiration time in seconds
-        :param metadata: bool
-            whether to return metric metadata in the response
-        :return: rpc response
+        Args:
+            metrics: names of the metrics to subscribe to
+            expires: queue expiration time in seconds
+            metadata: whether to return metric metadata in the response, defaults to ``True``
+
+        Returns:
+            rpc response
         """
+
         if self._data_queue is not None:
-            kwargs["dataQueue"] = self._data_queue.name
+            kwargs.update(dataQueue=self._data_queue.name)
+
+        if expires is not None:
+            kwargs.update(expires=expires)
+
+        if metadata is not None:
+            kwargs.update(metadata=metadata)
+
         response = await self.rpc("sink.subscribe", metrics=metrics, **kwargs)
 
         self._subscribed_metrics.update(metrics)
@@ -175,7 +199,16 @@ class Sink(DataClient):
             await self.on_data(metric, Timestamp(last_timed), value)
 
     @abstractmethod
-    async def on_data(self, metric, timestamp, value):
+    async def on_data(self, metric: str, timestamp: Timestamp, value: float) -> None:
+        """A Callback that is invoked for every data point received for any of the metrics this client is subscribed to.
+
+        User-defined :term:`Sinks<Sink>` need to override this method to handle incoming data points.
+
+        Args:
+            metric: name of the metric for which a new data point arrived
+            timestamp: timepoint at which this metric was measured
+            value: value of the metric at time of measurement
+        """
         pass
 
 
