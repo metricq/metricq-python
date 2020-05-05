@@ -4,6 +4,7 @@ recursive-include tools *.py
 
 recursive-include docs *.py
 recursive-include docs *.rst
+include docs/.nojekyll
 include docs/Makefile
 include docs/make.bat
 

@@ -2,6 +2,9 @@ name: Python package
 
 on: [push, pull_request, workflow_dispatch]
 
+env:
+  release-python-version: 3.8
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -48,12 +51,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.8
+    - name: Set up Python ${{ env.release-python-version }}
       uses: actions/setup-python@v1
       with:
-        python-version: 3.8
+        python-version: ${{ env.release-python-version }}
     - name: Install Protoc
-      uses: Arduino/setup-protoc@master
+      uses: arduino/setup-protoc@master
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -111,3 +114,52 @@ jobs:
         draft: false
         prerelease: false
         body_path: release-changelog.md
+
+  docs:
+    needs: [build]
+    runs-on: ubuntu-latest
+    env:
+      OUTPUT_DIR: build/sphinx
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ env.release-python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ env.release-python-version }}
+    - name: Install Protoc
+      uses: arduino/setup-protoc@master
+    - name: Install pip
+      run: |
+        python -m pip install --upgrade pip
+    - name: Install build dependencies
+      # To build the protobuf files (see below why they are necessary), install
+      # all necessary build dependencies.  This is currently the least painful
+      # solution. See https://github.com/pypa/pip/issues/8049#issuecomment-633845028
+      run: |
+        pip install toml
+        python -c 'import toml; print("\n".join(toml.load("pyproject.toml")["build-system"]["requires"]))' \
+          | pip install -r /dev/stdin
+    - name: Install dependencies
+      run: |
+        pip install '.[docs]'
+    - name: Build protobuf files
+      # Sphinx autodoc needs to import from generated *_pb2.py files
+      run: |
+        python setup.py build_protobuf
+    - name: Build documentation
+      run: |
+        # run HTML builder (-b) in nitpicky mode (-n) in a fresh environment (-E)
+        sphinx-build -b html -n -E docs ${{ env.OUTPUT_DIR }}
+    - name: Upload generated HTML as build artifact
+      uses: actions/upload-artifact@v2
+      with:
+        path: ${{ env.OUTPUT_DIR }}
+        name: docs
+    - name: Deploy documentation to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@3.7.1
+      if: github.ref == 'refs/heads/feature-sphinx-doc' && github.event_name == 'push'
+      with:
+        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: ${{ env.OUTPUT_DIR }}
