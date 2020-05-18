@@ -6,4 +6,5 @@ API Reference
     :caption: Contents:
 
     sink
+    source
     misc

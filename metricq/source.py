@@ -30,6 +30,7 @@
 
 import asyncio
 from abc import abstractmethod
+from typing import List, Optional
 
 import aio_pika
 from aiormq import ChannelInvalidStateError
@@ -50,10 +51,56 @@ class MetricSendError(PublishFailedError):
 
 
 class Source(DataClient):
+    """A MetricQ :term:`Source`
+
+    Example:
+        .. code-block::
+
+            from metricq import Source, Timestamp
+
+            from asyncio import sleep
+            from random import randint
+
+            class SomeSensorSource(Source):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+
+                async def get_some_sensor_value(self):
+                    await sleep(randint(0, 5))
+                    return Timestamp.now(), randint(0, 10)
+
+                async def task(self):
+                    while True:
+                        time, value = await self.get_some_sensor_value()
+                        await self.send("example.some_sensor", time, value)
+
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.metrics = dict()
-        self.chunk_size = 1
+        self._chunk_size: int = 1
+
+    @property
+    def chunk_size(self) -> Optional[int]:
+        """Number of :term:`data points<Data Point>` collected into a chunk before being sent.
+
+        Initially, this value is set to :code:`1`, so any data point is sent immediately.
+        If set to :code:`None`, automatic chunking is disabled and data points must be sent off to the network manually using :meth:`flush`.
+
+        To reduce network and packet overhead, it may be advisable to send multiple data points at once.
+        Be aware that there is a `overhead-latency trade-off` to be made:
+        If your Source produces one data point every :math:`10` seconds, having a :code:`chunk_size` of :code:`10` means that it takes almost :math:`2` minutes (:math:`100` s) before a chunk is is sent.
+        If instead it produces :math:`1000` data points per second, network load can be reduced by setting a value of :code:`1000` without affecting latency too much.
+        """
+        return None if self._chunk_size == 0 else self._chunk_size
+
+    @chunk_size.setter
+    def chunk_size(self, chunk_size: Optional[int]):
+        if chunk_size is None:
+            self._chunk_size = 0
+        else:
+            self._chunk_size = chunk_size
 
     async def connect(self):
         await super().connect()
@@ -73,11 +120,7 @@ class Source(DataClient):
 
     @abstractmethod
     def task(self):
-        """
-        override this with your main task for generating data, e.g.
-        while True:
-            await self.some_read_data_function()
-            await self.send(...)
+        """Override this with your main task for generating data points.
         """
         pass
 
@@ -86,14 +129,28 @@ class Source(DataClient):
             self.metrics[id] = SourceMetric(id, self, chunk_size=self.chunk_size)
         return self.metrics[id]
 
-    async def declare_metrics(self, metrics):
+    async def declare_metrics(self, metrics: List[str]):
+        """Declare a list of :term:`Metrics<Metric>`.
+
+        Before producing :term:`data points<Data Point>` for some Metric, a Source must've declared that Metric.
+
+        Args:
+            metrics: a list of Metrics that this Source produces Data Points for
+        """
         logger.debug("declare_metrics({})", metrics)
         await self.rpc("source.declare_metrics", metrics=metrics)
 
-    async def send(self, metric, time: Timestamp, value):
-        """
-        Logical send.
-        Dispatches to the SourceMetric for chunking
+    async def send(self, metric: str, time: Timestamp, value):
+        """Send a Data Point for a Metric
+
+        Args:
+            metric: name of a metric
+            timestamp: timepoint at which this metric was measured
+            value: value of the metric at time of measurement
+
+        Note:
+            Data points are not sent immediately, instead they are collected and sent in chunks.
+            See :attr:`chunk_size` how to control chunking behaviour.
         """
         logger.debug("send({},{},{})", metric, time, value)
         metric_object = self[metric]
@@ -101,6 +158,11 @@ class Source(DataClient):
         await metric_object.send(time, value)
 
     async def flush(self):
+        """Flush all unsent data points to the network immediately.
+
+        If automatic chunking is turned off (:attr:`chunk_size` is :literal:`None`),
+        use this method to send data points.
+        """
         await asyncio.gather(*[m.flush() for m in self.metrics.values() if not m.empty])
 
     async def _send(self, metric, data_chunk: DataChunk):
