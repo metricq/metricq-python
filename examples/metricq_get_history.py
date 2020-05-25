@@ -63,7 +63,9 @@ async def aget_history(server, token, metric, list_metrics, list_metadata):
                 "metrics matching {}:\n{}".format(metric, metrics), fg="bright_blue"
             )
         )
+        await client.stop()
         return
+
     if list_metadata:
         metadata = await client.history_metric_metadata(metric)
         pp = pprint.PrettyPrinter(indent=4)
@@ -73,6 +75,7 @@ async def aget_history(server, token, metric, list_metrics, list_metadata):
                 fg="bright_blue",
             )
         )
+        await client.stop()
         return
 
     now = metricq.Timestamp.now()
