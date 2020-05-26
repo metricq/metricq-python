@@ -28,13 +28,12 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from datetime import datetime
 from typing import Optional, Sequence, Union
 
 from .agent import Agent, RpcRequestError
 from .logging import get_logger
 from .rpc import rpc_handler
-from .types import Timedelta, Timestamp
+from .types import Timestamp
 
 logger = get_logger(__name__)
 

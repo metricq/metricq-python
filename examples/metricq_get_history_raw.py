@@ -29,7 +29,6 @@
 
 import asyncio
 import logging
-import pprint
 from datetime import timedelta
 
 import click

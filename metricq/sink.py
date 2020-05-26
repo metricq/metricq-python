@@ -32,7 +32,6 @@ from typing import Optional, Set
 
 import aio_pika
 from aio_pika.queue import Queue
-from aiormq import ChannelInvalidStateError
 
 from .data_client import DataClient
 from .datachunk_pb2 import DataChunk
