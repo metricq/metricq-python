@@ -81,29 +81,37 @@ class MetricQDiscover(metricq.Agent):
             )
             return
 
-        if "alive" in kwargs:
+        try:
             alive = kwargs["alive"]
-        else:
+        except KeyError:
             logger.warning(
                 f"Agent '{from_token}' misses 'alive' attribute in discover response"
             )
             alive = True
 
-        if "startingTime" in kwargs:
+        try:
             startingTime = kwargs["startingTime"]
-        else:
+        except KeyError:
             logger.warning(
                 f"Agent '{from_token}' misses 'startingTime' attribute in discover response"
             )
+            startingTime = "some time in the past"
 
-        if "uptime" in kwargs:
-            uptime = kwargs["uptime"]
-        else:
-            uptime = -1e9
+        try:
+            uptime = int(kwargs["uptime"] // 1e9)
+        except KeyError:
+            uptime = "a lot of"
+
+        try:
+            version = kwargs["version"]
+        except KeyError:
+            version = ""
 
         click.echo(click.style(from_token, fg="cyan"), nl=False)
         alive = "✔️" if alive else "❌"
-        click.echo(f": {alive} {startingTime} (up for {int(uptime//1e9)} sec)")
+        click.echo(
+            f": {alive} since {startingTime} (up for {uptime} seconds) {version}"
+        )
 
 
 @click.command()
