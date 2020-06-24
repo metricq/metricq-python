@@ -35,6 +35,8 @@ from .logging import get_logger
 from .rpc import rpc_handler
 from .types import Timestamp
 
+import pkg_resources
+
 logger = get_logger(__name__)
 
 
@@ -89,11 +91,15 @@ class Client(Agent):
         logger.info("responding to discover")
         now = Timestamp.now()
         uptime: int = (now - self.starting_time).ns
+
+        version = pkg_resources.require("metricq")[0].version
+
         return {
             "alive": True,
             "currentTime": now.datetime.isoformat(),
             "startingTime": self.starting_time.datetime.isoformat(),
             "uptime": uptime,
+            "version": f"python-v{version}",
         }
 
     async def get_metrics(
