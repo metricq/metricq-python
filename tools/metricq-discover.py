@@ -98,7 +98,10 @@ class MetricQDiscover(metricq.Agent):
             startingTime = "some time in the past"
 
         try:
-            uptime = int(kwargs["uptime"] // 1e9)
+            if kwargs["uptime"] >= 1e9:
+                uptime = int(kwargs["uptime"] // 1e9)
+            else:
+                uptime = int(kwargs["uptime"])
         except KeyError:
             uptime = "a lot of"
 
@@ -107,11 +110,18 @@ class MetricQDiscover(metricq.Agent):
         except KeyError:
             version = ""
 
+        try:
+            metricq_version = "@{}".format(kwargs["metricqVersion"])
+        except KeyError:
+            metricq_version = ""
+
         click.echo(click.style(from_token, fg="cyan"), nl=False)
         alive = "✔️" if alive else "❌"
         click.echo(
-            f": {alive} since {startingTime} (up for {uptime} seconds) {version}"
+            f": {alive} since {startingTime} (up for {uptime} seconds) {version}",
+            nl=False,
         )
+        click.echo(click.style(metricq_version, fg="red"))
 
 
 @click.command()
