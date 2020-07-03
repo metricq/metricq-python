@@ -102,6 +102,7 @@ setup(
         "aiormq~=3.0",  # TODO: remove once aio-pika reexports ChannelInvalidStateError
         "protobuf>=3",
         "yarl",
+        "setuptools",
     ],
     extras_require={
         "examples": ["aiomonitor", "click", "click-log", "click-completion"]
