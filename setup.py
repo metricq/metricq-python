@@ -1,5 +1,6 @@
 #!/bin/env python3
 import os
+import re
 import subprocess
 import sys
 from distutils.spawn import find_executable
@@ -7,6 +8,11 @@ from distutils.spawn import find_executable
 from setuptools import setup
 from setuptools.command.build_py import build_py
 from setuptools.command.develop import develop
+
+try:
+    from metricq import _protobuf_version
+except ImportError:
+    _protobuf_version = None
 
 
 def find_protoc():
@@ -25,6 +31,22 @@ def find_protoc():
         sys.exit(1)
 
     return protoc
+
+
+def get_protoc_version():
+    protoc_version_string = str(subprocess.check_output([find_protoc(), "--version"]))
+    protoc_version = re.search(
+        r"(?P<version>(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*))", protoc_version_string
+    ).group("version")
+
+    return protoc_version
+
+
+def get_protobuf_requirement():
+    if _protobuf_version:
+        return _protobuf_version.__protobuf_requirement__
+
+    return "protobuf=={}".format(get_protoc_version())
 
 
 def init_submodule(path: os.PathLike):
@@ -54,20 +76,36 @@ def make_proto(command):
         sys.stderr.write("error: no protobuf files found in {}\n".format(proto_dir))
         sys.exit(1)
 
+    protoc = find_protoc()
+
+    protobuf_file_generated = False
+
     for proto_file in proto_files:
         source = os.path.join(proto_dir, proto_file)
         out_file = os.path.join(out_dir, proto_file.replace(".proto", "_pb2.py"))
 
         if not os.path.exists(out_file) or os.path.getmtime(source) > os.path.getmtime(
-                out_file
+            out_file
         ):
             sys.stderr.write("[protobuf] {} -> {}\n".format(source, out_dir))
             subprocess.check_call(
                 [
-                    find_protoc(),
+                    protoc,
                     "--proto_path=" + proto_dir,
                     "--python_out=" + out_dir,
                     os.path.join(proto_dir, proto_file),
+                ]
+            )
+            protobuf_file_generated = True
+
+    if protobuf_file_generated:
+        protoc_version = get_protoc_version()
+
+        with open(os.path.join(out_dir, "_protobuf_version.py"), "w") as version_file:
+            version_file.writelines(
+                [
+                    "__protobuf_version__ = '{}'\n".format(protoc_version),
+                    "__protobuf_requirement__ = 'protobuf=={}'".format(protoc_version),
                 ]
             )
 
@@ -100,7 +138,7 @@ setup(
     install_requires=[
         "aio-pika~=6.0,>=6.4.0",
         "aiormq~=3.0",  # TODO: remove once aio-pika reexports ChannelInvalidStateError
-        "protobuf>=3",
+        get_protobuf_requirement(),
         "yarl",
     ],
     extras_require={
