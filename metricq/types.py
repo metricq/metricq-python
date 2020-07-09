@@ -179,6 +179,14 @@ class Timestamp:
     def now(cls):
         return cls.from_datetime(datetime.datetime.now(datetime.timezone.utc))
 
+    @classmethod
+    def ago(cls, delta: Timedelta):
+        return cls.now() - delta
+
+    @classmethod
+    def from_now(cls, delta: Timedelta):
+        return cls.now() + delta
+
     def __init__(self, value: int):
         """
         :param value: integer posix timestamp in nanoseconds
