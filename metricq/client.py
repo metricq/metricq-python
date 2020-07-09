@@ -34,8 +34,7 @@ from .agent import Agent, RpcRequestError
 from .logging import get_logger
 from .rpc import rpc_handler
 from .types import Timestamp
-
-import pkg_resources
+from .version import __version__
 
 logger = get_logger(__name__)
 
@@ -92,14 +91,12 @@ class Client(Agent):
         now = Timestamp.now()
         uptime: int = (now - self.starting_time).ns
 
-        version = pkg_resources.require("metricq")[0].version
-
         return {
             "alive": True,
             "currentTime": now.datetime.isoformat(),
             "startingTime": self.starting_time.datetime.isoformat(),
             "uptime": uptime,
-            "version": f"python-v{version}",
+            "metricqVersion": f"metricq-python/{__version__}",
         }
 
     async def get_metrics(

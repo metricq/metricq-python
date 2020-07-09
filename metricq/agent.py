@@ -47,6 +47,7 @@ from yarl import URL
 from .connection_watchdog import ConnectionWatchdog
 from .logging import get_logger
 from .rpc import RPCDispatcher
+from .version import __version__
 
 logger = get_logger(__name__)
 timer = time.monotonic
@@ -135,7 +136,11 @@ class Agent(RPCDispatcher):
         self._management_exchange = None
 
         self._rpc_response_handlers = dict()
-        logger.debug("Initialized Agent")
+        logger.info(
+            "Initialized Agent `{}` (running version `metricq=={}`)",
+            type(self).__qualname__,
+            __version__,
+        )
 
     def derive_address(self, address: str):
         """ Add the credentials from the management connection to the provided address """

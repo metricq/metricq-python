@@ -1,4 +1,4 @@
-# Copyright (c) 2018, ZIH,
+# Copyright (c) 2020, ZIH,
 # Technische Universitaet Dresden,
 # Federal Republic of Germany
 #
@@ -27,34 +27,6 @@
 # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+import pkg_resources
 
-from .agent import Agent, RPCError
-from .client import Client
-from .data_client import DataClient
-from .history_client import HistoryClient
-from .interval_source import IntervalSource
-from .logging import get_logger
-from .rpc import rpc_handler
-from .sink import DurableSink, Sink
-from .source import Source
-from .synchronous_source import SynchronousSource
-from .types import Timedelta, Timestamp
-from .version import __version__
-
-__all__ = [
-    Agent,
-    Client,
-    DataClient,
-    DurableSink,
-    HistoryClient,
-    IntervalSource,
-    RPCError,
-    Sink,
-    Source,
-    SynchronousSource,
-    Timedelta,
-    Timestamp,
-    get_logger,
-    rpc_handler,
-    __version__,
-]
+__version__ = pkg_resources.get_distribution("metricq").version
