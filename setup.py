@@ -44,7 +44,7 @@ def get_protoc_version():
 
 def get_protobuf_requirement():
     if _protobuf_version:
-        return _protobuf_version.__protobuf_requirement__
+        return _protobuf_version._protobuf_requirement
 
     return "protobuf=={}".format(get_protoc_version())
 
@@ -104,8 +104,8 @@ def make_proto(command):
         with open(os.path.join(out_dir, "_protobuf_version.py"), "w") as version_file:
             version_file.writelines(
                 [
-                    "__protobuf_version__ = '{}'\n".format(protoc_version),
-                    "__protobuf_requirement__ = 'protobuf=={}'".format(protoc_version),
+                    "_protobuf_version = '{}'\n".format(protoc_version),
+                    "_protobuf_requirement = 'protobuf=={}'".format(protoc_version),
                 ]
             )
 
