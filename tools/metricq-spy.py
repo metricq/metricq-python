@@ -63,12 +63,18 @@ class MetricQSpy(metricq.HistoryClient):
                 click.echo(metadata)
 
                 if "historic" in metadata and metadata["historic"]:
-                    await self.history_data_request(
-                        metric,
-                        start_time=metricq.Timestamp.ago(metricq.Timedelta.from_s(60)),
-                        end_time=metricq.Timestamp.now(),
-                        interval_max=metricq.Timedelta.from_s(60),
-                    )
+                    try:
+                        await self.history_data_request(
+                            metric,
+                            start_time=metricq.Timestamp.ago(
+                                metricq.Timedelta.from_s(60)
+                            ),
+                            end_time=metricq.Timestamp.now(),
+                            interval_max=metricq.Timedelta.from_s(60),
+                            timeout=5,
+                        )
+                    except asyncio.TimeoutError:
+                        pass
 
         await self.stop()
 
