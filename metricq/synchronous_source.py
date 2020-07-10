@@ -121,7 +121,9 @@ class SynchronousSource:
 
     def stop(self, timeout=60):
         logger.info("[SynchronousSource] stopping")
-        f = asyncio.run_coroutine_threadsafe(self._source.stop(), self._source.event_loop)
+        f = asyncio.run_coroutine_threadsafe(
+            self._source.stop(), self._source.event_loop
+        )
         exception = f.exception(timeout=timeout)
         if exception:
             logger.error("[SynchronousSource] stop call failed {}", exception)
