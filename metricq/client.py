@@ -29,6 +29,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from typing import Optional, Sequence, Union
+from socket import gethostname
 
 from .agent import Agent, RpcRequestError
 from .logging import get_logger
@@ -97,6 +98,7 @@ class Client(Agent):
             "startingTime": self.starting_time.datetime.isoformat(),
             "uptime": uptime,
             "metricqVersion": f"metricq-python/{__version__}",
+            "hostname": gethostname(),
         }
 
     async def get_metrics(
