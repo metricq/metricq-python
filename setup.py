@@ -33,20 +33,38 @@ def find_protoc():
     return protoc
 
 
-def get_protoc_version():
+def get_protoc_version() -> (int, int, int):
     protoc_version_string = str(subprocess.check_output([find_protoc(), "--version"]))
-    protoc_version = re.search(
-        r"(?P<version>(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*))", protoc_version_string
-    ).group("version")
+    version_search = re.search(
+        r"((?P<major>(0|[1-9]\d*))\.(?P<minor>(0|[1-9]\d*))\.(?P<patch>(0|[1-9]\d*)))",
+        protoc_version_string,
+    )
 
-    return protoc_version
+    sys.stderr.write(f"[protobuf] found protoc version {version_search.group(0)}\n")
+    return tuple(int(version_search.group(g)) for g in ("major", "minor", "patch"))
 
 
-def get_protobuf_requirement():
+def make_protobuf_requirement(major: int, minor: int, patch: int) -> str:
+    """ Sometimes the versions of libprotoc and the python package `protobuf` are out of sync.
+
+    For example, while there was protoc version 3.12.3, the latest release of
+    `protobuf` was 3.12.2.  So we'll just depend on `x.y.0` and hope that
+    there's no breaking changes between patches.
+    """
+
+    del patch
+    return f"protobuf~={major}.{minor}.{0}"
+
+
+def get_protobuf_requirement() -> str:
     if _protobuf_version:
-        return _protobuf_version._protobuf_requirement
+        requirement = _protobuf_version._protobuf_requirement
+        sys.stderr.write(
+            f"[protobuf] read protobuf requirement from {_protobuf_version.__file__}: {requirement}\n"
+        )
+        return requirement
 
-    return "protobuf=={}".format(get_protoc_version())
+    return make_protobuf_requirement(*get_protoc_version())
 
 
 def init_submodule(path: os.PathLike):
@@ -98,14 +116,18 @@ def make_proto(command):
             )
             protobuf_file_generated = True
 
-    if protobuf_file_generated:
-        protoc_version = get_protoc_version()
+    protobuf_version_file = os.path.join(out_dir, "_protobuf_version.py")
+    if protobuf_file_generated or not os.path.exists(protobuf_version_file):
+        (major, minor, patch) = get_protoc_version()
 
-        with open(os.path.join(out_dir, "_protobuf_version.py"), "w") as version_file:
+        sys.stderr.write(
+            f"[protobuf] writing protobuf version to {protobuf_version_file}\n"
+        )
+        with open(protobuf_version_file, "w") as version_file:
             version_file.writelines(
                 [
-                    "_protobuf_version = '{}'\n".format(protoc_version),
-                    "_protobuf_requirement = 'protobuf=={}'".format(protoc_version),
+                    f'_protobuf_version = "{major}.{minor}.{patch}"\n',
+                    f'_protobuf_requirement = "{make_protobuf_requirement(major, minor, patch)}"\n',
                 ]
             )
 
