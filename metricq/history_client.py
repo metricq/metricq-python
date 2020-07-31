@@ -240,9 +240,9 @@ class HistoryClient(Client):
     async def history_data_request(
         self,
         metric: str,
-        start_time: Timestamp,
-        end_time: Timestamp,
-        interval_max: Timedelta,
+        start_time: Optional[Timestamp],
+        end_time: Optional[Timestamp],
+        interval_max: Optional[Timedelta],
         request_type: HistoryRequestType = HistoryRequestType.AGGREGATE_TIMELINE,
         timeout=60,
     ):

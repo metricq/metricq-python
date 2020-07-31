@@ -67,7 +67,7 @@ class Timedelta:
             )
 
         groups = m.groupdict()
-        value = int(groups["value_integral"])
+        value: float = int(groups["value_integral"])
 
         if groups["value_fractional"]:
             value += float(groups["value_fractional"].replace(",", "."))

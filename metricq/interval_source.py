@@ -73,7 +73,7 @@ class IntervalSource(Source):
                 # This is the normal case, just continue with the loop
                 continue
 
-    async def stop(self, exception: Optional[Exception]):
+    async def stop(self, exception: Optional[Exception] = None):
         logger.debug("stop()")
         if self._interval_task_stop_future is not None:
             self._interval_task_stop_future.set_result(None)
