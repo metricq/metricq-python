@@ -316,6 +316,8 @@ class Agent(RPCDispatcher):
         if function is None:
             raise KeyError('all RPCs must contain a "function" argument')
 
+        assert self.management_rpc_queue is not None
+
         time_begin = timer()
 
         correlation_id = self._make_correlation_id()
@@ -505,6 +507,9 @@ class Agent(RPCDispatcher):
         """
         :param message: This is either an RPC or an RPC response
         """
+        assert self._management_channel is not None
+        assert self._management_channel.default_exchange is not None
+
         with message.process(requeue=True):
             time_begin = timer()
             body = message.body.decode()
