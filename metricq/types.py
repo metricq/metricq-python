@@ -30,9 +30,11 @@
 
 import datetime
 import re
+import warnings
+from dataclasses import dataclass
 from functools import total_ordering
 from numbers import Real
-from typing import NamedTuple, Union
+from typing import Union
 
 from . import history_pb2
 
@@ -290,12 +292,29 @@ class Timestamp:
         return f"Timestamp({self.posix_ns})"
 
 
-class TimeValue(NamedTuple):
+@dataclass(frozen=True)
+class TimeValue:
+    __slots__ = ("timestamp", "value")
+
     timestamp: Timestamp
     value: float
 
+    def __iter__(self):
+        return iter((self.timestamp, self.value))
 
-class TimeAggregate(NamedTuple):
+
+@dataclass(frozen=True)
+class TimeAggregate:
+    __slots__ = (
+        "timestamp",
+        "minimum",
+        "maximum",
+        "sum",
+        "count",
+        "integral",
+        "active_time",
+    )
+
     timestamp: Timestamp
     minimum: float
     maximum: float
@@ -305,6 +324,26 @@ class TimeAggregate(NamedTuple):
     integral: float
     # TODO maybe convert to Timedelta
     active_time: int
+
+    def __iter__(self):
+        warnings.simplefilter("always", category=DeprecationWarning)  # turn off filter
+        warnings.warn(
+            "Unpacking TimeAggregate is deprecated!",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+        warnings.simplefilter("default", category=DeprecationWarning)
+        return iter(
+            (
+                self.timestamp,
+                self.minimum,
+                self.maximum,
+                self.sum,
+                self.count,
+                self.integral,
+                self.active_time,
+            )
+        )
 
     @staticmethod
     def from_proto(timestamp: Timestamp, proto: history_pb2.HistoryResponse.Aggregate):
