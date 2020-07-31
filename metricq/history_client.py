@@ -327,8 +327,8 @@ class HistoryClient(Client):
             loop=self.event_loop,
         )
 
-    async def _on_history_response(self, message: aio_pika.Message):
-        with message.process(requeue=True):
+    async def _on_history_response(self, message: aio_pika.IncomingMessage):
+        async with message.process(requeue=True):
             body = message.body
             from_token = message.app_id
             correlation_id = message.correlation_id

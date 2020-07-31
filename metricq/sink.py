@@ -155,7 +155,7 @@ class Sink(DataClient):
             self._subscribe_args = dict()
 
     async def _on_data_message(self, message: aio_pika.IncomingMessage):
-        with message.process(requeue=True):
+        async with message.process(requeue=True):
             body = message.body
             from_token = message.app_id
             metric = message.routing_key

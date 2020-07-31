@@ -503,14 +503,14 @@ class Agent(RPCDispatcher):
     def _make_correlation_id(self):
         return "metricq-rpc-py-{}-{}".format(self.token, uuid.uuid4().hex)
 
-    async def _on_management_message(self, message: aio_pika.Message):
+    async def _on_management_message(self, message: aio_pika.IncomingMessage):
         """
         :param message: This is either an RPC or an RPC response
         """
         assert self._management_channel is not None
         assert self._management_channel.default_exchange is not None
 
-        with message.process(requeue=True):
+        async with message.process(requeue=True):
             time_begin = timer()
             body = message.body.decode()
             from_token = message.app_id
