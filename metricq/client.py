@@ -45,10 +45,38 @@ class ManagementRpcPublishError(RpcRequestError):
 
 
 class Client(Agent):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, client_version: Optional[str] = None, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.starting_time = Timestamp.now()
+        self._client_version: Optional[str] = (
+            client_version if client_version is not None else self._find_version()
+        )
+
+        logger.info(
+            "Initializing client (version: {})", self._client_version or "unknown"
+        )
+
+    def _find_version(self) -> Optional[str]:
+        client_cls = type(self)
+        client_name = client_cls.__qualname__
+
+        try:
+            from inspect import getmodule
+
+            logger.debug(
+                "Looking for client version of {}...",
+                client_name,
+            )
+
+            client_version = getmodule(client_cls).__version__
+
+            logger.debug("Client {} has version {!r}", client_name, client_version)
+
+            return client_version
+        except Exception as e:
+            logger.warn("Failed to find version of {}: {}", client_name, e)
+            return None
 
     @property
     def name(self):
@@ -94,7 +122,7 @@ class Client(Agent):
         now = Timestamp.now()
         uptime: int = (now - self.starting_time).ns
 
-        return {
+        response = {
             "alive": True,
             "currentTime": now.datetime.isoformat(),
             "startingTime": self.starting_time.datetime.isoformat(),
@@ -102,6 +130,11 @@ class Client(Agent):
             "metricqVersion": f"metricq-python/{__version__}",
             "hostname": gethostname(),
         }
+
+        if self._client_version is not None:
+            response["version"] = self._client_version
+
+        return response
 
     async def get_metrics(
         self,
