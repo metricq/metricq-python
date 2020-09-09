@@ -103,12 +103,12 @@ class Timedelta:
             return f"{self._value // 1_000_000_000}s"
 
         elif self._value % (1_000_000_000 * 3600) != 0:
-            return f"{self._value // 1_000_000_000 * 60}min"
+            return f"{self._value // (1_000_000_000 * 60)}min"
 
         elif self._value % (1_000_000_000 * 3600 * 24) != 0:
-            return f"{self._value // 1_000_000_000 * 3600}h"
+            return f"{self._value // (1_000_000_000 * 3600)}h"
 
-        return f"{self._value // 1_000_000_000 * 3600 * 24}d"
+        return f"{self._value // (1_000_000_000 * 3600 * 24)}d"
 
     @property
     def ns(self):
