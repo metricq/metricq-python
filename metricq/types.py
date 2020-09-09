@@ -50,9 +50,7 @@ class Timedelta:
         m = re.fullmatch(r"\s*([+-]?\d*[.,]?\d+)\s*([^\d]*)\s*", duration_str)
         if not m:
             raise ValueError(
-                'invalid duration string {}, not of form "number unit"'.format(
-                    duration_str
-                )
+                'invalid duration string {}, not of form "number unit"'.format(duration_str)
             )
         value = float(m.group(1))
         unit = m.group(2)
@@ -91,6 +89,28 @@ class Timedelta:
         self._value = value
 
     @property
+    def precise_string(self):
+        if self._value % 1_000 != 0:
+            return f"{self._value}ns"
+
+        elif self._value % 1_000_000 != 0:
+            return f"{self._value // 1_000}μs"
+
+        elif self._value % 1_000_000_000 != 0:
+            return f"{self._value // 1_000_000}ms"
+
+        elif self._value % (1_000_000_000 * 60) != 0:
+            return f"{self._value // 1_000_000_000}s"
+
+        elif self._value % (1_000_000_000 * 3600) != 0:
+            return f"{self._value // 1_000_000_000 * 60}min"
+
+        elif self._value % (1_000_000_000 * 3600 * 24) != 0:
+            return f"{self._value // 1_000_000_000 * 3600}h"
+
+        return f"{self._value // 1_000_000_000 * 3600 * 24}d"
+
+    @property
     def ns(self):
         return self._value
 
@@ -124,9 +144,7 @@ class Timedelta:
             return Timedelta(self._value - other._value)
         if isinstance(other, datetime.timedelta):
             return self - Timedelta.from_timedelta(other)
-        raise TypeError(
-            "invalid type to subtract from Timedelta: {}".format(type(other))
-        )
+        raise TypeError("invalid type to subtract from Timedelta: {}".format(type(other)))
 
     def __truediv__(self, factor):
         return Timedelta(self._value // factor)
@@ -229,9 +247,7 @@ class Timestamp:
             return Timestamp(self._value - other.ns)
         if isinstance(other, Timestamp):
             return Timedelta(self._value - other._value)
-        raise TypeError(
-            "Invalid type to subtract from Timestamp: {}".format(type(other))
-        )
+        raise TypeError("Invalid type to subtract from Timestamp: {}".format(type(other)))
 
     def __lt__(self, other: "Timestamp"):
         return self._value < other._value
@@ -288,9 +304,7 @@ class TimeAggregate(NamedTuple):
         )
 
     @staticmethod
-    def from_value_pair(
-        timestamp_before: Timestamp, timestamp: Timestamp, value: float
-    ):
+    def from_value_pair(timestamp_before: Timestamp, timestamp: Timestamp, value: float):
         assert timestamp > timestamp_before
         delta = timestamp - timestamp_before
         return TimeAggregate(
