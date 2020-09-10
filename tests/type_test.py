@@ -45,19 +45,22 @@ def time_delta_1d():
 
 
 @pytest.fixture
-def time_delta_generate_random_list(count=1000):
-    l = []
-
+def time_delta_generate_random_list():
+    c = 10
     v = 8295638928
-    increase = 1243899020259
+    seed = 1243899020259674347
     mult = 5
-    mod = 9987868812
+    mod = 99878688123465625
 
-    for _ in range(count):
-        l.append(Timedelta(int(v // 20 * pow(10, v % 20))))
-        v = (v * mult + increase) % mod
-
-    return l
+    yield 0
+    for l in range(1, 17, 1):
+        for _ in range(c * l):
+            d = v // 20
+            p = v % l
+            r = (int(d * pow(10, p))) % (pow(10, l - 1))
+            if r != 0:
+                yield Timedelta(r)
+            v = (v * mult + seed) % mod
 
 
 def test_timedelta_to_string(
