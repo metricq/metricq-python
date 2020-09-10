@@ -47,10 +47,10 @@ def time_delta_1d():
 @pytest.fixture
 def time_delta_generate_random_list():
     c = 4
-    v = 8295638928
+    v = 20458290249576139
     seed = 72438990202596743
     mult = 7
-    mod = 99878688123465625
+    mod = 99878688123465600
 
     yield 0
     for l in range(0, 17, 1):
