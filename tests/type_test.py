@@ -10,8 +10,33 @@ def time_delta_random():
 
 
 @pytest.fixture
+def time_delta_1us():
+    return Timedelta(1_000)
+
+
+@pytest.fixture
+def time_delta_1ms():
+    return Timedelta(1_000_000)
+
+
+@pytest.fixture
 def time_delta_1s():
     return Timedelta(1_000_000_000)
+
+
+@pytest.fixture
+def time_delta_10s():
+    return Timedelta(10_000_000_000)
+
+
+@pytest.fixture
+def time_delta_1min():
+    return Timedelta(1_000_000_000 * 60)
+
+
+@pytest.fixture
+def time_delta_1h():
+    return Timedelta(1_000_000_000 * 3600)
 
 
 @pytest.fixture
@@ -35,10 +60,24 @@ def time_delta_generate_random_list(count=1000):
     return l
 
 
-def test_timedelta_to_string(time_delta_random, time_delta_1s, time_delta_1d):
+def test_timedelta_to_string(
+    time_delta_random,
+    time_delta_1us,
+    time_delta_1ms,
+    time_delta_1s,
+    time_delta_10s,
+    time_delta_1min,
+    time_delta_1h,
+    time_delta_1d,
+):
 
     assert time_delta_random.precise_string == "8295638928ns"
+    assert time_delta_1us.precise_string == "1μs"
+    assert time_delta_1ms.precise_string == "1ms"
     assert time_delta_1s.precise_string == "1s"
+    assert time_delta_10s.precise_string == "10s"
+    assert time_delta_1min.precise_string == "1min"
+    assert time_delta_1h.precise_string == "1h"
     assert time_delta_1d.precise_string == "1d"
 
 
