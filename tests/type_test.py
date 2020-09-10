@@ -54,7 +54,7 @@ def time_delta_generate_random_list():
 
     yield 0
     for l in range(0, 17, 1):
-        yield pow(10, l)
+        yield Timedelta(pow(10, l))
         for _ in range(c * (l + 1)):
             d = v // 20
             p = v % (l + 1)
