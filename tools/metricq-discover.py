@@ -56,10 +56,12 @@ class MetricQDiscover(metricq.Agent):
         await self.connect()
         await self.rpc_consume()
 
-        self._management_broadcast_exchange = await self._management_channel.declare_exchange(
-            name=self._management_broadcast_exchange_name,
-            type=aio_pika.ExchangeType.FANOUT,
-            durable=True,
+        self._management_broadcast_exchange = (
+            await self._management_channel.declare_exchange(
+                name=self._management_broadcast_exchange_name,
+                type=aio_pika.ExchangeType.FANOUT,
+                durable=True,
+            )
         )
 
         await self.rpc(

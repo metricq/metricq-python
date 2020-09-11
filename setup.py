@@ -45,7 +45,7 @@ def get_protoc_version() -> (int, int, int):
 
 
 def make_protobuf_requirement(major: int, minor: int, patch: int) -> str:
-    """ Sometimes the versions of libprotoc and the python package `protobuf` are out of sync.
+    """Sometimes the versions of libprotoc and the python package `protobuf` are out of sync.
 
     For example, while there was protoc version 3.12.3, the latest release of
     `protobuf` was 3.12.2.  So we'll just depend on `x.y.0` and hope that

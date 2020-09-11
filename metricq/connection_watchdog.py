@@ -84,8 +84,7 @@ class ConnectionWatchdog:
         self._watchdog_task = loop.create_task(watchdog())
 
     def set_established(self):
-        """Signal that the connection has been established.
-        """
+        """Signal that the connection has been established."""
         assert (
             self._closed_event is not None
             and self._established_event is not None
@@ -104,18 +103,15 @@ class ConnectionWatchdog:
         self._closed_event.set()
 
     async def closed(self):
-        """Asynchronously wait for the connection to be closed.
-        """
+        """Asynchronously wait for the connection to be closed."""
         await self._closed_event.wait()
 
     async def established(self):
-        """Asynchronously wait for the connection to be established.
-        """
+        """Asynchronously wait for the connection to be established."""
         await self._established_event.wait()
 
     async def stop(self):
-        """Stop the connection watchdog task if it is running.
-        """
+        """Stop the connection watchdog task if it is running."""
         if self._watchdog_task:
             if self._watchdog_task.done():
                 try:

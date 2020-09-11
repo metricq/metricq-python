@@ -57,8 +57,10 @@ class Client(Agent):
     async def connect(self):
         await super().connect()
 
-        self._management_broadcast_exchange = await self._management_channel.declare_exchange(
-            name=self._management_broadcast_exchange_name, passive=True
+        self._management_broadcast_exchange = (
+            await self._management_channel.declare_exchange(
+                name=self._management_broadcast_exchange_name, passive=True
+            )
         )
         self._management_exchange = await self._management_channel.declare_exchange(
             name=self._management_exchange_name, passive=True
