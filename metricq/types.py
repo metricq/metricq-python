@@ -91,6 +91,28 @@ class Timedelta:
         self._value = value
 
     @property
+    def precise_string(self):
+        if self._value % 1_000 != 0:
+            return f"{self._value}ns"
+
+        elif self._value % 1_000_000 != 0:
+            return f"{self._value // 1_000}μs"
+
+        elif self._value % 1_000_000_000 != 0:
+            return f"{self._value // 1_000_000}ms"
+
+        elif self._value % (1_000_000_000 * 60) != 0:
+            return f"{self._value // 1_000_000_000}s"
+
+        elif self._value % (1_000_000_000 * 3600) != 0:
+            return f"{self._value // (1_000_000_000 * 60)}min"
+
+        elif self._value % (1_000_000_000 * 3600 * 24) != 0:
+            return f"{self._value // (1_000_000_000 * 3600)}h"
+
+        return f"{self._value // (1_000_000_000 * 3600 * 24)}d"
+
+    @property
     def ns(self):
         return self._value
 
