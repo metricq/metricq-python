@@ -1,0 +1,27 @@
+# Use this file to ignore revs in `git blame` that only introduce format
+# changes:
+#
+# $ git blame --ignore-revs-file .git-blame-ignore-revs [rev]
+#
+# Make this permanent via:
+#
+# $ git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# Code format changes, as done by black/isort/etc.
+2405b8378c4a8974af2a68b3fd0bfc5063a437e2
+95ab92b8d35cc15a50071caa0095547a7b544fe6
+104bed8245700ce731474094f8816c44334cf0db
+2372e04f2735ac1c2d43a39fb31c239b81f153d8
+f61c3388f4dbfa23ff1fdb78b477c6282ec0f8be
+
+# Code format changes from before the split into metricq-cpp and metricq-python.
+# Mostly related to C++ files, so done by clang-format.
+038e94b42bec723ca6e6101c3649439b460843b1
+98dd93669ba7571184a3585e9da856d6f7727e04
+98fc47bbac44fcd3f1b37739fdd3b9f0f0c5aacb
+e1aaf84650934d25c1ec15efeaf2b220ce731b7d
+6333cbe1f9ec5d24e52807f9d1d9c26fcf22733d
+e12accf636450176ca7907d7bfbc844c4f3f344b
+9932adb38d9e1e80451ca115a4fc9dbed68aee4b
+93e58c643505254c49e3f298bcfad5b7c1aa264f
+9115a7d53ec67d628d25cde896f5201a67af1d01
