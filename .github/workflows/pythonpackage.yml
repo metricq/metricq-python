@@ -21,19 +21,24 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install .[dev]
+        pip install .[lint,test]
     - name: Lint with flake8
       run: |
         flake8 .
+    - name: Test with pytest
+      run: |
+        pytest
     - name: Format using black
-      uses: lgeiger/black-action@master
-      with:
-        args: ". --check"
+      run: |
+        black --check .
+    - name: Sort imports with isort
+      run: |
+        isort --diff --check .
 
   release:
     needs: [build]
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.6
