@@ -45,7 +45,7 @@ def get_protoc_version() -> (int, int, int):
 
 
 def make_protobuf_requirement(major: int, minor: int, patch: int) -> str:
-    """ Sometimes the versions of libprotoc and the python package `protobuf` are out of sync.
+    """Sometimes the versions of libprotoc and the python package `protobuf` are out of sync.
 
     For example, while there was protoc version 3.12.3, the latest release of
     `protobuf` was 3.12.2.  So we'll just depend on `x.y.0` and hope that
@@ -144,29 +144,13 @@ class ProtoDevelop(develop):
         super().run()
 
 
+# For all other setuptools options, see setup.cfg
 setup(
-    name="metricq",
-    version="1.2.0",
-    author="TU Dresden",
-    description="A highly-scalable, distributed metric data processing framework based on RabbitMQ",
-    url="https://github.com/metricq/metricq",
-    classifiers=[
-        "License :: OSI Approved :: BSD License",
-        "Programming Language :: Python :: 3",
-    ],
-    python_requires=">=3.6",
-    packages=["metricq", "metricq_proto"],
-    scripts=[],
     install_requires=[
         "aio-pika~=6.6",
         get_protobuf_requirement(),
         "yarl",
         "setuptools",
     ],
-    extras_require={
-        "examples": ["aiomonitor", "click", "click-log", "click-completion"]
-    },
     cmdclass={"build_py": ProtoBuildPy, "develop": ProtoDevelop},
-    package_dir={"metricq_proto": "lib/metricq-protobuf"},
-    test_suite="examples",
 )
