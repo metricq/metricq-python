@@ -3,11 +3,18 @@ import os
 import re
 import subprocess
 import sys
-from distutils.spawn import find_executable
+import logging
+from typing import Optional, Tuple
 
-from setuptools import setup
+from distutils.spawn import find_executable
+from distutils.errors import DistutilsFileError
+from distutils.log import INFO, ERROR
+from setuptools import setup, Command
 from setuptools.command.build_py import build_py
 from setuptools.command.develop import develop
+
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+logger = logging.getLogger()
 
 try:
     from metricq import _protobuf_version
@@ -15,32 +22,32 @@ except ImportError:
     _protobuf_version = None
 
 
-def find_protoc():
+def find_protoc() -> str:
     if "PROTOC" in os.environ and os.path.exists(os.environ["PROTOC"]):
         protoc = os.environ["PROTOC"]
     else:
         protoc = find_executable("protoc")
 
     if protoc is None:
-        sys.stderr.write(
-            "protoc not found. Is protobuf-compiler installed? \n"
-            "Alternatively, you can point the PROTOC environment variable at a local version (current: {}).".format(
+        logger.error("protoc not found")
+        logger.info(
+            "Is protobuf-compiler installed? "
+            "Alternatively, you can point the PROTOC environment variable at a local version (current: {}).\n".format(
                 os.environ.get("PROTOC", "Not set")
             )
         )
-        sys.exit(1)
+        raise DistutilsFileError("protoc not found")
 
     return protoc
 
 
-def get_protoc_version() -> (int, int, int):
-    protoc_version_string = str(subprocess.check_output([find_protoc(), "--version"]))
+def protoc_version(protoc: str) -> Tuple[int, int, int]:
+    protoc_version_string = str(subprocess.check_output([protoc, "--version"]))
     version_search = re.search(
         r"((?P<major>(0|[1-9]\d*))\.(?P<minor>(0|[1-9]\d*))\.(?P<patch>(0|[1-9]\d*)))",
         protoc_version_string,
     )
 
-    sys.stderr.write(f"[protobuf] found protoc version {version_search.group(0)}\n")
     return tuple(int(version_search.group(g)) for g in ("major", "minor", "patch"))
 
 
@@ -59,72 +66,127 @@ def make_protobuf_requirement(major: int, minor: int, patch: int) -> str:
 def get_protobuf_requirement() -> str:
     if _protobuf_version:
         requirement = _protobuf_version._protobuf_requirement
-        sys.stderr.write(
-            f"[protobuf] read protobuf requirement from {_protobuf_version.__file__}: {requirement}\n"
+        logger.info(
+            f"read protobuf requirement from {_protobuf_version.__file__}: {requirement}"
         )
         return requirement
 
-    return make_protobuf_requirement(*get_protoc_version())
+    protoc = find_protoc()
+    return make_protobuf_requirement(*protoc_version(protoc))
 
 
-def init_submodule(path: os.PathLike):
+def init_submodule(path: str):
     try:
         subprocess.check_call(["git", "submodule", "update", "--init", path])
     except subprocess.CalledProcessError as e:
-        sys.stderr.write(
-            "warning: failed to initialize submodule at {} (process returned {})\n".format(
-                path, e.returncode
-            )
+        logger.warn(
+            f"failed to initialize submodule at {path} (process returned {e.returncode})"
         )
     except Exception as e:
-        sys.stderr.write(
-            "warning: failed to initialize submodule at {} ({})\n".format(path, e)
+        logger.warn(f"failed to initialize submodule at {path} ({e})")
+
+
+class BuildProtobuf(Command):
+    """Custom distutils command, registered as `build_protobuf`.
+
+    Run `./setup.py build_protobuf --help` for usage instructions."""
+
+    user_options = [
+        ("force", "f", "force compilation of protobuf files"),
+        ("out-dir=", "o", "directory to put genenerated python files in"),
+        ("proto-dir=", "i", "directory where input .proto files are located"),
+    ]
+
+    def initialize_options(self):
+        self._protoc: Optional[str] = None
+        self._protoc_version: Optional[Tuple[int, int, int]] = None
+
+        self.force: Optional[bool] = None
+        self.out_dir: Optional[str] = None
+        self.proto_dir: Optional[str] = None
+
+    def finalize_options(self):
+        if self.force is None:
+            self.force = False
+
+        if self.out_dir is None:
+            self.out_dir = "metricq/"
+
+        if self.proto_dir is None:
+            self.proto_dir = "lib/metricq-protobuf/"
+
+    @property
+    def protoc(self) -> str:
+        if self._protoc is None:
+            self._protoc = find_protoc()
+
+        return self._protoc
+
+    @property
+    def protoc_version(self) -> Tuple[int, int, int]:
+        if self._protoc_version is None:
+            self._protoc_version = protoc_version(self.protoc)
+
+        return self._protoc_version
+
+    def info(self, msg):
+        self.announce(f"info: {type(self).__name__}: {msg}", level=INFO)
+
+    def error(self, msg):
+        self.announce(f"error: {type(self).__name__}: {msg}", level=ERROR)
+
+    def run(self):
+        init_submodule(self.proto_dir)
+        self.info(f"compiling .proto files in {self.proto_dir}")
+
+        proto_files = set(
+            filter(lambda x: x.endswith(".proto"), os.listdir(self.proto_dir))
         )
 
+        if not proto_files:
+            self.error(f"no protobuf files found in {self.proto_dir}")
+            raise DistutilsFileError(f"No protobuf files found in {self.proto_dir}")
 
-def make_proto(command):
-    out_dir = command.get_package_dir("metricq")
-    proto_dir = command.get_package_dir("metricq_proto")
-    init_submodule(proto_dir)
-    print("[protobuf] {}".format(proto_dir))
+        protobuf_file_generated = False
 
-    proto_files = set(filter(lambda x: x.endswith(".proto"), os.listdir(proto_dir)))
-
-    if not proto_files:
-        sys.stderr.write("error: no protobuf files found in {}\n".format(proto_dir))
-        sys.exit(1)
-
-    protoc = find_protoc()
-
-    protobuf_file_generated = False
-
-    for proto_file in proto_files:
-        source = os.path.join(proto_dir, proto_file)
-        out_file = os.path.join(out_dir, proto_file.replace(".proto", "_pb2.py"))
-
-        if not os.path.exists(out_file) or os.path.getmtime(source) > os.path.getmtime(
-            out_file
-        ):
-            sys.stderr.write("[protobuf] {} -> {}\n".format(source, out_dir))
-            subprocess.check_call(
-                [
-                    protoc,
-                    "--proto_path=" + proto_dir,
-                    "--python_out=" + out_dir,
-                    os.path.join(proto_dir, proto_file),
-                ]
+        for proto_file in proto_files:
+            source = os.path.join(self.proto_dir, proto_file)
+            out_file = os.path.join(
+                self.out_dir, proto_file.replace(".proto", "_pb2.py")
             )
-            protobuf_file_generated = True
 
-    protobuf_version_file = os.path.join(out_dir, "_protobuf_version.py")
-    if protobuf_file_generated or not os.path.exists(protobuf_version_file):
-        (major, minor, patch) = get_protoc_version()
+            if (
+                self.force
+                or not os.path.exists(out_file)
+                or os.path.getmtime(source) > os.path.getmtime(out_file)
+            ):
+                self.info("compiling {} -> {}".format(source, out_file))
+                subprocess.check_call(
+                    [
+                        self.protoc,
+                        "--proto_path=" + self.proto_dir,
+                        "--python_out=" + self.out_dir,
+                        os.path.join(self.proto_dir, proto_file),
+                    ]
+                )
+                protobuf_file_generated = True
 
-        sys.stderr.write(
-            f"[protobuf] writing protobuf version to {protobuf_version_file}\n"
+        protobuf_version_file = os.path.join(self.out_dir, "_protobuf_version.py")
+        if (
+            self.force
+            or protobuf_file_generated
+            or not os.path.exists(protobuf_version_file)
+        ):
+            self._write_protobuf_version_file(protobuf_version_file)
+
+    def _write_protobuf_version_file(self, version_file):
+        (major, minor, patch) = self.protoc_version
+
+        self.info(
+            f"writing protobuf version ({major}.{minor}.{patch}) to {version_file}"
         )
-        with open(protobuf_version_file, "w") as version_file:
-            version_file.writelines(
+        with open(version_file, "w") as f:
+            f.writelines(
                 [
                     f'_protobuf_version = "{major}.{minor}.{patch}"\n',
                     f'_protobuf_requirement = "{make_protobuf_requirement(major, minor, patch)}"\n',
@@ -134,7 +196,16 @@ def make_proto(command):
 
 class ProtoBuildPy(build_py):
     def run(self):
-        make_proto(self)
+        # God almigthy is python packaging a clusterfuck.  Set "--force" for
+        # the build_protobuf command if "--force" was passed to build_py.
+        #
+        # https://stackoverflow.com/a/57274908
+        build_protobuf_cmd: BuildProtobuf = self.distribution.get_command_obj(
+            "build_protobuf"
+        )
+        build_protobuf_cmd.set_undefined_options("build_py", ("force", "force"))
+
+        self.run_command("build_protobuf")
         super().run()
 
 
@@ -152,5 +223,9 @@ setup(
         "yarl",
         "setuptools",
     ],
-    cmdclass={"build_py": ProtoBuildPy, "develop": ProtoDevelop},
+    cmdclass={
+        "build_protobuf": BuildProtobuf,
+        "build_py": ProtoBuildPy,
+        "develop": ProtoDevelop,
+    },
 )
