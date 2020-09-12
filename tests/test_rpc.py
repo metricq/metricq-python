@@ -1,4 +1,4 @@
-# Copyright (c) 2018, ZIH,
+# Copyright (c) 2020, ZIH,
 # Technische Universitaet Dresden,
 # Federal Republic of Germany
 #
@@ -27,58 +27,62 @@
 # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-import unittest
+import pytest
 
-from metricq.rpc import RPCBase, rpc_handler
+from metricq.rpc import RPCDispatcher, rpc_handler
 
 
-class RPCSimple(RPCBase):
+class SimpleDispatcher(RPCDispatcher):
     def __init__(self, number):
         self.number = number
 
-    @rpc_handler("test")
-    def handle_test(self):
+    @rpc_handler("number")
+    async def handle_number(self):
         return self.number
 
-    @rpc_handler("toast")
-    def handle_toast(self, name):
+    @rpc_handler("repeat")
+    async def handle_repeat(self, name):
         return self.number * name
 
 
-class RPCSub(RPCSimple):
-    def __init__(self, number):
-        self.number = number
-
-    @rpc_handler("sub")
-    def handle_sub(self):
+class SubDispatcher(SimpleDispatcher):
+    @rpc_handler("sub_double_number")
+    async def handle_sub_double_number(self):
         return self.number * 2
 
 
-class RPCOther(RPCBase):
-    @rpc_handler("foo")
-    def handle_foo(self):
-        return "foo"
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "number, function, kwargs, result",
+    [
+        (1, "number", {}, 1),
+        (2, "number", {}, 2),
+        (1, "repeat", {"name": "foo"}, "foo"),
+        (2, "repeat", {"name": "foo"}, "foofoo"),
+    ],
+)
+async def test_dispatch_simple(number: int, function: str, kwargs: dict, result):
+    assert await SimpleDispatcher(number).rpc_dispatch(function, **kwargs) == result
 
 
-class TestRPC(unittest.TestCase):
-    def test_basic(self):
-        x = RPCSimple(1)
-        self.assertEqual(x.dispatch("test"), 1)
-        self.assertEqual(x.dispatch("toast", "x"), "x")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "function, kwargs, result",
+    [
+        ("number", {}, 3),
+        ("repeat", {"name": "foo"}, "foofoofoo"),
+        ("sub_double_number", {}, 6),
+    ],
+)
+async def test_dispatch_sub(function: str, kwargs: dict, result):
+    assert await SubDispatcher(3).rpc_dispatch(function, **kwargs) == result
 
-    def test_separate(self):
-        xx = RPCSimple(2)
-        self.assertEqual(xx.dispatch("test"), 2)
-        self.assertEqual(xx.dispatch("toast", "x"), "xx")
 
-    def test_sub(self):
-        s = RPCSub(3)
-        self.assertEqual(s.dispatch("test"), 3)
-        self.assertEqual(s.dispatch("toast", "x"), "xxx")
-        self.assertEqual(s.dispatch("sub"), 6)
+class UnknownFunctionDispatcher(RPCDispatcher):
+    pass
 
-    def test_other(self):
-        o = RPCOther()
-        self.assertEqual(o.dispatch("foo"), "foo")
-        with self.assertRaises(KeyError):
-            o.dispatch("test")
+
+@pytest.mark.asyncio
+async def test_dispatch_unknown_function():
+    with pytest.raises(KeyError):
+        await UnknownFunctionDispatcher().rpc_dispatch("unknown")
