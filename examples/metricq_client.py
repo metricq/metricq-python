@@ -32,6 +32,7 @@ import asyncio
 import logging
 
 import aiomonitor
+
 import metricq
 
 if __name__ == "__main__":

@@ -31,7 +31,6 @@ import asyncio
 import logging
 
 import aio_pika
-
 import click
 import click_completion
 import click_log

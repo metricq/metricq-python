@@ -28,8 +28,8 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from typing import Optional, Sequence, Union
 from socket import gethostname
+from typing import Optional, Sequence, Union
 
 from .agent import Agent, RpcRequestError
 from .logging import get_logger
@@ -57,8 +57,10 @@ class Client(Agent):
     async def connect(self):
         await super().connect()
 
-        self._management_broadcast_exchange = await self._management_channel.declare_exchange(
-            name=self._management_broadcast_exchange_name, passive=True
+        self._management_broadcast_exchange = (
+            await self._management_channel.declare_exchange(
+                name=self._management_broadcast_exchange_name, passive=True
+            )
         )
         self._management_exchange = await self._management_channel.declare_exchange(
             name=self._management_exchange_name, passive=True

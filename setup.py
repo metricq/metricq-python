@@ -1,15 +1,15 @@
 #!/bin/env python3
+import logging
 import os
 import re
 import subprocess
 import sys
-import logging
+from distutils.errors import DistutilsFileError
+from distutils.log import ERROR, INFO
+from distutils.spawn import find_executable
 from typing import Optional, Tuple
 
-from distutils.spawn import find_executable
-from distutils.errors import DistutilsFileError
-from distutils.log import INFO, ERROR
-from setuptools import setup, Command
+from setuptools import Command, setup
 from setuptools.command.build_py import build_py
 from setuptools.command.develop import develop
 
