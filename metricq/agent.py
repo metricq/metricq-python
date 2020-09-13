@@ -85,8 +85,7 @@ class PublishFailedError(Exception):
 
 
 class RpcRequestError(PublishFailedError):
-    """Exception raised when issuing an RPC request failed
-    """
+    """Exception raised when issuing an RPC request failed"""
 
     pass
 

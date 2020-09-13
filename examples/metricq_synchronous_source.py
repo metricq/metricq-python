@@ -34,9 +34,9 @@ import random
 import time
 
 import click
-
 import click_completion
 import click_log
+
 from metricq import SynchronousSource, get_logger
 from metricq.types import Timestamp
 
