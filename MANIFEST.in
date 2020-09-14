@@ -1,2 +1,15 @@
+recursive-include examples *.py
+recursive-include tests *.py
+recursive-include tools *.py
+
 include lib/metricq-protobuf/*.proto
+include lib/metricq-protobuf/LICENSE
+include metricq/*_pb2.py
+include metricq/_protobuf_version.py
+
 include pyproject.toml
+include *.md
+include Dockerfile
+
+exclude .git-blame-ignore-revs
+exclude .gitmodules
