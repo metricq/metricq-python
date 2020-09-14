@@ -36,3 +36,9 @@ use_parentheses = true
 line_length = 88
 skip_glob = "**/*_pb2.py"
 order_by_type = true
+
+[tool.check-manifest]
+ignore = [
+    "*_pb2.py",
+    "**/_protobuf_version.py",
+]
