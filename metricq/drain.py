@@ -28,6 +28,7 @@
 
 from .logging import get_logger
 from .sink import Sink
+import aio_pika
 
 logger = get_logger(__name__)
 
@@ -39,17 +40,28 @@ class Drain(Sink):
         self._metrics = []
 
     def add(self, metric):
-        self._metrics.append(metric)
+        if metric is str:
+            self._metrics.append(metric)
+        else:
+            for m in metric:
+                self._metrics.append(m)
 
-    async def on_connected(self):
+    async def _on_connected(self):
         assert self._metrics.count() > 0
 
         await self.unsubscribe(self._metrics)
 
         assert self._data_queue.count() > 0
 
-    async def on_data(self):
-        pass
+    async def _on_data_message(self, message: aio_pika.IncomingMessage):
+
+        if message.type() == "end":  # idk if this is correct
+            self.data_channel.channel.basic_ack(message.delivery_tag)
+            logger.debug("received end message")
+            self.rpc("sink.release", data_queue=self._data_queue)
+            return
+
+        super()._on_data_message(message)
 
 
 class SimpleDrain(Drain):
