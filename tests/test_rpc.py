@@ -27,6 +27,8 @@
 # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+import logging
+
 import pytest
 
 from metricq.rpc import RPCDispatcher, rpc_handler
@@ -86,3 +88,67 @@ class UnknownFunctionDispatcher(RPCDispatcher):
 async def test_dispatch_unknown_function():
     with pytest.raises(KeyError):
         await UnknownFunctionDispatcher().rpc_dispatch("unknown")
+
+
+class InvalidDispatcher:
+    @rpc_handler("not_async")
+    def not_async(self):
+        return ()
+
+
+class DuplicateHandlersDispatcher(RPCDispatcher):
+    def __init__(self):
+        self.logger = logging.getLogger(__name__)
+
+    @rpc_handler("duplicate_no_conflict")
+    async def no_conflict_1(self) -> None:
+        self.logger.info("no_conflict_1")
+        return None
+
+    @rpc_handler("duplicate_no_conflict")
+    async def no_conflict_2(self) -> None:
+        self.logger.info("no_conflict_2")
+        return None
+
+    @rpc_handler("duplicate_conflict")
+    async def conflict1(self):
+        return 1
+
+    @rpc_handler("duplicate_conflict")
+    async def conflict2(self):
+        return 2
+
+
+@pytest.fixture
+def duplicate_handlers_dispatcher():
+    return DuplicateHandlersDispatcher()
+
+
+@pytest.mark.asyncio
+async def test_dispatch_multiple_handlers_no_return_value(
+    caplog, duplicate_handlers_dispatcher
+):
+    """An RPCDispatcher is allowed to register multiple handlers for the same
+    function, as long as they all return None."""
+    caplog.set_level(logging.INFO)
+
+    assert (
+        await duplicate_handlers_dispatcher.rpc_dispatch("duplicate_no_conflict")
+    ) is None
+
+    # Check that both handlers ran.
+    assert "no_conflict_1" in caplog.text
+    assert "no_conflict_2" in caplog.text
+
+
+@pytest.mark.asyncio
+async def test_dispatch_no_multiple_handlers_with_return_values(
+    duplicate_handlers_dispatcher,
+):
+    """Test the negative of :func:`test_dispatch_multiple_handlers_no_return_value`.
+
+    An RPCDispatcher may not register multiple handlers for the same function if
+    at least one of them returns a non-None value.
+    """
+    with pytest.raises(TypeError):
+        await duplicate_handlers_dispatcher.rpc_dispatch("duplicate_conflict")
