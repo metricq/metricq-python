@@ -29,6 +29,7 @@
 from .logging import get_logger
 from .sink import Sink
 import aio_pika
+from .datachunk_pb2 import DataChunk
 
 logger = get_logger(__name__)
 
@@ -81,3 +82,11 @@ class SimpleDrain(Drain):
     def at(self, metric):
         return self._data[metric]
 
+    def on_data(self, id: str, chunk: DataChunk):
+        for tv in chunk:
+            self._data[id].append(tv)
+
+    def _on_connected(self):
+        super()._on_connected()
+        for m in self._metrics:
+            self._data[m] = []
