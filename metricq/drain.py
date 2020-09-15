@@ -49,16 +49,22 @@ class Drain(Sink):
     async def _on_connected(self):
         assert self._metrics.count() > 0
 
-        await self.unsubscribe(self._metrics)
-
+        response = await self.rpc(
+            "sink.unsubscribe", data_queue=self._data_queue, metrics=self._metrics
+        )
+        self._unsubscribe_complete(response)
         assert self._data_queue.count() > 0
+
+    def _unsubscribe_complete(self, response):
+        assert not self._data_queue.empty()
+        self.sink_config(response)
 
     async def _on_data_message(self, message: aio_pika.IncomingMessage):
 
         if message.type() == "end":  # idk if this is correct
             self.data_channel.channel.basic_ack(message.delivery_tag)
             logger.debug("received end message")
-            self.rpc("sink.release", data_queue=self._data_queue)
+            await self.rpc("sink.release", data_queue=self._data_queue)
             return
 
         super()._on_data_message(message)
