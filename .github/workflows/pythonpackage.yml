@@ -58,19 +58,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: distribution-packages
-        path: dist/  
-        
-  test-release:
-     needs: [release]
-     runs-on: ubuntu-latest
-     steps:
-     - name: Download distribution artifacts
-       uses: actions/download-artifact@v1
-       with:
-         name: distribution-packages
-         path: dist/
-     - name: Display structure of downloaded files
-       run: ls -R
+        path: dist/
      
   upload:
     needs: [release]
