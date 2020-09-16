@@ -59,3 +59,34 @@ $ ./examples/metricq_sink.py --server 'amqp://localhost/' --metrics 'test.py.dum
 ```
 
 and you should see new values for the metric `test.py.dummy` appear ever 2 seconds.
+
+## Development setup
+
+Clone the repository, and in a virtual environment run
+
+```sh
+$ pip install -e '.[dev]'
+```
+
+This will install all tools necessary for testing and linting.
+To test code manually, run `pytest`.
+Format code using `black` and `isort`, or lint with `flake8`.
+To make sure a source distribution (`sdist`) contains the correct files, run `check-manifest`.
+Tools are configured in `setup.cfg` respectively `pyproject.toml`.
+
+To test code in a fresh environment, run the `tox` test harness:
+
+```sh
+$ tox
+```
+
+This runs the same step as our CI does.
+If `tox` passes locally there's high chances that CI steps will pass too.
+
+We recommend to install our [pre-commit](https://pre-commit.com) hooks:
+
+```sh
+$ pre-commit install
+```
+
+This way commits that fail tests or do not comply with our code style are rejected right away.
