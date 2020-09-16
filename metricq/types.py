@@ -47,15 +47,33 @@ class Timedelta:
 
     @staticmethod
     def from_string(duration_str: str):
-        m = re.fullmatch(r"\s*([+-]?\d*[.,]?\d+)\s*([^\d]*)\s*", duration_str)
+        m = re.fullmatch(
+            r"""
+            \s*
+                (?P<value_integral>[+-]?\d*)
+                (?P<value_fractional>([.,]\d*)?)
+            \s*
+                (?P<unit>[^\d]*)
+            \s*
+            """,
+            duration_str,
+            flags=re.X,
+        )
         if not m:
             raise ValueError(
                 'invalid duration string {}, not of form "number unit"'.format(
                     duration_str
                 )
             )
-        value = float(m.group(1))
-        unit = m.group(2)
+
+        groups = m.groupdict()
+        value = int(groups["value_integral"])
+
+        if groups["value_fractional"]:
+            value += float(groups["value_fractional"].replace(",", "."))
+
+        unit = groups["unit"]
+
         if unit in ("", "s", "second", "seconds"):
             return Timedelta(int(value * 1_000_000_000))
         if unit in ("ms", "millisecond", "milliseconds"):

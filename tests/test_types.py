@@ -120,3 +120,19 @@ def powers_of_ten():
 def test_timedelta_precise_string_roundtrip(values):
     for t in values:
         assert Timedelta.from_string(t.precise_string) == t
+
+
+@pytest.mark.parametrize(
+    "input, expected_ns",
+    [
+        ("0", 0),
+        ("1ns", 1),
+        ("1.3456s", 1_345_600_000),
+        ("1.5ms", 1_500_000),
+        ("60", 60 * 1_000_000_000),
+        ("1min", 60 * 1_000_000_000),
+        ("89384152596986340ns", 89384152596986340),
+    ],
+)
+def test_timedelta_from_string(input, expected_ns):
+    assert Timedelta.from_string(input) == Timedelta(expected_ns)
