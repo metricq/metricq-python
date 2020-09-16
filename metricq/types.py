@@ -159,6 +159,9 @@ class Timedelta:
     def __str__(self):
         return "{}s".format(self.s)
 
+    def __repr__(self):
+        return f"Timedelta({self.ns})"
+
     def __eq__(self, other: Union["Timedelta", datetime.timedelta]):
         if isinstance(other, datetime.timedelta):
             return self.timedelta == other
@@ -266,7 +269,7 @@ class Timestamp:
         return "[{}] {}".format(self.posix_ns, str(self.datetime.astimezone()))
 
     def __repr__(self):
-        return str(self.posix_ns)
+        return f"Timestamp({self.posix_ns})"
 
 
 class TimeValue(NamedTuple):
