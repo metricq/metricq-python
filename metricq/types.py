@@ -31,7 +31,7 @@
 import datetime
 import re
 from functools import total_ordering
-from numbers import Number
+from numbers import Real
 from typing import NamedTuple, Union
 
 from . import history_pb2
@@ -91,15 +91,15 @@ class Timedelta:
         raise ValueError("invalid duration unit {}".format(unit))
 
     @staticmethod
-    def from_us(value: Number):
+    def from_us(value: Real):
         return Timedelta(int(value * 1e3))
 
     @staticmethod
-    def from_ms(value: Number):
+    def from_ms(value: Real):
         return Timedelta(int(value * 1e6))
 
     @staticmethod
-    def from_s(value: Number):
+    def from_s(value: Real):
         return Timedelta(int(value * 1e9))
 
     def __init__(self, value: int):
