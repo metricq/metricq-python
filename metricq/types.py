@@ -182,10 +182,12 @@ class Timedelta:
     def __repr__(self):
         return f"Timedelta({self.ns})"
 
-    def __eq__(self, other: Union["Timedelta", datetime.timedelta]):
+    def __eq__(self, other: object):
         if isinstance(other, datetime.timedelta):
             return self.timedelta == other
-        return self._value == other._value
+        if isinstance(other, Timedelta):
+            return self._value == other._value
+        return NotImplemented
 
     def __lt__(self, other: Union["Timedelta", datetime.timedelta]):
         if isinstance(other, datetime.timedelta):
@@ -281,7 +283,9 @@ class Timestamp:
     def __lt__(self, other: "Timestamp"):
         return self._value < other._value
 
-    def __eq__(self, other: "Timestamp"):
+    def __eq__(self, other: object):
+        if not isinstance(other, Timestamp):
+            return NotImplemented
         return self._value == other._value
 
     def __str__(self):
