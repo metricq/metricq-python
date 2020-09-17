@@ -29,7 +29,7 @@
 import asyncio
 import uuid
 from enum import Enum
-from typing import Optional
+from typing import NewType, Optional, cast
 
 import aio_pika
 
@@ -41,12 +41,18 @@ from .types import TimeAggregate, Timedelta, Timestamp, TimeValue
 
 logger = get_logger(__name__)
 
+HistoryRequestTypeValue = NewType("HistoryRequestTypeValue", int)
+
 
 class HistoryRequestType:
-    AGGREGATE_TIMELINE = history_pb2.HistoryRequest.AGGREGATE_TIMELINE
-    AGGREGATE = history_pb2.HistoryRequest.AGGREGATE
-    LAST_VALUE = history_pb2.HistoryRequest.LAST_VALUE
-    FLEX_TIMELINE = history_pb2.HistoryRequest.FLEX_TIMELINE
+    AGGREGATE_TIMELINE = cast(
+        HistoryRequestTypeValue, history_pb2.HistoryRequest.AGGREGATE_TIMELINE
+    )
+    AGGREGATE = cast(HistoryRequestTypeValue, history_pb2.HistoryRequest.AGGREGATE)
+    LAST_VALUE = cast(HistoryRequestTypeValue, history_pb2.HistoryRequest.LAST_VALUE)
+    FLEX_TIMELINE = cast(
+        HistoryRequestTypeValue, history_pb2.HistoryRequest.FLEX_TIMELINE
+    )
 
 
 class HistoryResponseType(Enum):
@@ -243,7 +249,7 @@ class HistoryClient(Client):
         start_time: Optional[Timestamp],
         end_time: Optional[Timestamp],
         interval_max: Optional[Timedelta],
-        request_type: HistoryRequestType = HistoryRequestType.AGGREGATE_TIMELINE,
+        request_type: HistoryRequestTypeValue = HistoryRequestType.AGGREGATE_TIMELINE,
         timeout=60,
     ):
         if not metric:
@@ -267,7 +273,9 @@ class HistoryClient(Client):
         if interval_max is not None:
             request.interval_max = interval_max.ns
         if request_type is not None:
-            request.type = request_type
+            request.type = cast(
+                history_pb2.HistoryRequest.RequestTypeValue, request_type
+            )
 
         msg = aio_pika.Message(
             body=request.SerializeToString(),
