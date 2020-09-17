@@ -34,62 +34,25 @@ from .datachunk_pb2 import DataChunk
 logger = get_logger(__name__)
 
 
-class DataError(Exception):
-    pass
-
-
-class Drain(Sink):
-    def __init__(self, queue, *args, **kwargs):
-        super().__init__(*args, True, **kwargs)
-        if len(queue) == 0:
-            raise DataError("Queue must not be empty")
-        self._metrics_queue = queue
+class subscriber(Sink):
+    def __init__(self, timeout, *args, add_uuid=True, **kwargs):
+        super().__init__(*args, add_uuid, **kwargs)
         self._metrics = []
+        self._queue = ""
+        self._timeout = timeout
 
-    def add(self, metric):
+    def add(metric):
         if metric is str:
             self._metrics.append(metric)
         else:
             for m in metric:
                 self._metrics.append(m)
 
-    async def _on_data_connection_connected(self):  # keine Refs!!!!
-        assert len(self._metrics) > 0
-
-        response = await self.rpc(
-            "sink.unsubscribe", data_queue=self._metrics_queue, metrics=self._metrics
-        )
-        assert len(self._metrics_queue) > 0
-        self.sink_config(response)
-
-    async def _on_data_message(
-        self, message: aio_pika.IncomingMessage
-    ):  # keine Refs!!!!
-
-        if message.type == "end":
-            with message.process():
-                logger.debug("received end message")
-                await self.rpc("sink.release", dataQueue=self._metrics_queue)
-                return
-
-        super()._on_metrics_message(message)
-
-
-class SimpleDrain(Drain):
-    def __init__(self, queue, *args, **kwargs):
-        super().__init__(queue, *args, **kwargs)
-        self._metrics = {}
-
-    def get(self):
-        return self._metrics
-
-    def at(self, metric):
-        return self._metrics[metric]
-
-    def _on_metrics(self, id: str, tv: tuple):
-        self._metrics[id].append(tv)
-
     def _on_data_connection_connected(self):
-        super()._on_data_connection_connected()
-        for m in self._metrics:
-            self._metrics[m] = []
+        self._queue = self.rpc(
+            "sink.subscribe", metrics=self._metrics, expires=self._timeout
+        )["dataQueue"]
+
+    @property
+    def queue(self):
+        return self._queue
