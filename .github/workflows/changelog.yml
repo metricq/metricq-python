@@ -1,0 +1,25 @@
+name: Generate changelog
+
+on:
+  push:
+    branches: [master, feature-changelog]
+  pull_request:
+    branches: [master]
+    types: [closed]
+  issues:
+    types: [closed, edited]
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate changelog
+        uses: charmixer/auto-changelog-action@v1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload distribution artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: changelog
+          path: CHANGELOG.md
