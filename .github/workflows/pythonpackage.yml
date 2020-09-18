@@ -3,8 +3,7 @@ name: Python package
 on: [push]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -35,8 +34,8 @@ jobs:
       run: |
         isort --diff --check .
 
-  release:
-    needs: [build]
+  build:
+    needs: [test]
     runs-on: ubuntu-latest
 
     steps:
@@ -58,15 +57,25 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: distribution-packages
+        path: dist/
+     
+  release:
+    needs: [build]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
+    
+    steps:
+    - name: Download distribution artifacts
+      uses: actions/download-artifact@v1
+      with:
+        name: distribution-packages
         path: dist/  
     - name: Publish a Python distribution to PyPI
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
       uses: pypa/gh-action-pypi-publish@master
       with:
         user: __token__
         password: ${{ secrets.pypi_password }}
     - name: Reformat version number
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
       id: reformat_release
       uses: frabert/replace-string-action@v1.1
       with:
@@ -74,7 +83,6 @@ jobs:
         string: ${{ github.ref }}
         replace-with: '$1'
     - name: Create Release
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
       id: create_release
       uses: actions/create-release@v1
       env:
