@@ -1,21 +1,33 @@
 # Changelog
 
+## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v1.2.0...HEAD)
+
+**Closed issues:**
+
+- Precise Pretty Printing of durations [\#27](https://github.com/metricq/metricq-python/issues/27)
+
+**Merged pull requests:**
+
+- Issue 27 - Precise and Pretty Timedelta [\#28](https://github.com/metricq/metricq-python/pull/28) ([Daddelhai](https://github.com/Daddelhai))
+
 ## [v1.2.0](https://github.com/metricq/metricq-python/tree/v1.2.0) (2020-08-03)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v1.1.4...v1.2.0)
 
 **Implemented enhancements:**
 
-- Add metricq-spy tool, which allows to search for historic metrics
 - Add "hostname" to discover response [\#19](https://github.com/metricq/metricq-python/issues/19)
+- Add metricq-spy tool, which allows to search for historic metrics [\#39](https://github.com/metricq/metricq-python/issues/39)
 - discover RPC: rename "version" field to "metricqVersion" [\#15](https://github.com/metricq/metricq-python/issues/15)
 - Add field "hostname" to discover response [\#20](https://github.com/metricq/metricq-python/pull/20) ([phijor](https://github.com/phijor))
 
 **Fixed bugs:**
 
+- Python agents fail to anwser discover rpc [\#8](https://github.com/metricq/metricq-python/issues/8)
 - Add setuptools as runtime dependecies [\#14](https://github.com/metricq/metricq-python/issues/14)
 - Protobuf version conflict [\#10](https://github.com/metricq/metricq-python/issues/10)
-- Python agents fail to anwser discover rpc [\#8](https://github.com/metricq/metricq-python/issues/8)
 
 **Merged pull requests:**
 
