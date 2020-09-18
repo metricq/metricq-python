@@ -3,8 +3,7 @@ name: Python package
 on: [push]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -35,8 +34,8 @@ jobs:
       run: |
         isort --diff --check .
 
-  release:
-    needs: [build]
+  build:
+    needs: [test]
     runs-on: ubuntu-latest
 
     steps:
@@ -60,8 +59,8 @@ jobs:
         name: distribution-packages
         path: dist/
      
-  upload:
-    needs: [release]
+  release:
+    needs: [build]
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
     
