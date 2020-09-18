@@ -19,13 +19,13 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Commit files
-          env:
-            CI_USER: $GITHUB_ACTOR
-            CI_EMAIL: "action@github.com"
-          run: |
-            git config --local user.email "$CI_EMAIL"
-            git config --local user.name "$CI_USER"
-            git add CHANGELOG.md && git commit -m 'Updated CHANGELOG.md' && echo ::set-env name=push::1 || echo "No changes to CHANGELOG.md"
+        env:
+          CI_USER: $GITHUB_ACTOR
+          CI_EMAIL: "action@github.com"
+        run: |
+          git config --local user.email "$CI_EMAIL"
+          git config --local user.name "$CI_USER"
+          git add CHANGELOG.md && git commit -m 'Updated CHANGELOG.md' && echo ::set-env name=push::1 || echo "No changes to CHANGELOG.md"
 
       - name: Push changes
         if: env.push == 1
