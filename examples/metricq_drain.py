@@ -1,4 +1,5 @@
-# Copyright (c) 2020, ZIH, Technische Universitaet Dresden, Federal Republic of Germany
+#!/usr/bin/env python3
+# Copyright (c) 2019, ZIH, Technische Universitaet Dresden, Federal Republic of Germany
 #
 # All rights reserved.
 #
@@ -26,54 +27,48 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from typing import Optional, Sequence, Union
-from .logging import get_logger
-from .sink import Sink
-import aio_pika
-from .datachunk_pb2 import DataChunk
+import logging
 
-logger = get_logger(__name__)
+import click
+
+import click_completion
+import click_log
+import metricq
+from metricq.subscriber import Subscriber
+from metricq.drain import SimpleDrain
+from metricq.logging import get_logger
+
+logger = get_logger()
+
+click_log.basic_config(logger)
+logger.setLevel("INFO")
+logger.handlers[0].formatter = logging.Formatter(
+    fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
+)
+
+click_completion.init()
 
 
-class Subscriber(Sink):
-    def __init__(
-        self,
-        *args,
-        add_uuid=True,
-        metrics=[],
-        connection_timeout: Union[int, float] = 60,
-        **kwargs,
-    ):
-        super().__init__(
-            *args, add_uuid, connection_timeout=connection_timeout, **kwargs
-        )
-        self._metrics = metrics
-        self._queue = []
-        self._timeout = connection_timeout
+@click.command()
+@click.option("--server", default="amqp://localhost/")
+@click.option("--token", default="sink-py-dummy")
+@click.option("-m", "--metrics", multiple=True, required=True)
+@click_log.simple_verbosity_option(logger)
+def source(server, token, metrics):
+    sub = Subscriber(metrics=metrics, management_url=server, connection_timeout=60)
+    sub.run()
 
-    def add(self, metric):
-        if metric is str:
-            self._metrics.append(metric)
-        else:
-            for m in metric:
-                self._metrics.append(m)
+    drain = SimpleDrain(
+        queue=sub.queue,
+        metrics=metrics,
+        token=token,
+        management_url=server,
+        connection_timeout=60,
+    )
+    drain.run()
+    test = drain.get()
+    print(test)
 
-    async def connect(self, **kwargs):
-        await super().connect()
 
-        if self._data_queue is not None:
-            kwargs["dataQueue"] = self._data_queue.name
-        response = await self.rpc("sink.subscribe", metrics=self._metrics, **kwargs)
-
-        self._subscribed_metrics.update(self._metrics)
-        # Save the subscription RPC args in case we need to resubscribe (after a reconnect).
-        self._subscribe_args = kwargs
-
-        return response["dataQueue"]
-
-    @property
-    def queue(self):
-        return self._queue
-
-    async def on_data(self, id, time, value):
-        return
+if __name__ == "__main__":
+    source()

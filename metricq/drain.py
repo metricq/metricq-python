@@ -26,6 +26,7 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from .types import Timestamp
 from .logging import get_logger
 from .sink import Sink
 import aio_pika
@@ -39,12 +40,12 @@ class DataError(Exception):
 
 
 class Drain(Sink):
-    def __init__(self, queue, *args, **kwargs):
-        super().__init__(*args, True, **kwargs)
+    def __init__(self, *args, queue, metrics=[], **kwargs):
+        super().__init__(*args, add_uuid=True, **kwargs)
         if len(queue) == 0:
             raise DataError("Queue must not be empty")
         self._metrics_queue = queue
-        self._metrics = []
+        self._metrics = metrics
 
     def add(self, metric):
         if metric is str:
@@ -53,7 +54,8 @@ class Drain(Sink):
             for m in metric:
                 self._metrics.append(m)
 
-    async def _on_data_connection_connected(self):  # keine Refs!!!!
+    async def connect(self):
+        await super().connect()
         assert len(self._metrics) > 0
 
         response = await self.rpc(
@@ -62,9 +64,9 @@ class Drain(Sink):
         assert len(self._metrics_queue) > 0
         self.sink_config(response)
 
-    async def _on_data_message(
+    async def _on_metrics_message(
         self, message: aio_pika.IncomingMessage
-    ):  # keine Refs!!!!
+    ):  # keine Refs gefunden!!!!
 
         if message.type == "end":
             with message.process():
@@ -72,24 +74,24 @@ class Drain(Sink):
                 await self.rpc("sink.release", dataQueue=self._metrics_queue)
                 return
 
-        super()._on_metrics_message(message)
+        await super()._on_metrics_message(message)
 
 
 class SimpleDrain(Drain):
-    def __init__(self, queue, *args, **kwargs):
-        super().__init__(queue, *args, **kwargs)
-        self._metrics = {}
+    def __init__(self, *args, queue, **kwargs):
+        super().__init__(*args, queue=queue, **kwargs)
+        self._metrics_data = {}
 
     def get(self):
-        return self._metrics
+        return self._metrics_data
 
     def at(self, metric):
-        return self._metrics[metric]
+        return self._metrics_data[metric]
 
-    def _on_metrics(self, id: str, tv: tuple):
-        self._metrics[id].append(tv)
+    async def on_data(self, metric: str, time: Timestamp, value):
+        self._metrics_data[metric].append((time, value))
 
-    def _on_data_connection_connected(self):
-        super()._on_data_connection_connected()
+    async def connect(self):
+        await super().connect()
         for m in self._metrics:
-            self._metrics[m] = []
+            self._metrics_data[m] = []
