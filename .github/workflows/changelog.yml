@@ -1,8 +1,6 @@
 name: Generate changelog
 
 on:
-  push:
-    branches: [master, feature-changelog]
   pull_request:
     branches: [master]
     types: [closed]
@@ -33,4 +31,4 @@ jobs:
           CI_USER: $GITHUB_ACTOR
           CI_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git push "https://$CI_USER:$CI_TOKEN@github.com/$GITHUB_REPOSITORY.git" HEAD:feature-changelog
+          git push "https://$CI_USER:$CI_TOKEN@github.com/$GITHUB_REPOSITORY.git" HEAD:master
