@@ -3,9 +3,13 @@ name: Generate changelog
 on:
   pull_request:
     branches: [master]
-    types: [closed]
+    types: [closed, edited]
+    
   issues:
     types: [closed, edited]
+    
+  release:
+    types: [published]
 
 jobs:
   changelog:
