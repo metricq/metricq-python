@@ -5,3 +5,4 @@ How to use this library
     :maxdepth: 2
 
     sink
+    source

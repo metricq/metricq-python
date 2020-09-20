@@ -108,7 +108,7 @@ If you are interested in the values of metric ``test.py.dummy``, construct and r
         )
         sink.run()
 
-.. TODO: reference source-how-to once done
+
 This is it, assuming there is a :term:`Source` on the network that provides data points for ``test.py.dummy``.
 Running this script, you should now see something like this appearing on standard output::
 
@@ -120,6 +120,7 @@ Running this script, you should now see something like this appearing on standar
     test.py.dummy: [1588509324267969000] 2020-05-03 14:35:24.267969+02:00, 0.9975132302199418
     ...
 
+See :ref:`source-how-to` on how to set up such a source.
 
 .. _the end of this page:
 
