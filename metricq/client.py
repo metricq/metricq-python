@@ -69,7 +69,8 @@ class Client(Agent):
                 client_name,
             )
 
-            client_version = getmodule(client_cls).__version__
+            # We can ignore the undefined attribute error here as we check for exceptions anyway
+            client_version = getmodule(client_cls).__version__  # type: ignore[union-attr]
 
             logger.debug("Client {} has version {!r}", client_name, client_version)
 
