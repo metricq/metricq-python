@@ -38,7 +38,7 @@ import time
 import traceback
 import uuid
 from contextlib import suppress
-from typing import Awaitable, Optional, Union
+from typing import Callable, Dict, Optional, Tuple, Union
 
 import aio_pika
 from aio_pika.exceptions import ChannelInvalidStateError
@@ -110,7 +110,7 @@ class Agent(RPCDispatcher):
 
         self._event_loop = event_loop
         self._stop_in_progress = False
-        self._stop_future: Optional[Awaitable[None]] = None
+        self._stop_future: Optional[asyncio.Future[None]] = None
         self._cancel_on_exception = False
 
         self._management_url = management_url
@@ -127,14 +127,14 @@ class Agent(RPCDispatcher):
             timeout=connection_timeout,
             connection_name="management connection",
         )
-        self._management_channel = None
+        self._management_channel: Optional[aio_pika.Channel] = None
 
-        self.management_rpc_queue = None
+        self.management_rpc_queue: Optional[aio_pika.Queue] = None
 
         self._management_broadcast_exchange = None
         self._management_exchange = None
 
-        self._rpc_response_handlers = dict()
+        self._rpc_response_handlers: Dict[str, Tuple[Callable, bool]] = dict()
         logger.info(
             "Initialized Agent `{}` (running version `metricq=={}`)",
             type(self).__qualname__,
@@ -315,6 +315,8 @@ class Agent(RPCDispatcher):
         function = kwargs.get("function")
         if function is None:
             raise KeyError('all RPCs must contain a "function" argument')
+
+        assert self.management_rpc_queue is not None
 
         time_begin = timer()
 
@@ -501,11 +503,14 @@ class Agent(RPCDispatcher):
     def _make_correlation_id(self):
         return "metricq-rpc-py-{}-{}".format(self.token, uuid.uuid4().hex)
 
-    async def _on_management_message(self, message: aio_pika.Message):
+    async def _on_management_message(self, message: aio_pika.IncomingMessage):
         """
         :param message: This is either an RPC or an RPC response
         """
-        with message.process(requeue=True):
+        assert self._management_channel is not None
+        assert self._management_channel.default_exchange is not None
+
+        async with message.process(requeue=True):
             time_begin = timer()
             body = message.body.decode()
             from_token = message.app_id

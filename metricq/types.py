@@ -30,9 +30,11 @@
 
 import datetime
 import re
+import warnings
+from dataclasses import dataclass
 from functools import total_ordering
-from numbers import Number
-from typing import NamedTuple, Union
+from numbers import Real
+from typing import Union
 
 from . import history_pb2
 
@@ -67,7 +69,7 @@ class Timedelta:
             )
 
         groups = m.groupdict()
-        value = int(groups["value_integral"])
+        value: float = int(groups["value_integral"])
 
         if groups["value_fractional"]:
             value += float(groups["value_fractional"].replace(",", "."))
@@ -91,15 +93,15 @@ class Timedelta:
         raise ValueError("invalid duration unit {}".format(unit))
 
     @staticmethod
-    def from_us(value: Number):
+    def from_us(value: Real):
         return Timedelta(int(value * 1e3))
 
     @staticmethod
-    def from_ms(value: Number):
+    def from_ms(value: Real):
         return Timedelta(int(value * 1e6))
 
     @staticmethod
-    def from_s(value: Number):
+    def from_s(value: Real):
         return Timedelta(int(value * 1e9))
 
     def __init__(self, value: int):
@@ -180,10 +182,12 @@ class Timedelta:
     def __repr__(self):
         return f"Timedelta({self.ns})"
 
-    def __eq__(self, other: Union["Timedelta", datetime.timedelta]):
+    def __eq__(self, other: object):
         if isinstance(other, datetime.timedelta):
             return self.timedelta == other
-        return self._value == other._value
+        if isinstance(other, Timedelta):
+            return self._value == other._value
+        return NotImplemented
 
     def __lt__(self, other: Union["Timedelta", datetime.timedelta]):
         if isinstance(other, datetime.timedelta):
@@ -279,7 +283,9 @@ class Timestamp:
     def __lt__(self, other: "Timestamp"):
         return self._value < other._value
 
-    def __eq__(self, other: "Timestamp"):
+    def __eq__(self, other: object):
+        if not isinstance(other, Timestamp):
+            return NotImplemented
         return self._value == other._value
 
     def __str__(self):
@@ -290,12 +296,29 @@ class Timestamp:
         return f"Timestamp({self.posix_ns})"
 
 
-class TimeValue(NamedTuple):
+@dataclass(frozen=True)
+class TimeValue:
+    __slots__ = ("timestamp", "value")
+
     timestamp: Timestamp
     value: float
 
+    def __iter__(self):
+        return iter((self.timestamp, self.value))
 
-class TimeAggregate(NamedTuple):
+
+@dataclass(frozen=True)
+class TimeAggregate:
+    __slots__ = (
+        "timestamp",
+        "minimum",
+        "maximum",
+        "sum",
+        "count",
+        "integral",
+        "active_time",
+    )
+
     timestamp: Timestamp
     minimum: float
     maximum: float
@@ -305,6 +328,26 @@ class TimeAggregate(NamedTuple):
     integral: float
     # TODO maybe convert to Timedelta
     active_time: int
+
+    def __iter__(self):
+        warnings.simplefilter("always", category=DeprecationWarning)  # turn off filter
+        warnings.warn(
+            "Unpacking TimeAggregate is deprecated!",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+        warnings.simplefilter("default", category=DeprecationWarning)
+        return iter(
+            (
+                self.timestamp,
+                self.minimum,
+                self.maximum,
+                self.sum,
+                self.count,
+                self.integral,
+                self.active_time,
+            )
+        )
 
     @staticmethod
     def from_proto(timestamp: Timestamp, proto: history_pb2.HistoryResponse.Aggregate):

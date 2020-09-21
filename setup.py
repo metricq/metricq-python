@@ -147,6 +147,11 @@ class BuildProtobuf(Command):
             self.error(f"no protobuf files found in {self.proto_dir}")
             raise DistutilsFileError(f"No protobuf files found in {self.proto_dir}")
 
+        try:
+            import mypy_protobuf
+        except ImportError:
+            mypy_protobuf = None
+
         protobuf_file_generated = False
 
         for proto_file in proto_files:
@@ -161,14 +166,17 @@ class BuildProtobuf(Command):
                 or os.path.getmtime(source) > os.path.getmtime(out_file)
             ):
                 self.info("compiling {} -> {}".format(source, out_file))
-                subprocess.check_call(
-                    [
-                        self.protoc,
-                        "--proto_path=" + self.proto_dir,
-                        "--python_out=" + self.out_dir,
-                        os.path.join(self.proto_dir, proto_file),
-                    ]
-                )
+
+                protoc_call_args = [
+                    self.protoc,
+                    "--proto_path=" + self.proto_dir,
+                    "--python_out=" + self.out_dir,
+                ]
+                if mypy_protobuf:
+                    protoc_call_args.append("--mypy_out=" + self.out_dir)
+
+                protoc_call_args.append(os.path.join(self.proto_dir, proto_file))
+                subprocess.check_call(protoc_call_args)
                 protobuf_file_generated = True
 
         protobuf_version_file = os.path.join(self.out_dir, "_protobuf_version.py")
