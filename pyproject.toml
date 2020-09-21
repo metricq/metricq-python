@@ -38,6 +38,9 @@ skip_glob = [
     "**/*_pb2.py",
     "**/*_pb2.pyi",
 ]
+skip = [
+    ".tox",
+]
 order_by_type = true
 
 [tool.check-manifest]
