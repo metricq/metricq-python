@@ -18,6 +18,7 @@
 - Split release job [\#37](https://github.com/metricq/metricq-python/pull/37) ([kinnarr](https://github.com/kinnarr))
 - Test and lint: improved CI [\#36](https://github.com/metricq/metricq-python/pull/36) ([phijor](https://github.com/phijor))
 - Issue 27 - Precise and Pretty Timedelta [\#28](https://github.com/metricq/metricq-python/pull/28) ([Daddelhai](https://github.com/Daddelhai))
+- Add mypy check for github workflow [\#3](https://github.com/metricq/metricq-python/pull/3) ([bmario](https://github.com/bmario))
 
 ## [v1.2.0](https://github.com/metricq/metricq-python/tree/v1.2.0) (2020-08-03)
 
