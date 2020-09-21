@@ -20,7 +20,7 @@ repos:
   hooks:
     - id: black
 - repo: https://github.com/mgedmin/check-manifest
-  rev: "0.42"
+  rev: "0.43"
   hooks:
     - id: check-manifest
 - repo: https://github.com/pre-commit/mirrors-mypy
