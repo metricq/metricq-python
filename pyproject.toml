@@ -34,7 +34,10 @@ include_trailing_comma = true
 force_grid_wrap = 0
 use_parentheses = true
 line_length = 88
-skip_glob = "**/*_pb2.pyi?"
+skip_glob = [
+    "**/*_pb2.py",
+    "**/*_pb2.pyi",
+]
 order_by_type = true
 
 [tool.check-manifest]
