@@ -6,10 +6,17 @@
 
 **Closed issues:**
 
+- Split release job [\#34](https://github.com/metricq/metricq-python/issues/34)
+- Trigger code checks on pull requests [\#32](https://github.com/metricq/metricq-python/issues/32)
+- flake8 configuration file [\#31](https://github.com/metricq/metricq-python/issues/31)
+- Add isort to CI [\#30](https://github.com/metricq/metricq-python/issues/30)
 - Precise Pretty Printing of durations [\#27](https://github.com/metricq/metricq-python/issues/27)
 
 **Merged pull requests:**
 
+- Generate changelog for closed PRs and issues [\#40](https://github.com/metricq/metricq-python/pull/40) ([kinnarr](https://github.com/kinnarr))
+- Split release job [\#37](https://github.com/metricq/metricq-python/pull/37) ([kinnarr](https://github.com/kinnarr))
+- Test and lint: improved CI [\#36](https://github.com/metricq/metricq-python/pull/36) ([phijor](https://github.com/phijor))
 - Issue 27 - Precise and Pretty Timedelta [\#28](https://github.com/metricq/metricq-python/pull/28) ([Daddelhai](https://github.com/Daddelhai))
 
 ## [v1.2.0](https://github.com/metricq/metricq-python/tree/v1.2.0) (2020-08-03)
