@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v1.2.0...HEAD)
 
+**Implemented enhancements:**
+
+- Include source version in discover response [\#24](https://github.com/metricq/metricq-python/issues/24)
+
 **Closed issues:**
 
 - Split release job [\#34](https://github.com/metricq/metricq-python/issues/34)
@@ -17,6 +21,7 @@
 - Generate changelog for closed PRs and issues [\#40](https://github.com/metricq/metricq-python/pull/40) ([kinnarr](https://github.com/kinnarr))
 - Split release job [\#37](https://github.com/metricq/metricq-python/pull/37) ([kinnarr](https://github.com/kinnarr))
 - Test and lint: improved CI [\#36](https://github.com/metricq/metricq-python/pull/36) ([phijor](https://github.com/phijor))
+- Add client version to discover response [\#29](https://github.com/metricq/metricq-python/pull/29) ([phijor](https://github.com/phijor))
 - Issue 27 - Precise and Pretty Timedelta [\#28](https://github.com/metricq/metricq-python/pull/28) ([Daddelhai](https://github.com/Daddelhai))
 - Add mypy check for github workflow [\#3](https://github.com/metricq/metricq-python/pull/3) ([bmario](https://github.com/bmario))
 
