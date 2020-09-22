@@ -6,7 +6,9 @@
 
 **Implemented enhancements:**
 
+- Automate changelog generation via workflow [\#38](https://github.com/metricq/metricq-python/issues/38)
 - Include source version in discover response [\#24](https://github.com/metricq/metricq-python/issues/24)
+- Add changelog to GitHub Release [\#41](https://github.com/metricq/metricq-python/pull/41) ([kinnarr](https://github.com/kinnarr))
 
 **Closed issues:**
 
