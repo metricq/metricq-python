@@ -90,6 +90,18 @@ jobs:
         pattern: 'refs\/tags\/v([0-9.]+)'
         string: ${{ github.ref }}
         replace-with: '$1'
+    - name: Generate release changelog
+      uses: charmixer/auto-changelog-action@v1.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        since_tag: v${{ steps.reformat_release.outputs.replaced }}
+        base: "none.md" # ignore the HISTORY.md file
+        output: release-changelog.md
+    - name: Upload release changelog artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: release-changelog
+        path: release-changelog.md
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -100,3 +112,4 @@ jobs:
         release_name: Python Release ${{ steps.reformat_release.outputs.replaced }}
         draft: false
         prerelease: false
+        body_path: release-changelog.md
