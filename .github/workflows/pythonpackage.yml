@@ -39,7 +39,7 @@ jobs:
       uses: kolonialno/mypy-action@v1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        max-errors: 1
+        max-errors: 0
         paths: metricq
 
   build:
