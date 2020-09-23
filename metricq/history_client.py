@@ -273,9 +273,7 @@ class HistoryClient(Client):
         if interval_max is not None:
             request.interval_max = interval_max.ns
         if request_type is not None:
-            request.type = cast(
-                history_pb2.HistoryRequest.RequestTypeValue, request_type
-            )
+            request.type = cast(history_pb2.HistoryRequest.RequestType, request_type)
 
         msg = aio_pika.Message(
             body=request.SerializeToString(),
