@@ -6,7 +6,7 @@ on:
     types: [closed, edited]
     
   issues:
-    types: [closed, edited]
+    types: [edited]
 
 jobs:
   changelog:
