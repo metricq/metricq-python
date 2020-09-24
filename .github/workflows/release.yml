@@ -47,3 +47,13 @@ jobs:
         git tag 'v${{ github.event.inputs.version }}'
         echo "Would push to ${{ github.ref }}"
       #git push --tags "https://$CI_USER:$CI_TOKEN@github.com/$GITHUB_REPOSITORY.git" HEAD:${{ github.ref }}
+    - uses: actions/github-script@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          github.actions.createWorkflowDispatch({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            workflow_id: "pythonpackage.yml",
+            ref: "${{ github.ref }}",
+          })
