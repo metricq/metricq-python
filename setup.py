@@ -9,6 +9,7 @@ from distutils.log import ERROR, INFO
 from distutils.spawn import find_executable
 from typing import Optional, Tuple
 
+import mypy_protobuf
 from setuptools import Command, setup
 from setuptools.command.build_py import build_py
 from setuptools.command.develop import develop
@@ -147,25 +148,26 @@ class BuildProtobuf(Command):
             self.error(f"no protobuf files found in {self.proto_dir}")
             raise DistutilsFileError(f"No protobuf files found in {self.proto_dir}")
 
-        try:
-            import mypy_protobuf
-        except ImportError:
-            mypy_protobuf = None
-
         protobuf_file_generated = False
 
         for proto_file in proto_files:
             source = os.path.join(self.proto_dir, proto_file)
-            out_file = os.path.join(
-                self.out_dir, proto_file.replace(".proto", "_pb2.py")
-            )
+            out_files = [
+                os.path.join(self.out_dir, proto_file.replace(".proto", "_pb2.py")),
+                os.path.join(self.out_dir, proto_file.replace(".proto", "_pb2.pyi")),
+            ]
 
             if (
                 self.force
-                or not os.path.exists(out_file)
-                or os.path.getmtime(source) > os.path.getmtime(out_file)
+                or any([not os.path.exists(out_file) for out_file in out_files])
+                or any(
+                    [
+                        os.path.getmtime(source) > os.path.getmtime(out_file)
+                        for out_file in out_files
+                    ]
+                )
             ):
-                self.info("compiling {} -> {}".format(source, out_file))
+                self.info("compiling {} -> {}".format(source, out_files))
 
                 protoc_call_args = [
                     self.protoc,
@@ -236,4 +238,5 @@ setup(
         "build_py": ProtoBuildPy,
         "develop": ProtoDevelop,
     },
+    include_package_data=True,
 )

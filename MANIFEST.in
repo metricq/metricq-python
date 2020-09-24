@@ -5,6 +5,7 @@ recursive-include tools *.py
 include lib/metricq-protobuf/*.proto
 include lib/metricq-protobuf/LICENSE
 include metricq/*_pb2.py
+include metricq/*_pb2.pyi
 include metricq/_protobuf_version.py
 
 include pyproject.toml
