@@ -52,13 +52,9 @@ jobs:
       run: |
         echo "Would push to ${{ github.ref }}"
       #git push --tags "https://$CI_USER:$CI_TOKEN@github.com/$GITHUB_REPOSITORY.git" HEAD:${{ github.ref }}
-    - uses: actions/github-script@v3
+    - name: Invoke test, build and release workflow
+      uses: benc-uk/workflow-dispatch@v1
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          github.actions.createWorkflowDispatch({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            workflow_id: "pythonpackage.yml",
-            ref: "${{ github.ref }}",
-          })
+        workflow: Python package
+        token: ${{ secrets.PERSONAL_TOKEN }}
+        ref: ${{ github.ref }
