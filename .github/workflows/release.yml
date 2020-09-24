@@ -57,4 +57,4 @@ jobs:
       with:
         workflow: Python package
         token: ${{ secrets.PERSONAL_TOKEN }}
-        ref: ${{ github.ref }
+        ref: ${{ github.ref }}
