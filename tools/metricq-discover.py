@@ -83,10 +83,12 @@ class DiscoverResponse:
         starting_time: Optional[str] = None,
         uptime: Optional[int] = None,
         metricq_version: Optional[str] = None,
+        client_version: Optional[str] = None,
         hostname: Optional[str] = None,
     ):
         self.alive = alive
         self.metricq_version = metricq_version
+        self.client_version = client_version
         self.hostname = hostname
 
         self.current_time = self._parse_datetime(current_time)
@@ -135,6 +137,9 @@ class DiscoverResponse:
             logger.warning(
                 "Failed to convert {} to naturaltime: {}", self.starting_time, e
             )
+
+        if self.client_version:
+            yield f"version {self.client_version}"
 
         if self.metricq_version:
             yield f"running {self.metricq_version}"
@@ -216,6 +221,7 @@ class MetricQDiscover(metricq.Agent):
             current_time=response.get("currentTime"),
             uptime=response.get("uptime"),
             metricq_version=response.get("metricqVersion"),
+            client_version=response.get("version"),
             hostname=response.get("hostname"),
         )
 
