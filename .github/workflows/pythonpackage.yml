@@ -63,7 +63,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: distribution-packages
-        path: dist/
+        path: dist/metricq-*.whl
 
   release:
     needs: [build]
