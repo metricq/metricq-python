@@ -60,7 +60,7 @@ jobs:
     - name: Build Python distribution
       run: pip wheel --wheel-dir dist/ .
     - name: Upload distribution artifacts
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: distribution-packages
         path: dist/metricq-*.whl
@@ -96,7 +96,7 @@ jobs:
         base: "none.md" # ignore the HISTORY.md file
         output: release-changelog.md
     - name: Upload release changelog artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: release-changelog
         path: release-changelog.md
