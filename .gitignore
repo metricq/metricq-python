@@ -1,4 +1,5 @@
 *_pb2.py
+*_pb2.pyi
 metricq/_protobuf_version.py
 
 # Created by https://www.gitignore.io/api/c++,cmake,python,virtualenv
