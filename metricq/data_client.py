@@ -108,8 +108,8 @@ class DataClient(Client):
         self.data_exchange = None
         await super().stop(exception)
 
-    def _on_data_connection_close(self, _exception: Optional[Exception]):
+    def _on_data_connection_close(self, sender, _exception: Optional[Exception]):
         self._data_connection_watchdog.set_closed()
 
-    def _on_data_connection_reconnect(self, _connection):
+    def _on_data_connection_reconnect(self, sender, _connection):
         self._data_connection_watchdog.set_established()
