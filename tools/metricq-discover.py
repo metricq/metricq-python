@@ -33,7 +33,7 @@ import logging
 import re
 from enum import Enum
 from enum import auto as enum_auto
-from typing import List, Optional, Set
+from typing import Any, Dict, List, Optional, Set
 
 import aio_pika
 import click
@@ -75,6 +75,10 @@ class IgnoredEvent(Enum):
         return cls.__members__[member_name]
 
 
+class DiscoverErrorResponse(ValueError):
+    pass
+
+
 class DiscoverResponse:
     def __init__(
         self,
@@ -107,6 +111,22 @@ class DiscoverResponse:
                 )
         except (ValueError, TypeError):
             pass
+
+    @staticmethod
+    def parse(response: Dict[str, Any]) -> "DiscoverResponse":
+        error = response.get("error")
+        if error is not None:
+            raise DiscoverErrorResponse(error)
+
+        return DiscoverResponse(
+            alive=bool(response.get("alive")),
+            starting_time=response.get("startingTime"),
+            current_time=response.get("currentTime"),
+            uptime=response.get("uptime"),
+            metricq_version=response.get("metricqVersion"),
+            client_version=response.get("version"),
+            hostname=response.get("hostname"),
+        )
 
     @classmethod
     def _parse_datetime(cls, iso_string) -> Optional[datetime.datetime]:
@@ -197,37 +217,29 @@ class MetricQDiscover(metricq.Agent):
 
         await asyncio.sleep(self.timeout.s)
 
-    def on_discover(self, from_token, **kwargs):
-        error = kwargs.get("error")
-        if error is not None:
-            if IgnoredEvent.ErrorResponses not in self.ignore_events:
-                echo_status(
-                    Status.Error,
-                    from_token,
-                    f'response indicated an error: {click.style(error, fg="bright_red")}',
-                )
-            else:
-                logger.debug(f"Ignored error response from {from_token}: {error}")
-        else:
-            self.pretty_print(from_token, response=kwargs)
-
-    def pretty_print(self, from_token, response: dict):
+    def on_discover(self, from_token, **response):
         logger.debug("response: {}", response)
+        try:
+            self.pretty_print(
+                from_token,
+                response=DiscoverResponse.parse(response),
+            )
+        except DiscoverErrorResponse as error:
+            if IgnoredEvent.ErrorResponses in self.ignore_events:
+                logger.debug(f"Ignored error response from {from_token}: {error}")
+                return
 
-        alive = bool(response.get("alive"))
-        parsed_response = DiscoverResponse(
-            alive=alive,
-            starting_time=response.get("startingTime"),
-            current_time=response.get("currentTime"),
-            uptime=response.get("uptime"),
-            metricq_version=response.get("metricqVersion"),
-            client_version=response.get("version"),
-            hostname=response.get("hostname"),
-        )
+            error_msg = click.style(str(error), fg="bright_red")
+            echo_status(
+                Status.Error,
+                from_token,
+                f"response indicated an error: {error_msg}",
+            )
 
-        status = Status.Ok if alive else Status.Warning
+    def pretty_print(self, from_token, response: DiscoverResponse):
+        status = Status.Ok if response.alive else Status.Warning
 
-        echo_status(status, from_token, str(parsed_response))
+        echo_status(status, from_token, str(response))
 
 
 @click.command()
