@@ -67,7 +67,7 @@ class IgnoredEvent(Enum):
 
     @classmethod
     def as_option_names(cls) -> List[str]:
-        return [camelcase_to_kebabcase(name) for name, _ in cls.__members__.items()]
+        return [camelcase_to_kebabcase(name) for name in cls.__members__.keys()]
 
     @classmethod
     def from_option_name(cls, option: str) -> "IgnoredEvent":
