@@ -88,11 +88,11 @@ class MetricQSpy(metricq.HistoryClient):
 @click_log.simple_verbosity_option(logger)
 @click.option("--server", default="amqp://localhost/")
 @click.argument("metrics", required=True, nargs=-1)
-def discover_command(server, metrics):
-    d = MetricQSpy(server)
+def spy_command(server, metrics):
+    spy = MetricQSpy(server)
 
-    asyncio.run(d.spy(metrics))
+    asyncio.run(spy.spy(metrics))
 
 
 if __name__ == "__main__":
-    discover_command()
+    spy_command()

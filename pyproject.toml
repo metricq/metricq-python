@@ -5,7 +5,7 @@ build-backend = 'setuptools.build_meta'
 [tool.black]
 line-length = 88
 target_version = ['py37']
-include = '\.pyi?$'
+include = '\.py$'
 exclude = '''
 
 (
@@ -37,6 +37,9 @@ line_length = 88
 skip_glob = [
     "**/*_pb2.py",
     "**/*_pb2.pyi",
+]
+skip = [
+    ".tox",
 ]
 order_by_type = true
 
