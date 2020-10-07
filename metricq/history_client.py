@@ -38,7 +38,7 @@ from .client import Client
 from .logging import get_logger
 from .rpc import rpc_handler
 from .types import TimeAggregate, Timedelta, Timestamp, TimeValue
-from .version import __version__  # noqa: F401
+from .version import __version__  # noqa: F401 - shut up flake8, automatic version str
 
 logger = get_logger(__name__)
 
