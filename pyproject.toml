@@ -7,7 +7,6 @@ line-length = 88
 target_version = ['py37']
 include = '\.py$'
 exclude = '''
-
 (
   /(
       \.eggs         # exclude a few common directories in the
@@ -39,7 +38,17 @@ skip_glob = [
     "**/*_pb2.pyi",
 ]
 skip = [
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
     ".tox",
+    ".venv",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "venv",
 ]
 order_by_type = true
 
