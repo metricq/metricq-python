@@ -31,7 +31,7 @@ from abc import abstractmethod
 from typing import Optional
 
 from .logging import get_logger
-from .source import Source
+from .source import MetricSendError, Source
 from .types import Timedelta, Timestamp
 
 logger = get_logger(__name__)
@@ -50,7 +50,15 @@ class IntervalSource(Source):
         self._interval_task_stop_future = self.event_loop.create_future()
         deadline = Timestamp.now()
         while True:
-            await self.update()
+            try:
+                await self.update()
+            except MetricSendError as e:
+                # This is a "normal" case, when we lost the connection.
+                # During the reconnection phase, we need to save the task from
+                # being cancelled.
+                logger.debug("Failed to send metric value: {}", e)
+                pass
+
             try:
                 if self.period is None:
                     raise ValueError(
