@@ -12,6 +12,7 @@
 
 **Closed issues:**
 
+- Failed to find version of HistoryClient [\#47](https://github.com/metricq/metricq-python/issues/47)
 - Split release job [\#34](https://github.com/metricq/metricq-python/issues/34)
 - Trigger code checks on pull requests [\#32](https://github.com/metricq/metricq-python/issues/32)
 - flake8 configuration file [\#31](https://github.com/metricq/metricq-python/issues/31)
@@ -20,6 +21,7 @@
 
 **Merged pull requests:**
 
+- Adds a workflow for docker image build and upload [\#49](https://github.com/metricq/metricq-python/pull/49) ([bmario](https://github.com/bmario))
 - Fix mypy protobuf packaging [\#43](https://github.com/metricq/metricq-python/pull/43) ([tilsche](https://github.com/tilsche))
 - Release workflow [\#42](https://github.com/metricq/metricq-python/pull/42) ([kinnarr](https://github.com/kinnarr))
 - Generate changelog for closed PRs and issues [\#40](https://github.com/metricq/metricq-python/pull/40) ([kinnarr](https://github.com/kinnarr))
