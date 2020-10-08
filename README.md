@@ -3,6 +3,8 @@
 ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
 [![PyPI](https://img.shields.io/pypi/v/metricq)](https://pypi.org/project/metricq/)
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/metricq)
+[![Docker pulls](https://img.shields.io/docker/pulls/metricq/metricq-python.svg)](https://hub.docker.com/r/metricq/metricq-python)
+
 # metricq - python libraries
 
 This is a python implementation of the MetricQ protocol.

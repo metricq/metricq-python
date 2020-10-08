@@ -3,8 +3,8 @@ name: Generate changelog
 on:
   pull_request:
     branches: [master]
-    types: [closed, edited]
-    
+    types: [closed]
+
   issues:
     types: [edited]
 
