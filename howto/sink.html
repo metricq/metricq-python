@@ -1,0 +1,424 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Building a MetricQ Sink &mdash; MetricQ  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Building a MetricQ Source" href="source.html" />
+    <link rel="prev" title="How to use this library" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetricQ
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">How to use this library</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Building a MetricQ Sink</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#defining-a-new-sink-using-metricq-sink">Defining a new Sink: using <code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-a-sink">Running a Sink</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#complete-example">Complete example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="source.html">Building a MetricQ Source</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetricQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">How to use this library</a> &raquo;</li>
+        
+      <li>Building a MetricQ Sink</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/howto/sink.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="building-a-metricq-sink">
+<span id="sink-how-to"></span><h1>Building a MetricQ Sink<a class="headerlink" href="#building-a-metricq-sink" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="../glossary.html#term-Sink"><span class="xref std std-term">Sinks</span></a> allow you to receive and process data points for <a class="reference internal" href="../glossary.html#term-Metric"><span class="xref std std-term">Metrics</span></a> provided by others on the MetricQ network.
+Examples of Sinks are:</p>
+<ul class="simple">
+<li><p>data visualization software</p></li>
+<li><p>database clients (such as <a class="reference external" href="https://github.com/metricq/metricq-db-hta">metricq-db-hta</a>): store metric data to persistent storage</p></li>
+<li><p>monitoring clients</p></li>
+<li><p>…</p></li>
+</ul>
+<p>Here, we will build a simple Sink that prints data points for a given list of metrics as they arrive.
+You can find the complete example at <a class="reference internal" href="#the-end-of-this-page">the end of this page</a> or <a class="reference external" href="https://github.com/metricq/metricq-python/blob/master/examples/metricq_sink.py">here</a>.</p>
+<div class="section" id="defining-a-new-sink-using-metricq-sink">
+<h2>Defining a new Sink: using <a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a><a class="headerlink" href="#defining-a-new-sink-using-metricq-sink" title="Permalink to this headline">¶</a></h2>
+<p>New Sinks are defined by subclassing <a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
+
+<span class="k">class</span> <span class="nc">DummySink</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Sink</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>We add a constructor to provide the Sink with a list of names of metrics which we are interested in printing.
+All other arguments will be forwarded to the superclass:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">metricq</span>
+
+<span class="k">class</span> <span class="nc">DummySink</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Sink</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metrics</span> <span class="o">=</span> <span class="n">metrics</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we will implement the interface needed to connect to the MetricQ network and receive metrics.
+First, we tell our Sink how to connect (<a class="reference internal" href="../api/sink.html#metricq.Sink.connect" title="metricq.Sink.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">metricq.Sink.connect()</span></code></a>) to the MetricQ network.
+After a connection has been established, we subscribe (<a class="reference internal" href="../api/sink.html#metricq.Sink.subscribe" title="metricq.Sink.subscribe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">metricq.Sink.subscribe()</span></code></a>) to the metrics we are interested in.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
+
+<span class="k">class</span> <span class="nc">DummySink</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Sink</span><span class="p">):</span>
+
+    <span class="o">...</span> <span class="c1"># as above</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_metrics</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Our Sink is now needs to know what to to with the data points it receives.
+We provide <code class="xref py py-meth docutils literal notranslate"><span class="pre">Sink.on_data()</span></code>, which gets called every time a new data point arrives, and tell it to print that to the standard output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
+
+<span class="k">class</span> <span class="nc">DummySink</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Sink</span><span class="p">):</span>
+
+    <span class="o">...</span> <span class="c1"># as above</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_data</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">metric</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">timestamp</span><span class="p">:</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">metric</span></code> is the name of the metric for which a new data point arrived; <code class="docutils literal notranslate"><span class="pre">value</span></code> holds the numeric value this metric had at time indicated by <code class="docutils literal notranslate"><span class="pre">timestamp</span></code>.</p>
+</div>
+<div class="section" id="running-a-sink">
+<h2>Running a Sink<a class="headerlink" href="#running-a-sink" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a> is designed as an asynchronous callback-based interface, so we won’t be calling the above methods directly.
+Instead, it provides <code class="xref py py-meth docutils literal notranslate"><span class="pre">Sink.run()</span></code>, which handles establishing a connection, keeps track track of all the details of the MetricQ protocol and calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">Sink.on_data()</span></code> once new data points arrive.</p>
+<p>Our Sink is identified on the network by a <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">Token</span></a>.
+In general you should make sure that no two different instances of the same <a class="reference internal" href="../glossary.html#term-Client"><span class="xref std std-term">Client</span></a> share the same token.
+Though you won’t need to worry about this it if you are using <a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a>, as there is code in place that handles this automatically.</p>
+<p>If you are interested in the values of metric <code class="docutils literal notranslate"><span class="pre">test.py.dummy</span></code>, construct and run <code class="docutils literal notranslate"><span class="pre">DummySink</span></code> as follows (assuming a MetricQ network is running on <code class="docutils literal notranslate"><span class="pre">localhost</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
+
+<span class="k">class</span> <span class="nc">DummySink</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Sink</span><span class="p">):</span>
+    <span class="o">...</span> <span class="c1"># as above</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">DummySink</span><span class="p">(</span>
+        <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;test.py.dummy&quot;</span><span class="p">],</span>
+        <span class="n">token</span><span class="o">=</span><span class="s2">&quot;sink-py-dummy&quot;</span><span class="p">,</span>
+        <span class="n">management_url</span><span class="o">=</span><span class="s2">&quot;amqp://localhost/&quot;</span>
+    <span class="p">)</span>
+    <span class="n">sink</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This is it, assuming there is a <a class="reference internal" href="../glossary.html#term-Source"><span class="xref std std-term">Source</span></a> on the network that provides data points for <code class="docutils literal notranslate"><span class="pre">test.py.dummy</span></code>.
+Running this script, you should now see something like this appearing on standard output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="n">test</span><span class="o">.</span><span class="n">py</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span> <span class="p">[</span><span class="mi">1588509320269324000</span><span class="p">]</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">03</span> <span class="mi">14</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mf">20.269324</span><span class="o">+</span><span class="mi">02</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span> <span class="mf">0.48311378740654076</span>
+<span class="n">test</span><span class="o">.</span><span class="n">py</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span> <span class="p">[</span><span class="mi">1588509321269232000</span><span class="p">]</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">03</span> <span class="mi">14</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mf">21.269232</span><span class="o">+</span><span class="mi">02</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span> <span class="mf">0.1490083450372932</span>
+<span class="n">test</span><span class="o">.</span><span class="n">py</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span> <span class="p">[</span><span class="mi">1588509322269017000</span><span class="p">]</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">03</span> <span class="mi">14</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mf">22.269017</span><span class="o">+</span><span class="mi">02</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span> <span class="mf">0.06578061778873023</span>
+<span class="n">test</span><span class="o">.</span><span class="n">py</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span> <span class="p">[</span><span class="mi">1588509323267878000</span><span class="p">]</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">03</span> <span class="mi">14</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mf">23.267878</span><span class="o">+</span><span class="mi">02</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span> <span class="mf">0.7771949055949513</span>
+<span class="n">test</span><span class="o">.</span><span class="n">py</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span> <span class="p">[</span><span class="mi">1588509324267969000</span><span class="p">]</span> <span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">03</span> <span class="mi">14</span><span class="p">:</span><span class="mi">35</span><span class="p">:</span><span class="mf">24.267969</span><span class="o">+</span><span class="mi">02</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span> <span class="mf">0.9975132302199418</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="source.html#source-how-to"><span class="std std-ref">Building a MetricQ Source</span></a> on how to set up such a source.</p>
+</div>
+<div class="section" id="complete-example">
+<span id="the-end-of-this-page"></span><h2>Complete example<a class="headerlink" href="#complete-example" title="Permalink to this headline">¶</a></h2>
+<p>To obtain the dependencies required for this example, install the <code class="docutils literal notranslate"><span class="pre">examples</span></code>-extra from the <a class="reference external" href="metricq-python">git repo</a>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install <span class="s1">&#39;.[examples]&#39;</span>
+</pre></div>
+</div>
+<p>and run it like so:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ ./metricq_sink.py -m test.py.dummy
+</pre></div>
+</div>
+<hr class="docutils" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># Copyright (c) 2019, ZIH, Technische Universitaet Dresden, Federal Republic of Germany</span>
+<span class="c1">#</span>
+<span class="c1"># All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Redistribution and use in source and binary forms, with or without modification,</span>
+<span class="c1"># are permitted provided that the following conditions are met:</span>
+<span class="c1">#</span>
+<span class="c1">#     * Redistributions of source code must retain the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer.</span>
+<span class="c1">#     * Redistributions in binary form must reproduce the above copyright notice,</span>
+<span class="c1">#       this list of conditions and the following disclaimer in the documentation</span>
+<span class="c1">#       and/or other materials provided with the distribution.</span>
+<span class="c1">#     * Neither the name of metricq nor the names of its contributors</span>
+<span class="c1">#       may be used to endorse or promote products derived from this software</span>
+<span class="c1">#       without specific prior written permission.</span>
+<span class="c1">#</span>
+<span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS</span>
+<span class="c1"># &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT</span>
+<span class="c1"># LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR</span>
+<span class="c1"># A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR</span>
+<span class="c1"># CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,</span>
+<span class="c1"># EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,</span>
+<span class="c1"># PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR</span>
+<span class="c1"># PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="c1"># LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">click</span>
+<span class="kn">import</span> <span class="nn">click_completion</span>
+<span class="kn">import</span> <span class="nn">click_log</span>
+
+<span class="kn">import</span> <span class="nn">metricq</span>
+<span class="kn">from</span> <span class="nn">metricq.logging</span> <span class="kn">import</span> <span class="n">get_logger</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
+
+<span class="n">click_log</span><span class="o">.</span><span class="n">basic_config</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> [</span><span class="si">%(levelname)-8s</span><span class="s2">] [</span><span class="si">%(name)-20s</span><span class="s2">] </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+
+<span class="n">click_completion</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+
+<span class="c1"># To implement a MetricQ Sink, subclass metricq.Sink</span>
+<span class="k">class</span> <span class="nc">DummySink</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Sink</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A simple :term:`Sink` which, given a list of Metrics, will print their values as they arrive from the MetricQ network.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;initializing DummySink&quot;</span><span class="p">)</span>
+        <span class="c1"># `metrics` contains the names of Metrics for which this Sink should print values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metrics</span> <span class="o">=</span> <span class="n">metrics</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Override connect() to subscribe to the Metrics of interest after a connection has been established.</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># First, let the base class connect to the MetricQ network.</span>
+        <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+        <span class="c1"># After the connection is established, subscribe to the list of</span>
+        <span class="c1"># requested metrics.  For each metric, we will receive every data point</span>
+        <span class="c1"># which sent is to MetricQ from this point on.</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_metrics</span><span class="p">)</span>
+
+    <span class="c1"># The data handler, this method is called for every data point we receive</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="c1"># For this example, we just print the datapoints to standard output</span>
+        <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span>
+            <span class="n">click</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">fg</span><span class="o">=</span><span class="s2">&quot;bright_blue&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--server&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;amqp://localhost/&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--token&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;sink-py-dummy&quot;</span><span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;--metrics&quot;</span><span class="p">,</span> <span class="n">multiple</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@click_log</span><span class="o">.</span><span class="n">simple_verbosity_option</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">source</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+    <span class="c1"># Initialize the DummySink class with a list of metrics given on the</span>
+    <span class="c1"># command line.</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">DummySink</span><span class="p">(</span><span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">management_url</span><span class="o">=</span><span class="n">server</span><span class="p">)</span>
+
+    <span class="c1"># Run the sink.  This call will block until the connection is closed.</span>
+    <span class="n">sink</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">source</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="source.html" class="btn btn-neutral float-right" title="Building a MetricQ Source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="How to use this library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, TU Dresden
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

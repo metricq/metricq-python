@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Sink &mdash; MetricQ  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Source" href="source.html" />
+    <link rel="prev" title="API Reference" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetricQ
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">How to use this library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source.html">Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetricQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">API Reference</a> &raquo;</li>
+        
+      <li>Sink</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/sink.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sink">
+<h1>Sink<a class="headerlink" href="#sink" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="metricq.Sink">
+<em class="property">class </em><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">Sink</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">add_uuid</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Sink" title="Permalink to this definition">¶</a></dt>
+<dd><p>A base class intended to be subclassed to create user-defined <a class="reference internal" href="../glossary.html#term-Sink"><span class="xref std std-term">Sinks</span></a>.</p>
+<p>See <a class="reference internal" href="../howto/sink.html#sink-how-to"><span class="std std-ref">Building a MetricQ Sink</span></a> for an introduction how to implement a Sink.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>add_uuid</strong> – whether to append a randomly generated UUID to this Sink’s <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">Token</span></a>.
+This is useful to distinguish different instances of the same Sink.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="metricq.Sink.connect">
+<em class="property">async </em><code class="sig-name descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Sink.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to the MetricQ network</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metricq.Sink.on_data">
+<em class="property">abstract async </em><code class="sig-name descname">on_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metric</span></em>, <em class="sig-param"><span class="n">timestamp</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Sink.on_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Callback that is invoked for every data point received for any of the metrics this client is subscribed to.</p>
+<p>User-defined <a class="reference internal" href="../glossary.html#term-Sink"><span class="xref std std-term">Sinks</span></a> need to override this method to handle incoming data points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metric</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – name of the metric for which a new data point arrived</p></li>
+<li><p><strong>timestamp</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code>) – timepoint at which this metric was measured</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>) – value of the metric at time of measurement</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metricq.Sink.subscribe">
+<em class="property">async </em><code class="sig-name descname">subscribe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metrics</span></em>, <em class="sig-param"><span class="n">expires</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">metadata</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Sink.subscribe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to a list of metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metrics</strong> – names of the metrics to subscribe to</p></li>
+<li><p><strong>expires</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<code class="docutils literal notranslate"><span class="pre">None</span></code>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]) – queue expiration time in seconds</p></li>
+<li><p><strong>metadata</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]) – whether to return metric metadata in the response, defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>rpc response</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="source.html" class="btn btn-neutral float-right" title="Source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, TU Dresden
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

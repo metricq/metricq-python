@@ -1,0 +1,357 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Source &mdash; MetricQ  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Miscellaneous" href="misc.html" />
+    <link rel="prev" title="Sink" href="sink.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetricQ
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">How to use this library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sink.html">Sink</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetricQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">API Reference</a> &raquo;</li>
+        
+      <li>Source</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/source.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="source">
+<h1>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="metricq.Source">
+<em class="property">class </em><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">Source</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source" title="Permalink to this definition">¶</a></dt>
+<dd><p>A MetricQ <a class="reference internal" href="../glossary.html#term-Source"><span class="xref std std-term">Source</span></a></p>
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">metricq</span> <span class="kn">import</span> <span class="n">Source</span><span class="p">,</span> <span class="n">Timestamp</span>
+
+<span class="kn">from</span> <span class="nn">asyncio</span> <span class="kn">import</span> <span class="n">sleep</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+
+<span class="k">class</span> <span class="nc">SomeSensorSource</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_some_sensor_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">await</span> <span class="n">sleep</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">time</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_some_sensor_value</span><span class="p">()</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;example.some_sensor&quot;</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="metricq.Source.connect">
+<em class="property">async </em><code class="sig-name descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to the MetricQ network</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metricq.Source.declare_metrics">
+<em class="property">async </em><code class="sig-name descname">declare_metrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metrics</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.declare_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Declare a list of <a class="reference internal" href="../glossary.html#term-Metric"><span class="xref std std-term">Metrics</span></a>.</p>
+<p>Before producing <a class="reference internal" href="../glossary.html#term-Data-Point"><span class="xref std std-term">data points</span></a> for some Metric, a Source must’ve declared that Metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>metrics</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]) – a list of Metrics that this Source produces Data Points for</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metricq.Source.flush">
+<em class="property">async </em><code class="sig-name descname">flush</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flush all unsent data points to the network immediately.</p>
+<p>If automatic chunking is turned off (<a class="reference internal" href="#metricq.Source.chunk_size" title="metricq.Source.chunk_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">chunk_size</span></code></a> is <code class="docutils literal notranslate"><span class="pre">None</span></code>),
+use this method to send data points.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metricq.Source.send">
+<em class="property">async </em><code class="sig-name descname">send</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metric</span></em>, <em class="sig-param"><span class="n">time</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a Data Point for a Metric</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>metric</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – name of a metric</p></li>
+<li><p><strong>timestamp</strong> – timepoint at which this metric was measured</p></li>
+<li><p><strong>value</strong> – value of the metric at time of measurement</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Data points are not sent immediately, instead they are collected and sent in chunks.
+See <a class="reference internal" href="#metricq.Source.chunk_size" title="metricq.Source.chunk_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">chunk_size</span></code></a> how to control chunking behaviour.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metricq.Source.task">
+<em class="property">abstract </em><code class="sig-name descname">task</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.task" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override this with your main task for generating data points.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metricq.Source.chunk_size">
+<em class="property">property </em><code class="sig-name descname">chunk_size</code><a class="headerlink" href="#metricq.Source.chunk_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of <a class="reference internal" href="../glossary.html#term-Data-Point"><span class="xref std std-term">data points</span></a> collected into a chunk before being sent.</p>
+<p>Initially, this value is set to <code class="code docutils literal notranslate"><span class="pre">1</span></code>, so any data point is sent immediately.
+If set to <code class="code docutils literal notranslate"><span class="pre">None</span></code>, automatic chunking is disabled and data points must be sent off to the network manually using <a class="reference internal" href="#metricq.Source.flush" title="metricq.Source.flush"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flush()</span></code></a>.</p>
+<p>To reduce network and packet overhead, it may be advisable to send multiple data points at once.
+Be aware that there is a <cite>overhead-latency trade-off</cite> to be made:
+If your Source produces one data point every <span class="math notranslate nohighlight">\(10\)</span> seconds, having a <code class="code docutils literal notranslate"><span class="pre">chunk_size</span></code> of <code class="code docutils literal notranslate"><span class="pre">10</span></code> means that it takes almost <span class="math notranslate nohighlight">\(2\)</span> minutes (<span class="math notranslate nohighlight">\(100\)</span> s) before a chunk is is sent.
+If instead it produces <span class="math notranslate nohighlight">\(1000\)</span> data points per second, network load can be reduced by setting a value of <code class="code docutils literal notranslate"><span class="pre">1000</span></code> without affecting latency too much.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="metricq.IntervalSource">
+<em class="property">class </em><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">IntervalSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.IntervalSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="../glossary.html#term-Source"><span class="xref std std-term">Source</span></a> producing metrics at regular intervals of time.</p>
+<p>Use an <a class="reference internal" href="#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a> if you want to produce data points at a constant rate,
+without having to worry about getting the timing right.
+Put your code producing data points into <a class="reference internal" href="#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a>, which gets called
+at the specified intervals.</p>
+<p>The <a class="reference internal" href="#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a> handles missed deadlines for you:
+If the code in <a class="reference internal" href="#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> takes longer than <a class="reference internal" href="#metricq.IntervalSource.period" title="metricq.IntervalSource.period"><code class="xref py py-attr docutils literal notranslate"><span class="pre">period</span></code></a> to execute,
+it will skip the next updates until it caught up, otherwise keeping a
+constant update rate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Keyword Arguments</dt>
+<dd class="field-odd"><p><strong>period</strong> – time between consecutive updates, in number of seconds or as <a class="reference internal" href="misc.html#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>Sending an incrementing counter once a second:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Counter</span><span class="p">(</span><span class="n">IntervalSource</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;example.counter&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="metricq.IntervalSource.period">
+<em class="property">property </em><code class="sig-name descname">period</code><a class="headerlink" href="#metricq.IntervalSource.period" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time interval (in seconds) at which <a class="reference internal" href="#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> is called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metricq.IntervalSource.update">
+<em class="property">abstract async </em><code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.IntervalSource.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>A user-provided method called at intervals given by <a class="reference internal" href="#metricq.IntervalSource.period" title="metricq.IntervalSource.period"><code class="xref py py-attr docutils literal notranslate"><span class="pre">period</span></code></a>.</p>
+<p>Override this method to produce data points at a constant rate.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="misc.html" class="btn btn-neutral float-right" title="Miscellaneous" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sink.html" class="btn btn-neutral float-left" title="Sink" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, TU Dresden
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
