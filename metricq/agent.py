@@ -102,7 +102,7 @@ class Agent(RPCDispatcher):
         token,
         management_url,
         *,
-        connection_timeout: Union[int, float] = 60,
+        connection_timeout: Union[int, float] = 600,
         event_loop=None,
         add_uuid=False,
     ):

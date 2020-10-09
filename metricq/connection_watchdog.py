@@ -10,7 +10,7 @@ class ConnectionWatchdog:
     def __init__(
         self,
         on_timeout_callback: Callable[["ConnectionWatchdog"], None],
-        timeout: Union[int, float] = 60,
+        timeout: Union[int, float],
         connection_name: str = "connection",
     ):
         """Watch a connection, fire a callback if it failed to reconnect before
