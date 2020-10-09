@@ -1,0 +1,6 @@
+.mypy_cache
+.tox
+*.egg-info
+venv
+**/*_pb2.py
+**/*_pb2.pyi
