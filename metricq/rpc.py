@@ -90,8 +90,14 @@ class RPCDispatcher(metaclass=RPCMeta):
 
 
 def rpc_handler(*function_tags):
-    """
-    Decorator for an RPC handler, may contain multiple functions
+    """A Decorator to mark a method as an RPC handler
+
+    Arguments:
+        *function_tags:
+            The names of the RPCs that this method should handle
+
+    Note:
+        This only has an effect on methods of classes subclassing :class:`RPCDispatcher`.
     """
 
     def decorator(handler):

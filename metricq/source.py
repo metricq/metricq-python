@@ -30,7 +30,7 @@
 
 import asyncio
 from abc import abstractmethod
-from typing import List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import aio_pika
 from aiormq import ChannelInvalidStateError
@@ -45,18 +45,22 @@ from .types import Timestamp
 
 logger = get_logger(__name__)
 
+MetadataDict = Dict[str, Any]
+
 
 class MetricSendError(PublishFailedError):
     pass
 
 
 class Source(DataClient):
-    """A MetricQ :term:`Source`
+    """A MetricQ :term:`Source`.
+
+    See :ref:`source-how-to` on how to implement a new Source.
 
     Example:
         .. code-block::
 
-            from metricq import Source, Timestamp
+            from metricq import Source, Timestamp, rpc_handler
 
             from asyncio import sleep
             from random import randint
@@ -64,6 +68,10 @@ class Source(DataClient):
             class SomeSensorSource(Source):
                 def __init__(self, *args, **kwargs):
                     super().__init__(*args, **kwargs)
+
+                @rpc_handler("config")
+                async def _on_config(self, **config):
+                    await self.declare_metrics(["example.some_sensor"])
 
                 async def get_some_sensor_value(self):
                     await sleep(randint(0, 5))
@@ -129,13 +137,15 @@ class Source(DataClient):
             self.metrics[id] = SourceMetric(id, self, chunk_size=self.chunk_size)
         return self.metrics[id]
 
-    async def declare_metrics(self, metrics: List[str]):
-        """Declare a list of :term:`Metrics<Metric>`.
+    async def declare_metrics(self, metrics: Union[List[str], Dict[str, MetadataDict]]):
+        """Declare a list of :term:`Metrics<Metric>` that this Source produces values for.
 
         Before producing :term:`data points<Data Point>` for some Metric, a Source must've declared that Metric.
 
         Args:
-            metrics: a list of Metrics that this Source produces Data Points for
+            metrics:
+                Either a plain list of metrics, or a mapping of metrics to
+                their metadata.
         """
         logger.debug("declare_metrics({})", metrics)
         await self.rpc("source.declare_metrics", metrics=metrics)

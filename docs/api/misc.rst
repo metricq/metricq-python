@@ -14,3 +14,8 @@ Timedeltas (Durations)
 .. autoclass:: metricq.Timedelta
     :members:
     :special-members: __str__
+
+RPC handling
+------------
+
+.. autodecorator:: metricq.rpc_handler

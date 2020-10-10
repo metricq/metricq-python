@@ -58,10 +58,16 @@ class IntervalSource(Source):
     Example:
         Sending an incrementing counter once a second::
 
+            from metricq import IntervalSource, rpc_handler
+
             class Counter(IntervalSource):
                 def __init__(self, *args, **kwargs):
                     super().__init__(*args, period=Timedelta.from_s(1), **kwargs)
                     self.counter = 0
+
+                @rpc_handler("config")
+                async def _on_config(self, **_config):
+                    await self.declare_metrics(["example.counter"])
 
                 async def update(self):
                     await self.send("example.counter", time=Timestamp.now(), value=self.counter)
@@ -79,7 +85,10 @@ class IntervalSource(Source):
 
     @property
     def period(self) -> Optional[float]:
-        """Time interval (in seconds) at which :meth:`update` is called."""
+        """Time interval (in seconds) at which :meth:`update` is called.
+
+        You can set this value at any time and it will be picked up before the next time :meth:`update` is run.
+        """
         if self._period is None:
             return None
         return self._period.s
