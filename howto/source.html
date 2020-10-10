@@ -85,7 +85,11 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">How to use this library</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="sink.html">Building a MetricQ Sink</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Building a MetricQ Source</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Building a MetricQ Source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#defining-a-new-source-using-metricq-source">Defining a new Source: using <code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Source</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#improving-constant-rate-sources-using-intervalsource">Improving constant-rate sources: using <code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
@@ -158,6 +162,126 @@
             
   <div class="section" id="building-a-metricq-source">
 <span id="source-how-to"></span><h1>Building a MetricQ Source<a class="headerlink" href="#building-a-metricq-source" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="../glossary.html#term-Source"><span class="xref std std-term">Sources</span></a> provide data points for a set of <a class="reference internal" href="../glossary.html#term-Metric"><span class="xref std std-term">Metrics</span></a> to the MetricQ network.
+Usually, they are programs that continually measure some kind of quantity, for example:</p>
+<ul class="simple">
+<li><p>system monitoring (such as <a class="reference external" href="https://github.com/metricq/metricq-source-sysinfo">metricq-source-sysinfo</a>): CPU usage, memory utilization…</p></li>
+<li><p>low-level server sensor readings (e.g. via IPMI and <a class="reference external" href="https://github.com/metricq/metricq-source-ipmi">metricq-source-ipmi</a>)</p></li>
+<li><p>pulling information from building automation (<a class="reference external" href="https://github.com/metricq/metricq-source-bacnet">metricq-source-bacnet</a>)</p></li>
+</ul>
+<p>Here, we will build a simple Source that sends a random value between 0 and 1 at a configurable interval.</p>
+<div class="section" id="defining-a-new-source-using-metricq-source">
+<h2>Defining a new Source: using <a class="reference internal" href="../api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Source</span></code></a><a class="headerlink" href="#defining-a-new-source-using-metricq-source" title="Permalink to this headline">¶</a></h2>
+<p>Similarly to Sinks, we create a new Source by subclassing <a class="reference internal" href="../api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Source</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
+
+<span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>The Source will receive its configuration dynamically over the network.
+This is different from the Sink we built in <a class="reference internal" href="sink.html#sink-how-to"><span class="std std-ref">Building a MetricQ Sink</span></a>;
+we won’t pass the rate at which new values are sent on the command line,
+instead we install a callback that is triggered every time a new configuration is received:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
+
+<span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># This will be set to the number of values we want to send per second:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="nd">@metricq</span><span class="o">.</span><span class="n">rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received new configuration: </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;rate&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Clients on the MetricQ network communicate via an <a class="reference external" href="https://metricq.github.io/metricq-rpc-docs/">RPC protocol</a>.
+The <a class="reference internal" href="../api/misc.html#metricq.rpc_handler" title="metricq.rpc_handler"><code class="xref py py-func docutils literal notranslate"><span class="pre">metricq.rpc_handler()</span></code></a> decorator is a way to define a new handler for an RPC;
+here we tell the library to call <code class="code docutils literal notranslate"><span class="pre">_on_config</span></code> every time another client sends a <code class="docutils literal notranslate"><span class="pre">&quot;config&quot;</span></code>-RPC
+which contains our new configuration.</p>
+<p>So far out Source would work, but it wouldn’t do anything useful at all.
+To change that, we first declare for which metric we want to send values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
+
+<span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+    <span class="o">...</span> <span class="c1"># as above</span>
+
+    <span class="nd">@metricq</span><span class="o">.</span><span class="n">rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received new configuration: </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;rate&quot;</span><span class="p">]</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;rate&quot;</span><span class="p">:</span> <span class="n">rate</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A simple dummy metric providing random values, sent from a python DummySource&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">declare_metrics</span><span class="p">({</span><span class="s2">&quot;example.py.dummy&quot;</span><span class="p">:</span> <span class="n">metadata</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>If we were in a hurry, we could omit the metadata for our metric,
+see <a class="reference internal" href="../api/source.html#metricq.Source.declare_metrics" title="metricq.Source.declare_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.declare_metrics()</span></code></a> on how to do that.</p>
+<p>To finally send some values, we override <a class="reference internal" href="../api/source.html#metricq.Source.task" title="metricq.Source.task"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.task()</span></code></a>.
+This method gets called once our Source is connected and received its initial configuration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+    <span class="o">...</span> <span class="c1"># as above</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+                <span class="s2">&quot;example.py.dummy&quot;</span><span class="p">,</span>
+                <span class="n">time</span><span class="o">=</span><span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span>
+            <span class="p">)</span>
+            <span class="c1"># Convert from rate (in Hz) to duration between sends (in seconds)</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="improving-constant-rate-sources-using-intervalsource">
+<h2>Improving constant-rate sources: using <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a><a class="headerlink" href="#improving-constant-rate-sources-using-intervalsource" title="Permalink to this headline">¶</a></h2>
+<p>The above situation where we send values at a fixed rate is so common
+that we can use the convenience class <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a>, which
+does all the heavy lifting for us.</p>
+<dl class="simple">
+<dt>Note:</dt><dd><p>We strongly recommend implementing a <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a> over a plain <a class="reference internal" href="../api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> if possible.
+It tries to automatically compensate some timing-related issues
+that inevitably arise in more complicated setups.
+See the documentation for <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a> for more information.</p>
+</dd>
+</dl>
+<p>To adapt the above example, we simply set <a class="reference internal" href="../api/source.html#metricq.IntervalSource.period" title="metricq.IntervalSource.period"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource.period</span></code></a> to the period of time between consecutive updates and replace <a class="reference internal" href="../api/source.html#metricq.Source.task" title="metricq.Source.task"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source.task</span></code></a> with <a class="reference internal" href="../api/source.html#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource.update</span></code></a>,
+which gets called at a constant rate:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+
+    <span class="nd">@metricq</span><span class="o">.</span><span class="n">rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
+        <span class="n">rate</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;rate&quot;</span><span class="p">]</span>
+        <span class="c1"># Set the update period</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">rate</span>
+
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">declare_metrics</span><span class="p">([</span><span class="s2">&quot;test.py.interval-dummy&quot;</span><span class="p">])</span>
+
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+            <span class="s2">&quot;example.py.interval-dummy&quot;</span><span class="p">,</span>
+            <span class="n">time</span><span class="o">=</span><span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
