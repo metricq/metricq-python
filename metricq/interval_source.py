@@ -57,7 +57,6 @@ class IntervalSource(Source):
                 # During the reconnection phase, we need to save the task from
                 # being cancelled.
                 logger.debug("Failed to send metric value: {}", e)
-                pass
 
             try:
                 if self.period is None:
