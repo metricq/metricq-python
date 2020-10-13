@@ -10,6 +10,11 @@
 - Include source version in discover response [\#24](https://github.com/metricq/metricq-python/issues/24)
 - Add changelog to GitHub Release [\#41](https://github.com/metricq/metricq-python/pull/41) ([kinnarr](https://github.com/kinnarr))
 
+**Fixed bugs:**
+
+- stop\(\) failure [\#48](https://github.com/metricq/metricq-python/issues/48)
+- Reconnect issue in Websocket [\#22](https://github.com/metricq/metricq-python/issues/22)
+
 **Closed issues:**
 
 - Failed to find version of HistoryClient [\#47](https://github.com/metricq/metricq-python/issues/47)
@@ -22,6 +27,7 @@
 **Merged pull requests:**
 
 - Adds a workflow for docker image build and upload [\#49](https://github.com/metricq/metricq-python/pull/49) ([bmario](https://github.com/bmario))
+- Fix reconnect issues [\#44](https://github.com/metricq/metricq-python/pull/44) ([bmario](https://github.com/bmario))
 - Fix mypy protobuf packaging [\#43](https://github.com/metricq/metricq-python/pull/43) ([tilsche](https://github.com/tilsche))
 - Release workflow [\#42](https://github.com/metricq/metricq-python/pull/42) ([kinnarr](https://github.com/kinnarr))
 - Generate changelog for closed PRs and issues [\#40](https://github.com/metricq/metricq-python/pull/40) ([kinnarr](https://github.com/kinnarr))
