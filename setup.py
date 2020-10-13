@@ -228,7 +228,7 @@ class ProtoDevelop(develop):
 # For all other setuptools options, see setup.cfg
 setup(
     install_requires=[
-        "aio-pika~=6.6",
+        "aio-pika~=6.7, >=6.7.1",
         get_protobuf_requirement(),
         "yarl",
         "setuptools",

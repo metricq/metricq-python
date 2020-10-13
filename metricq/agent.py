@@ -102,7 +102,7 @@ class Agent(RPCDispatcher):
         token,
         management_url,
         *,
-        connection_timeout: Union[int, float] = 60,
+        connection_timeout: Union[int, float] = 600,
         event_loop=None,
         add_uuid=False,
     ):
@@ -593,10 +593,10 @@ class Agent(RPCDispatcher):
                 if r is not None:
                     await r
 
-    def _on_reconnect(self, connection):
+    def _on_reconnect(self, sender, connection):
         logger.info("Reconnected to {}", connection)
 
-    def _on_close(self, exception):
+    def _on_close(self, sender, exception):
         if isinstance(exception, asyncio.CancelledError):
             logger.debug("Connection closed regularly")
             return
@@ -604,8 +604,8 @@ class Agent(RPCDispatcher):
             "Connection closed: {} ({})", exception, type(exception).__qualname__
         )
 
-    def _on_management_connection_reconnect(self, _connection):
+    def _on_management_connection_reconnect(self, sender, _connection):
         self._management_connection_watchdog.set_established()
 
-    def _on_management_connection_close(self, _exception: Optional[Exception]):
+    def _on_management_connection_close(self, sender, _exception: Optional[Exception]):
         self._management_connection_watchdog.set_closed()

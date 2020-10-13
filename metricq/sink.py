@@ -71,7 +71,7 @@ class Sink(DataClient):
         logger.info("starting sink consume")
         self._data_consumer_tag = await self._data_queue.consume(self._on_data_message)
 
-    def _on_data_connection_reconnect(self, connection):
+    def _on_data_connection_reconnect(self, sender, connection):
         logger.info("Sink data connection ({}) reestablished!", connection)
 
         if self._resubscribe_task is not None and not self._resubscribe_task.done():
