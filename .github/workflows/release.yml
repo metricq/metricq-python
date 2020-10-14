@@ -56,5 +56,5 @@ jobs:
       uses: benc-uk/workflow-dispatch@v1
       with:
         workflow: Python package
-        token: ${{ secrets.PERSONAL_TOKEN }}
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
         ref: ${{ github.ref }}
