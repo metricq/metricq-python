@@ -53,9 +53,17 @@ jobs:
       run: |
         echo "Push to ${{ github.ref }}"
         git push --tags "https://$CI_USER:$CI_TOKEN@github.com/$GITHUB_REPOSITORY.git" HEAD:${{ github.ref }}
-    - name: Invoke test, build and release workflow
+    - name: Invoke test and build workflow for current branch
+      if: github.event.ref != 'refs/heads/master'
       uses: benc-uk/workflow-dispatch@v1
       with:
         workflow: Python package
         token: ${{ secrets.REPO_ACCESS_TOKEN }}
         ref: ${{ github.ref }}
+    - name: Invoke test, build and release workflow for version tag
+      if: github.event.ref == 'refs/heads/master'
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: Python package
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        ref: "refs/tags/v${{ github.event.inputs.version }}"
