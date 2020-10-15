@@ -77,9 +77,6 @@ To change that, we first declare for which metric we want to send values:
 
             await self.declare_metrics({"example.py.dummy": metadata})
 
-If we were in a hurry, we could omit the metadata for our metric,
-see :meth:`Source.declare_metrics` on how to do that.
-
 To finally send some values, we override :meth:`Source.task`.
 This method gets called once our Source is connected and received its initial configuration:
 
