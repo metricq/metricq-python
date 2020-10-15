@@ -97,7 +97,8 @@ def rpc_handler(*function_tags):
             The names of the RPCs that this method should handle
 
     Note:
-        This only has an effect on methods of classes subclassing :class:`RPCDispatcher`.
+        This only has an effect on methods of classes implementing MetricQ clients,
+        i.e. :class:`Sink`, :class:`Source`, :class:`IntervalSource`, :class:`HistoryClient`, etc.
     """
 
     def decorator(handler):
