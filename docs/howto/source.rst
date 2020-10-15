@@ -62,7 +62,8 @@ here we tell the library to call :code:`_on_config` every time another client se
 containing our new configuration.
 
 So far out Source would work, but it wouldn't do anything useful at all.
-To change that, we first declare for which metric we want to send values:
+To change that, we first declare for which metric we want to send values,
+including some helpful :ref:`metadata<metric-metadata>`:
 
 .. code-block:: python
 

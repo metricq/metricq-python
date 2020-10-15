@@ -72,6 +72,11 @@ interpreted as described in :rfc:`2119`.
 
                 client-example-4198bdddab794e9f8d774a590651cdc1
 
+    Metadata
+        Each :term:`Metric` may be declared by a :term:`Source` with additional metadata attached.
+        These are arbitrary `field`-`value` pairs where `value` is an arbitrary `JSON` values.
+        See :ref:`metric-metadata` for more details.
+
 .. |metricq-sink-websocket| replace:: ``metric-sink-websocket``
 .. _metricq-sink-websocket: https://github.com/metricq/metricq-sink-websocket
 .. |kebab-case| replace:: ``kebab-case``
