@@ -31,8 +31,14 @@ Similarly to Sinks, we create a new Source by subclassing :class:`metricq.Source
         pass
 
 The Source will receive its configuration dynamically over the network.
+It is saved in a `JSON` format and can be entered and saved using a configuration frontend
+such as the `MetricQ Wizard <https://github.com/metricq/metricq-wizard-frontend>`_.
+For our purposes it's quite minimal, it only includes the rate at which to send values (in `Hz`):
+
+.. literalinclude:: ./sink-py-dummy.config.json
+
 This is different from the Sink we built in :ref:`sink-how-to`;
-we won't pass the rate at which new values are sent on the command line,
+we won't pass the update rate on the command line,
 instead we install a callback that is triggered every time a new configuration is received:
 
 .. code-block:: python
@@ -53,7 +59,7 @@ instead we install a callback that is triggered every time a new configuration i
 Clients on the MetricQ network communicate via an `RPC protocol <https://metricq.github.io/metricq-rpc-docs/>`_.
 The :func:`metricq.rpc_handler` decorator is a way to define a new handler for an RPC;
 here we tell the library to call :code:`_on_config` every time another client sends a :literal:`"config"`-RPC
-which contains our new configuration.
+containing our new configuration.
 
 So far out Source would work, but it wouldn't do anything useful at all.
 To change that, we first declare for which metric we want to send values:
@@ -126,11 +132,13 @@ which gets called at a constant rate:
 
         @metricq.rpc_handler("config")
         async def _on_config(self, **config):
-            rate = config["rate"]
             # Set the update period
+            rate = config["rate"]
             self.period = 1 / rate
 
-            await self.declare_metrics(["test.py.interval-dummy"])
+            ...
+
+            await self.declare_metrics({"test.py.interval-dummy": metadata})
 
 
         async def update(self):
@@ -139,3 +147,45 @@ which gets called at a constant rate:
                 time=metricq.Timestamp.now(),
                 value=random.random(),
             )
+
+Running a Source
+----------------
+
+:ref:`Similarly to Sinks<sink-how-to-run>`, a Source is started by calling :meth:`Source.run`.
+On construction, we need to supply a unique :term:`Token` for identification and a URL of the network.
+Calling :meth:`run()<Source.run>` then takes care of the rest:
+
+.. code-block:: python
+
+    class DummySource(metricq.Source):
+
+        ... # as above
+
+    if __name__ == "__main__":
+        source = DummySource(
+            token="sink-py-example",
+            management_url="amqp://localhost/",
+        )
+        source.run()
+
+
+Complete Example
+----------------
+
+To obtain the dependencies required for this example, install the ``examples``-extra from the `git repo <metricq-python>`_:
+
+.. _metricq-python: https://github.com/metricq/metricq-python
+
+.. code-block:: shell
+
+    $ pip install '.[examples]'
+
+and run it like so:
+
+.. code-block:: shell
+
+    $ ./examples/metricq_source.py
+
+----
+
+.. literalinclude:: /../examples/metricq_source.py

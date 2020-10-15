@@ -81,6 +81,8 @@ We provide :meth:`Sink.on_data`, which gets called every time a new data point a
 Here, ``metric`` is the name of the metric for which a new data point arrived; ``value`` holds the numeric value this metric had at time indicated by ``timestamp``.
 
 
+.. _sink-how-to-run:
+
 Running a Sink
 --------------
 
