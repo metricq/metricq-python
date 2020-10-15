@@ -1,0 +1,260 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Metric Metadata &mdash; MetricQ  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Glossary" href="glossary.html" />
+    <link rel="prev" title="Miscellaneous" href="api/misc.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MetricQ
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="howto/index.html">How to use this library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Metric Metadata</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#reserved-fields">Reserved Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#standardized-fields">Standardized Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MetricQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Metric Metadata</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/metadata.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="metric-metadata">
+<span id="id1"></span><h1>Metric Metadata<a class="headerlink" href="#metric-metadata" title="Permalink to this headline">¶</a></h1>
+<p>Each <a class="reference internal" href="glossary.html#term-Metric"><span class="xref std std-term">metric</span></a> known to the MetricQ network includes metadata in the form of arbitrary
+<cite>field</cite>-<cite>value</cite> pairs, where <cite>fields</cite> are strings and <cite>values</cite> are <cite>JSON</cite> values.
+Metadata keys are free-form and can be used to store any information useful and related to a metric.
+Though, some restrictions apply in the form of <a class="reference internal" href="#metric-metadata-reserved"><span class="std std-ref">reserved fields</span></a>
+and <a class="reference internal" href="#metricq-metadata-standardized"><span class="std std-ref">standardized fields</span></a>.</p>
+<div class="section" id="reserved-fields">
+<span id="metric-metadata-reserved"></span><h2>Reserved Fields<a class="headerlink" href="#reserved-fields" title="Permalink to this headline">¶</a></h2>
+<p>Reserved fields may not be used when declaring metadata for a metric.
+Tools consuming metadata are free to make use of these fields, though.</p>
+<dl class="simple">
+<dt>All fields starting with <code class="docutils literal notranslate"><span class="pre">_</span></code></dt><dd><p>Reserved for the metadata storage backend implementation.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">_id</span></code> (<cite>string</cite>)</dt><dd><p>The name of the metric associated to this set of metadata.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">date</span></code> (<cite>string</cite>)</dt><dd><p><a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> formatted date at which the metadata was last updated (by <a class="reference internal" href="api/source.html#metricq.Source.declare_metrics" title="metricq.Source.declare_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.declare_metrics()</span></code></a>).
+This is generated by the manager but can be overwritten by the source.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">historic</span></code> (<cite>bool</cite>)</dt><dd><p>Indicates whether this is stored in a database or not.
+Set by the manager.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">source</span></code> (<cite>string</cite>)</dt><dd><p><a class="reference internal" href="glossary.html#term-Token"><span class="xref std std-term">Token</span></a> of the source that produces this metric.
+Set by the manager.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="standardized-fields">
+<span id="metricq-metadata-standardized"></span><h2>Standardized Fields<a class="headerlink" href="#standardized-fields" title="Permalink to this headline">¶</a></h2>
+<p>Some <cite>fields</cite> have a defined meaning that should be respected.
+Consuming tools might handle and display these fields in a special way.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">description</span></code> (<cite>string</cite>)</dt><dd><p>A human readable description of the measured quantity.
+For example, <cite>“Temperature of rack A2 in room E13”</cite> would be a description for a metric <code class="docutils literal notranslate"><span class="pre">example.room-E13.rack-A2.temperature</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">unit</span></code> (<cite>string</cite>)</dt><dd><p>The unit symbol according to SI, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;V&quot;</span></code> for voltage or <code class="docutils literal notranslate"><span class="pre">&quot;s&quot;</span></code> for time.
+If necessary, the SI prefix is included, e.g., <code class="docutils literal notranslate"><span class="pre">&quot;kV&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ms&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;kiB/s&quot;</span></code>.
+Dimensionless quantities (e.g. counts) use either an empty string <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> or the appropriate symbol, e.g., <code class="docutils literal notranslate"><span class="pre">&quot;rad&quot;</span></code>.
+That is, the SI unit <cite>1</cite> is omitted as it is typically not shown.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">rate</span></code> (<cite>number</cite>)</dt><dd><p>The rate in <cite>Sa/s</cite> (samples per second) or <cite>Hz</cite> at which new values of this metric are typically produced.
+This is a hint to consumers and should be treated as a “best guess”,
+a source does not need to produce values at a perfectly constant rate.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">scope</span></code> (one of <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;next&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;point&quot;</span></code>)</dt><dd><p>This describes the temporal validity of a single measurement value.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">quantity</span></code> (<cite>string</cite>)</dt><dd><p>The quantity being measured.
+Ideally this is the same as the last segment of the metric name, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;power&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;temperature&quot;</span></code>.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="api/misc.html" class="btn btn-neutral float-left" title="Miscellaneous" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, TU Dresden
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -9,6 +9,7 @@ Source
         send,
         chunk_size,
         flush,
+        run,
     :member-order: groupwise
 
 .. autoclass:: metricq.IntervalSource

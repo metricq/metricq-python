@@ -12,6 +12,7 @@ Welcome to MetricQ's documentation!
 
     howto/index
     api/index
+    metadata
     glossary
 
 

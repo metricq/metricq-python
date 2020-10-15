@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Glossary" href="../glossary.html" />
+    <link rel="next" title="Metric Metadata" href="../metadata.html" />
     <link rel="prev" title="Source" href="source.html" /> 
 </head>
 
@@ -95,6 +95,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata.html">Metric Metadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 
@@ -643,15 +644,30 @@ Accepted units are:</p>
 <dl class="py function">
 <dt id="metricq.rpc_handler">
 <code class="sig-prename descclassname">&#64;</code><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">rpc_handler</code><a class="headerlink" href="#metricq.rpc_handler" title="Permalink to this definition">¶</a></dt>
-<dd><p>A Decorator to mark a method as an RPC handler</p>
+<dd><p>A Decorator to mark an <code class="code docutils literal notranslate"><span class="pre">async</span></code> method as an RPC handler</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>*function_tags</strong> – The names of the RPCs that this method should handle</p>
+<dd class="field-odd"><p><strong>*function_tags</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>)</em>) – The names of the RPCs that this method should handle</p>
 </dd>
 </dl>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">metricq</span> <span class="kn">import</span> <span class="n">Source</span><span class="p">,</span> <span class="n">rpc_handler</span>
+
+<span class="k">class</span> <span class="nc">MySource</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
+
+    <span class="o">...</span>
+
+    <span class="nd">@rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received configuration: </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="o">...</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This only has an effect on methods of classes subclassing <code class="xref py py-class docutils literal notranslate"><span class="pre">RPCDispatcher</span></code>.</p>
+<p>This only has an effect on methods of classes implementing MetricQ clients,
+i.e. <a class="reference internal" href="sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>, <a class="reference internal" href="source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a>, <a class="reference internal" href="source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryClient</span></code>, etc.</p>
 </div>
 </dd></dl>
 
@@ -666,7 +682,7 @@ Accepted units are:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../metadata.html" class="btn btn-neutral float-right" title="Metric Metadata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="source.html" class="btn btn-neutral float-left" title="Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

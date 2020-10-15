@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Miscellaneous" href="api/misc.html" /> 
+    <link rel="prev" title="Metric Metadata" href="metadata.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,6 +84,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="howto/index.html">How to use this library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Metric Metadata</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Glossary</a></li>
 </ul>
 
@@ -157,40 +158,49 @@ interpreted as described in <span class="target" id="index-0"></span><a class="r
 <dl class="glossary">
 <dt id="term-Client">Client</dt><dd><p>An application which connects to the MetricQ network.
 It is uniquely identified on the network by its <a class="reference internal" href="#term-Token"><span class="xref std std-term">Token</span></a>.
-Clients may produce and consume data (see <a class="reference internal" href="#term-Source"><span class="xref std std-term">Source</span></a>, <a class="reference internal" href="#term-Sink"><span class="xref std std-term">Sink</span></a>) or perform management task (see <a class="reference internal" href="#term-Manager"><span class="xref std std-term">Manager</span></a>).</p>
+Clients may produce and consume data (see <a class="reference internal" href="#term-Source"><span class="xref std std-term">Source</span></a>, <a class="reference internal" href="#term-Sink"><span class="xref std std-term">Sink</span></a>) or perform management tasks (see <a class="reference internal" href="#term-Manager"><span class="xref std std-term">Manager</span></a>).</p>
 </dd>
 <dt id="term-Data-Point">Data Point</dt><dd><p>A <em>time-value pair</em>, describing a measurement of a measurand at a specific point in time.</p>
 </dd>
 <dt id="term-Manager">Manager</dt><dd><p>A <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> responsible for managing RPC requests on the network.</p>
+</dd>
+<dt id="term-Metadata">Metadata</dt><dd><p>Each <a class="reference internal" href="#term-Metric"><span class="xref std std-term">Metric</span></a> may be declared by a <a class="reference internal" href="#term-Source"><span class="xref std std-term">Source</span></a> with additional metadata attached.
+These are arbitrary <cite>field</cite>-<cite>value</cite> pairs where <cite>value</cite> is an arbitrary <cite>JSON</cite> values.
+See <a class="reference internal" href="metadata.html#metric-metadata"><span class="std std-ref">Metric Metadata</span></a> for more details.</p>
 </dd>
 <dt id="term-Metric">Metric</dt><dd><p>A <em>named</em> series of <em>time-value pairs</em>, called <a class="reference internal" href="#term-Data-Point"><span class="xref std std-term">Data Points</span></a>.
 Metrics are at the core of the MetricQ data exchange.
 They describe how one specific <em>measurand</em> (e.g. the temperature in room E27 in ℃, CPU utilization on system <code class="docutils literal notranslate"><span class="pre">hal-9000</span></code> in %) evolves over time.
 Clients must ensure the following properties for metrics they produce:</p>
 <dl class="simple">
-<dt>Metric names must be <em>unique</em> on the network</dt><dd><p>For any metric <span class="math notranslate nohighlight">\(m\)</span>, at any point in time, there shall be <em>at most one</em> <a class="reference internal" href="#term-Source"><span class="xref std std-term">Source</span></a> online which produces data points for <span class="math notranslate nohighlight">\(m\)</span>.
+<dt>Metric names must be <em>unique</em> on the network</dt><dd><p>For any metric <span class="math notranslate nohighlight">\(m\)</span>, at any point in time, there shall be <em>at most one</em> <a class="reference internal" href="#term-Source"><span class="xref std std-term">Source</span></a> online producing data points for <span class="math notranslate nohighlight">\(m\)</span>.
 A single source may of course produce values for many distinct metrics.</p>
 </dd>
-<dt>Any valid Metric must be <em>strongly chronologically increasing</em>:</dt><dd><p>Suppose <span class="math notranslate nohighlight">\((t₁, v₁)\)</span> and <span class="math notranslate nohighlight">\((t₂, v₂)\)</span> are two Data Points of the same Metric.
+<dt>Any valid Metric must be ordered <em>strictly chronologically</em>:</dt><dd><p>Suppose <span class="math notranslate nohighlight">\((t₁, v₁)\)</span> and <span class="math notranslate nohighlight">\((t₂, v₂)\)</span> are two Data Points of the same Metric.
 If <span class="math notranslate nohighlight">\((t₁, v₁)\)</span> is sent to the network <em>before</em> <span class="math notranslate nohighlight">\((t₂, v₂)\)</span>, then it is necessary that <span class="math notranslate nohighlight">\(t₁ &lt; t₂\)</span>.</p>
 </dd>
 </dl>
 </dd>
-<dt id="term-Sink">Sink</dt><dd><p>A <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> which receives <a class="reference internal" href="#term-Data-Point"><span class="xref std std-term">Data Points</span></a> for one or several <a class="reference internal" href="#term-Metric"><span class="xref std std-term">Metrics</span></a> provided by other clients on the network.</p>
+<dt id="term-Sink">Sink</dt><dd><p>A <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> that receives <a class="reference internal" href="#term-Data-Point"><span class="xref std std-term">Data Points</span></a> for one or several <a class="reference internal" href="#term-Metric"><span class="xref std std-term">Metrics</span></a> provided by other clients on the network.</p>
 <p>Use <a class="reference internal" href="api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a> to build your own Sinks;
 see <a class="reference internal" href="howto/sink.html#sink-how-to"><span class="std std-ref">Building a MetricQ Sink</span></a> for a quick how-to.</p>
 </dd>
-<dt id="term-Source">Source</dt><dd><p>A <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> which produces <a class="reference internal" href="#term-Data-Point"><span class="xref std std-term">Data Points</span></a> for one or several <a class="reference internal" href="#term-Metric"><span class="xref std std-term">Metrics</span></a> which are then available for consumption by other Clients on the network.</p>
+<dt id="term-Source">Source</dt><dd><p>A <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> that produces <a class="reference internal" href="#term-Data-Point"><span class="xref std std-term">Data Points</span></a> for one or several <a class="reference internal" href="#term-Metric"><span class="xref std std-term">Metrics</span></a>.
+which are then available for consumption by other Clients on the network.</p>
 </dd>
 <dt id="term-Token">Token</dt><dd><p>A string uniquely identifying a <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> on the MetricQ network.</p>
-<dl class="simple">
+<dl>
 <dt>Tokens shall be <em>unique</em> on the network:</dt><dd><p>Any set of Clients online at the the same time must have distinct Tokens.</p>
 </dd>
 <dt>Tokens should be formatted in <a class="reference external" href="https://en.wiktionary.org/wiki/kebab_case"><code class="docutils literal notranslate"><span class="pre">kebab-case</span></code></a> and have a <em>prefix</em> identifying the type of source:</dt><dd><p>Examples of good client tokens are:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">source-hal-9000-sysinfo</span></code>: a <a class="reference internal" href="#term-Source"><span class="xref std std-term">Source</span></a> measuring system information of the system <code class="docutils literal notranslate"><span class="pre">hal-9000</span></code>, for example CPU utilization, free disc space, etc.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source-sysinfo-hal-9000</span></code>: a <a class="reference internal" href="#term-Source"><span class="xref std std-term">Source</span></a> measuring system information of the system <code class="docutils literal notranslate"><span class="pre">hal-9000</span></code>, for example CPU utilization, free disc space, etc.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">sink-websocket-sysinfo-display</span></code>: a <a class="reference internal" href="#term-Sink"><span class="xref std std-term">Sink</span></a> build with <a class="reference external" href="https://github.com/metricq/metricq-sink-websocket"><code class="docutils literal notranslate"><span class="pre">metric-sink-websocket</span></code></a> that streams system information to a web frontend for display</p></li>
 </ul>
+<p>Optimally, a client token is written as <code class="code docutils literal notranslate"><span class="pre">&lt;$type&gt;-&lt;$implementation&gt;-&lt;$instance&gt;</span></code>.
+<code class="code docutils literal notranslate"><span class="pre">source-sysinfo-hal-9000</span></code> identifies a client of type Source,
+using an implementation producing system-info related metrics,
+for the concrete host (instance) <code class="docutils literal notranslate"><span class="pre">hal-9000</span></code>.</p>
 </dd>
 </dl>
 <p>Sometimes it is desirable for multiple instances of the same Client to be online at same.
@@ -217,7 +227,7 @@ In the above example, this is done automatically.</p>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="api/misc.html" class="btn btn-neutral float-left" title="Miscellaneous" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metadata.html" class="btn btn-neutral float-left" title="Metric Metadata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
