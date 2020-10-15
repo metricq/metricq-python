@@ -90,11 +90,27 @@ class RPCDispatcher(metaclass=RPCMeta):
 
 
 def rpc_handler(*function_tags):
-    """A Decorator to mark a method as an RPC handler
+    """A Decorator to mark an :code:`async` method as an RPC handler
 
     Arguments:
-        *function_tags:
+        *function_tags (list(str)):
             The names of the RPCs that this method should handle
+
+    Example:
+
+        .. code-block:: python
+
+            from metricq import Source, rpc_handler
+
+            class MySource(Source):
+
+                ...
+
+                @rpc_handler("config")
+                async def on_config(self, **config):
+                    print(f"Received configuration: {config}")
+
+                ...
 
     Note:
         This only has an effect on methods of classes implementing MetricQ clients,
