@@ -48,7 +48,6 @@ class Subscriber(Sink):
             *args, add_uuid, connection_timeout=connection_timeout, **kwargs
         )
         self._metrics = metrics
-        self._queue = []
         self._timeout = connection_timeout
 
     def add(self, metric):
@@ -73,7 +72,7 @@ class Subscriber(Sink):
 
     @property
     def queue(self):
-        return self._queue
+        return self._data_queue
 
     async def on_data(self, id, time, value):
         return

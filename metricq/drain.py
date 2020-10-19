@@ -64,9 +64,7 @@ class Drain(Sink):
         assert len(self._metrics_queue) > 0
         self.sink_config(response)
 
-    async def _on_metrics_message(
-        self, message: aio_pika.IncomingMessage
-    ):  # keine Refs gefunden!!!!
+    async def _on_data_message(self, message: aio_pika.IncomingMessage):
 
         if message.type == "end":
             with message.process():
@@ -74,7 +72,7 @@ class Drain(Sink):
                 await self.rpc("sink.release", dataQueue=self._metrics_queue)
                 return
 
-        await super()._on_metrics_message(message)
+        await super()._on_data_message(message)
 
 
 class SimpleDrain(Drain):
