@@ -312,11 +312,11 @@ class Timestamp:
         """
 
     @classmethod
-    def from_posix_seconds(cls, seconds):
+    def from_posix_seconds(cls, seconds: Real):
         """Create a Timestamp from a POSIX timestamp
 
         Args:
-            seconds (scalar value): number of seconds since the UNIX epoch
+            seconds: number of seconds since the UNIX epoch
 
         Returns:
             :class:`Timestamp`
@@ -499,6 +499,15 @@ class Timestamp:
 
 @dataclass(frozen=True)
 class TimeValue:
+    """A `timestamp-value` pair.
+
+    Unpack it like so:
+
+    >>> tv = TimeValue(Timestamp.now(), 42.0)
+    >>> (timestamp, value) = tv
+
+    """
+
     __slots__ = ("timestamp", "value")
 
     timestamp: Timestamp
@@ -510,6 +519,8 @@ class TimeValue:
 
 @dataclass(frozen=True)
 class TimeAggregate:
+    """Summary of a metric's values within a certain period of time."""
+
     __slots__ = (
         "timestamp",
         "minimum",
@@ -521,14 +532,21 @@ class TimeAggregate:
     )
 
     timestamp: Timestamp
+    """starting time of this aggregate"""
     minimum: float
+    """minimum value"""
     maximum: float
+    """maximum value"""
     sum: float
+    """sum of all values"""
     count: int
+    """total number of values"""
     # TODO maybe convert to 1s based integral (rather than 1ns)
     integral: float
+    """integral of all values over the whole period"""
     # TODO maybe convert to Timedelta
     active_time: int
+    """time spanned by this aggregate in nanoseconds"""
 
     def __iter__(self):
         warnings.simplefilter("always", category=DeprecationWarning)  # turn off filter
@@ -591,16 +609,16 @@ class TimeAggregate:
         )
 
     @property
-    def mean(self):
+    def mean(self) -> float:
         if self.active_time > 0:
             return self.mean_integral
         else:
             return self.mean_sum
 
     @property
-    def mean_integral(self):
+    def mean_integral(self) -> float:
         return self.integral / self.active_time
 
     @property
-    def mean_sum(self):
+    def mean_sum(self) -> float:
         return self.sum / self.count

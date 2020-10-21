@@ -1,19 +1,33 @@
 Miscellaneous
 =============
 
+.. py:currentmodule:: metricq
+
 Timestamps
 ----------
 
-.. autoclass:: metricq.Timestamp
+.. autoclass:: Timestamp
     :members:
     :special-members: __str__, __lt__, __eq__, __add__
 
 Timedeltas (Durations)
 ----------------------
 
-.. autoclass:: metricq.Timedelta
+.. autoclass:: Timedelta
     :members:
     :special-members: __str__
+
+Time-value pairs and aggregates
+-------------------------------
+
+
+.. autoclass:: TimeValue
+    :members:
+    :undoc-members:
+
+.. autoclass:: TimeAggregate
+    :members:
+    :member-order: bysource
 
 RPC handling
 ------------
