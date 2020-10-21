@@ -35,6 +35,9 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_rtd_theme",
     "sphinx_autodoc_typehints",
+    "sphinxcontrib_trio",
+    "scanpydoc.elegant_typehints",
+    "scanpydoc.definition_list_typed_field",
 ]
 
 intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
