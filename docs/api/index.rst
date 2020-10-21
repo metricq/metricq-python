@@ -7,5 +7,6 @@ API Reference
 
     sink
     source
+    history-client
     client-common
     misc

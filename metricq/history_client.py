@@ -29,7 +29,7 @@
 import asyncio
 import uuid
 from enum import Enum
-from typing import Optional
+from typing import Iterator, Optional
 
 import aio_pika
 
@@ -44,10 +44,27 @@ logger = get_logger(__name__)
 
 
 class HistoryRequestType(Enum):
+    """The type of metric data to request.
+
+    Use the value below to select which to request in :meth:`.HistoryClient.history_data_request`.
+    See :class:`HistoryResponse` for a distinction between `raw values` and `aggregates`.
+    """
+
     AGGREGATE_TIMELINE = history_pb2.HistoryRequest.AGGREGATE_TIMELINE
+    """Retrieve a timeline of aggregates with the specified `max_interval` each.
+    """
+
     AGGREGATE = history_pb2.HistoryRequest.AGGREGATE
+    """Retrieve a single aggregate over the specified duration.
+    """
+
     LAST_VALUE = history_pb2.HistoryRequest.LAST_VALUE
+    """Only retrieve the last data point recorded for a metric.
+    """
+
     FLEX_TIMELINE = history_pb2.HistoryRequest.FLEX_TIMELINE
+    """Retrieve either aggregates or raw values, depending on the `max_interval.`
+    """
 
 
 class HistoryResponseType(Enum):
@@ -57,7 +74,11 @@ class HistoryResponseType(Enum):
 
 
 class HistoryResponse:
-    """ Currently read-only """
+    """Response to a history request containing the historical data.
+
+    Providers for historic data send either `raw values` (`time-value` pairs, see :class:`.TimeValue`)
+    or `aggregates` (see :class:`.TimeAggregate`).
+    """
 
     def __init__(self, proto: history_pb2.HistoryResponse, request_duration=None):
         self.request_duration = request_duration
@@ -89,11 +110,17 @@ class HistoryResponse:
     def mode(self):
         return self._mode
 
-    def values(self, convert=False):
-        """
-        :parameter `convert` other responses to values transparently
-        :raises `ValueError` if `convert` is False and the underlying response does not contain aggregates
-        :returns a Generator of `TimeValue`
+    def values(self, convert: bool = False) -> Iterator[TimeValue]:
+        """An iterator over all data points included in this response.
+
+        Args:
+            convert:
+                Convert values transparently if response does not contain raw values.
+                If the response contains aggregates, this will yield the mean value for each aggregate.
+
+        Raises:
+            :class:`ValueError`:
+                if :code:`convert=False` and the response does not contain raw values.
         """
         time_ns = 0
         if self._mode == HistoryResponseType.VALUES:
@@ -129,11 +156,17 @@ class HistoryResponse:
 
         raise ValueError("Invalid HistoryResponse mode")
 
-    def aggregates(self, convert=False):
-        """
-        :parameter `convert` other responses to aggregates transparently
-        :raises `ValueError` if convert is False and the underlying response does not contain aggregates
-        :returns a Generator of `TimeAggregate`
+    def aggregates(self, convert: bool = False) -> Iterator[TimeAggregate]:
+        """An iterator over aggregates contained in this response.
+
+        Args:
+            convert:
+                Convert values to aggregates transparently if response does not contain aggregates.
+                If the response contains `raw values`, this will yield an aggregate for each value.
+
+        Raises:
+            ValueError:
+                if :code:`convert=False` and the underlying response does not contain aggregates
         """
         time_ns = 0
         if self._mode == HistoryResponseType.AGGREGATES:
@@ -195,6 +228,8 @@ class HistoryResponse:
 
 
 class HistoryClient(Client):
+    """A MetricQ client to access historical metric data."""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -207,6 +242,7 @@ class HistoryClient(Client):
         self._request_futures = dict()
 
     async def connect(self):
+        """Connect to the MetricQ network and register this client."""
         await super().connect()
         response = await self.rpc("history.register")
         logger.debug("register response: {}", response)
@@ -246,7 +282,24 @@ class HistoryClient(Client):
         interval_max: Optional[Timedelta],
         request_type: HistoryRequestType = HistoryRequestType.AGGREGATE_TIMELINE,
         timeout=60,
-    ):
+    ) -> HistoryResponse:
+        """Request historical data points of a metric.
+
+        Args:
+            metric:
+                The metric of interest.
+            start_time:
+                Only include data points from this point in time onward.
+            end_time:
+                Only include data points up to this point in time.
+            interval_max:
+                Maximum time between data points in response.
+            request_type:
+                The type of metric data to request.
+                See :class:`.HistoryRequestType`.
+            timeout:
+                Operation timeout in seconds.
+        """
         if not metric:
             raise ValueError("metric must be a non-empty string")
         correlation_id = "mq-history-py-{}-{}".format(self.token, uuid.uuid4().hex)
@@ -287,7 +340,15 @@ class HistoryClient(Client):
             del self._request_futures[correlation_id]
         return result
 
-    async def history_last_value(self, metric: str, timeout=60):
+    async def history_last_value(self, metric: str, timeout=60) -> TimeValue:
+        """Fetch the last value recorded for a metric.
+
+        Args:
+            metric:
+                name of the metric of interest
+            timeout:
+                operation timeout in seconds
+        """
         result = await self.history_data_request(
             metric,
             start_time=None,
