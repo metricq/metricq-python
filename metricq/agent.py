@@ -142,7 +142,10 @@ class Agent(RPCDispatcher):
         )
 
     def derive_address(self, address: str):
-        """ Add the credentials from the management connection to the provided address """
+        """Add the credentials from the management connection to the provided address
+
+        :meta private:
+        """
         management_obj = URL(self._management_url)
         vhost_prefix = "vhost:"
         if address.startswith(vhost_prefix):
@@ -192,6 +195,7 @@ class Agent(RPCDispatcher):
         return connection
 
     async def connect(self):
+        """Connect to the MetricQ network"""
         logger.info(
             "establishing management connection to {}",
             URL(self._management_url).with_password("***"),
@@ -297,7 +301,8 @@ class Agent(RPCDispatcher):
         cleanup_on_response=True,
         **kwargs,
     ):
-        """
+        """Call an RPC over the network.
+
         :param function: tag of the RPC
         :param exchange:
         :param routing_key:
@@ -310,6 +315,8 @@ class Agent(RPCDispatcher):
         :param kwargs: any additional arguments are given to the RPC itself
             Remember that we use javaScriptSnakeCase
         :return:
+
+        :meta private:
         """
         function = kwargs.get("function")
         if function is None:
@@ -388,11 +395,14 @@ class Agent(RPCDispatcher):
             self.event_loop.call_later(timeout, cleanup)
 
     async def rpc_consume(self, extra_queues=[]):
-        """
-        Start consuming RPCs
-        Typically this is called at the end of connect() once the Agent is prepared
-        to handle RPCs
-        :param extra_queues: additional queues on which to receive RPCs
+        """Start consuming RPCs
+
+        :meta private:
+
+        Typically this is called at the end of :meth:`Client.connect` once the Agent is prepared to handle RPCs.
+
+        Args:
+            extra_queues: additional queues on which to receive RPCs
         """
         logger.info("starting RPC consume")
         queues = [self.management_rpc_queue] + extra_queues
@@ -402,6 +412,11 @@ class Agent(RPCDispatcher):
         )
 
     def on_signal(self, signal):
+        """Callback invoked when a signal is received.
+
+        Override this method for custom signal handling.
+        By default it schedules the Client to stop by calling :meth:`stop`.
+        """
         logger.info("Received signal {}, stopping...", signal)
         self._schedule_stop(
             exception=None if signal == "SIGINT" else ReceivedSignalError(signal)

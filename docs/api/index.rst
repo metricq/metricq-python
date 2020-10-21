@@ -7,4 +7,5 @@ API Reference
 
     sink
     source
+    client-common
     misc

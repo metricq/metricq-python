@@ -64,12 +64,19 @@ class RPCMeta(ABCMeta):
 
 class RPCDispatcher(metaclass=RPCMeta):
     async def rpc_dispatch(self, function, **kwargs):
-        """
-        Dispatches an incoming (or fake) RPC to all handlers, beginning with the base class handlers
-        return values are only allowed for unique RPC handlers.
-        Only keyword arguments are supported in RPCs
-        :param function the tag of the function to be called.
-        WARNING: DO NOT RENAME. It must be called function because it is called directly with the json dict
+        """Dispatch an incoming (or fake) RPC to all handlers, beginning with the base class handlers
+
+        :meta private:
+
+        Return values are only allowed for unique RPC handlers.
+        Only keyword arguments are supported in RPCs.
+
+        Args:
+            function: the tag of the function to be called.
+
+        Warning:
+            DO NOT RENAME.
+            It must be called :literal:`function` because it is called directly with the json dict
         """
         if function not in self._rpc_handlers:
             raise KeyError("Missing rpc handler for {}".format(function))
@@ -89,11 +96,11 @@ class RPCDispatcher(metaclass=RPCMeta):
                 )
 
 
-def rpc_handler(*function_tags):
+def rpc_handler(*function_tags: str):
     """A Decorator to mark an :code:`async` method as an RPC handler
 
     Arguments:
-        *function_tags (list(str)):
+        function_tags:
             The names of the RPCs that this method should handle
 
     Example:
@@ -113,7 +120,7 @@ def rpc_handler(*function_tags):
                 ...
 
     Note:
-        This only has an effect on methods of classes implementing MetricQ clients,
+        This only has an effect on methods of classes implementing MetricQ clients (see :class:`Client`),
         i.e. :class:`Sink`, :class:`Source`, :class:`IntervalSource`, :class:`HistoryClient`, etc.
     """
 
