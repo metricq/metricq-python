@@ -152,9 +152,8 @@ which gets called at a constant rate:
 Running a Source
 ----------------
 
-:ref:`Similarly to Sinks<sink-how-to-run>`, a Source is started by calling :meth:`Source.run`.
+:ref:`Similarly to Sinks<sink-how-to-run>`, a Source is started by calling :meth:`run<Client.run>`.
 On construction, we need to supply a unique :term:`Token` for identification and a URL of the network.
-Calling :meth:`run()<Source.run>` then takes care of the rest:
 
 .. code-block:: python
 

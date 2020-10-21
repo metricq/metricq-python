@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>History Client &mdash; MetricQ  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Common client operation" href="client-common.html" />
+    <link rel="prev" title="Source" href="source.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetricQ
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">How to use this library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sink.html">Sink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source.html">Source</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">History Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client-common.html">Common client operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata.html">Metric Metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetricQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">API Reference</a> &raquo;</li>
+        
+      <li>History Client</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/history-client.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="history-client">
+<h1>History Client<a class="headerlink" href="#history-client" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="metricq.HistoryClient">
+<em class="property">class </em><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">HistoryClient</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.HistoryClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>A MetricQ client to access historical metric data.</p>
+<dl class="py method">
+<dt id="metricq.HistoryClient.connect">
+<em class="property">await </em><code class="sig-name descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.HistoryClient.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to the MetricQ network and register this client.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metricq.HistoryClient.history_data_request">
+<em class="property">await </em><code class="sig-name descname">history_data_request</code><span class="sig-paren">(</span><em class="sig-param">metric</em>, <em class="sig-param">start_time</em>, <em class="sig-param">end_time</em>, <em class="sig-param">interval_max</em>, <em class="sig-param">request_type=&lt;HistoryRequestType.AGGREGATE_TIMELINE: 0&gt;</em>, <em class="sig-param">timeout=60</em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.HistoryClient.history_data_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request historical data points of a metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>metric</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The metric of interest.</p>
+</dd>
+<dt><strong>start_time</strong> : <span class="annotation terse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code>]</span></dt><dd><p>Only include data points from this point in time onward.</p>
+</dd>
+<dt><strong>end_time</strong> : <span class="annotation terse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code>]</span></dt><dd><p>Only include data points up to this point in time.</p>
+</dd>
+<dt><strong>interval_max</strong> : <span class="annotation terse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code>]</span></dt><dd><p>Maximum time between data points in response.</p>
+</dd>
+<dt><strong>request_type</strong> : <span class="annotation terse"><a class="reference internal" href="#metricq.history_client.HistoryRequestType" title="metricq.history_client.HistoryRequestType"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryRequestType</span></code></a></span><span class="annotation full"><a class="reference internal" href="#metricq.history_client.HistoryRequestType" title="metricq.history_client.HistoryRequestType"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryRequestType</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">&lt;HistoryRequestType.AGGREGATE_TIMELINE:</span> <span class="pre">0&gt;</span></code>)</dt><dd><p>The type of metric data to request.
+See <a class="reference internal" href="#metricq.history_client.HistoryRequestType" title="metricq.history_client.HistoryRequestType"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryRequestType</span></code></a>.</p>
+</dd>
+<dt><strong>timeout</strong></dt><dd><p>Operation timeout in seconds.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><span class="annotation terse"><a class="reference internal" href="#metricq.history_client.HistoryResponse" title="metricq.history_client.HistoryResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryResponse</span></code></a></span><span class="annotation full"><a class="reference internal" href="#metricq.history_client.HistoryResponse" title="metricq.history_client.HistoryResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryResponse</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metricq.HistoryClient.history_last_value">
+<em class="property">await </em><code class="sig-name descname">history_last_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metric</span></em>, <em class="sig-param"><span class="n">timeout</span><span class="o">=</span><span class="default_value">60</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.HistoryClient.history_last_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch the last value recorded for a metric.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>metric</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>name of the metric of interest</p>
+</dd>
+<dt><strong>timeout</strong></dt><dd><p>operation timeout in seconds</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><span class="annotation terse"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeValue</span></code></span><span class="annotation full"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeValue</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="metricq.history_client.HistoryRequestType">
+<em class="property">class </em><code class="sig-prename descclassname">metricq.history_client.</code><code class="sig-name descname">HistoryRequestType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.history_client.HistoryRequestType" title="Permalink to this definition">¶</a></dt>
+<dd><p>The type of metric data to request.</p>
+<p>Use the value below to select which to request in <a class="reference internal" href="#metricq.HistoryClient.history_data_request" title="metricq.HistoryClient.history_data_request"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.history_data_request()</span></code></a>.
+See <a class="reference internal" href="#metricq.history_client.HistoryResponse" title="metricq.history_client.HistoryResponse"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryResponse</span></code></a> for a distinction between <cite>raw values</cite> and <cite>aggregates</cite>.</p>
+<dl class="py attribute">
+<dt id="metricq.history_client.HistoryRequestType.AGGREGATE_TIMELINE">
+<code class="sig-name descname">AGGREGATE_TIMELINE</code><em class="property"> = 0</em><a class="headerlink" href="#metricq.history_client.HistoryRequestType.AGGREGATE_TIMELINE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a timeline of aggregates with the specified <cite>max_interval</cite> each.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metricq.history_client.HistoryRequestType.AGGREGATE">
+<code class="sig-name descname">AGGREGATE</code><em class="property"> = 1</em><a class="headerlink" href="#metricq.history_client.HistoryRequestType.AGGREGATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a single aggregate over the specified duration.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metricq.history_client.HistoryRequestType.LAST_VALUE">
+<code class="sig-name descname">LAST_VALUE</code><em class="property"> = 2</em><a class="headerlink" href="#metricq.history_client.HistoryRequestType.LAST_VALUE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only retrieve the last data point recorded for a metric.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metricq.history_client.HistoryRequestType.FLEX_TIMELINE">
+<code class="sig-name descname">FLEX_TIMELINE</code><em class="property"> = 3</em><a class="headerlink" href="#metricq.history_client.HistoryRequestType.FLEX_TIMELINE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve either aggregates or raw values, depending on the <cite>max_interval.</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="metricq.history_client.HistoryResponse">
+<em class="property">class </em><code class="sig-prename descclassname">metricq.history_client.</code><code class="sig-name descname">HistoryResponse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">proto</span></em>, <em class="sig-param"><span class="n">request_duration</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.history_client.HistoryResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Response to a history request containing the historical data.</p>
+<p>Providers for historic data send either <cite>raw values</cite> (<cite>time-value</cite> pairs, see <a class="reference internal" href="misc.html#metricq.TimeValue" title="metricq.TimeValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeValue</span></code></a>)
+or <cite>aggregates</cite> (see <a class="reference internal" href="misc.html#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a>).</p>
+<dl class="py method">
+<dt id="metricq.history_client.HistoryResponse.aggregates">
+<em class="property">for ... in </em><code class="sig-name descname">aggregates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">convert</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.history_client.HistoryResponse.aggregates" title="Permalink to this definition">¶</a></dt>
+<dd><p>An iterator over aggregates contained in this response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>convert</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</dt><dd><p>Convert values to aggregates transparently if response does not contain aggregates.
+If the response contains <cite>raw values</cite>, this will yield an aggregate for each value.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – if <code class="code docutils literal notranslate"><span class="pre">convert=False</span></code> and the underlying response does not contain aggregates</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code>]</span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metricq.history_client.HistoryResponse.values">
+<em class="property">for ... in </em><code class="sig-name descname">values</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">convert</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.history_client.HistoryResponse.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>An iterator over all data points included in this response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>convert</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</dt><dd><p>Convert values transparently if response does not contain raw values.
+If the response contains aggregates, this will yield the mean value for each aggregate.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – if <code class="code docutils literal notranslate"><span class="pre">convert=False</span></code> and the response does not contain raw values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">TimeValue</span></code>]</span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterator" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterator</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">TimeValue</span></code>]</span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="client-common.html" class="btn btn-neutral float-right" title="Common client operation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="source.html" class="btn btn-neutral float-left" title="Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, TU Dresden
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

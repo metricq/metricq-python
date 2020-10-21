@@ -34,6 +34,7 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="API Reference" href="../api/index.html" />
@@ -296,9 +297,8 @@ which gets called at a constant rate:</p>
 </div>
 <div class="section" id="running-a-source">
 <h2>Running a Source<a class="headerlink" href="#running-a-source" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="sink.html#sink-how-to-run"><span class="std std-ref">Similarly to Sinks</span></a>, a Source is started by calling <a class="reference internal" href="../api/source.html#metricq.Source.run" title="metricq.Source.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.run()</span></code></a>.
-On construction, we need to supply a unique <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">Token</span></a> for identification and a URL of the network.
-Calling <a class="reference internal" href="../api/source.html#metricq.Source.run" title="metricq.Source.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> then takes care of the rest:</p>
+<p><a class="reference internal" href="sink.html#sink-how-to-run"><span class="std std-ref">Similarly to Sinks</span></a>, a Source is started by calling <a class="reference internal" href="../api/client-common.html#metricq.Client.run" title="metricq.Client.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run</span></code></a>.
+On construction, we need to supply a unique <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">Token</span></a> for identification and a URL of the network.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
 
     <span class="o">...</span> <span class="c1"># as above</span>

@@ -34,10 +34,11 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Metric Metadata" href="../metadata.html" />
-    <link rel="prev" title="Source" href="source.html" /> 
+    <link rel="prev" title="Common client operation" href="client-common.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,9 +88,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="sink.html">Sink</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source.html">Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history-client.html">History Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client-common.html">Common client operation</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Miscellaneous</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#timestamps">Timestamps</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#timedeltas-durations">Timedeltas (Durations)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#time-value-pairs-and-aggregates">Time-value pairs and aggregates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rpc-handling">RPC handling</a></li>
 </ul>
 </li>
@@ -173,7 +177,10 @@
 <dd><p>A MetricQ Timestamp</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>nanoseconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – number of nanoseconds elapsed since the UNIX epoch</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nanoseconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>number of nanoseconds elapsed since the UNIX epoch</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <dl class="py method">
@@ -188,7 +195,10 @@
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>delta</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code>) – a time duration, possibly negative</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>delta</strong> : <span class="annotation terse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></span><span class="annotation full"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></span></dt><dd><p>a time duration, possibly negative</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
@@ -208,7 +218,10 @@
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>other</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a>) – another timestamp</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>other</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></span></dt><dd><p>another timestamp</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -227,7 +240,10 @@
 Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference external" href="https://docs.python.org/3/library/functools.html#functools.total_ordering" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">functools.total_ordering()</span></code></a>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>other</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code>) – another timestamp</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>other</strong> : <span class="annotation terse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></span><span class="annotation full"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></span></dt><dd><p>another timestamp</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -260,12 +276,12 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 
 <dl class="py method">
 <dt id="metricq.Timestamp.datetime">
-<em class="property">property </em><code class="sig-name descname">datetime</code><a class="headerlink" href="#metricq.Timestamp.datetime" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">datetime</code><a class="headerlink" href="#metricq.Timestamp.datetime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an aware UTC datetime object</p>
 <p>All MetricQ timestamps are POSIX timestamps, hence UTC.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></p>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -276,7 +292,10 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 <dd><p>Create a Timestamp from an aware datetime object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dt</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a>) – an aware datetime object</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dt</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></span></dt><dd><p>an aware datetime object</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
@@ -294,7 +313,10 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>iso_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – a date-time string matching the format <code class="docutils literal notranslate"><span class="pre">%Y-%m-%dT%H:%M:%S.%fZ</span></code>, see <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime.strptime" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">datetime.datetime.strptime()</span></code></a></p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>iso_string</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>a date-time string matching the format <code class="docutils literal notranslate"><span class="pre">%Y-%m-%dT%H:%M:%S.%fZ</span></code>, see <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime.strptime" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">datetime.datetime.strptime()</span></code></a></p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
@@ -323,7 +345,10 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 <dd><p>Create a Timestamp from a POSIX timestamp</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>seconds</strong> (<em>scalar value</em>) – number of seconds since the UNIX epoch</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>seconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span></dt><dd><p>number of seconds since the UNIX epoch</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
@@ -344,25 +369,25 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 
 <dl class="py method">
 <dt id="metricq.Timestamp.posix">
-<em class="property">property </em><code class="sig-name descname">posix</code><a class="headerlink" href="#metricq.Timestamp.posix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">posix</code><a class="headerlink" href="#metricq.Timestamp.posix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of seconds since the UNIX epoch</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timestamp.posix_ms">
-<em class="property">property </em><code class="sig-name descname">posix_ms</code><a class="headerlink" href="#metricq.Timestamp.posix_ms" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">posix_ms</code><a class="headerlink" href="#metricq.Timestamp.posix_ms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of milliseconds since the UNIX epoch</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timestamp.posix_ns">
-<em class="property">property </em><code class="sig-name descname">posix_ns</code><a class="headerlink" href="#metricq.Timestamp.posix_ns" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">posix_ns</code><a class="headerlink" href="#metricq.Timestamp.posix_ns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of nanoseconds since the UNIX epoch</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timestamp.posix_us">
-<em class="property">property </em><code class="sig-name descname">posix_us</code><a class="headerlink" href="#metricq.Timestamp.posix_us" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">posix_us</code><a class="headerlink" href="#metricq.Timestamp.posix_us" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of microseconds since the UNIX epoch</p>
 </dd></dl>
 
@@ -377,7 +402,10 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 <dd><p>A (possibly negative) duration of time</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>nanoseconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – duration in nanoseconds</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>nanoseconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>duration in nanoseconds</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <dl>
@@ -479,11 +507,14 @@ the same as <code class="code docutils literal notranslate"><span class="pre">Ti
 
 <dl class="py method">
 <dt id="metricq.Timedelta.from_ms">
-<em class="property">static </em><code class="sig-name descname">from_ms</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">milliseconds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_ms" title="Permalink to this definition">¶</a></dt>
+<em class="property">staticmethod </em><code class="sig-name descname">from_ms</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">milliseconds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_ms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a duration from a number of milliseconds</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>milliseconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a>) – number of milliseconds</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>milliseconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span></dt><dd><p>number of milliseconds</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> object</p>
@@ -493,11 +524,14 @@ the same as <code class="code docutils literal notranslate"><span class="pre">Ti
 
 <dl class="py method">
 <dt id="metricq.Timedelta.from_s">
-<em class="property">static </em><code class="sig-name descname">from_s</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seconds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_s" title="Permalink to this definition">¶</a></dt>
+<em class="property">staticmethod </em><code class="sig-name descname">from_s</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seconds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_s" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a duration from a number of seconds</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>seconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a>) – number of seconds</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>seconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span></dt><dd><p>number of seconds</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> object</p>
@@ -507,7 +541,7 @@ the same as <code class="code docutils literal notranslate"><span class="pre">Ti
 
 <dl class="py method">
 <dt id="metricq.Timedelta.from_string">
-<em class="property">static </em><code class="sig-name descname">from_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">duration_str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_string" title="Permalink to this definition">¶</a></dt>
+<em class="property">staticmethod </em><code class="sig-name descname">from_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">duration_str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a human-readable string representation of a duration.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;One day has </span><span class="si">{}</span><span class="s2"> seconds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;1 day&quot;</span><span class="p">))</span>
 <span class="go">&#39;One day has 86400.0s seconds&#39;</span>
@@ -515,7 +549,8 @@ the same as <code class="code docutils literal notranslate"><span class="pre">Ti
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>duration_str</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) – <p>A duration string in the form of “<cite>&lt;number&gt; &lt;unit&gt;</cite>”.
+<dd class="field-odd"><dl class="simple">
+<dt><strong>duration_str</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p><p>A duration string in the form of “<cite>&lt;number&gt; &lt;unit&gt;</cite>”.
 Accepted units are:</p>
 <blockquote>
 <div><table class="docutils align-default">
@@ -564,6 +599,8 @@ Accepted units are:</p>
 </div></blockquote>
 </p>
 </dd>
+</dl>
+</dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The parsed <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> object</p>
 </dd>
@@ -575,11 +612,14 @@ Accepted units are:</p>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.from_timedelta">
-<em class="property">static </em><code class="sig-name descname">from_timedelta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">delta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_timedelta" title="Permalink to this definition">¶</a></dt>
+<em class="property">staticmethod </em><code class="sig-name descname">from_timedelta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">delta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_timedelta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert from a standard <code class="docutils literal notranslate"><span class="pre">timedelta</span></code> object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a>) – a standard <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a> object</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>delta</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a></span></dt><dd><p>a standard <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a> object</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> object</p>
@@ -589,11 +629,14 @@ Accepted units are:</p>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.from_us">
-<em class="property">static </em><code class="sig-name descname">from_us</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">microseconds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_us" title="Permalink to this definition">¶</a></dt>
+<em class="property">staticmethod </em><code class="sig-name descname">from_us</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">microseconds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_us" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a duration from a number of microseconds</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>microseconds</strong> (<a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a>) – number of microseconds</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>microseconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span></dt><dd><p>number of microseconds</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> object</p>
@@ -603,37 +646,109 @@ Accepted units are:</p>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.ms">
-<em class="property">property </em><code class="sig-name descname">ms</code><a class="headerlink" href="#metricq.Timedelta.ms" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ms</code><a class="headerlink" href="#metricq.Timedelta.ms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of milliseconds in this duration</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.ns">
-<em class="property">property </em><code class="sig-name descname">ns</code><a class="headerlink" href="#metricq.Timedelta.ns" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ns</code><a class="headerlink" href="#metricq.Timedelta.ns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of nanoseconds in this duration</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.s">
-<em class="property">property </em><code class="sig-name descname">s</code><a class="headerlink" href="#metricq.Timedelta.s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">s</code><a class="headerlink" href="#metricq.Timedelta.s" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of seconds in this duration</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.timedelta">
-<em class="property">property </em><code class="sig-name descname">timedelta</code><a class="headerlink" href="#metricq.Timedelta.timedelta" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">timedelta</code><a class="headerlink" href="#metricq.Timedelta.timedelta" title="Permalink to this definition">¶</a></dt>
 <dd><p>This duration as a standard <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a> object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a></p>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.us">
-<em class="property">property </em><code class="sig-name descname">us</code><a class="headerlink" href="#metricq.Timedelta.us" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">us</code><a class="headerlink" href="#metricq.Timedelta.us" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of microseconds in this duration</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="time-value-pairs-and-aggregates">
+<h2>Time-value pairs and aggregates<a class="headerlink" href="#time-value-pairs-and-aggregates" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="metricq.TimeValue">
+<em class="property">class </em><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">TimeValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">timestamp</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <cite>timestamp-value</cite> pair.</p>
+<p>Unpack it like so:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tv</span> <span class="o">=</span> <span class="n">TimeValue</span><span class="p">(</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="mf">42.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">=</span> <span class="n">tv</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt id="metricq.TimeValue.timestamp">
+<code class="sig-name descname">timestamp</code><em class="property">: metricq.types.Timestamp</em><a class="headerlink" href="#metricq.TimeValue.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="metricq.TimeValue.value">
+<code class="sig-name descname">value</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></em><a class="headerlink" href="#metricq.TimeValue.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="metricq.TimeAggregate">
+<em class="property">class </em><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">TimeAggregate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">timestamp</span></em>, <em class="sig-param"><span class="n">minimum</span></em>, <em class="sig-param"><span class="n">maximum</span></em>, <em class="sig-param"><span class="n">sum</span></em>, <em class="sig-param"><span class="n">count</span></em>, <em class="sig-param"><span class="n">integral</span></em>, <em class="sig-param"><span class="n">active_time</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Summary of a metric’s values within a certain period of time.</p>
+<dl class="py attribute">
+<dt id="metricq.TimeAggregate.timestamp">
+<code class="sig-name descname">timestamp</code><em class="property">: metricq.types.Timestamp</em><a class="headerlink" href="#metricq.TimeAggregate.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>starting time of this aggregate</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metricq.TimeAggregate.minimum">
+<code class="sig-name descname">minimum</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></em><a class="headerlink" href="#metricq.TimeAggregate.minimum" title="Permalink to this definition">¶</a></dt>
+<dd><p>minimum value</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metricq.TimeAggregate.maximum">
+<code class="sig-name descname">maximum</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></em><a class="headerlink" href="#metricq.TimeAggregate.maximum" title="Permalink to this definition">¶</a></dt>
+<dd><p>maximum value</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metricq.TimeAggregate.sum">
+<code class="sig-name descname">sum</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></em><a class="headerlink" href="#metricq.TimeAggregate.sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>sum of all values</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metricq.TimeAggregate.count">
+<code class="sig-name descname">count</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></em><a class="headerlink" href="#metricq.TimeAggregate.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>total number of values</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metricq.TimeAggregate.integral">
+<code class="sig-name descname">integral</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></em><a class="headerlink" href="#metricq.TimeAggregate.integral" title="Permalink to this definition">¶</a></dt>
+<dd><p>integral of all values over the whole period</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="metricq.TimeAggregate.active_time">
+<code class="sig-name descname">active_time</code><em class="property">: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a></em><a class="headerlink" href="#metricq.TimeAggregate.active_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>time spanned by this aggregate in nanoseconds</p>
 </dd></dl>
 
 </dd></dl>
@@ -641,13 +756,16 @@ Accepted units are:</p>
 </div>
 <div class="section" id="rpc-handling">
 <h2>RPC handling<a class="headerlink" href="#rpc-handling" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
+<dl class="py decorator">
 <dt id="metricq.rpc_handler">
-<code class="sig-prename descclassname">&#64;</code><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">rpc_handler</code><a class="headerlink" href="#metricq.rpc_handler" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">&#64;</code><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">rpc_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">function_tags</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.rpc_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Decorator to mark an <code class="code docutils literal notranslate"><span class="pre">async</span></code> method as an RPC handler</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>*function_tags</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>)</em>) – The names of the RPCs that this method should handle</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>function_tags</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>The names of the RPCs that this method should handle</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -666,8 +784,8 @@ Accepted units are:</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This only has an effect on methods of classes implementing MetricQ clients,
-i.e. <a class="reference internal" href="sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>, <a class="reference internal" href="source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a>, <a class="reference internal" href="source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryClient</span></code>, etc.</p>
+<p>This only has an effect on methods of classes implementing MetricQ clients (see <a class="reference internal" href="client-common.html#metricq.Client" title="metricq.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>),
+i.e. <a class="reference internal" href="sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>, <a class="reference internal" href="source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a>, <a class="reference internal" href="source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a>, <a class="reference internal" href="history-client.html#metricq.HistoryClient" title="metricq.HistoryClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryClient</span></code></a>, etc.</p>
 </div>
 </dd></dl>
 
@@ -685,7 +803,7 @@ i.e. <a class="reference internal" href="sink.html#metricq.Sink" title="metricq.
         <a href="../metadata.html" class="btn btn-neutral float-right" title="Metric Metadata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="source.html" class="btn btn-neutral float-left" title="Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="client-common.html" class="btn btn-neutral float-left" title="Common client operation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

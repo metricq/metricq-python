@@ -1,5 +1,7 @@
 .. _sink-how-to:
 
+.. py:currentmodule:: metricq
+
 Building a MetricQ Sink
 =======================
 
@@ -87,7 +89,7 @@ Running a Sink
 --------------
 
 :class:`metricq.Sink` is designed as an asynchronous callback-based interface, so we won't be calling the above methods directly.
-Instead, it provides :meth:`Sink.run`, which handles establishing a connection, keeps track track of all the details of the MetricQ protocol and calls :meth:`Sink.on_data` once new data points arrive.
+Instead, it provides :meth:`Client.run`, which handles establishing a connection, keeps track track of all the details of the MetricQ protocol and calls :meth:`Sink.on_data` once new data points arrive.
 
 Our Sink is identified on the network by a :term:`Token`.
 In general you should make sure that no two different instances of the same :term:`Client` share the same token.
