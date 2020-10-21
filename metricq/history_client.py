@@ -29,7 +29,7 @@
 import asyncio
 import uuid
 from enum import Enum
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 import aio_pika
 
@@ -42,13 +42,8 @@ from .version import __version__  # noqa: F401 - shut up flake8, automatic versi
 
 logger = get_logger(__name__)
 
-if TYPE_CHECKING:
-    HistoryRequestTypeValue = history_pb2.HistoryRequest.RequestTypeValue
-else:
-    HistoryRequestTypeValue = history_pb2.HistoryRequest.RequestType
 
-
-class HistoryRequestType:
+class HistoryRequestType(Enum):
     AGGREGATE_TIMELINE = history_pb2.HistoryRequest.AGGREGATE_TIMELINE
     AGGREGATE = history_pb2.HistoryRequest.AGGREGATE
     LAST_VALUE = history_pb2.HistoryRequest.LAST_VALUE
@@ -249,7 +244,7 @@ class HistoryClient(Client):
         start_time: Optional[Timestamp],
         end_time: Optional[Timestamp],
         interval_max: Optional[Timedelta],
-        request_type: HistoryRequestTypeValue = HistoryRequestType.AGGREGATE_TIMELINE,
+        request_type: HistoryRequestType = HistoryRequestType.AGGREGATE_TIMELINE,
         timeout=60,
     ):
         if not metric:
@@ -273,7 +268,7 @@ class HistoryClient(Client):
         if interval_max is not None:
             request.interval_max = interval_max.ns
         if request_type is not None:
-            request.type = request_type
+            request.type = request_type.value
 
         msg = aio_pika.Message(
             body=request.SerializeToString(),
