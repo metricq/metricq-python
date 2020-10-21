@@ -38,7 +38,7 @@ from .rpc import rpc_handler
 from .sink import DurableSink, Sink
 from .source import Source
 from .synchronous_source import SynchronousSource
-from .types import Timedelta, Timestamp
+from .types import TimeAggregate, Timedelta, Timestamp, TimeValue
 from .version import __version__
 
 __all__ = [
@@ -54,6 +54,8 @@ __all__ = [
     "SynchronousSource",
     "Timedelta",
     "Timestamp",
+    "TimeValue",
+    "TimeAggregate",
     "get_logger",
     "rpc_handler",
     "__version__",
