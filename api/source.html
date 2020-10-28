@@ -251,7 +251,7 @@ use this method to send data points.</p>
 <dl class="py method">
 <dt id="metricq.Source.send">
 <em class="property">await </em><code class="sig-name descname">send</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metric</span></em>, <em class="sig-param"><span class="n">time</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.send" title="Permalink to this definition">¶</a></dt>
-<dd><p>Send a Data Point for a Metric</p>
+<dd><p>Send a <a class="reference internal" href="../glossary.html#term-Data-Point"><span class="xref std std-term">data point</span></a> for a Metric.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -271,9 +271,18 @@ See <a class="reference internal" href="#metricq.Source.chunk_size" title="metri
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metricq.source.MetricSendError" title="metricq.source.MetricSendError"><strong>MetricSendError</strong></a> – if sending data points failed</p>
+<dd class="field-odd"><p><a class="reference internal" href="#metricq.source.MetricSendError" title="metricq.source.MetricSendError"><strong>MetricSendError</strong></a> – if sending a data point failed</p>
 </dd>
 </dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In case of failure, unsent data points remain buffered.
+An attempt at sending them is made once <a class="reference internal" href="#metricq.Source.flush" title="metricq.Source.flush"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flush()</span></code></a> is triggered,
+either manually or on the next call to <a class="reference internal" href="#metricq.Source.send" title="metricq.Source.send"><code class="xref py py-meth docutils literal notranslate"><span class="pre">send()</span></code></a>.</p>
+<p>In particular you should not call this method again with the same data point,
+even if the first call failed.
+Otherwise duplicate data points will be sent, which results in an invalid <a class="reference internal" href="../glossary.html#term-Metric"><span class="xref std std-term">metric</span></a>.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">

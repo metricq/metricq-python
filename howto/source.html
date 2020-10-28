@@ -254,19 +254,24 @@ This method gets called once our Source is connected and received its initial co
             <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span><span class="p">)</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The coroutine overriding <a class="reference internal" href="../api/source.html#metricq.Source.task" title="metricq.Source.task"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.task()</span></code></a> is not restarted if it returned an exception.
+Make sure to handle errors appropriately, such as <a class="reference internal" href="../api/source.html#metricq.Source.send" title="metricq.Source.send"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.send()</span></code></a> raising <a class="reference internal" href="../api/source.html#metricq.source.MetricSendError" title="metricq.source.MetricSendError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">source.MetricSendError</span></code></a>.</p>
+</div>
 </div>
 <div class="section" id="improving-constant-rate-sources-using-intervalsource">
 <h2>Improving constant-rate sources: using <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a><a class="headerlink" href="#improving-constant-rate-sources-using-intervalsource" title="Permalink to this headline">¶</a></h2>
 <p>The above situation where we send values at a fixed rate is so common
 that we can use the convenience class <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a>, which
 does all the heavy lifting for us.</p>
-<dl class="simple">
-<dt>Note:</dt><dd><p>We strongly recommend implementing a <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a> over a plain <a class="reference internal" href="../api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> if possible.
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We strongly recommend implementing a <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a> over a plain <a class="reference internal" href="../api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> if possible.
 It tries to automatically compensate some timing-related issues
 that inevitably arise in more complicated setups.
 See the documentation for <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a> for more information.</p>
-</dd>
-</dl>
+</div>
 <p>To adapt the above example, we simply set <a class="reference internal" href="../api/source.html#metricq.IntervalSource.period" title="metricq.IntervalSource.period"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource.period</span></code></a> to the period of time between consecutive updates and replace <a class="reference internal" href="../api/source.html#metricq.Source.task" title="metricq.Source.task"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source.task</span></code></a> with <a class="reference internal" href="../api/source.html#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource.update</span></code></a>,
 which gets called at a constant rate:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
