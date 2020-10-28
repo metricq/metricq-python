@@ -106,6 +106,10 @@ This method gets called once our Source is connected and received its initial co
                 # Convert from rate (in Hz) to duration between sends (in seconds)
                 await asyncio.sleep(1 / self._rate)
 
+.. note::
+    The coroutine overriding :meth:`Source.task` is not restarted if it returned an exception.
+    Make sure to handle errors appropriately, such as :meth:`Source.send` raising :exc:`source.MetricSendError`.
+
 Improving constant-rate sources: using :class:`IntervalSource`
 --------------------------------------------------------------
 

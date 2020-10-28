@@ -134,6 +134,12 @@ class Source(DataClient):
     @abstractmethod
     def task(self):
         """Override this with your main task for generating data points.
+
+        The task is started after the source has connected and received its initial configuration.
+
+        Note:
+            This task is not restarted if it fails.
+            You are responsible for handling all relevant exceptions.
         """
         pass
 
