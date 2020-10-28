@@ -117,7 +117,7 @@ The above situation where we send values at a fixed rate is so common
 that we can use the convenience class :class:`IntervalSource`, which
 does all the heavy lifting for us.
 
-Note:
+.. note::
     We strongly recommend implementing a :class:`IntervalSource` over a plain :class:`Source` if possible.
     It tries to automatically compensate some timing-related issues
     that inevitably arise in more complicated setups.
