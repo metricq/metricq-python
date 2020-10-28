@@ -15,3 +15,8 @@ Source
     :members:
         update,
         period,
+
+Exceptions
+----------
+
+.. autoclass:: metricq.source.MetricSendError

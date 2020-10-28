@@ -49,6 +49,11 @@ MetadataDict = Dict[str, Any]
 
 
 class MetricSendError(PublishFailedError):
+    """Exception raised when sending a data point for a metric failed.
+
+    The underlying exception is attached as a cause.
+    """
+
     pass
 
 
@@ -175,7 +180,7 @@ class Source(DataClient):
         await self.rpc("source.declare_metrics", metrics=metrics)
 
     async def send(self, metric: str, time: Timestamp, value):
-        """Send a Data Point for a Metric
+        """Send a :term:`data point<Data Point>` for a Metric.
 
         Args:
             metric: name of a metric
@@ -185,6 +190,18 @@ class Source(DataClient):
         Note:
             Data points are not sent immediately, instead they are collected and sent in chunks.
             See :attr:`chunk_size` how to control chunking behaviour.
+
+        Raises:
+            MetricSendError: if sending a data point failed
+
+        Warning:
+            In case of failure, unsent data points remain buffered.
+            An attempt at sending them is made once :meth:`flush` is triggered,
+            either manually or on the next call to :meth:`send`.
+
+            In particular you should not call this method again with the same data point,
+            even if the first call failed.
+            Otherwise duplicate data points will be sent, which results in an invalid :term:`metric<Metric>`.
         """
         logger.debug("send({},{},{})", metric, time, value)
         metric_object = self[metric]
