@@ -87,7 +87,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../howto/index.html">How to use this library</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="sink.html">Sink</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Source</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="history-client.html">History Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-common.html">Common client operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
@@ -266,12 +269,23 @@ use this method to send data points.</p>
 <p>Data points are not sent immediately, instead they are collected and sent in chunks.
 See <a class="reference internal" href="#metricq.Source.chunk_size" title="metricq.Source.chunk_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">chunk_size</span></code></a> how to control chunking behaviour.</p>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#metricq.source.MetricSendError" title="metricq.source.MetricSendError"><strong>MetricSendError</strong></a> – if sending data points failed</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Source.task">
 <em class="property">abstractmethod </em><code class="sig-name descname">task</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Override this with your main task for generating data points.</p>
+<p>The task is started after the source has connected and received its initial configuration.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This task is not restarted if it fails.
+You are responsible for handling all relevant exceptions.</p>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -352,6 +366,16 @@ constant update rate.</p>
 
 </dd></dl>
 
+<div class="section" id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="metricq.source.MetricSendError">
+<em class="property">class </em><code class="sig-prename descclassname">metricq.source.</code><code class="sig-name descname">MetricSendError</code><a class="headerlink" href="#metricq.source.MetricSendError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised when sending a data point for a metric failed.</p>
+<p>The underlying exception is attached as a cause.</p>
+</dd></dl>
+
+</div>
 </div>
 
 
