@@ -42,6 +42,19 @@ extensions = [
 
 intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
 
+# See https://icb-scanpydoc.readthedocs-hosted.com/en/latest/scanpydoc.elegant_typehints.html
+# why this is necessary.
+qualname_overrides = {
+    "metricq.sink.Sink": "metricq.Sink",
+    "metricq.source.Source": "metricq.Source",
+    "metricq.source.IntervalSource": "metricq.IntervalSource",
+    "metricq.history_client.HistoryClient": "metricq.HistoryClient",
+    "metricq.types.Timedelta": "metricq.Timedelta",
+    "metricq.types.Timestamp": "metricq.Timestamp",
+    "metricq.types.TimeValue": "metricq.TimeValue",
+    "metricq.types.TimeAggregate": "metricq.TimeAggregate",
+}
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
