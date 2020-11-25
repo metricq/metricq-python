@@ -61,7 +61,7 @@ The :func:`metricq.rpc_handler` decorator is a way to define a new handler for a
 here we tell the library to call :code:`_on_config` every time another client sends a :literal:`"config"`-RPC
 containing our new configuration.
 
-So far out Source would work, but it wouldn't do anything useful at all.
+So far, our Source would work, but it wouldn't do anything useful at all.
 To change that, we first declare for which metric we want to send values,
 including some helpful :ref:`metadata<metric-metadata>`:
 

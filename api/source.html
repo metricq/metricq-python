@@ -304,7 +304,7 @@ You are responsible for handling all relevant exceptions.</p>
 <p>Initially, this value is set to <code class="code docutils literal notranslate"><span class="pre">1</span></code>, so any data point is sent immediately.
 If set to <code class="code docutils literal notranslate"><span class="pre">None</span></code>, automatic chunking is disabled and data points must be sent off to the network manually using <a class="reference internal" href="#metricq.Source.flush" title="metricq.Source.flush"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flush()</span></code></a>.</p>
 <p>To reduce network and packet overhead, it may be advisable to send multiple data points at once.
-Be aware that there is a <cite>overhead-latency trade-off</cite> to be made:
+Be aware that there is an <cite>overhead-latency trade-off</cite> to be made:
 If your Source produces one data point every <span class="math notranslate nohighlight">\(10\)</span> seconds, having a <code class="code docutils literal notranslate"><span class="pre">chunk_size</span></code> of <code class="code docutils literal notranslate"><span class="pre">10</span></code> means that it takes almost <span class="math notranslate nohighlight">\(2\)</span> minutes (<span class="math notranslate nohighlight">\(100\)</span> s) before a chunk is is sent.
 If instead it produces <span class="math notranslate nohighlight">\(1000\)</span> data points per second, network load can be reduced by setting a value of <code class="code docutils literal notranslate"><span class="pre">1000</span></code> without affecting latency too much.</p>
 <dl class="field-list simple">

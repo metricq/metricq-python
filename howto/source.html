@@ -213,7 +213,7 @@ instead we install a callback that is triggered every time a new configuration i
 The <a class="reference internal" href="../api/misc.html#metricq.rpc_handler" title="metricq.rpc_handler"><code class="xref py py-func docutils literal notranslate"><span class="pre">metricq.rpc_handler()</span></code></a> decorator is a way to define a new handler for an RPC;
 here we tell the library to call <code class="code docutils literal notranslate"><span class="pre">_on_config</span></code> every time another client sends a <code class="docutils literal notranslate"><span class="pre">&quot;config&quot;</span></code>-RPC
 containing our new configuration.</p>
-<p>So far out Source would work, but it wouldn’t do anything useful at all.
+<p>So far, our Source would work, but it wouldn’t do anything useful at all.
 To change that, we first declare for which metric we want to send values,
 including some helpful <a class="reference internal" href="../metadata.html#metric-metadata"><span class="std std-ref">metadata</span></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>

@@ -61,7 +61,7 @@ After a connection has been established, we subscribe (:meth:`metricq.Sink.subsc
             await super().connect()
             await self.subscribe(self._metrics)
 
-Our Sink is now needs to know what to to with the data points it receives.
+Our Sink now needs to know what to do with the data points it receives.
 We provide :meth:`Sink.on_data`, which gets called every time a new data point arrives, and tell it to print that to the standard output:
 
 .. code-block:: python
@@ -93,7 +93,9 @@ Instead, it provides :meth:`Client.run`, which handles establishing a connection
 
 Our Sink is identified on the network by a :term:`Token`.
 In general you should make sure that no two different instances of the same :term:`Client` share the same token.
-Though you won't need to worry about this it if you are using :class:`metricq.Sink`, as there is code in place that handles this automatically.
+Though you won't need to worry about this it if you are using :class:`metricq.Sink`,
+as there is code in place that generates a unique token automatically
+(see the :literal:`add_uuid` argument to :class:`metricq.Sink`).
 
 If you are interested in the values of metric ``test.py.dummy``, construct and run ``DummySink`` as follows (assuming a MetricQ network is running on ``localhost``):
 
