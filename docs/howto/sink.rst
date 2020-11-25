@@ -93,7 +93,9 @@ Instead, it provides :meth:`Client.run`, which handles establishing a connection
 
 Our Sink is identified on the network by a :term:`Token`.
 In general you should make sure that no two different instances of the same :term:`Client` share the same token.
-Though you won't need to worry about this it if you are using :class:`metricq.Sink`, as there is code in place that handles this automatically.
+Though you won't need to worry about this it if you are using :class:`metricq.Sink`,
+as there is code in place that generates a unique token automatically
+(see the :literal:`add_uuid` argument to :class:`metricq.Sink`).
 
 If you are interested in the values of metric ``test.py.dummy``, construct and run ``DummySink`` as follows (assuming a MetricQ network is running on ``localhost``):
 

@@ -63,11 +63,8 @@ interpreted as described in :rfc:`2119`.
             for the concrete host (instance) :literal:`hal-9000`.
 
         Sometimes it is desirable for multiple instances of the same Client to be online at same.
-        For example, there might be multiple users using the example Sink from :ref:`sink-how-to` at the same time to debug metric data.
-        In this case it is important to distinguish different instances.
-        In the above example, this is done automatically.
+        They shall be distinguished by a unique suffix:
 
-        Multiple instances of the same Client shall be distinguished by a unique suffix:
             Append a UUID, version 4 (according to :rfc:`4122#section-4.1.3`) as a hex string to the token like so::
 
                 client-example-4198bdddab794e9f8d774a590651cdc1
