@@ -11,7 +11,7 @@ interpreted as described in :rfc:`2119`.
     :sorted:
 
     Client
-        An application which connects to the MetricQ network.
+        An application that connects to the MetricQ network.
         It is uniquely identified on the network by its :term:`Token`.
         Clients may produce and consume data (see :term:`Source`, :term:`Sink`) or perform management tasks (see :term:`Manager`).
 
@@ -23,7 +23,7 @@ interpreted as described in :rfc:`2119`.
 
     Source
         A :term:`Client` that produces :term:`Data Points <Data Point>` for one or several :term:`Metrics<Metric>`.
-        which are then available for consumption by other Clients on the network.
+        These are then available for consumption by other Clients on the network.
 
     Manager
         A :term:`Client` responsible for managing RPC requests on the network.
@@ -49,7 +49,7 @@ interpreted as described in :rfc:`2119`.
         A string uniquely identifying a :term:`Client` on the MetricQ network.
 
         Tokens shall be *unique* on the network:
-            Any set of Clients online at the the same time must have distinct Tokens.
+            Any set of Clients online at the same time must have distinct Tokens.
 
         Tokens should be formatted in |kebab-case|_ and have a *prefix* identifying the type of source:
             Examples of good client tokens are:

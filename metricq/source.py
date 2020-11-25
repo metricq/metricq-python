@@ -102,7 +102,7 @@ class Source(DataClient):
         If set to :code:`None`, automatic chunking is disabled and data points must be sent off to the network manually using :meth:`flush`.
 
         To reduce network and packet overhead, it may be advisable to send multiple data points at once.
-        Be aware that there is a `overhead-latency trade-off` to be made:
+        Be aware that there is an `overhead-latency trade-off` to be made:
         If your Source produces one data point every :math:`10` seconds, having a :code:`chunk_size` of :code:`10` means that it takes almost :math:`2` minutes (:math:`100` s) before a chunk is is sent.
         If instead it produces :math:`1000` data points per second, network load can be reduced by setting a value of :code:`1000` without affecting latency too much.
         """

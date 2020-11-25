@@ -61,7 +61,7 @@ After a connection has been established, we subscribe (:meth:`metricq.Sink.subsc
             await super().connect()
             await self.subscribe(self._metrics)
 
-Our Sink is now needs to know what to to with the data points it receives.
+Our Sink now needs to know what to do with the data points it receives.
 We provide :meth:`Sink.on_data`, which gets called every time a new data point arrives, and tell it to print that to the standard output:
 
 .. code-block:: python
