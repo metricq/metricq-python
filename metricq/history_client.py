@@ -367,6 +367,7 @@ class HistoryClient(Client):
             selector=selector, historic=historic, timeout=timeout
         )
 
+    @deprecated(reason="use get_metrics(..., metadata=True) instead")
     async def history_metric_metadata(self, selector=None, historic=True):
         arguments = {"format": "object"}
         if selector:
