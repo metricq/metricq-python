@@ -34,6 +34,7 @@ from typing import Iterator, Optional
 import aio_pika
 
 from . import history_pb2
+from ._deprecation import deprecated
 from .client import Client
 from .logging import get_logger
 from .rpc import rpc_handler
@@ -360,10 +361,8 @@ class HistoryClient(Client):
         assert len(result) == 1
         return next(result.values())
 
+    @deprecated(reason="use get_metrics() instead")
     async def history_metric_list(self, selector=None, historic=True, timeout=None):
-        """
-        DEPRECATED! use get_metrics
-        """
         return await self.get_metrics(
             selector=selector, historic=historic, timeout=timeout
         )

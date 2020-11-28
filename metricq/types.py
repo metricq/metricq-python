@@ -30,13 +30,13 @@
 
 import datetime
 import re
-import warnings
 from dataclasses import dataclass
 from functools import total_ordering
 from numbers import Real
 from typing import Union
 
 from . import history_pb2
+from ._deprecation import deprecated
 
 
 @total_ordering
@@ -548,14 +548,10 @@ class TimeAggregate:
     active_time: int
     """time spanned by this aggregate in nanoseconds"""
 
+    @deprecated(
+        reason="unpacking TimeAggregate is deprecated, access members directly instead"
+    )
     def __iter__(self):
-        warnings.simplefilter("always", category=DeprecationWarning)  # turn off filter
-        warnings.warn(
-            "Unpacking TimeAggregate is deprecated!",
-            category=DeprecationWarning,
-            stacklevel=2,
-        )
-        warnings.simplefilter("default", category=DeprecationWarning)
         return iter(
             (
                 self.timestamp,
