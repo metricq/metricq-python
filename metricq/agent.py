@@ -301,20 +301,32 @@ class Agent(RPCDispatcher):
         cleanup_on_response=True,
         **kwargs,
     ):
-        """Call an RPC over the network.
+        """Invoke an RPC over the network.
 
-        :param function: tag of the RPC
-        :param exchange:
-        :param routing_key:
-        :param response_callback:
-            If given (not None), this function will be called with any response once it arrives
-            rpc will then not wait for the response and return None
-            If omitted (or None), rpc will return the (first) response instead
-        :param timeout: After the timeout, a response will not be dispatched to the handler
-        :param cleanup_on_response: If set, only the first response will be dispatched
-        :param kwargs: any additional arguments are given to the RPC itself
-            Remember that we use javaScriptSnakeCase
-        :return:
+        Args:
+            function:
+                Name of the RPC to invoke
+            exchange:
+                RabbitMQ exchange on which the request is published
+            routing_key:
+            response_callback:
+                If given, this callable will be invoked with any response once it arrives.
+                In this case, this function immediately returns :literal:`None`.
+
+                If omitted (or :literal:`None`), this function will wait for and return the first response instead.
+            timeout:
+                After the timeout, a response will not be dispatched to the handler.
+            cleanup_on_response:
+                If set, only the first response will be dispatched.
+            kwargs:
+                Any additional arguments that are forwarded as arguments to the RPC itsel.
+
+                Note:
+                    Argument names are required to be in :literal:`"javaScriptSnakeCase"`.
+
+        Returns:
+            :literal:`None` if :code:`response_callback` is given,
+            otherwise a :class:`dict` containing the RPC response.
 
         :meta private:
         """
