@@ -30,6 +30,7 @@
 
 import asyncio
 from abc import abstractmethod
+from typing import Any, Dict, Optional
 
 import aio_pika
 from aiormq import ChannelInvalidStateError
@@ -44,16 +45,75 @@ from .types import Timestamp
 
 logger = get_logger(__name__)
 
+MetadataDict = Dict[str, Any]
+
 
 class MetricSendError(PublishFailedError):
+    """Exception raised when sending a data point for a metric failed.
+
+    The underlying exception is attached as a cause.
+    """
+
     pass
 
 
 class Source(DataClient):
+    """A MetricQ :term:`Source`.
+
+    See :ref:`source-how-to` on how to implement a new Source.
+
+    Example:
+        .. code-block::
+
+            from metricq import Source, Timestamp, rpc_handler
+
+            from asyncio import sleep
+            from random import randint
+
+            class SomeSensorSource(Source):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+
+                @rpc_handler("config")
+                async def _on_config(self, **config):
+                    await self.declare_metrics(["example.some_sensor"])
+
+                async def get_some_sensor_value(self):
+                    await sleep(randint(0, 5))
+                    return Timestamp.now(), randint(0, 10)
+
+                async def task(self):
+                    while True:
+                        time, value = await self.get_some_sensor_value()
+                        await self.send("example.some_sensor", time, value)
+
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.metrics = dict()
-        self.chunk_size = 1
+        self._chunk_size: int = 1
+
+    @property
+    def chunk_size(self) -> Optional[int]:
+        """Number of :term:`data points<Data Point>` collected into a chunk before being sent.
+
+        Initially, this value is set to :code:`1`, so any data point is sent immediately.
+        If set to :code:`None`, automatic chunking is disabled and data points must be sent off to the network manually using :meth:`flush`.
+
+        To reduce network and packet overhead, it may be advisable to send multiple data points at once.
+        Be aware that there is an `overhead-latency trade-off` to be made:
+        If your Source produces one data point every :math:`10` seconds, having a :code:`chunk_size` of :code:`10` means that it takes almost :math:`2` minutes (:math:`100` s) before a chunk is is sent.
+        If instead it produces :math:`1000` data points per second, network load can be reduced by setting a value of :code:`1000` without affecting latency too much.
+        """
+        return None if self._chunk_size == 0 else self._chunk_size
+
+    @chunk_size.setter
+    def chunk_size(self, chunk_size: Optional[int]):
+        if chunk_size is None:
+            self._chunk_size = 0
+        else:
+            self._chunk_size = chunk_size
 
     async def connect(self):
         await super().connect()
@@ -73,11 +133,13 @@ class Source(DataClient):
 
     @abstractmethod
     def task(self):
-        """
-        override this with your main task for generating data, e.g.
-        while True:
-            await self.some_read_data_function()
-            await self.send(...)
+        """Override this with your main task for generating data points.
+
+        The task is started after the source has connected and received its initial configuration.
+
+        Note:
+            This task is not restarted if it fails.
+            You are responsible for handling all relevant exceptions.
         """
         pass
 
@@ -86,14 +148,66 @@ class Source(DataClient):
             self.metrics[id] = SourceMetric(id, self, chunk_size=self.chunk_size)
         return self.metrics[id]
 
-    async def declare_metrics(self, metrics):
+    async def declare_metrics(self, metrics: Dict[str, MetadataDict]):
+        """Declare a set of :term:`metrics<Metric>` this Source produces values for.
+
+        Before producing :term:`data points<Data Point>` for some metric, a Source must have declared that Metric.
+
+        Args:
+            metrics:
+                A dictionary mapping metrics to their metadata.
+                The metadata is given as a dictionary mapping metadata-keys (strings)
+                to arbitrary values.
+
+        Example:
+            .. code-block:: python
+
+                from metricq import Source, rpc_handler
+
+                class MySource(Source):
+
+                    ...
+
+                    @rpc_handler("config")
+                    async def on_config(self, **config):
+                        ...
+                        await self.declare_metrics({
+                            "example.temperature": {
+                                "description": "an example temperature reading"
+                                "unit": "C",
+                                "rate": config["rate"],
+                                "some_arbitrary_metadata": {
+                                    "foo": "bar",
+                                },
+                            },
+                        })
+        """
         logger.debug("declare_metrics({})", metrics)
         await self.rpc("source.declare_metrics", metrics=metrics)
 
-    async def send(self, metric, time: Timestamp, value):
-        """
-        Logical send.
-        Dispatches to the SourceMetric for chunking
+    async def send(self, metric: str, time: Timestamp, value):
+        """Send a :term:`data point<Data Point>` for a Metric.
+
+        Args:
+            metric: name of a metric
+            timestamp: timepoint at which this metric was measured
+            value: value of the metric at time of measurement
+
+        Note:
+            Data points are not sent immediately, instead they are collected and sent in chunks.
+            See :attr:`chunk_size` how to control chunking behaviour.
+
+        Raises:
+            MetricSendError: if sending a data point failed
+
+        Warning:
+            In case of failure, unsent data points remain buffered.
+            An attempt at sending them is made once :meth:`flush` is triggered,
+            either manually or on the next call to :meth:`send`.
+
+            In particular you should not call this method again with the same data point,
+            even if the first call failed.
+            Otherwise duplicate data points will be sent, which results in an invalid :term:`metric<Metric>`.
         """
         logger.debug("send({},{},{})", metric, time, value)
         metric_object = self[metric]
@@ -101,6 +215,11 @@ class Source(DataClient):
         await metric_object.send(time, value)
 
     async def flush(self):
+        """Flush all unsent data points to the network immediately.
+
+        If automatic chunking is turned off (:attr:`chunk_size` is :literal:`None`),
+        use this method to send data points.
+        """
         await asyncio.gather(*[m.flush() for m in self.metrics.values() if not m.empty])
 
     async def _send(self, metric, data_chunk: DataChunk):

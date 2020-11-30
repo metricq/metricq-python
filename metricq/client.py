@@ -147,15 +147,32 @@ class Client(Agent):
         infix: Optional[str] = None,
         limit: Optional[int] = None,
     ) -> Union[Sequence[str], Sequence[dict]]:
-        """
-        :param selector: regex for partial matching the metric name or sequence of possible metric names
-        :param historic: filter by historic flag
-        :param metadata: if true, metadata is included in response
-        :param timeout: timeout for the RPC in seconds
-        :param prefix: filter results by prefix on the key
-        :param infix: filter results by infix on the key
-        :param limit: limit the number of results to return
-        :return: either a {name: metadata} dict (metadata=True) or a list of metric names (metadata=False)
+        """Retrieve information for metrics matching a selector pattern.
+
+        Args:
+            selector:
+                Either:
+
+                * a regex matching parts of the metric name
+                * a sequence of metric names
+            historic:
+                Only include metrics with the :literal:`historic` flag set.
+            metadata:
+                If true, include metric metadata in the response.
+            timeout:
+                Operation timeout in seconds.
+            prefix:
+                Filter results by prefix on the key.
+            infix:
+                Filter results by infix on the key.
+            limit:
+                Maximum number of matches to return.
+
+        Returns:
+            *
+                a dictionary mapping matching metric names to their
+                :ref:`metadata<metric-metadata>` (if :code:`metadata=True`)
+            * otherwise, a sequence of matching metric names
         """
         arguments: Dict[str, Any] = {"format": "object" if metadata else "array"}
         if selector is not None:

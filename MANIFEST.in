@@ -2,6 +2,13 @@ recursive-include examples *.py
 recursive-include tests *.py
 recursive-include tools *.py
 
+recursive-include docs *.py
+recursive-include docs *.rst
+recursive-include docs *.json
+include docs/.nojekyll
+include docs/Makefile
+include docs/make.bat
+
 include lib/metricq-protobuf/*.proto
 include lib/metricq-protobuf/LICENSE
 include metricq/*_pb2.py

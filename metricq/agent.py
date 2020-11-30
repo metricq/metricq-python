@@ -142,7 +142,10 @@ class Agent(RPCDispatcher):
         )
 
     def derive_address(self, address: str):
-        """ Add the credentials from the management connection to the provided address """
+        """Add the credentials from the management connection to the provided address
+
+        :meta private:
+        """
         management_obj = URL(self._management_url)
         vhost_prefix = "vhost:"
         if address.startswith(vhost_prefix):
@@ -192,6 +195,7 @@ class Agent(RPCDispatcher):
         return connection
 
     async def connect(self):
+        """Connect to the MetricQ network"""
         logger.info(
             "establishing management connection to {}",
             URL(self._management_url).with_password("***"),
@@ -217,8 +221,7 @@ class Agent(RPCDispatcher):
     def run(
         self, catch_signals=("SIGINT", "SIGTERM"), cancel_on_exception=False
     ) -> None:
-        """Run an Agent by calling :py:meth:`connect` and waiting for it to be
-        :py:meth:`stop`ped.
+        """Run an Agent by calling :py:meth:`connect` and waiting for it to be stopped via :meth:`stop`.
 
         If :py:meth:`connect` raises an exception, ConnectFailedError is
         raised, with the offending exception attached as a cause.  Any
@@ -298,19 +301,34 @@ class Agent(RPCDispatcher):
         cleanup_on_response=True,
         **kwargs,
     ):
-        """
-        :param function: tag of the RPC
-        :param exchange:
-        :param routing_key:
-        :param response_callback:
-        If given (not None), this function will be called with any response once it arrives
-        rpc will then not wait for the response and return None
-        If omitted (or None), rpc will return the (first) response instead
-        :param timeout: After the timeout, a response will not be dispatched to the handler
-        :param cleanup_on_response: If set, only the first response will be dispatched
-        :param kwargs: any additional arguments are given to the RPC itself
-        Remember that we use javaScriptSnakeCase
-        :return:
+        """Invoke an RPC over the network.
+
+        Args:
+            function:
+                Name of the RPC to invoke
+            exchange:
+                RabbitMQ exchange on which the request is published
+            routing_key:
+            response_callback:
+                If given, this callable will be invoked with any response once it arrives.
+                In this case, this function immediately returns :literal:`None`.
+
+                If omitted (or :literal:`None`), this function will wait for and return the first response instead.
+            timeout:
+                After the timeout, a response will not be dispatched to the handler.
+            cleanup_on_response:
+                If set, only the first response will be dispatched.
+            kwargs:
+                Any additional arguments that are forwarded as arguments to the RPC itsel.
+
+                Note:
+                    Argument names are required to be in :literal:`"javaScriptSnakeCase"`.
+
+        Returns:
+            :literal:`None` if :code:`response_callback` is given,
+            otherwise a :class:`dict` containing the RPC response.
+
+        :meta private:
         """
         function = kwargs.get("function")
         if function is None:
@@ -389,11 +407,14 @@ class Agent(RPCDispatcher):
             self.event_loop.call_later(timeout, cleanup)
 
     async def rpc_consume(self, extra_queues=[]):
-        """
-        Start consuming RPCs
-        Typically this is called at the end of connect() once the Agent is prepared
-        to handle RPCs
-        :param extra_queues: additional queues on which to receive RPCs
+        """Start consuming RPCs
+
+        :meta private:
+
+        Typically this is called at the end of :meth:`Client.connect` once the Agent is prepared to handle RPCs.
+
+        Args:
+            extra_queues: additional queues on which to receive RPCs
         """
         logger.info("starting RPC consume")
         queues = [self.management_rpc_queue] + extra_queues
@@ -403,6 +424,11 @@ class Agent(RPCDispatcher):
         )
 
     def on_signal(self, signal):
+        """Callback invoked when a signal is received.
+
+        Override this method for custom signal handling.
+        By default it schedules the Client to stop by calling :meth:`stop`.
+        """
         logger.info("Received signal {}, stopping...", signal)
         self._schedule_stop(
             exception=None if signal == "SIGINT" else ReceivedSignalError(signal)
@@ -442,12 +468,12 @@ class Agent(RPCDispatcher):
         loop.create_task(self.stop(exception=exception))
 
     async def stop(self, exception: Optional[Exception] = None):
-        """Stop a :py:meth:`run`ning Agent.
+        """Stop a running Agent.
 
         :param exception:
             An optional exception that will be raised by :py:meth:`run` if given.
             If the Agent was not started from :py:meth:`run`, see :py:meth:`stopped`
-            how to retrieve the exception.
+            how to retrieve this exception.
         """
         if self._stop_in_progress:
             logger.debug("Stop in progress! ({})", exception)
@@ -475,12 +501,12 @@ class Agent(RPCDispatcher):
                     self._stop_future.set_exception(exception)
 
     async def stopped(self):
-        """Wait for the :py:class:`Agent` to stop.
+        """Wait for this Agent to stop.
 
         If the agent stopped unexpectedly, this method raises an exception.
 
         :raises AgentStoppedError:
-            if the Agent was :py:meth:`stop`ped with an exception
+            if the Agent was stopped via :meth:`stop` and an exception was passed
         :raises Exception:
             if the Agent encountered any other unhandled exception
         """

@@ -4,6 +4,7 @@
 [![PyPI](https://img.shields.io/pypi/v/metricq)](https://pypi.org/project/metricq/)
 ![PyPI - Wheel](https://img.shields.io/pypi/wheel/metricq)
 [![Docker pulls](https://img.shields.io/docker/pulls/metricq/metricq-python.svg)](https://hub.docker.com/r/metricq/metricq-python)
+[![Documentation](https://img.shields.io/badge/docs-here-informational.svg)](https://metricq.github.io/metricq-python/)
 
 # metricq - python libraries
 
