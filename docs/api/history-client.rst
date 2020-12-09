@@ -8,6 +8,9 @@ History Client
         connect,
         history_data_request,
         history_last_value,
+        history_aggregate,
+        history_aggregate_timeline,
+    :member-order: bysource
 
 .. py:currentmodule:: metricq.history_client
 

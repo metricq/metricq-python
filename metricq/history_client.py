@@ -74,6 +74,10 @@ class HistoryResponseType(Enum):
     LEGACY = 3
 
 
+class InvalidHistoryResponse(ValueError):
+    pass
+
+
 class HistoryResponse:
     """Response to a history request containing the historical data.
 
@@ -340,6 +344,89 @@ class HistoryClient(Client):
         finally:
             del self._request_futures[correlation_id]
         return result
+
+    async def history_aggregate(
+        self,
+        metric: str,
+        start_time: Optional[Timestamp] = None,
+        end_time: Optional[Timestamp] = None,
+        timeout=60,
+    ) -> TimeAggregate:
+        """Aggregate values of a metric for the specified span of time.
+
+        Args:
+            metric:
+                Name of the metric to aggregate.
+            start_time:
+                Only aggregate values from this point in time onward.
+                If omitted, aggregation starts at the first data point of this metric.
+            end_time:
+                Only aggregate values up to this point in time.
+                If omitted, aggregation includes the most recent values of this metric.
+            timeout:
+                Operation timeout in seconds.
+
+        Returns:
+            A single aggregate over values of this metric, including minimum/maximum/average/etc. values.
+        """
+        response: HistoryResponse = await self.history_data_request(
+            metric=metric,
+            start_time=start_time,
+            end_time=end_time,
+            interval_max=None,
+            request_type=HistoryRequestType.AGGREGATE,
+            timeout=timeout,
+        )
+
+        if len(response) == 1:
+            return next(response.aggregates())
+        else:
+            raise InvalidHistoryResponse(
+                f"Response contains {len(response)} aggregates, expected 1"
+            )
+
+    async def history_aggregate_timeline(
+        self,
+        metric: str,
+        *,
+        interval_max: Timedelta,
+        start_time: Optional[Timestamp] = None,
+        end_time: Optional[Timestamp] = None,
+        timeout=60,
+    ) -> Iterator[TimeAggregate]:
+        """Aggregate values of a metric in multiple steps.
+
+        Each aggregate spans values *at most* :literal:`interval_max` apart.
+        Aggregates are returned in order, consecutive aggregates span consecutive values of this metric.
+        Together, all aggregates span all values from :literal:`start_time` to :literal:`end_time`, inclusive.
+
+        Args:
+            metric:
+                Name of the metric to aggregate.
+            interval_max:
+                Maximum timespan of values covered by each aggregate.
+            start_time:
+                Only aggregate values from this point in time onward.
+                If omitted, aggregation starts at the first data point of this metric.
+            end_time:
+                Only aggregate values up to this point in time.
+                If omitted, aggregation includes the most recent values of this metric.
+            timeout:
+                Operation timeout in seconds.
+
+        Returns:
+            An iterator over aggregates for this metric.
+        """
+        response: HistoryResponse = await self.history_data_request(
+            metric=metric,
+            start_time=start_time,
+            end_time=end_time,
+            interval_max=interval_max,
+            request_type=HistoryRequestType.AGGREGATE_TIMELINE,
+            timeout=timeout,
+        )
+
+        return response.aggregates()
 
     async def history_last_value(self, metric: str, timeout=60) -> TimeValue:
         """Fetch the last value recorded for a metric.
