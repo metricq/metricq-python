@@ -82,5 +82,5 @@ async def test_history_no_last_value(
 ):
     mock_empty_history_response(mocker, DEFAULT_METRIC)
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(InvalidHistoryResponse):
         await history_client.history_last_value(DEFAULT_METRIC)

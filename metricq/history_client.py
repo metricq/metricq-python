@@ -445,8 +445,12 @@ class HistoryClient(Client):
             request_type=HistoryRequestType.LAST_VALUE,
             timeout=timeout,
         )
-        assert len(result) == 1
-        return next(result.values())
+        if len(result) == 1:
+            return next(result.values())
+        else:
+            raise InvalidHistoryResponse(
+                f"Response contains {len(result)} values, expected exactly 1"
+            )
 
     @deprecated(reason="use get_metrics() instead")
     async def history_metric_list(self, selector=None, historic=True, timeout=None):
