@@ -6,3 +6,4 @@ How to use this library
 
     sink
     source
+    metric-lookup
