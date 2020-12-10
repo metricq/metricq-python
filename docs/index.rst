@@ -7,7 +7,7 @@ Welcome to MetricQ's documentation!
 ===================================
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
     :caption: Contents:
 
     howto/index
