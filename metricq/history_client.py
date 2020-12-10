@@ -466,6 +466,44 @@ class HistoryClient(Client):
                 f"Response contains {len(result)} values, expected exactly 1"
             )
 
+    async def history_raw_timeline(
+        self,
+        metric: str,
+        start_time: Optional[Timestamp] = None,
+        end_time: Optional[Timestamp] = None,
+        timeout=60,
+    ) -> Iterator[TimeValue]:
+        """Retrieve raw values of a metric within the specified span of time.
+
+        Omitting both :literal:`start_time` and :literal:`end_time` yields all values recorded for this metric,
+        omitting either one yields values up to/starting at a point in time.
+
+        Args:
+            metric:
+                Name of the metric.
+            start_time:
+                Only retrieve values from this point in time onward.
+                If omitted, include all values before :literal:`end_time`.
+            end_time:
+                Only aggregate values up to this point in time.
+                If omitted, include all values after :literal:`start_time`.
+            timeout:
+                Operation timeout in seconds.
+
+        Returns:
+            An iterator over values of this metric.
+        """
+        response: HistoryResponse = await self.history_data_request(
+            metric=metric,
+            start_time=start_time,
+            end_time=end_time,
+            interval_max=Timedelta(0),
+            request_type=HistoryRequestType.FLEX_TIMELINE,
+            timeout=timeout,
+        )
+
+        return response.values(convert=False)
+
     @deprecated(reason="use get_metrics() instead")
     async def history_metric_list(self, selector=None, historic=True, timeout=None):
         return await self.get_metrics(

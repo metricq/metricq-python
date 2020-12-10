@@ -10,6 +10,7 @@ History Client
         history_last_value,
         history_aggregate,
         history_aggregate_timeline,
+        history_raw_timeline,
     :member-order: bysource
 
 .. py:currentmodule:: metricq.history_client

@@ -101,3 +101,11 @@ async def test_history_no_last_value(
 
     with pytest.raises(InvalidHistoryResponse):
         await history_client.history_last_value(DEFAULT_METRIC)
+
+
+async def test_timelime_empty(
+    history_client: HistoryClient, mocker: MockerFixture, empty_history_response
+):
+    patch_history_data_request(mocker, empty_history_response)
+
+    assert list(await history_client.history_raw_timeline(DEFAULT_METRIC)) == []
