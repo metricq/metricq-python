@@ -69,6 +69,7 @@ class HistoryRequestType(Enum):
 
 
 class HistoryResponseType(Enum):
+    EMPTY = 0
     AGGREGATES = 1
     VALUES = 2
     LEGACY = 3
@@ -88,7 +89,16 @@ class HistoryResponse:
     def __init__(self, proto: history_pb2.HistoryResponse, request_duration=None):
         self.request_duration = request_duration
         count = len(proto.time_delta)
-        if len(proto.aggregate) == count:
+        if count == 0:
+            self._mode = HistoryResponseType.EMPTY
+            assert (
+                len(proto.value_min) == 0
+                and len(proto.value_max) == 0
+                and len(proto.aggregate) == 0
+                and len(proto.value) == 0
+            ), "Inconsistent HistoryResponse message"
+
+        elif len(proto.aggregate) == count:
             self._mode = HistoryResponseType.AGGREGATES
             assert len(proto.value) == 0, "Inconsistent HistoryResponse message"
 
@@ -132,6 +142,8 @@ class HistoryResponse:
             for time_delta, value in zip(self._proto.time_delta, self._proto.value):
                 time_ns = time_ns + time_delta
                 yield TimeValue(Timestamp(time_ns), value)
+            return
+        elif self._mode == HistoryResponseType.EMPTY:
             return
 
         if not convert:
@@ -181,6 +193,8 @@ class HistoryResponse:
                 time_ns = time_ns + time_delta
                 timestamp = Timestamp(time_ns)
                 yield TimeAggregate.from_proto(timestamp, proto_aggregate)
+            return
+        elif self._mode == HistoryResponseType.EMPTY:
             return
 
         if not convert:
