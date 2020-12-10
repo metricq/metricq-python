@@ -6,4 +6,5 @@ How to use this library
 
     sink
     source
+    history-client
     metric-lookup
