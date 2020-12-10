@@ -442,14 +442,16 @@ class HistoryClient(Client):
 
         return response.aggregates()
 
-    async def history_last_value(self, metric: str, timeout=60) -> TimeValue:
+    async def history_last_value(self, metric: str, timeout=60) -> Optional[TimeValue]:
         """Fetch the last value recorded for a metric.
+
+        If this metric has no values recorded, return :literal:`None`.
 
         Args:
             metric:
-                name of the metric of interest
+                Name of the metric of interest.
             timeout:
-                operation timeout in seconds
+                Operation timeout in seconds.
         """
         result = await self.history_data_request(
             metric,
@@ -459,12 +461,11 @@ class HistoryClient(Client):
             request_type=HistoryRequestType.LAST_VALUE,
             timeout=timeout,
         )
-        if len(result) == 1:
-            return next(result.values())
-        else:
-            raise InvalidHistoryResponse(
-                f"Response contains {len(result)} values, expected exactly 1"
-            )
+
+        try:
+            return next(result.values(), None)
+        except ValueError:
+            raise InvalidHistoryResponse("Request returned more than 1 last value")
 
     async def history_raw_timeline(
         self,

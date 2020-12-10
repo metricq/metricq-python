@@ -99,8 +99,7 @@ async def test_history_no_last_value(
 ):
     patch_history_data_request(mocker, empty_history_response)
 
-    with pytest.raises(InvalidHistoryResponse):
-        await history_client.history_last_value(DEFAULT_METRIC)
+    assert await history_client.history_last_value(DEFAULT_METRIC) is None
 
 
 async def test_timelime_empty(
