@@ -76,6 +76,8 @@ class HistoryResponseType(Enum):
 
 
 class InvalidHistoryResponse(ValueError):
+    """A response to a history request was received, but could not be decoded."""
+
     pass
 
 
@@ -382,6 +384,10 @@ class HistoryClient(Client):
 
         Returns:
             A single aggregate over values of this metric, including minimum/maximum/average/etc. values.
+
+        Raises:
+            InvalidHistoryResponse:
+                if an invalid response was received
         """
         response: HistoryResponse = await self.history_data_request(
             metric=metric,
@@ -430,6 +436,10 @@ class HistoryClient(Client):
 
         Returns:
             An iterator over aggregates for this metric.
+
+        Raises:
+            InvalidHistoryResponse:
+                if an invalid response was received
         """
         response: HistoryResponse = await self.history_data_request(
             metric=metric,
@@ -440,7 +450,10 @@ class HistoryClient(Client):
             timeout=timeout,
         )
 
-        return response.aggregates()
+        try:
+            return response.aggregates()
+        except ValueError:
+            raise InvalidHistoryResponse("Response contained no aggregates")
 
     async def history_last_value(self, metric: str, timeout=60) -> Optional[TimeValue]:
         """Fetch the last value recorded for a metric.
@@ -452,6 +465,10 @@ class HistoryClient(Client):
                 Name of the metric of interest.
             timeout:
                 Operation timeout in seconds.
+
+        Raises:
+            InvalidHistoryResponse:
+                if an invalid response was received
         """
         result = await self.history_data_request(
             metric,
@@ -493,6 +510,10 @@ class HistoryClient(Client):
 
         Returns:
             An iterator over values of this metric.
+
+        Raises:
+            InvalidHistoryResponse:
+                if an invalid response was received
         """
         response: HistoryResponse = await self.history_data_request(
             metric=metric,
@@ -503,7 +524,10 @@ class HistoryClient(Client):
             timeout=timeout,
         )
 
-        return response.values(convert=False)
+        try:
+            return response.values(convert=False)
+        except ValueError:
+            raise InvalidHistoryResponse("Response contained no values")
 
     @deprecated(reason="use get_metrics() instead")
     async def history_metric_list(self, selector=None, historic=True, timeout=None):

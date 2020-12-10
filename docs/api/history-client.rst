@@ -21,3 +21,6 @@ History Client
 
 .. autoclass:: HistoryResponse
     :members:
+
+.. autoclass:: InvalidHistoryResponse
+    :show-inheritance:
