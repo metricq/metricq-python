@@ -28,7 +28,7 @@
 
 import asyncio
 import uuid
-from enum import Enum
+from enum import Enum, auto
 from typing import Iterator, Optional
 
 import aio_pika
@@ -69,10 +69,27 @@ class HistoryRequestType(Enum):
 
 
 class HistoryResponseType(Enum):
-    EMPTY = 0
-    AGGREGATES = 1
-    VALUES = 2
-    LEGACY = 3
+    """The type of a history response.
+
+    See :attr:`HistoryResponse.mode` how these values should be interpreted
+    in the context of a :class:`HistoryResponse`.
+    """
+
+    EMPTY = auto()
+    """The response contains no values at all.
+    """
+
+    AGGREGATES = auto()
+    """The response contains a list of aggregates.
+    """
+
+    VALUES = auto()
+    """The response contains a list of time-value pairs.
+    """
+
+    LEGACY = auto()
+    """The response is in an unspecified legacy format.
+    """
 
 
 class InvalidHistoryResponse(ValueError):
@@ -84,8 +101,14 @@ class InvalidHistoryResponse(ValueError):
 class HistoryResponse:
     """Response to a history request containing the historical data.
 
-    Providers for historic data send either `raw values` (`time-value` pairs, see :class:`.TimeValue`)
+    Providers of historical data send either `raw values` (`time-value` pairs, see :class:`.TimeValue`)
     or `aggregates` (see :class:`.TimeAggregate`).
+
+    The data is accessed by iterating over either :meth:`values` or :meth:`aggregates`.
+    If the response is of the wrong type, these methods might fail and raise :exc:`ValueError`.
+    Match on the value of :attr:`mode` determine whether this response contains raw values or aggregates.
+    Alternatively, pass :code:`convert=True` to either :meth:`values` or :meth:`aggregates`
+    to transparently convert the data to the desired type.
     """
 
     def __init__(self, proto: history_pb2.HistoryResponse, request_duration=None):
@@ -124,7 +147,34 @@ class HistoryResponse:
         return len(self._proto.time_delta)
 
     @property
-    def mode(self):
+    def mode(self) -> HistoryResponseType:
+        """The type of response at hand.
+
+        This determines the behavior of :meth:`~aggregates` and :meth:`~values`:
+
+        :attr:`mode` is :attr:`~HistoryResponseType.VALUES`:
+            :meth:`values` will return a iterator of :class:`TimeValue`.
+            :meth:`aggregates` will fail with :exc:`ValueError`, except if called with :code:`convert=True`.
+        :attr:`mode` is :attr:`~HistoryResponseType.AGGREGATE`:
+            :meth:`aggregates` will return a iterator of :class:`TimeAggregate`.
+            :meth:`values` will fail with :exc:`ValueError`, except if called with :code:`convert=True`.
+        :attr:`mode` is :attr:`~HistoryResponseType.EMPTY`:
+            Both :meth:`values` and :meth:`aggregates` return an empty iterator.
+        :attr:`mode` is :attr:`~HistoryResponseType.LEGACY`:
+            Both :meth:`values` and :meth:`aggregates` will raise :exc:`ValueError` unless called with :code:`convert=True`.
+
+        .. warning::
+            The values listed here might be *non-exhaustive*, new ones might be added in the future.
+            If matching on a value of :class:`HistoryResponseType`, make sure to include a *catch-all* case::
+
+                if response.mode is HistoryResponseType.VALUES:
+                    ...
+                elif response.mode is HistoryResponseType.AGGREGATES:
+                    ...
+                else:
+                    # catch-all case, handle it cleanly
+
+        """
         return self._mode
 
     def values(self, convert: bool = False) -> Iterator[TimeValue]:
@@ -133,7 +183,7 @@ class HistoryResponse:
         Args:
             convert:
                 Convert values transparently if response does not contain raw values.
-                If the response contains aggregates, this will yield the mean value for each aggregate.
+                If the response contains aggregates, this will yield the mean value of each aggregate.
 
         Raises:
             :class:`ValueError`:

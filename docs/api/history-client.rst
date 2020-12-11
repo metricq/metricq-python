@@ -22,6 +22,15 @@ History Client
 
 .. autoclass:: HistoryResponse
     :members:
+        mode,
+        values,
+        aggregates,
+    :member-order: bysource
+
+
+.. autoclass:: HistoryResponseType
+    :members:
+    :member-order: bysource
 
 .. autoclass:: InvalidHistoryResponse
     :show-inheritance:
