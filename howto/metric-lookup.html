@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Metric lookup &mdash; MetricQ  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Reference" href="../api/index.html" />
+    <link rel="prev" title="Fetching historical metric data" href="history-client.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetricQ
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">How to use this library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sink.html">Building a MetricQ Sink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source.html">Building a MetricQ Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history-client.html">Fetching historical metric data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Metric lookup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#search-by-regex">Search by regex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#search-by-prefix-infix">Search by prefix/infix</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata.html">Metric Metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetricQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">How to use this library</a> &raquo;</li>
+        
+      <li>Metric lookup</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/howto/metric-lookup.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="metric-lookup">
+<span id="id1"></span><h1>Metric lookup<a class="headerlink" href="#metric-lookup" title="Permalink to this headline">¶</a></h1>
+<p>The method <a class="reference internal" href="../api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Client.get_metrics()</span></code></a> provides an interface for searching metrics available on the network.
+Depending on the arguments passed, a different search strategy is applied.
+If <code class="code docutils literal notranslate"><span class="pre">metadata=True</span></code>, the result will be a dictionary mapping matching metrics to their metadata.
+Otherwise a plain list of matching metric names is returned.
+See the API documentation at <a class="reference internal" href="../api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_metrics()</span></code></a> for more details.</p>
+<div class="section" id="search-by-regex">
+<h2>Search by regex<a class="headerlink" href="#search-by-regex" title="Permalink to this headline">¶</a></h2>
+<p>If the <code class="code docutils literal notranslate"><span class="pre">selector</span></code> is a <em>PCRE</em>-style regex, all metrics whose name matches are returned:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get_metrics</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">selector</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;elab\.ariel\..*&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">historic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">50</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+
+<span class="go">elab.ariel.board.12V.power</span>
+<span class="go">elab.ariel.fan.power</span>
+<span class="go">elab.ariel.power</span>
+<span class="go">elab.ariel.s0.dram.power</span>
+<span class="go">elab.ariel.s0.package.power</span>
+<span class="go">elab.ariel.s0.package.power.chunk_offset</span>
+<span class="go">elab.ariel.s0.package.power.local_offset</span>
+<span class="go">elab.ariel.s1.dram.power</span>
+<span class="go">elab.ariel.s1.package.power</span>
+<span class="go">elab.ariel.sata.12V.power</span>
+<span class="go">elab.ariel.sata.5V.power</span>
+<span class="go">elab.ariel.sum.power</span>
+</pre></div>
+</div>
+<p>Alternatively, passing a list of metric names to <code class="code docutils literal notranslate"><span class="pre">selector</span></code> matches exactly those metrics.
+This is useful if you know want to retrieve metadata for a metric you already know exists.</p>
+</div>
+<div class="section" id="search-by-prefix-infix">
+<h2>Search by prefix/infix<a class="headerlink" href="#search-by-prefix-infix" title="Permalink to this headline">¶</a></h2>
+<p>Call <a class="reference internal" href="../api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_metrics()</span></code></a> with <code class="code docutils literal notranslate"><span class="pre">prefix=...</span></code> to search for metrics whose name starts with the given prefix:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get_metrics</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;ariel&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+
+<span class="go">elab.ariel.board.12V.power</span>
+<span class="go">elab.ariel.board.12V.power.100Hz</span>
+<span class="go">elab.ariel.board.12V.power.1Hz</span>
+<span class="go">elab.ariel.board.5V.power.1Hz</span>
+<span class="go">elab.ariel.fan.power</span>
+<span class="go">elab.ariel.fan.power.100Hz</span>
+<span class="go">elab.ariel.fan.power.1Hz</span>
+<span class="go">elab.ariel.fan.power.chunk_offset</span>
+<span class="go">elab.ariel.fan.power.local_offset</span>
+<span class="go">elab.ariel.fan.voltage</span>
+</pre></div>
+</div>
+<p>The name of a <a class="reference internal" href="../glossary.html#term-Metric"><span class="xref std std-term">Metric</span></a> is a string of <code class="docutils literal notranslate"><span class="pre">.</span></code>-separated <em>components</em>.
+Searching for <code class="code docutils literal notranslate"><span class="pre">infix=&quot;ariel&quot;</span></code> matches all metrics whose name contains the component <code class="code docutils literal notranslate"><span class="pre">ariel</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Infix-matches work on components, so <code class="code docutils literal notranslate"><span class="pre">infix=&quot;ZZZ&quot;</span></code> will <em>not</em> match <code class="docutils literal notranslate"><span class="pre">abc.dZZZe.fgh</span></code>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><em>Infix</em> lookup is not yet supported for non-historic metrics.
+You will always need to pass <code class="code docutils literal notranslate"><span class="pre">historic=True</span></code>!</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get_metrics</span><span class="p">(</span><span class="n">infix</span><span class="o">=</span><span class="s2">&quot;ariel&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">historic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+
+<span class="go">elab.ariel.board.12V.power</span>
+<span class="go">elab.ariel.fan.power</span>
+<span class="go">elab.ariel.power</span>
+<span class="go">elab.ariel.s0.dram.power</span>
+<span class="go">elab.ariel.s0.package.power</span>
+<span class="go">elab.ariel.s0.package.power.chunk_offset</span>
+<span class="go">elab.ariel.s0.package.power.local_offset</span>
+<span class="go">elab.ariel.s1.dram.power</span>
+<span class="go">elab.ariel.s1.package.power</span>
+<span class="go">elab.ariel.sata.12V.power</span>
+<span class="go">elab.ariel.sata.5V.power</span>
+<span class="go">elab.ariel.sum.power</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../api/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="history-client.html" class="btn btn-neutral float-left" title="Fetching historical metric data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, TU Dresden
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

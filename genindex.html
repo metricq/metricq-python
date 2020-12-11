@@ -156,6 +156,7 @@
  | <a href="#A"><strong>A</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
@@ -199,9 +200,11 @@
 </li>
       <li><a href="api/history-client.html#metricq.history_client.HistoryRequestType.AGGREGATE">AGGREGATE (metricq.history_client.HistoryRequestType attribute)</a>
 </li>
+      <li><a href="api/history-client.html#metricq.history_client.HistoryRequestType.AGGREGATE_TIMELINE">AGGREGATE_TIMELINE (metricq.history_client.HistoryRequestType attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/history-client.html#metricq.history_client.HistoryRequestType.AGGREGATE_TIMELINE">AGGREGATE_TIMELINE (metricq.history_client.HistoryRequestType attribute)</a>
+      <li><a href="api/history-client.html#metricq.history_client.HistoryResponseType.AGGREGATES">AGGREGATES (metricq.history_client.HistoryResponseType attribute)</a>
 </li>
       <li><a href="api/history-client.html#metricq.history_client.HistoryResponse.aggregates">aggregates() (metricq.history_client.HistoryResponse method)</a>
 </li>
@@ -252,6 +255,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/history-client.html#metricq.history_client.HistoryResponseType.EMPTY">EMPTY (metricq.history_client.HistoryResponseType attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -286,24 +297,36 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/client-common.html#metricq.Client.get_metrics">get_metrics() (metricq.Client method)</a>
+
+      <ul>
+        <li><a href="api/history-client.html#metricq.HistoryClient.get_metrics">(metricq.HistoryClient method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/history-client.html#metricq.HistoryClient.history_aggregate">history_aggregate() (metricq.HistoryClient method)</a>
+</li>
+      <li><a href="api/history-client.html#metricq.HistoryClient.history_aggregate_timeline">history_aggregate_timeline() (metricq.HistoryClient method)</a>
+</li>
       <li><a href="api/history-client.html#metricq.HistoryClient.history_data_request">history_data_request() (metricq.HistoryClient method)</a>
 </li>
       <li><a href="api/history-client.html#metricq.HistoryClient.history_last_value">history_last_value() (metricq.HistoryClient method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/history-client.html#metricq.HistoryClient.history_raw_timeline">history_raw_timeline() (metricq.HistoryClient method)</a>
+</li>
       <li><a href="api/history-client.html#metricq.HistoryClient">HistoryClient (class in metricq)</a>
 </li>
       <li><a href="api/history-client.html#metricq.history_client.HistoryRequestType">HistoryRequestType (class in metricq.history_client)</a>
 </li>
       <li><a href="api/history-client.html#metricq.history_client.HistoryResponse">HistoryResponse (class in metricq.history_client)</a>
+</li>
+      <li><a href="api/history-client.html#metricq.history_client.HistoryResponseType">HistoryResponseType (class in metricq.history_client)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -317,6 +340,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/source.html#metricq.IntervalSource">IntervalSource (class in metricq)</a>
 </li>
+      <li><a href="api/history-client.html#metricq.history_client.InvalidHistoryResponse">InvalidHistoryResponse (class in metricq.history_client)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -324,6 +349,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/history-client.html#metricq.history_client.HistoryRequestType.LAST_VALUE">LAST_VALUE (metricq.history_client.HistoryRequestType attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/history-client.html#metricq.history_client.HistoryResponseType.LEGACY">LEGACY (metricq.history_client.HistoryResponseType attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -337,13 +366,15 @@
 </li>
       <li><a href="glossary.html#term-Metadata"><strong>Metadata</strong></a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="glossary.html#term-Metric"><strong>Metric</strong></a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/source.html#metricq.source.MetricSendError">MetricSendError (class in metricq.source)</a>
 </li>
       <li><a href="api/misc.html#metricq.TimeAggregate.minimum">minimum (metricq.TimeAggregate attribute)</a>
+</li>
+      <li><a href="api/history-client.html#metricq.history_client.HistoryResponse.mode">mode() (metricq.history_client.HistoryResponse property)</a>
 </li>
       <li><a href="api/misc.html#metricq.Timedelta.ms">ms() (metricq.Timedelta property)</a>
 </li>
@@ -492,6 +523,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/history-client.html#metricq.history_client.HistoryResponseType.VALUES">VALUES (metricq.history_client.HistoryResponseType attribute)</a>
+</li>
       <li><a href="api/history-client.html#metricq.history_client.HistoryResponse.values">values() (metricq.history_client.HistoryResponse method)</a>
 </li>
   </ul></td>

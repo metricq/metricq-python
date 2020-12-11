@@ -6,8 +6,13 @@ History Client
 .. autoclass:: HistoryClient
     :members:
         connect,
+        get_metrics,
         history_data_request,
         history_last_value,
+        history_aggregate,
+        history_aggregate_timeline,
+        history_raw_timeline,
+    :member-order: bysource
 
 .. py:currentmodule:: metricq.history_client
 
@@ -17,3 +22,15 @@ History Client
 
 .. autoclass:: HistoryResponse
     :members:
+        mode,
+        values,
+        aggregates,
+    :member-order: bysource
+
+
+.. autoclass:: HistoryResponseType
+    :members:
+    :member-order: bysource
+
+.. autoclass:: InvalidHistoryResponse
+    :show-inheritance:
