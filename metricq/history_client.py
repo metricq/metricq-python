@@ -28,14 +28,14 @@
 
 import asyncio
 import uuid
-from enum import Enum
+from enum import Enum, auto
 from typing import Iterator, Optional
 
 import aio_pika
 
 from . import history_pb2
 from ._deprecation import deprecated
-from .client import Client
+from .client import Client, _GetMetricsResult
 from .logging import get_logger
 from .rpc import rpc_handler
 from .types import TimeAggregate, Timedelta, Timestamp, TimeValue
@@ -69,22 +69,61 @@ class HistoryRequestType(Enum):
 
 
 class HistoryResponseType(Enum):
-    AGGREGATES = 1
-    VALUES = 2
-    LEGACY = 3
+    """The type of a history response.
+
+    See :attr:`HistoryResponse.mode` how these values should be interpreted
+    in the context of a :class:`HistoryResponse`.
+    """
+
+    EMPTY = auto()
+    """The response contains no values at all.
+    """
+
+    AGGREGATES = auto()
+    """The response contains a list of aggregates.
+    """
+
+    VALUES = auto()
+    """The response contains a list of time-value pairs.
+    """
+
+    LEGACY = auto()
+    """The response is in an unspecified legacy format.
+    """
+
+
+class InvalidHistoryResponse(ValueError):
+    """A response to a history request was received, but could not be decoded."""
+
+    pass
 
 
 class HistoryResponse:
     """Response to a history request containing the historical data.
 
-    Providers for historic data send either `raw values` (`time-value` pairs, see :class:`.TimeValue`)
+    Providers of historical data send either `raw values` (`time-value` pairs, see :class:`.TimeValue`)
     or `aggregates` (see :class:`.TimeAggregate`).
+
+    The data is accessed by iterating over either :meth:`values` or :meth:`aggregates`.
+    If the response is of the wrong type, these methods might fail and raise :exc:`ValueError`.
+    Match on the value of :attr:`mode` determine whether this response contains raw values or aggregates.
+    Alternatively, pass :code:`convert=True` to either :meth:`values` or :meth:`aggregates`
+    to transparently convert the data to the desired type.
     """
 
     def __init__(self, proto: history_pb2.HistoryResponse, request_duration=None):
         self.request_duration = request_duration
         count = len(proto.time_delta)
-        if len(proto.aggregate) == count:
+        if count == 0:
+            self._mode = HistoryResponseType.EMPTY
+            assert (
+                len(proto.value_min) == 0
+                and len(proto.value_max) == 0
+                and len(proto.aggregate) == 0
+                and len(proto.value) == 0
+            ), "Inconsistent HistoryResponse message"
+
+        elif len(proto.aggregate) == count:
             self._mode = HistoryResponseType.AGGREGATES
             assert len(proto.value) == 0, "Inconsistent HistoryResponse message"
 
@@ -108,7 +147,34 @@ class HistoryResponse:
         return len(self._proto.time_delta)
 
     @property
-    def mode(self):
+    def mode(self) -> HistoryResponseType:
+        """The type of response at hand.
+
+        This determines the behavior of :meth:`~aggregates` and :meth:`~values`:
+
+        :attr:`mode` is :attr:`~HistoryResponseType.VALUES`:
+            :meth:`values` will return a iterator of :class:`TimeValue`.
+            :meth:`aggregates` will fail with :exc:`ValueError`, except if called with :code:`convert=True`.
+        :attr:`mode` is :attr:`~HistoryResponseType.AGGREGATE`:
+            :meth:`aggregates` will return a iterator of :class:`TimeAggregate`.
+            :meth:`values` will fail with :exc:`ValueError`, except if called with :code:`convert=True`.
+        :attr:`mode` is :attr:`~HistoryResponseType.EMPTY`:
+            Both :meth:`values` and :meth:`aggregates` return an empty iterator.
+        :attr:`mode` is :attr:`~HistoryResponseType.LEGACY`:
+            Both :meth:`values` and :meth:`aggregates` will raise :exc:`ValueError` unless called with :code:`convert=True`.
+
+        .. warning::
+            The values listed here might be *non-exhaustive*, new ones might be added in the future.
+            If matching on a value of :class:`HistoryResponseType`, make sure to include a *catch-all* case::
+
+                if response.mode is HistoryResponseType.VALUES:
+                    ...
+                elif response.mode is HistoryResponseType.AGGREGATES:
+                    ...
+                else:
+                    # catch-all case, handle it cleanly
+
+        """
         return self._mode
 
     def values(self, convert: bool = False) -> Iterator[TimeValue]:
@@ -117,17 +183,19 @@ class HistoryResponse:
         Args:
             convert:
                 Convert values transparently if response does not contain raw values.
-                If the response contains aggregates, this will yield the mean value for each aggregate.
+                If the response contains aggregates, this will yield the mean value of each aggregate.
 
         Raises:
             :class:`ValueError`:
                 if :code:`convert=False` and the response does not contain raw values.
         """
         time_ns = 0
-        if self._mode == HistoryResponseType.VALUES:
+        if self._mode is HistoryResponseType.VALUES:
             for time_delta, value in zip(self._proto.time_delta, self._proto.value):
                 time_ns = time_ns + time_delta
                 yield TimeValue(Timestamp(time_ns), value)
+            return
+        elif self._mode is HistoryResponseType.EMPTY:
             return
 
         if not convert:
@@ -137,7 +205,7 @@ class HistoryResponse:
                 )
             )
 
-        if self._mode == HistoryResponseType.AGGREGATES:
+        if self._mode is HistoryResponseType.AGGREGATES:
             for time_delta, proto_aggregate in zip(
                 self._proto.time_delta, self._proto.aggregate
             ):
@@ -147,7 +215,7 @@ class HistoryResponse:
                 yield TimeValue(timestamp, aggregate.mean)
             return
 
-        if self._mode == HistoryResponseType.LEGACY:
+        if self._mode is HistoryResponseType.LEGACY:
             for time_delta, average in zip(
                 self._proto.time_delta, self._proto.value_avg
             ):
@@ -170,13 +238,15 @@ class HistoryResponse:
                 if :code:`convert=False` and the underlying response does not contain aggregates
         """
         time_ns = 0
-        if self._mode == HistoryResponseType.AGGREGATES:
+        if self._mode is HistoryResponseType.AGGREGATES:
             for time_delta, proto_aggregate in zip(
                 self._proto.time_delta, self._proto.aggregate
             ):
                 time_ns = time_ns + time_delta
                 timestamp = Timestamp(time_ns)
                 yield TimeAggregate.from_proto(timestamp, proto_aggregate)
+            return
+        elif self._mode is HistoryResponseType.EMPTY:
             return
 
         if not convert:
@@ -189,7 +259,7 @@ class HistoryResponse:
         if len(self) == 0:
             return
 
-        if self._mode == HistoryResponseType.VALUES:
+        if self._mode is HistoryResponseType.VALUES:
             time_ns = self._proto.time_delta[0]
             previous_timestamp = Timestamp(time_ns)
             # First interval is useless here
@@ -204,7 +274,7 @@ class HistoryResponse:
                 previous_timestamp = timestamp
             return
 
-        if self._mode == HistoryResponseType.LEGACY:
+        if self._mode is HistoryResponseType.LEGACY:
             for time_delta, minimum, maximum, average in zip(
                 self._proto.time_delta,
                 self._proto.value_min,
@@ -275,6 +345,15 @@ class HistoryClient(Client):
         self.history_exchange = None
         await super().stop(exception)
 
+    async def get_metrics(self, *args, **kwargs) -> _GetMetricsResult:
+        """Retrieve information for **historic** metrics matching a selector pattern.
+
+        This is like :meth:`Client.get_metrics`, but sets :code:`historic=True` by default.
+        See documentation there for a detailed description of the remaining arguments.
+        """
+        kwargs.setdefault("historic", True)
+        return await super().get_metrics(*args, **kwargs)
+
     async def history_data_request(
         self,
         metric: str,
@@ -341,14 +420,114 @@ class HistoryClient(Client):
             del self._request_futures[correlation_id]
         return result
 
-    async def history_last_value(self, metric: str, timeout=60) -> TimeValue:
-        """Fetch the last value recorded for a metric.
+    async def history_aggregate(
+        self,
+        metric: str,
+        start_time: Optional[Timestamp] = None,
+        end_time: Optional[Timestamp] = None,
+        timeout=60,
+    ) -> TimeAggregate:
+        """Aggregate values of a metric for the specified span of time.
 
         Args:
             metric:
-                name of the metric of interest
+                Name of the metric to aggregate.
+            start_time:
+                Only aggregate values from this point in time onward.
+                If omitted, aggregation starts at the first data point of this metric.
+            end_time:
+                Only aggregate values up to this point in time.
+                If omitted, aggregation includes the most recent values of this metric.
             timeout:
-                operation timeout in seconds
+                Operation timeout in seconds.
+
+        Returns:
+            A single aggregate over values of this metric, including minimum/maximum/average/etc. values.
+
+        Raises:
+            InvalidHistoryResponse:
+                if an invalid response was received
+        """
+        response: HistoryResponse = await self.history_data_request(
+            metric=metric,
+            start_time=start_time,
+            end_time=end_time,
+            interval_max=None,
+            request_type=HistoryRequestType.AGGREGATE,
+            timeout=timeout,
+        )
+
+        if len(response) == 1:
+            return next(response.aggregates())
+        else:
+            raise InvalidHistoryResponse(
+                f"Response contains {len(response)} aggregates, expected 1"
+            )
+
+    async def history_aggregate_timeline(
+        self,
+        metric: str,
+        *,
+        interval_max: Timedelta,
+        start_time: Optional[Timestamp] = None,
+        end_time: Optional[Timestamp] = None,
+        timeout=60,
+    ) -> Iterator[TimeAggregate]:
+        """Aggregate values of a metric in multiple steps.
+
+        Each aggregate spans values *at most* :literal:`interval_max` apart.
+        Aggregates are returned in order, consecutive aggregates span consecutive values of this metric.
+        Together, all aggregates span all values from :literal:`start_time` to :literal:`end_time`, inclusive.
+
+        Args:
+            metric:
+                Name of the metric to aggregate.
+            interval_max:
+                Maximum timespan of values covered by each aggregate.
+            start_time:
+                Only aggregate values from this point in time onward.
+                If omitted, aggregation starts at the first data point of this metric.
+            end_time:
+                Only aggregate values up to this point in time.
+                If omitted, aggregation includes the most recent values of this metric.
+            timeout:
+                Operation timeout in seconds.
+
+        Returns:
+            An iterator over aggregates for this metric.
+
+        Raises:
+            InvalidHistoryResponse:
+                if an invalid response was received
+        """
+        response: HistoryResponse = await self.history_data_request(
+            metric=metric,
+            start_time=start_time,
+            end_time=end_time,
+            interval_max=interval_max,
+            request_type=HistoryRequestType.AGGREGATE_TIMELINE,
+            timeout=timeout,
+        )
+
+        try:
+            return response.aggregates()
+        except ValueError:
+            raise InvalidHistoryResponse("Response contained no aggregates")
+
+    async def history_last_value(self, metric: str, timeout=60) -> Optional[TimeValue]:
+        """Fetch the last value recorded for a metric.
+
+        If this metric has no values recorded, return :literal:`None`.
+
+        Args:
+            metric:
+                Name of the metric of interest.
+            timeout:
+                Operation timeout in seconds.
+
+        Raises:
+            InvalidHistoryResponse:
+                if an invalid response was received
         """
         result = await self.history_data_request(
             metric,
@@ -358,8 +537,56 @@ class HistoryClient(Client):
             request_type=HistoryRequestType.LAST_VALUE,
             timeout=timeout,
         )
-        assert len(result) == 1
-        return next(result.values())
+
+        try:
+            return next(result.values(), None)
+        except ValueError:
+            raise InvalidHistoryResponse("Request returned more than 1 last value")
+
+    async def history_raw_timeline(
+        self,
+        metric: str,
+        start_time: Optional[Timestamp] = None,
+        end_time: Optional[Timestamp] = None,
+        timeout=60,
+    ) -> Iterator[TimeValue]:
+        """Retrieve raw values of a metric within the specified span of time.
+
+        Omitting both :literal:`start_time` and :literal:`end_time` yields all values recorded for this metric,
+        omitting either one yields values up to/starting at a point in time.
+
+        Args:
+            metric:
+                Name of the metric.
+            start_time:
+                Only retrieve values from this point in time onward.
+                If omitted, include all values before :literal:`end_time`.
+            end_time:
+                Only aggregate values up to this point in time.
+                If omitted, include all values after :literal:`start_time`.
+            timeout:
+                Operation timeout in seconds.
+
+        Returns:
+            An iterator over values of this metric.
+
+        Raises:
+            InvalidHistoryResponse:
+                if an invalid response was received
+        """
+        response: HistoryResponse = await self.history_data_request(
+            metric=metric,
+            start_time=start_time,
+            end_time=end_time,
+            interval_max=Timedelta(0),
+            request_type=HistoryRequestType.FLEX_TIMELINE,
+            timeout=timeout,
+        )
+
+        try:
+            return response.values(convert=False)
+        except ValueError:
+            raise InvalidHistoryResponse("Response contained no values")
 
     @deprecated(reason="use get_metrics() instead")
     async def history_metric_list(self, selector=None, historic=True, timeout=None):

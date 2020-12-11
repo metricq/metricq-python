@@ -44,6 +44,9 @@ class ManagementRpcPublishError(RpcRequestError):
     pass
 
 
+_GetMetricsResult = Union[Sequence[str], Sequence[dict]]
+
+
 class Client(Agent):
     def __init__(self, *args, client_version: Optional[str] = None, **kwargs):
         super().__init__(*args, **kwargs)
@@ -146,7 +149,7 @@ class Client(Agent):
         prefix: Optional[str] = None,
         infix: Optional[str] = None,
         limit: Optional[int] = None,
-    ) -> Union[Sequence[str], Sequence[dict]]:
+    ) -> _GetMetricsResult:
         """Retrieve information for metrics matching a selector pattern.
 
         Args:
