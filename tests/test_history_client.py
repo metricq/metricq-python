@@ -45,7 +45,7 @@ def patch_history_data_request(
 
 
 def test_iterate_empty_history_response(empty_history_response):
-    assert empty_history_response.mode == HistoryResponseType.EMPTY
+    assert empty_history_response.mode is HistoryResponseType.EMPTY
     assert len(empty_history_response) == 0
     assert len(list(empty_history_response.values())) == 0
     assert len(list(empty_history_response.aggregates())) == 0

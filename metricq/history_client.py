@@ -190,12 +190,12 @@ class HistoryResponse:
                 if :code:`convert=False` and the response does not contain raw values.
         """
         time_ns = 0
-        if self._mode == HistoryResponseType.VALUES:
+        if self._mode is HistoryResponseType.VALUES:
             for time_delta, value in zip(self._proto.time_delta, self._proto.value):
                 time_ns = time_ns + time_delta
                 yield TimeValue(Timestamp(time_ns), value)
             return
-        elif self._mode == HistoryResponseType.EMPTY:
+        elif self._mode is HistoryResponseType.EMPTY:
             return
 
         if not convert:
@@ -205,7 +205,7 @@ class HistoryResponse:
                 )
             )
 
-        if self._mode == HistoryResponseType.AGGREGATES:
+        if self._mode is HistoryResponseType.AGGREGATES:
             for time_delta, proto_aggregate in zip(
                 self._proto.time_delta, self._proto.aggregate
             ):
@@ -215,7 +215,7 @@ class HistoryResponse:
                 yield TimeValue(timestamp, aggregate.mean)
             return
 
-        if self._mode == HistoryResponseType.LEGACY:
+        if self._mode is HistoryResponseType.LEGACY:
             for time_delta, average in zip(
                 self._proto.time_delta, self._proto.value_avg
             ):
@@ -238,7 +238,7 @@ class HistoryResponse:
                 if :code:`convert=False` and the underlying response does not contain aggregates
         """
         time_ns = 0
-        if self._mode == HistoryResponseType.AGGREGATES:
+        if self._mode is HistoryResponseType.AGGREGATES:
             for time_delta, proto_aggregate in zip(
                 self._proto.time_delta, self._proto.aggregate
             ):
@@ -246,7 +246,7 @@ class HistoryResponse:
                 timestamp = Timestamp(time_ns)
                 yield TimeAggregate.from_proto(timestamp, proto_aggregate)
             return
-        elif self._mode == HistoryResponseType.EMPTY:
+        elif self._mode is HistoryResponseType.EMPTY:
             return
 
         if not convert:
@@ -259,7 +259,7 @@ class HistoryResponse:
         if len(self) == 0:
             return
 
-        if self._mode == HistoryResponseType.VALUES:
+        if self._mode is HistoryResponseType.VALUES:
             time_ns = self._proto.time_delta[0]
             previous_timestamp = Timestamp(time_ns)
             # First interval is useless here
@@ -274,7 +274,7 @@ class HistoryResponse:
                 previous_timestamp = timestamp
             return
 
-        if self._mode == HistoryResponseType.LEGACY:
+        if self._mode is HistoryResponseType.LEGACY:
             for time_delta, minimum, maximum, average in zip(
                 self._proto.time_delta,
                 self._proto.value_min,
