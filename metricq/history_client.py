@@ -35,7 +35,7 @@ import aio_pika
 
 from . import history_pb2
 from ._deprecation import deprecated
-from .client import Client
+from .client import Client, _GetMetricsResult
 from .logging import get_logger
 from .rpc import rpc_handler
 from .types import TimeAggregate, Timedelta, Timestamp, TimeValue
@@ -294,6 +294,15 @@ class HistoryClient(Client):
             self.history_connection = None
         self.history_exchange = None
         await super().stop(exception)
+
+    async def get_metrics(self, *args, **kwargs) -> _GetMetricsResult:
+        """Retrieve information for **historic** metrics matching a selector pattern.
+
+        This is like :meth:`Client.get_metrics`, but sets :code:`historic=True` by default.
+        See documentation there for a detailed description of the remaining arguments.
+        """
+        kwargs.setdefault("historic", True)
+        return await super().get_metrics(*args, **kwargs)
 
     async def history_data_request(
         self,

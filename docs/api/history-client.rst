@@ -6,6 +6,7 @@ History Client
 .. autoclass:: HistoryClient
     :members:
         connect,
+        get_metrics,
         history_data_request,
         history_last_value,
         history_aggregate,

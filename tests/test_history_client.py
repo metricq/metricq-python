@@ -108,3 +108,43 @@ async def test_timelime_empty(
     patch_history_data_request(mocker, empty_history_response)
 
     assert list(await history_client.history_raw_timeline(DEFAULT_METRIC)) == []
+
+
+async def test_get_metrics_historic_only(
+    history_client: HistoryClient,
+    mocker: MockerFixture,
+):
+    """Assert that :meth:`metricq.HistoryClient.get_metrics` behaves exactly
+    like :meth:`metricq.Client.get_metrics` by default, except that
+    :code:`historic=True` is passed.
+    """
+    RESULT = mocker.sentinel.RESULT
+
+    async def assert_historic_true(self, *args, historic, **kwargs):
+        assert historic
+        return RESULT
+
+    mocker.patch("metricq.Client.get_metrics", assert_historic_true)
+
+    assert await history_client.get_metrics(selector=DEFAULT_METRIC) is RESULT
+
+
+@pytest.mark.parametrize(("historic_override"), [True, False])
+async def test_get_metrics_historic_override(
+    historic_override: bool,
+    history_client: HistoryClient,
+    mocker: MockerFixture,
+):
+    """Assert that any override for :code:`historic` when calling
+    :meth:`metricq.HistoryClient.get_metrics` is forwarded to
+    :meth:`metricq.Client.get_metrics`.
+    """
+
+    async def assert_historic_false(self, *args, historic, **kwargs):
+        assert historic == historic_override
+
+    mocker.patch("metricq.Client.get_metrics", assert_historic_false)
+
+    await history_client.get_metrics(
+        selector=DEFAULT_METRIC, historic=historic_override
+    )
