@@ -1,5 +1,26 @@
 # Changelog
 
+## [v1.4.0](https://github.com/metricq/metricq-python/tree/v1.4.0) (2020-12-12)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v1.3.0...v1.4.0)
+
+**Implemented enhancements:**
+
+- Request-type-specific historic interface [\#56](https://github.com/metricq/metricq-python/issues/56)
+
+**Fixed bugs:**
+
+- Sporadic SSLErrors on Client close [\#18](https://github.com/metricq/metricq-python/issues/18)
+
+**Closed issues:**
+
+- Deprecation of HistoryClient.history\_metric\_metadata\(\) [\#55](https://github.com/metricq/metricq-python/issues/55)
+
+**Merged pull requests:**
+
+- Add history request convenience methods [\#57](https://github.com/metricq/metricq-python/pull/57) ([phijor](https://github.com/phijor))
+- Add sphinx-based documentation [\#6](https://github.com/metricq/metricq-python/pull/6) ([phijor](https://github.com/phijor))
+
 ## [v1.3.0](https://github.com/metricq/metricq-python/tree/v1.3.0) (2020-10-14)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v1.2.0...v1.3.0)
@@ -29,15 +50,15 @@
 - Fix release workflow [\#53](https://github.com/metricq/metricq-python/pull/53) ([kinnarr](https://github.com/kinnarr))
 - Trigger python package workflow from release workflow [\#52](https://github.com/metricq/metricq-python/pull/52) ([kinnarr](https://github.com/kinnarr))
 - Adds a workflow for docker image build and upload [\#49](https://github.com/metricq/metricq-python/pull/49) ([bmario](https://github.com/bmario))
-- Fix reconnect issues [\#44](https://github.com/metricq/metricq-python/pull/44) ([bmario](https://github.com/bmario))
 - Fix mypy protobuf packaging [\#43](https://github.com/metricq/metricq-python/pull/43) ([tilsche](https://github.com/tilsche))
 - Release workflow [\#42](https://github.com/metricq/metricq-python/pull/42) ([kinnarr](https://github.com/kinnarr))
+- Issue 27 - Precise and Pretty Timedelta [\#28](https://github.com/metricq/metricq-python/pull/28) ([Daddelhai](https://github.com/Daddelhai))
+- Fix reconnect issues [\#44](https://github.com/metricq/metricq-python/pull/44) ([bmario](https://github.com/bmario))
 - Generate changelog for closed PRs and issues [\#40](https://github.com/metricq/metricq-python/pull/40) ([kinnarr](https://github.com/kinnarr))
 - Split release job [\#37](https://github.com/metricq/metricq-python/pull/37) ([kinnarr](https://github.com/kinnarr))
 - Test and lint: improved CI [\#36](https://github.com/metricq/metricq-python/pull/36) ([phijor](https://github.com/phijor))
 - Improve output of sample tools [\#33](https://github.com/metricq/metricq-python/pull/33) ([phijor](https://github.com/phijor))
 - Add client version to discover response [\#29](https://github.com/metricq/metricq-python/pull/29) ([phijor](https://github.com/phijor))
-- Issue 27 - Precise and Pretty Timedelta [\#28](https://github.com/metricq/metricq-python/pull/28) ([Daddelhai](https://github.com/Daddelhai))
 - Add mypy check for github workflow [\#3](https://github.com/metricq/metricq-python/pull/3) ([bmario](https://github.com/bmario))
 
 ## [v1.2.0](https://github.com/metricq/metricq-python/tree/v1.2.0) (2020-08-03)
