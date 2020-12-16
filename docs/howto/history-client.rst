@@ -174,14 +174,14 @@ Still, we get a rough idea of how this metric behaved over the past year without
 Fetching raw values
 -------------------
 
-If you are interested in raw values instead of a aggregates, use :meth:`HistoryClient.history_timeline`:
+If you are interested in raw values instead of a aggregates, use :meth:`HistoryClient.history_raw_timeline`:
 
 .. code-block::
 
     >>> metric = "elab.ariel.s0.dram.power"
     >>> start_time = metricq.Timestamp.from_iso8601("2020-01-01T00:00:00.0Z")
     >>> end_time = metricq.Timestamp.from_iso8601("2020-01-01T00:00:00.1Z")
-    >>> values = await client.history_timeline(
+    >>> values = await client.history_raw_timeline(
     >>>     metric, start_time=start_time, end_time=end_time
     >>> )
     >>> print("Raw values of the first 100ms of 2020:")
