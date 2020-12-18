@@ -55,7 +55,11 @@ class MetricQSpy(metricq.HistoryClient):
         await self.connect()
 
         for pattern in patterns:
-            result = await self.get_metrics(selector=pattern, metadata=True)
+            result = await self.get_metrics(
+                selector=pattern,
+                metadata=True,
+                historic=None,
+            )
 
             for metric, metadata in result.items():
                 click.echo(click.style(metric, fg="cyan"), nl=False)
