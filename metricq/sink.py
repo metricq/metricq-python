@@ -209,7 +209,6 @@ class Sink(DataClient):
             timestamp: timepoint at which this metric was measured
             value: value of the metric at time of measurement
         """
-        pass
 
 
 class DurableSink(Sink):

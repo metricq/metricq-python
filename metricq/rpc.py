@@ -75,8 +75,13 @@ class RPCDispatcher(metaclass=RPCMeta):
             function: the tag of the function to be called.
 
         Warning:
-            DO NOT RENAME.
-            It must be called :literal:`function` because it is called directly with the json dict
+            Do not rename the :literal:`function` argument.
+            It must be called :literal:`function` because it is called directly with the json dict.
+
+        Raises:
+            KeyError: if no corresponding handler is defined.
+            TypeError: if a handler is not an class:`Awaitable`.
+            TypeError: if multiple handlers are defined that return a :literal:`not None` value.
         """
         if function not in self._rpc_handlers:
             raise KeyError("Missing rpc handler for {}".format(function))

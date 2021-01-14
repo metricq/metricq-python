@@ -36,6 +36,7 @@ import aio_pika
 from . import history_pb2
 from ._deprecation import deprecated
 from .client import Client, _GetMetricsResult
+from .exceptions import InvalidHistoryResponse
 from .logging import get_logger
 from .rpc import rpc_handler
 from .types import TimeAggregate, Timedelta, Timestamp, TimeValue
@@ -92,12 +93,6 @@ class HistoryResponseType(Enum):
     """
 
 
-class InvalidHistoryResponse(ValueError):
-    """A response to a history request was received, but could not be decoded."""
-
-    pass
-
-
 class HistoryResponse:
     """Response to a history request containing the historical data.
 
@@ -112,34 +107,46 @@ class HistoryResponse:
     """
 
     def __init__(self, proto: history_pb2.HistoryResponse, request_duration=None):
+        """HistoryResponse objects are created by the HistoryClient methods.
+
+        Don't bother instantiating on your own.
+
+        :meta private:
+        """
         self.request_duration = request_duration
         count = len(proto.time_delta)
         if count == 0:
             self._mode = HistoryResponseType.EMPTY
-            assert (
-                len(proto.value_min) == 0
-                and len(proto.value_max) == 0
-                and len(proto.aggregate) == 0
-                and len(proto.value) == 0
-            ), "Inconsistent HistoryResponse message"
+            if (
+                len(proto.value_min) != 0
+                or len(proto.value_max) != 0
+                or len(proto.aggregate) != 0
+                or len(proto.value) != 0
+            ):
+                raise InvalidHistoryResponse("time_delta empty, but values present")
 
         elif len(proto.aggregate) == count:
             self._mode = HistoryResponseType.AGGREGATES
-            assert len(proto.value) == 0, "Inconsistent HistoryResponse message"
+            if len(proto.value) != 0:
+                raise InvalidHistoryResponse("values and aggregates present")
 
         elif len(proto.value) == count:
             self._mode = HistoryResponseType.VALUES
-            assert len(proto.aggregate) == 0, "Inconsistent HistoryResponse message"
+            if len(proto.aggregate) != 0:
+                raise InvalidHistoryResponse("aggregates and values present")
 
         elif len(proto.value_avg) == count:
             self._mode = HistoryResponseType.LEGACY
-            assert len(proto.value_min) == count
-            assert len(proto.value_max) == count
-            assert len(proto.aggregate) == 0
-            assert len(proto.value) == 0
+            if (
+                len(proto.value_min) != count
+                or len(proto.value_max) != count
+                or len(proto.aggregate) != 0
+                or len(proto.value) != 0
+            ):
+                raise InvalidHistoryResponse("inconsistent counts in legacy format")
 
         else:
-            raise ValueError("Inconsistent HistoryResponse message")
+            raise InvalidHistoryResponse("no value count matches time_delta count")
 
         self._proto = proto
 
@@ -150,7 +157,7 @@ class HistoryResponse:
     def mode(self) -> HistoryResponseType:
         """The type of response at hand.
 
-        This determines the behavior of :meth:`~aggregates` and :meth:`~values`:
+        This determines the behavior of :meth:`aggregates` and :meth:`values`:
 
         :attr:`mode` is :attr:`~HistoryResponseType.VALUES`:
             :meth:`values` will return a iterator of :class:`TimeValue`.
@@ -236,6 +243,9 @@ class HistoryResponse:
         Raises:
             ValueError:
                 if :code:`convert=False` and the underlying response does not contain aggregates
+            NonMonotonicError:
+                if the underling data has mode :attr:`~HistoryResponseType.VALUES` and
+                timestamps are not strictly monotonically increasing
         """
         time_ns = 0
         if self._mode is HistoryResponseType.AGGREGATES:
@@ -313,7 +323,7 @@ class HistoryClient(Client):
         self._request_futures = dict()
 
     async def connect(self):
-        """Connect to the MetricQ network and register this client."""
+        """Connect to the MetricQ network and register this HistoryClient."""
         await super().connect()
         response = await self.rpc("history.register")
         logger.debug("register response: {}", response)
@@ -379,9 +389,12 @@ class HistoryClient(Client):
                 See :class:`.HistoryRequestType`.
             timeout:
                 Operation timeout in seconds.
+
+        Raises:
+            ValueError: if
         """
         if not metric:
-            raise ValueError("metric must be a non-empty string")
+            raise ValueError("Metric must be a non-empty string")
         correlation_id = "mq-history-py-{}-{}".format(self.token, uuid.uuid4().hex)
 
         logger.debug(
@@ -445,8 +458,7 @@ class HistoryClient(Client):
             A single aggregate over values of this metric, including minimum/maximum/average/etc. values.
 
         Raises:
-            InvalidHistoryResponse:
-                if an invalid response was received
+            ~exceptions.InvalidHistoryResponse:
         """
         response: HistoryResponse = await self.history_data_request(
             metric=metric,
@@ -461,7 +473,7 @@ class HistoryClient(Client):
             return next(response.aggregates())
         else:
             raise InvalidHistoryResponse(
-                f"Response contains {len(response)} aggregates, expected 1"
+                f"contains {len(response)} aggregates, expected 1"
             )
 
     async def history_aggregate_timeline(
@@ -497,8 +509,7 @@ class HistoryClient(Client):
             An iterator over aggregates for this metric.
 
         Raises:
-            InvalidHistoryResponse:
-                if an invalid response was received
+            ~exceptions.InvalidHistoryResponse:
         """
         response: HistoryResponse = await self.history_data_request(
             metric=metric,
@@ -512,7 +523,7 @@ class HistoryClient(Client):
         try:
             return response.aggregates()
         except ValueError:
-            raise InvalidHistoryResponse("Response contained no aggregates")
+            raise InvalidHistoryResponse("AGGREGATE_TIMELINE contains no aggregates")
 
     async def history_last_value(self, metric: str, timeout=60) -> Optional[TimeValue]:
         """Fetch the last value recorded for a metric.
@@ -526,8 +537,7 @@ class HistoryClient(Client):
                 Operation timeout in seconds.
 
         Raises:
-            InvalidHistoryResponse:
-                if an invalid response was received
+            ~exceptions.InvalidHistoryResponse:
         """
         result = await self.history_data_request(
             metric,
@@ -541,7 +551,7 @@ class HistoryClient(Client):
         try:
             return next(result.values(), None)
         except ValueError:
-            raise InvalidHistoryResponse("Request returned more than 1 last value")
+            raise InvalidHistoryResponse("LAST_VALUE returned more than 1 value")
 
     async def history_raw_timeline(
         self,
@@ -571,8 +581,7 @@ class HistoryClient(Client):
             An iterator over values of this metric.
 
         Raises:
-            InvalidHistoryResponse:
-                if an invalid response was received
+            ~exceptions.InvalidHistoryResponse:
         """
         response: HistoryResponse = await self.history_data_request(
             metric=metric,

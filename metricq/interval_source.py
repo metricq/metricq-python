@@ -31,8 +31,9 @@ from abc import abstractmethod
 from numbers import Real
 from typing import Optional, Union
 
+from .exceptions import PublishFailed
 from .logging import get_logger
-from .source import MetricSendError, Source
+from .source import Source
 from .types import Timedelta, Timestamp
 
 logger = get_logger(__name__)
@@ -106,7 +107,7 @@ class IntervalSource(Source):
         while True:
             try:
                 await self.update()
-            except MetricSendError as e:
+            except PublishFailed as e:
                 # This is a "normal" case, when we lost the connection.
                 # During the reconnection phase, we need to save the task from
                 # being cancelled.
@@ -146,4 +147,3 @@ class IntervalSource(Source):
 
         Override this method to produce data points at a constant rate.
         """
-        pass
