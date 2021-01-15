@@ -127,7 +127,7 @@ class Agent(RPCDispatcher):
             timeout=connection_timeout,
             connection_name="management connection",
         )
-        self._management_channel: Optional[aio_pika.Channel] = None
+        self._management_channel: Optional[aio_pika.RobustChannel] = None
 
         self.management_rpc_queue: Optional[aio_pika.Queue] = None
 
