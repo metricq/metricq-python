@@ -66,3 +66,13 @@ Consuming tools might handle and display these fields in a special way.
 :literal:`quantity` (`string`)
     The quantity being measured.
     Ideally this is the same as the last segment of the metric name, e.g. :literal:`"power"` or :literal:`"temperature"`.
+
+:literal:`chunkSize` (`number` or :literal:`null`)
+    The number of data points sent to the network in a single message,
+    see :meth:`Source.chunk_size` and :meth:`Source.send`.
+
+    Setting this to :literal:`null` means that the chunk size is either
+    not known or varies between messages.
+
+    This is useful for monitoring, as :literal:`rate` / :literal:`chunkSize`
+    gives an estimate of the expected message rate for a source.

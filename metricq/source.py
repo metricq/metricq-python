@@ -133,6 +133,16 @@ class Source(DataClient):
             self.metrics[id] = SourceMetric(id, self, chunk_size=self.chunk_size)
         return self.metrics[id]
 
+    def _augment_metadata(
+        self, metrics: Dict[Metric, MetadataDict]
+    ) -> Dict[Metric, MetadataDict]:
+        augmented: Dict[Metric, MetadataDict] = dict(**metrics)
+        for metric, metadata in augmented.items():
+            # If a SourceMetric has a chunk_size of 0, chunking is disable.
+            metadata.setdefault("chunkSize", self[metric].chunk_size)
+
+        return augmented
+
     async def declare_metrics(self, metrics: Dict[str, MetadataDict]):
         """Declare a set of :term:`metrics<Metric>` this Source produces values for.
 
@@ -167,6 +177,8 @@ class Source(DataClient):
                             },
                         })
         """
+        metrics = self._augment_metadata(metrics=metrics)
+
         logger.debug("declare_metrics({})", metrics)
         await self.rpc("source.declare_metrics", metrics=metrics)
 
