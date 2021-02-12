@@ -1,4 +1,8 @@
 #!/bin/env python3
+from setuptools import Command, setup
+from setuptools.command.build_py import build_py
+from setuptools.command.develop import develop
+
 import logging
 import os
 import re
@@ -10,9 +14,6 @@ from distutils.spawn import find_executable
 from typing import Optional, Tuple
 
 import mypy_protobuf
-from setuptools import Command, setup
-from setuptools.command.build_py import build_py
-from setuptools.command.develop import develop
 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logger = logging.getLogger()

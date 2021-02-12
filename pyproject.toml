@@ -38,6 +38,8 @@ skip_glob = [
     "**/*_pb2.pyi",
 ]
 skip = [
+    "setup.py", # setuptools needs to be loaded before distutils.
+                # Instruct isort not to go there. There be dragons.
     "docs/conf.py",
     ".eggs",
     ".git",
