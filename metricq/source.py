@@ -41,7 +41,7 @@ from .exceptions import PublishFailed
 from .logging import get_logger
 from .rpc import rpc_handler
 from .source_metric import SourceMetric
-from .types import Timestamp
+from .types import Metric, Timestamp
 
 logger = get_logger(__name__)
 
@@ -133,7 +133,7 @@ class Source(DataClient):
             You are responsible for handling all relevant exceptions.
         """
 
-    def __getitem__(self, id):
+    def __getitem__(self, id: Metric) -> SourceMetric:
         if id not in self.metrics:
             self.metrics[id] = SourceMetric(id, self, chunk_size=self.chunk_size)
         return self.metrics[id]

@@ -31,11 +31,11 @@
 import math
 
 from .datachunk_pb2 import DataChunk
-from .types import Timestamp
+from .types import Metric, Timestamp
 
 
 class SourceMetric:
-    def __init__(self, id, source, chunk_size=1):
+    def __init__(self, id: Metric, source, chunk_size: int = 1):
         self.id = id
         self.source = source
 

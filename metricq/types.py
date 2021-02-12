@@ -631,3 +631,8 @@ class TimeAggregate:
     @property
     def mean_sum(self) -> float:
         return self.sum / self.count
+
+
+Metric = str
+"""Type alias for strings that represent metric names
+"""
