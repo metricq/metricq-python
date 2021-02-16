@@ -24,7 +24,6 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -172,7 +171,7 @@
 <h2>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="metricq.Timestamp">
-<em class="property">class </em><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">Timestamp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nanoseconds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">metricq.</span></code><code class="sig-name descname"><span class="pre">Timestamp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nanoseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>A MetricQ Timestamp</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -184,7 +183,7 @@
 </dl>
 <dl class="py method">
 <dt id="metricq.Timestamp.__add__">
-<code class="sig-name descname">__add__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">delta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.__add__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">__add__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.__add__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the timestamp <cite>delta</cite> in the future (or in the past, if <cite>delta</cite> is negative), relative to a <a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a> instance.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">epoch</span> <span class="o">=</span> <span class="n">Timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a_week_later</span> <span class="o">=</span> <span class="n">epoch</span> <span class="o">+</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;7 days&quot;</span><span class="p">)</span>
@@ -207,7 +206,7 @@
 
 <dl class="py method">
 <dt id="metricq.Timestamp.__eq__">
-<code class="sig-name descname">__eq__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.__eq__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">__eq__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.__eq__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether two <a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamps</span></code></a> refer to the same instance of time:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">later</span> <span class="o">=</span> <span class="n">now</span> <span class="o">+</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -227,7 +226,7 @@
 
 <dl class="py method">
 <dt id="metricq.Timestamp.__lt__">
-<code class="sig-name descname">__lt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.__lt__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">__lt__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.__lt__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare whether this timestamp describes a time before another timestamp.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">later</span> <span class="o">=</span> <span class="n">now</span> <span class="o">+</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -249,7 +248,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 
 <dl class="py method">
 <dt id="metricq.Timestamp.__str__">
-<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.__str__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">__str__</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.__str__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Yield a human-readable date-time string in the local timezone:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># in UTC+01:00, it was already 1 in the night when the UNIX epoch happened</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">Timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
@@ -260,7 +259,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 
 <dl class="py method">
 <dt id="metricq.Timestamp.ago">
-<em class="property">classmethod </em><code class="sig-name descname">ago</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">delta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.ago" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">ago</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.ago" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a timestamp <cite>delta</cite> in the past.</p>
 <p>This is equivalent to:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">delta</span>
@@ -275,7 +274,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 
 <dl class="py method">
 <dt id="metricq.Timestamp.datetime">
-<code class="sig-name descname">datetime</code><a class="headerlink" href="#metricq.Timestamp.datetime" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">datetime</span></code><a class="headerlink" href="#metricq.Timestamp.datetime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an aware UTC datetime object</p>
 <p>All MetricQ timestamps are POSIX timestamps, hence UTC.</p>
 <dl class="field-list simple">
@@ -287,7 +286,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 
 <dl class="py method">
 <dt id="metricq.Timestamp.from_datetime">
-<em class="property">classmethod </em><code class="sig-name descname">from_datetime</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_datetime" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_datetime</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_datetime" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Timestamp from an aware datetime object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -304,7 +303,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 
 <dl class="py method">
 <dt id="metricq.Timestamp.from_iso8601">
-<em class="property">classmethod </em><code class="sig-name descname">from_iso8601</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">iso_string</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_iso8601" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_iso8601</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_iso8601" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Timestamp from an <strong>UTC</strong> <cite>ISO 8601</cite> date-time string:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Timestamp</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p">(</span><span class="s2">&quot;1970-01-01T00:00:00.0Z&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="go">True</span>
@@ -325,7 +324,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 
 <dl class="py method">
 <dt id="metricq.Timestamp.from_now">
-<em class="property">classmethod </em><code class="sig-name descname">from_now</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">delta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_now" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_now</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_now" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a timestamp <cite>delta</cite> in the future.</p>
 <p>This is equivalent to:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">delta</span>
@@ -340,7 +339,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 
 <dl class="py method">
 <dt id="metricq.Timestamp.from_posix_seconds">
-<em class="property">classmethod </em><code class="sig-name descname">from_posix_seconds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seconds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_posix_seconds" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_posix_seconds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_posix_seconds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Timestamp from a POSIX timestamp</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -357,7 +356,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 
 <dl class="py method">
 <dt id="metricq.Timestamp.now">
-<em class="property">classmethod </em><code class="sig-name descname">now</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.now" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">now</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.now" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a Timestamp corresponding to “now”</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -368,25 +367,25 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 
 <dl class="py method">
 <dt id="metricq.Timestamp.posix">
-<code class="sig-name descname">posix</code><a class="headerlink" href="#metricq.Timestamp.posix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">posix</span></code><a class="headerlink" href="#metricq.Timestamp.posix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of seconds since the UNIX epoch</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timestamp.posix_ms">
-<code class="sig-name descname">posix_ms</code><a class="headerlink" href="#metricq.Timestamp.posix_ms" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">posix_ms</span></code><a class="headerlink" href="#metricq.Timestamp.posix_ms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of milliseconds since the UNIX epoch</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timestamp.posix_ns">
-<code class="sig-name descname">posix_ns</code><a class="headerlink" href="#metricq.Timestamp.posix_ns" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">posix_ns</span></code><a class="headerlink" href="#metricq.Timestamp.posix_ns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of nanoseconds since the UNIX epoch</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timestamp.posix_us">
-<code class="sig-name descname">posix_us</code><a class="headerlink" href="#metricq.Timestamp.posix_us" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">posix_us</span></code><a class="headerlink" href="#metricq.Timestamp.posix_us" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of microseconds since the UNIX epoch</p>
 </dd></dl>
 
@@ -397,7 +396,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 <h2>Timedeltas (Durations)<a class="headerlink" href="#timedeltas-durations" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="metricq.Timedelta">
-<em class="property">class </em><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">Timedelta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nanoseconds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">metricq.</span></code><code class="sig-name descname"><span class="pre">Timedelta</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nanoseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta" title="Permalink to this definition">¶</a></dt>
 <dd><p>A (possibly negative) duration of time</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -496,7 +495,7 @@ the same as <code class="code docutils literal notranslate"><span class="pre">Ti
 </dl>
 <dl class="py method">
 <dt id="metricq.Timedelta.__str__">
-<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__str__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">__str__</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__str__" title="Permalink to this definition">¶</a></dt>
 <dd><p>A string containing the number of seconds of this duration</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;One day has </span><span class="si">{}</span><span class="s2"> seconds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;1 day&quot;</span><span class="p">))</span>
 <span class="go">&#39;One day has 86400.0s seconds&#39;</span>
@@ -506,7 +505,7 @@ the same as <code class="code docutils literal notranslate"><span class="pre">Ti
 
 <dl class="py method">
 <dt id="metricq.Timedelta.from_ms">
-<em class="property">staticmethod </em><code class="sig-name descname">from_ms</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">milliseconds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_ms" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">staticmethod</span> </em><code class="sig-name descname"><span class="pre">from_ms</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">milliseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_ms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a duration from a number of milliseconds</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -523,7 +522,7 @@ the same as <code class="code docutils literal notranslate"><span class="pre">Ti
 
 <dl class="py method">
 <dt id="metricq.Timedelta.from_s">
-<em class="property">staticmethod </em><code class="sig-name descname">from_s</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seconds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_s" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">staticmethod</span> </em><code class="sig-name descname"><span class="pre">from_s</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_s" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a duration from a number of seconds</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -540,7 +539,7 @@ the same as <code class="code docutils literal notranslate"><span class="pre">Ti
 
 <dl class="py method">
 <dt id="metricq.Timedelta.from_string">
-<em class="property">staticmethod </em><code class="sig-name descname">from_string</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">duration_str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_string" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">staticmethod</span> </em><code class="sig-name descname"><span class="pre">from_string</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration_str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_string" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse a human-readable string representation of a duration.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;One day has </span><span class="si">{}</span><span class="s2"> seconds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;1 day&quot;</span><span class="p">))</span>
 <span class="go">&#39;One day has 86400.0s seconds&#39;</span>
@@ -611,7 +610,7 @@ Accepted units are:</p>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.from_timedelta">
-<em class="property">staticmethod </em><code class="sig-name descname">from_timedelta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">delta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_timedelta" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">staticmethod</span> </em><code class="sig-name descname"><span class="pre">from_timedelta</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_timedelta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert from a standard <code class="docutils literal notranslate"><span class="pre">timedelta</span></code> object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -628,7 +627,7 @@ Accepted units are:</p>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.from_us">
-<em class="property">staticmethod </em><code class="sig-name descname">from_us</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">microseconds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_us" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">staticmethod</span> </em><code class="sig-name descname"><span class="pre">from_us</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">microseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_us" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a duration from a number of microseconds</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -645,25 +644,25 @@ Accepted units are:</p>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.ms">
-<code class="sig-name descname">ms</code><a class="headerlink" href="#metricq.Timedelta.ms" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">ms</span></code><a class="headerlink" href="#metricq.Timedelta.ms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of milliseconds in this duration</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.ns">
-<code class="sig-name descname">ns</code><a class="headerlink" href="#metricq.Timedelta.ns" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">ns</span></code><a class="headerlink" href="#metricq.Timedelta.ns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of nanoseconds in this duration</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.s">
-<code class="sig-name descname">s</code><a class="headerlink" href="#metricq.Timedelta.s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">s</span></code><a class="headerlink" href="#metricq.Timedelta.s" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of seconds in this duration</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.timedelta">
-<code class="sig-name descname">timedelta</code><a class="headerlink" href="#metricq.Timedelta.timedelta" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">timedelta</span></code><a class="headerlink" href="#metricq.Timedelta.timedelta" title="Permalink to this definition">¶</a></dt>
 <dd><p>This duration as a standard <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a> object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
@@ -674,7 +673,7 @@ Accepted units are:</p>
 
 <dl class="py method">
 <dt id="metricq.Timedelta.us">
-<code class="sig-name descname">us</code><a class="headerlink" href="#metricq.Timedelta.us" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">us</span></code><a class="headerlink" href="#metricq.Timedelta.us" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of microseconds in this duration</p>
 </dd></dl>
 
@@ -685,7 +684,7 @@ Accepted units are:</p>
 <h2>Time-value pairs and aggregates<a class="headerlink" href="#time-value-pairs-and-aggregates" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="metricq.TimeValue">
-<em class="property">class </em><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">TimeValue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">timestamp</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeValue" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">metricq.</span></code><code class="sig-name descname"><span class="pre">TimeValue</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <cite>timestamp-value</cite> pair.</p>
 <p>Unpack it like so:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tv</span> <span class="o">=</span> <span class="n">TimeValue</span><span class="p">(</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="mf">42.0</span><span class="p">)</span>
@@ -694,59 +693,59 @@ Accepted units are:</p>
 </div>
 <dl class="py attribute">
 <dt id="metricq.TimeValue.timestamp">
-<code class="sig-name descname">timestamp</code><a class="headerlink" href="#metricq.TimeValue.timestamp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#metricq.TimeValue.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt id="metricq.TimeValue.value">
-<code class="sig-name descname">value</code><a class="headerlink" href="#metricq.TimeValue.value" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">value</span></code><a class="headerlink" href="#metricq.TimeValue.value" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt id="metricq.TimeAggregate">
-<em class="property">class </em><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">TimeAggregate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">timestamp</span></em>, <em class="sig-param"><span class="n">minimum</span></em>, <em class="sig-param"><span class="n">maximum</span></em>, <em class="sig-param"><span class="n">sum</span></em>, <em class="sig-param"><span class="n">count</span></em>, <em class="sig-param"><span class="n">integral</span></em>, <em class="sig-param"><span class="n">active_time</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">metricq.</span></code><code class="sig-name descname"><span class="pre">TimeAggregate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integral</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summary of a metric’s values within a certain period of time.</p>
 <dl class="py attribute">
 <dt id="metricq.TimeAggregate.timestamp">
-<code class="sig-name descname">timestamp</code><a class="headerlink" href="#metricq.TimeAggregate.timestamp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">timestamp</span></code><a class="headerlink" href="#metricq.TimeAggregate.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>starting time of this aggregate</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="metricq.TimeAggregate.minimum">
-<code class="sig-name descname">minimum</code><a class="headerlink" href="#metricq.TimeAggregate.minimum" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">minimum</span></code><a class="headerlink" href="#metricq.TimeAggregate.minimum" title="Permalink to this definition">¶</a></dt>
 <dd><p>minimum value</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="metricq.TimeAggregate.maximum">
-<code class="sig-name descname">maximum</code><a class="headerlink" href="#metricq.TimeAggregate.maximum" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">maximum</span></code><a class="headerlink" href="#metricq.TimeAggregate.maximum" title="Permalink to this definition">¶</a></dt>
 <dd><p>maximum value</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="metricq.TimeAggregate.sum">
-<code class="sig-name descname">sum</code><a class="headerlink" href="#metricq.TimeAggregate.sum" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">sum</span></code><a class="headerlink" href="#metricq.TimeAggregate.sum" title="Permalink to this definition">¶</a></dt>
 <dd><p>sum of all values</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="metricq.TimeAggregate.count">
-<code class="sig-name descname">count</code><a class="headerlink" href="#metricq.TimeAggregate.count" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">count</span></code><a class="headerlink" href="#metricq.TimeAggregate.count" title="Permalink to this definition">¶</a></dt>
 <dd><p>total number of values</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="metricq.TimeAggregate.integral">
-<code class="sig-name descname">integral</code><a class="headerlink" href="#metricq.TimeAggregate.integral" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">integral</span></code><a class="headerlink" href="#metricq.TimeAggregate.integral" title="Permalink to this definition">¶</a></dt>
 <dd><p>integral of all values over the whole period</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="metricq.TimeAggregate.active_time">
-<code class="sig-name descname">active_time</code><a class="headerlink" href="#metricq.TimeAggregate.active_time" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">active_time</span></code><a class="headerlink" href="#metricq.TimeAggregate.active_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>time spanned by this aggregate in nanoseconds</p>
 </dd></dl>
 
@@ -757,7 +756,7 @@ Accepted units are:</p>
 <h2>RPC handling<a class="headerlink" href="#rpc-handling" title="Permalink to this headline">¶</a></h2>
 <dl class="py decorator">
 <dt id="metricq.rpc_handler">
-<code class="sig-prename descclassname">&#64;</code><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">rpc_handler</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">function_tags</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.rpc_handler" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">&#64;</span></code><code class="sig-prename descclassname"><span class="pre">metricq.</span></code><code class="sig-name descname"><span class="pre">rpc_handler</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">function_tags</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.rpc_handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>A Decorator to mark an <code class="code docutils literal notranslate"><span class="pre">async</span></code> method as an RPC handler</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

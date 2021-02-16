@@ -167,7 +167,7 @@
 <h1>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="metricq.Source">
-<em class="property">class </em><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">Source</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">metricq.</span></code><code class="sig-name descname"><span class="pre">Source</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source" title="Permalink to this definition">¶</a></dt>
 <dd><p>A MetricQ <a class="reference internal" href="../glossary.html#term-Source"><span class="xref std std-term">Source</span></a>.</p>
 <p>See <a class="reference internal" href="../howto/source.html#source-how-to"><span class="std std-ref">Building a MetricQ Source</span></a> on how to implement a new Source.</p>
 <p class="rubric">Example</p>
@@ -196,13 +196,13 @@
 </div>
 <dl class="py method">
 <dt id="metricq.Source.connect">
-<em class="property">await </em><code class="sig-name descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.connect" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.connect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to the MetricQ network</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.Source.declare_metrics">
-<em class="property">await </em><code class="sig-name descname">declare_metrics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metrics</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.declare_metrics" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">declare_metrics</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.declare_metrics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Declare a set of <a class="reference internal" href="../glossary.html#term-Metric"><span class="xref std std-term">metrics</span></a> this Source produces values for.</p>
 <p>Before producing <a class="reference internal" href="../glossary.html#term-Data-Point"><span class="xref std std-term">data points</span></a> for some metric, a Source must have declared that Metric.</p>
 <dl class="field-list simple">
@@ -241,7 +241,7 @@ to arbitrary values.</p>
 
 <dl class="py method">
 <dt id="metricq.Source.flush">
-<em class="property">await </em><code class="sig-name descname">flush</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.flush" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">flush</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.flush" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flush all unsent data points to the network immediately.</p>
 <p>If automatic chunking is turned off (<a class="reference internal" href="#metricq.Source.chunk_size" title="metricq.Source.chunk_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">chunk_size</span></code></a> is <code class="docutils literal notranslate"><span class="pre">None</span></code>),
 use this method to send data points.</p>
@@ -249,7 +249,7 @@ use this method to send data points.</p>
 
 <dl class="py method">
 <dt id="metricq.Source.send">
-<em class="property">await </em><code class="sig-name descname">send</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">metric</span></em>, <em class="sig-param"><span class="n">time</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.send" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">send</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.send" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send a <a class="reference internal" href="../glossary.html#term-Data-Point"><span class="xref std std-term">data point</span></a> for a Metric.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -286,7 +286,7 @@ Otherwise duplicate data points will be sent, which results in an invalid <a cla
 
 <dl class="py method">
 <dt id="metricq.Source.task">
-<em class="property">abstractmethod </em><code class="sig-name descname">task</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.task" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstractmethod</span> </em><code class="sig-name descname"><span class="pre">task</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Override this with your main task for generating data points.</p>
 <p>The task is started after the source has connected and received its initial configuration.</p>
 <div class="admonition note">
@@ -298,7 +298,7 @@ You are responsible for handling all relevant exceptions.</p>
 
 <dl class="py method">
 <dt id="metricq.Source.chunk_size">
-<code class="sig-name descname">chunk_size</code><a class="headerlink" href="#metricq.Source.chunk_size" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">chunk_size</span></code><a class="headerlink" href="#metricq.Source.chunk_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of <a class="reference internal" href="../glossary.html#term-Data-Point"><span class="xref std std-term">data points</span></a> collected into a chunk before being sent.</p>
 <p>Initially, this value is set to <code class="code docutils literal notranslate"><span class="pre">1</span></code>, so any data point is sent immediately.
 If set to <code class="code docutils literal notranslate"><span class="pre">None</span></code>, automatic chunking is disabled and data points must be sent off to the network manually using <a class="reference internal" href="#metricq.Source.flush" title="metricq.Source.flush"><code class="xref py py-meth docutils literal notranslate"><span class="pre">flush()</span></code></a>.</p>
@@ -308,7 +308,7 @@ If your Source produces one data point every <span class="math notranslate nohig
 If instead it produces <span class="math notranslate nohighlight">\(1000\)</span> data points per second, network load can be reduced by setting a value of <code class="code docutils literal notranslate"><span class="pre">1000</span></code> without affecting latency too much.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span></p>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -317,7 +317,7 @@ If instead it produces <span class="math notranslate nohighlight">\(1000\)</span
 
 <dl class="py class">
 <dt id="metricq.IntervalSource">
-<em class="property">class </em><code class="sig-prename descclassname">metricq.</code><code class="sig-name descname">IntervalSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">period</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.IntervalSource" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">metricq.</span></code><code class="sig-name descname"><span class="pre">IntervalSource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.IntervalSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>A <a class="reference internal" href="../glossary.html#term-Source"><span class="xref std std-term">Source</span></a> producing metrics at regular intervals of time.</p>
 <p>Use an <a class="reference internal" href="#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a> if you want to produce data points at a constant rate,
 without having to worry about getting the timing right.
@@ -355,19 +355,19 @@ constant update rate.</p>
 </div>
 <dl class="py method">
 <dt id="metricq.IntervalSource.period">
-<code class="sig-name descname">period</code><a class="headerlink" href="#metricq.IntervalSource.period" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">period</span></code><a class="headerlink" href="#metricq.IntervalSource.period" title="Permalink to this definition">¶</a></dt>
 <dd><p>Time interval (in seconds) at which <a class="reference internal" href="#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> is called.</p>
 <p>You can set this value at any time and it will be picked up before the next time <a class="reference internal" href="#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> is run.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span></p>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.9)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="metricq.IntervalSource.update">
-<em class="property">abstractmethod await </em><code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.IntervalSource.update" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstractmethod</span> <span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.IntervalSource.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>A user-provided method called at intervals given by <a class="reference internal" href="#metricq.IntervalSource.period" title="metricq.IntervalSource.period"><code class="xref py py-attr docutils literal notranslate"><span class="pre">period</span></code></a>.</p>
 <p>Override this method to produce data points at a constant rate.</p>
 </dd></dl>
@@ -378,7 +378,7 @@ constant update rate.</p>
 <h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="metricq.source.MetricSendError">
-<em class="property">class </em><code class="sig-prename descclassname">metricq.source.</code><code class="sig-name descname">MetricSendError</code><a class="headerlink" href="#metricq.source.MetricSendError" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">metricq.source.</span></code><code class="sig-name descname"><span class="pre">MetricSendError</span></code><a class="headerlink" href="#metricq.source.MetricSendError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Exception raised when sending a data point for a metric failed.</p>
 <p>The underlying exception is attached as a cause.</p>
 </dd></dl>
