@@ -136,7 +136,10 @@ class Source(DataClient):
     def _augment_metadata(
         self, metrics: Dict[Metric, MetadataDict]
     ) -> Dict[Metric, MetadataDict]:
-        augmented: Dict[Metric, MetadataDict] = dict(**metrics)
+        # Do not modify the user-supplied metadata.  The user expects this to
+        # be a read-only parameter, modifying it without their consent could
+        # lead to surprises.
+        augmented = metrics.copy()
         for metric, metadata in augmented.items():
             # If a SourceMetric has a chunk_size of 0, chunking is disable.
             metadata.setdefault("chunkSize", self[metric].chunk_size)
