@@ -93,7 +93,7 @@ class Source(DataClient):
 
     Raises:
         TypeError: if value set is neither :literal:`None` nor an integer
-        ValueError: if value set is not a positive integer
+        ValueError: if value set not a positive, non-zero integer
     """
 
     def __init__(self, *args, **kwargs):
