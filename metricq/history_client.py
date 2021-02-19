@@ -162,7 +162,7 @@ class HistoryResponse:
         :attr:`mode` is :attr:`~HistoryResponseType.VALUES`:
             :meth:`values` will return a iterator of :class:`TimeValue`.
             :meth:`aggregates` will fail with :exc:`ValueError`, except if called with :code:`convert=True`.
-        :attr:`mode` is :attr:`~HistoryResponseType.AGGREGATE`:
+        :attr:`mode` is :attr:`~HistoryResponseType.AGGREGATES`:
             :meth:`aggregates` will return a iterator of :class:`TimeAggregate`.
             :meth:`values` will fail with :exc:`ValueError`, except if called with :code:`convert=True`.
         :attr:`mode` is :attr:`~HistoryResponseType.EMPTY`:
