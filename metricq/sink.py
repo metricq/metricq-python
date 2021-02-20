@@ -41,14 +41,6 @@ from .types import Timestamp
 logger = get_logger(__name__)
 
 
-class SinkError(Exception):
-    pass
-
-
-class SinkResubscribeError(SinkError):
-    pass
-
-
 class Sink(DataClient):
     """A base class intended to be subclassed to create user-defined :term:`Sinks<Sink>`.
 
@@ -100,9 +92,10 @@ class Sink(DataClient):
                 if exception is None:
                     self._data_connection_watchdog.set_established()
                 else:
-                    errmsg = "Resubscription failed with an unhandled exception"
-                    logger.error("{}: {}", errmsg, exception)
-                    raise SinkResubscribeError(errmsg) from exception
+                    logger.error(
+                        f"Resubscription failed with an unhandled exception: {exception}"
+                    )
+                    raise exception
             except CancelledError:
                 logger.warning("Resubscribe task was cancelled!")
 
