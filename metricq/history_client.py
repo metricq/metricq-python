@@ -391,10 +391,15 @@ class HistoryClient(Client):
                 Operation timeout in seconds.
 
         Raises:
-            ValueError: if
+            ValueError: if metric is empty or longer than 255 bytes
         """
         if not metric:
             raise ValueError("Metric must be a non-empty string")
+        if len(metric.encode("utf-8")) > 255:
+            raise ValueError(
+                "Metric names (amqp routing keys) must be at most 255 bytes long"
+            )
+
         correlation_id = "mq-history-py-{}-{}".format(self.token, uuid.uuid4().hex)
 
         logger.debug(
@@ -423,7 +428,7 @@ class HistoryClient(Client):
         )
 
         self._request_futures[correlation_id] = asyncio.Future(loop=self.event_loop)
-        await self.history_exchange.publish(msg, metric)
+        await self.history_exchange.publish(msg, routing_key=metric)
 
         try:
             result = await asyncio.wait_for(
