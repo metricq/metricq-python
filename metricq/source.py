@@ -81,7 +81,15 @@ class Source(DataClient):
     """
 
     chunk_size: Optional[int] = cast(Optional[int], ChunkSize())
-    """Number of :term:`data points<Data Point>` collected into a chunk before being sent.
+    """Number of :term:`data points<Data Point>` collected *(per metric)* into a chunk before being sent.
+
+    This can be overriden for individual metrics:
+
+        .. code-block:: python
+
+            source = Source(...)
+            source.chunk_size = 10
+            source["example.metric"].chunk_size = 42
 
     Initially, this value is set to :code:`1`, so any data point is sent immediately.
     If set to :code:`None`, automatic chunking is disabled and data points must be sent off to the network manually using :meth:`flush`.
