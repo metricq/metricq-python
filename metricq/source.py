@@ -30,7 +30,7 @@
 
 import asyncio
 from abc import abstractmethod
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, cast
 
 import aio_pika
 from aiormq import ChannelInvalidStateError
@@ -40,8 +40,8 @@ from .datachunk_pb2 import DataChunk
 from .exceptions import PublishFailed
 from .logging import get_logger
 from .rpc import rpc_handler
-from .source_metric import SourceMetric
-from .types import Timestamp
+from .source_metric import ChunkSize, SourceMetric
+from .types import Metric, Timestamp
 
 logger = get_logger(__name__)
 
@@ -80,31 +80,34 @@ class Source(DataClient):
 
     """
 
+    chunk_size: Optional[int] = cast(Optional[int], ChunkSize())
+    """Number of :term:`data points<Data Point>` collected *(per metric)* into a chunk before being sent.
+
+    This can be overriden for individual metrics:
+
+        .. code-block:: python
+
+            source = Source(...)
+            source.chunk_size = 10
+            source["example.metric"].chunk_size = 42
+
+    Initially, this value is set to :code:`1`, so any data point is sent immediately.
+    If set to :code:`None`, automatic chunking is disabled and data points must be sent off to the network manually using :meth:`flush`.
+
+    To reduce network and packet overhead, it may be advisable to send multiple data points at once.
+    Be aware that there is an `overhead-latency trade-off` to be made:
+    If your Source produces one data point every :math:`10` seconds, having a :code:`chunk_size` of :code:`10` means that it takes almost :math:`2` minutes (:math:`100` s) before a chunk is is sent.
+    If instead it produces :math:`1000` data points per second, network load can be reduced by setting a value of :code:`1000` without affecting latency too much.
+
+    Raises:
+        TypeError: if value set is neither :literal:`None` nor an integer
+        ValueError: if value set not a positive, non-zero integer
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.metrics = dict()
-        self._chunk_size: int = 1
-
-    @property
-    def chunk_size(self) -> Optional[int]:
-        """Number of :term:`data points<Data Point>` collected into a chunk before being sent.
-
-        Initially, this value is set to :code:`1`, so any data point is sent immediately.
-        If set to :code:`None`, automatic chunking is disabled and data points must be sent off to the network manually using :meth:`flush`.
-
-        To reduce network and packet overhead, it may be advisable to send multiple data points at once.
-        Be aware that there is an `overhead-latency trade-off` to be made:
-        If your Source produces one data point every :math:`10` seconds, having a :code:`chunk_size` of :code:`10` means that it takes almost :math:`2` minutes (:math:`100` s) before a chunk is is sent.
-        If instead it produces :math:`1000` data points per second, network load can be reduced by setting a value of :code:`1000` without affecting latency too much.
-        """
-        return None if self._chunk_size == 0 else self._chunk_size
-
-    @chunk_size.setter
-    def chunk_size(self, chunk_size: Optional[int]):
-        if chunk_size is None:
-            self._chunk_size = 0
-        else:
-            self._chunk_size = chunk_size
+        self.chunk_size = 1
 
     async def connect(self):
         await super().connect()
@@ -133,10 +136,23 @@ class Source(DataClient):
             You are responsible for handling all relevant exceptions.
         """
 
-    def __getitem__(self, id):
+    def __getitem__(self, id: Metric) -> SourceMetric:
         if id not in self.metrics:
             self.metrics[id] = SourceMetric(id, self, chunk_size=self.chunk_size)
         return self.metrics[id]
+
+    def _augment_metadata(
+        self, metrics: Dict[Metric, MetadataDict]
+    ) -> Dict[Metric, MetadataDict]:
+        # Do not modify the user-supplied metadata.  The user expects this to
+        # be a read-only parameter, modifying it without their consent could
+        # lead to surprises.
+        augmented = metrics.copy()
+        for metric, metadata in augmented.items():
+            # If a SourceMetric has a chunk_size of 0, chunking is disable.
+            metadata.setdefault("chunkSize", self[metric].chunk_size)
+
+        return augmented
 
     async def declare_metrics(self, metrics: Dict[str, MetadataDict]):
         """Declare a set of :term:`metrics<Metric>` this Source produces values for.
@@ -172,6 +188,8 @@ class Source(DataClient):
                             },
                         })
         """
+        metrics = self._augment_metadata(metrics=metrics)
+
         logger.debug("declare_metrics({})", metrics)
         await self.rpc("source.declare_metrics", metrics=metrics)
 

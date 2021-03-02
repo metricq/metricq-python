@@ -29,13 +29,38 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import math
+from typing import Optional
 
 from .datachunk_pb2 import DataChunk
-from .types import Timestamp
+from .types import Metric, Timestamp
+
+
+class ChunkSize:
+    def __set_name__(self, owner, name):
+        self._field_name = f"_{name}"
+
+    def __get__(self, instance, cls=None) -> Optional[int]:
+        return getattr(instance, self._field_name)
+
+    def __set__(self, instance, chunk_size: Optional[int]):
+        if chunk_size is not None:
+            if not isinstance(chunk_size, int):
+                raise TypeError("chunk_size must be `None` or a positive integer")
+            if not chunk_size >= 1:
+                raise ValueError(f"chunk_size must be at least 1 ({chunk_size} < 1)")
+
+        setattr(instance, self._field_name, chunk_size)
 
 
 class SourceMetric:
-    def __init__(self, id, source, chunk_size=1):
+    chunk_size = ChunkSize()
+    """Chunk size of this metric.
+
+    If set to :literal:`None`, chunking is disabled.
+    See :attr:`Source.chunk_size` for more information.
+    """
+
+    def __init__(self, id: Metric, source, chunk_size: Optional[int] = 1):
         self.id = id
         self.source = source
 
@@ -56,7 +81,11 @@ class SourceMetric:
 
     async def send(self, time: Timestamp, value):
         self.append(time, value)
-        if 0 < self.chunk_size <= len(self.chunk.time_delta):
+
+        if self.chunk_size is None:
+            return  # Chunking is disabled
+
+        if self.chunk_size <= len(self.chunk.time_delta):
             await self.flush()
 
     async def error(self, time: Timestamp):
