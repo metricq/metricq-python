@@ -185,7 +185,7 @@ Set by the manager.</p>
 <span id="metricq-metadata-standardized"></span><h2>Standardized Fields<a class="headerlink" href="#standardized-fields" title="Permalink to this headline">¶</a></h2>
 <p>Some <cite>fields</cite> have a defined meaning that should be respected.
 Consuming tools might handle and display these fields in a special way.</p>
-<dl class="simple">
+<dl>
 <dt><code class="docutils literal notranslate"><span class="pre">description</span></code> (<cite>string</cite>)</dt><dd><p>A human readable description of the measured quantity.
 For example, <cite>“Temperature of rack A2 in room E13”</cite> would be a description for a metric <code class="docutils literal notranslate"><span class="pre">example.room-E13.rack-A2.temperature</span></code>.</p>
 </dd>
@@ -202,6 +202,13 @@ a source does not need to produce values at a perfectly constant rate.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">quantity</span></code> (<cite>string</cite>)</dt><dd><p>The quantity being measured.
 Ideally this is the same as the last segment of the metric name, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;power&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;temperature&quot;</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">chunkSize</span></code> (<cite>number</cite> or <code class="docutils literal notranslate"><span class="pre">null</span></code>)</dt><dd><p>The number of data points sent to the network in a single message,
+see <a class="reference internal" href="api/source.html#metricq.Source.chunk_size" title="metricq.Source.chunk_size"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.chunk_size()</span></code></a> and <a class="reference internal" href="api/source.html#metricq.Source.send" title="metricq.Source.send"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.send()</span></code></a>.</p>
+<p>Setting this to <code class="docutils literal notranslate"><span class="pre">null</span></code> means that the chunk size is either
+not known or varies between messages.</p>
+<p>This is useful for monitoring, as <code class="docutils literal notranslate"><span class="pre">rate</span></code> / <code class="docutils literal notranslate"><span class="pre">chunkSize</span></code>
+gives an estimate of the expected message rate for a source.</p>
 </dd>
 </dl>
 </div>
