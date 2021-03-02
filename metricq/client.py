@@ -75,7 +75,7 @@ class Client(Agent):
 
             return client_version
         except Exception as e:
-            logger.warn("Failed to find version of {}: {}", client_name, e)
+            logger.warning("Failed to find version of {}: {}", client_name, e)
             return None
 
     @property

@@ -1,4 +1,13 @@
 #!/bin/env python3
+
+# setuptools-imports must come before distutils-imports,
+# since the former packages its own version of the latter.
+#
+# See https://setuptools.readthedocs.io/en/latest/deprecated/distutils-legacy.html
+from setuptools import Command, setup
+from setuptools.command.build_py import build_py
+from setuptools.command.develop import develop
+
 import logging
 import os
 import re
@@ -10,9 +19,6 @@ from distutils.spawn import find_executable
 from typing import Optional, Tuple
 
 import mypy_protobuf
-from setuptools import Command, setup
-from setuptools.command.build_py import build_py
-from setuptools.command.develop import develop
 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logger = logging.getLogger()

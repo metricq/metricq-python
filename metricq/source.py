@@ -123,7 +123,7 @@ class Source(DataClient):
         self.event_loop.create_task(self.task())
 
     @abstractmethod
-    def task(self):
+    async def task(self):
         """Override this with your main task for generating data points.
 
         The task is started after the source has connected and received its initial configuration.
