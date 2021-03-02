@@ -8,10 +8,15 @@
 
 - Docker action seems to be broken on linux/arm64 [\#69](https://github.com/metricq/metricq-python/issues/69)
 
+**Closed issues:**
+
+- Add chunk size to metadata [\#65](https://github.com/metricq/metricq-python/issues/65)
+
 **Merged pull requests:**
 
 - Spring cleanup [\#74](https://github.com/metricq/metricq-python/pull/74) ([phijor](https://github.com/phijor))
 - Require python 3.8 for ssl fixes [\#70](https://github.com/metricq/metricq-python/pull/70) ([kinnarr](https://github.com/kinnarr))
+- Augment "chunkSize" to metadata when declaring new metrics [\#68](https://github.com/metricq/metricq-python/pull/68) ([phijor](https://github.com/phijor))
 - Management channel is a RobustChannel [\#64](https://github.com/metricq/metricq-python/pull/64) ([phijor](https://github.com/phijor))
 - Improve Error Handling [\#63](https://github.com/metricq/metricq-python/pull/63) ([tilsche](https://github.com/tilsche))
 - fix\(ci\): Fix changelog workflow [\#61](https://github.com/metricq/metricq-python/pull/61) ([bmario](https://github.com/bmario))
