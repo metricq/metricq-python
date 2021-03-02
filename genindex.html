@@ -196,12 +196,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/misc.html#metricq.TimeAggregate.active_time">active_time (metricq.TimeAggregate attribute)</a>
 </li>
-      <li><a href="api/history-client.html#metricq.history_client.HistoryRequestType.AGGREGATE">AGGREGATE (metricq.history_client.HistoryRequestType attribute)</a>
+      <li><a href="api/exceptions.html#metricq.exceptions.AgentStopped">AgentStopped</a>
 </li>
-      <li><a href="api/history-client.html#metricq.history_client.HistoryRequestType.AGGREGATE_TIMELINE">AGGREGATE_TIMELINE (metricq.history_client.HistoryRequestType attribute)</a>
+      <li><a href="api/history-client.html#metricq.history_client.HistoryRequestType.AGGREGATE">AGGREGATE (metricq.history_client.HistoryRequestType attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/history-client.html#metricq.history_client.HistoryRequestType.AGGREGATE_TIMELINE">AGGREGATE_TIMELINE (metricq.history_client.HistoryRequestType attribute)</a>
+</li>
       <li><a href="api/history-client.html#metricq.history_client.HistoryResponseType.AGGREGATES">AGGREGATES (metricq.history_client.HistoryResponseType attribute)</a>
 </li>
       <li><a href="api/history-client.html#metricq.history_client.HistoryResponse.aggregates">aggregates() (metricq.history_client.HistoryResponse method)</a>
@@ -234,6 +236,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/exceptions.html#metricq.exceptions.ConnectFailed">ConnectFailed</a>
+</li>
       <li><a href="api/misc.html#metricq.TimeAggregate.count">count (metricq.TimeAggregate attribute)</a>
 </li>
   </ul></td>
@@ -274,10 +278,10 @@
 </li>
       <li><a href="api/misc.html#metricq.Timedelta.from_ms">from_ms() (metricq.Timedelta static method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/misc.html#metricq.Timestamp.from_now">from_now() (metricq.Timestamp class method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/misc.html#metricq.Timestamp.from_posix_seconds">from_posix_seconds() (metricq.Timestamp class method)</a>
 </li>
       <li><a href="api/misc.html#metricq.Timedelta.from_s">from_s() (metricq.Timedelta static method)</a>
@@ -287,6 +291,8 @@
       <li><a href="api/misc.html#metricq.Timedelta.from_timedelta">from_timedelta() (metricq.Timedelta static method)</a>
 </li>
       <li><a href="api/misc.html#metricq.Timedelta.from_us">from_us() (metricq.Timedelta static method)</a>
+</li>
+      <li><a href="api/misc.html#metricq.TimeAggregate.from_value_pair">from_value_pair() (metricq.TimeAggregate static method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -314,11 +320,13 @@
 </li>
       <li><a href="api/history-client.html#metricq.HistoryClient.history_last_value">history_last_value() (metricq.HistoryClient method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/history-client.html#metricq.HistoryClient.history_raw_timeline">history_raw_timeline() (metricq.HistoryClient method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/history-client.html#metricq.HistoryClient">HistoryClient (class in metricq)</a>
+</li>
+      <li><a href="api/exceptions.html#metricq.exceptions.HistoryError">HistoryError</a>
 </li>
       <li><a href="api/history-client.html#metricq.history_client.HistoryRequestType">HistoryRequestType (class in metricq.history_client)</a>
 </li>
@@ -334,12 +342,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/misc.html#metricq.TimeAggregate.integral">integral (metricq.TimeAggregate attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/source.html#metricq.IntervalSource">IntervalSource (class in metricq)</a>
 </li>
-      <li><a href="api/history-client.html#metricq.history_client.InvalidHistoryResponse">InvalidHistoryResponse (class in metricq.history_client)</a>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/exceptions.html#metricq.exceptions.InvalidHistoryResponse">InvalidHistoryResponse</a>
+
+      <ul>
+        <li><a href="api/history-client.html#metricq.history_client.InvalidHistoryResponse">(class in metricq.history_client)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -362,18 +374,32 @@
 </li>
       <li><a href="api/misc.html#metricq.TimeAggregate.maximum">maximum (metricq.TimeAggregate attribute)</a>
 </li>
+      <li><a href="api/exceptions.html#metricq.exceptions.MessageError">MessageError</a>
+</li>
       <li><a href="glossary.html#term-Metadata"><strong>Metadata</strong></a>
 </li>
       <li><a href="glossary.html#term-Metric"><strong>Metric</strong></a>
 </li>
+      <li>
+    metricq.exceptions
+
+      <ul>
+        <li><a href="api/exceptions.html#module-metricq.exceptions">module</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/source.html#metricq.source.MetricSendError">MetricSendError (class in metricq.source)</a>
-</li>
       <li><a href="api/misc.html#metricq.TimeAggregate.minimum">minimum (metricq.TimeAggregate attribute)</a>
 </li>
       <li><a href="api/history-client.html#metricq.history_client.HistoryResponse.mode">mode() (metricq.history_client.HistoryResponse property)</a>
 </li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="api/exceptions.html#module-metricq.exceptions">metricq.exceptions</a>
+</li>
+      </ul></li>
       <li><a href="api/misc.html#metricq.Timedelta.ms">ms() (metricq.Timedelta property)</a>
 </li>
   </ul></td>
@@ -382,10 +408,12 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/misc.html#metricq.Timestamp.now">now() (metricq.Timestamp class method)</a>
+      <li><a href="api/exceptions.html#metricq.exceptions.NonMonotonicTimestamps">NonMonotonicTimestamps</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/misc.html#metricq.Timestamp.now">now() (metricq.Timestamp class method)</a>
+</li>
       <li><a href="api/misc.html#metricq.Timedelta.ns">ns() (metricq.Timedelta property)</a>
 </li>
   </ul></td>
@@ -410,13 +438,15 @@
 </li>
       <li><a href="api/misc.html#metricq.Timestamp.posix">posix() (metricq.Timestamp property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/misc.html#metricq.Timestamp.posix_ms">posix_ms() (metricq.Timestamp property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/misc.html#metricq.Timestamp.posix_ns">posix_ns() (metricq.Timestamp property)</a>
 </li>
       <li><a href="api/misc.html#metricq.Timestamp.posix_us">posix_us() (metricq.Timestamp property)</a>
+</li>
+      <li><a href="api/exceptions.html#metricq.exceptions.PublishFailed">PublishFailed</a>
 </li>
   </ul></td>
 </tr></table>
@@ -424,6 +454,12 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/exceptions.html#metricq.exceptions.ReceivedSignal">ReceivedSignal</a>
+</li>
+      <li><a href="api/exceptions.html#metricq.exceptions.ReconnectTimeout">ReconnectTimeout</a>
+</li>
+      <li><a href="api/exceptions.html#metricq.exceptions.RemoteError">RemoteError</a>
+</li>
       <li>
     RFC
 
@@ -435,7 +471,11 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/client-common.html#metricq.Client.rpc">rpc() (metricq.Client method)</a>
+</li>
       <li><a href="api/misc.html#metricq.rpc_handler">rpc_handler() (in module metricq)</a>
+</li>
+      <li><a href="api/exceptions.html#metricq.exceptions.RPCError">RPCError</a>
 </li>
       <li><a href="api/client-common.html#metricq.Client.run">run() (metricq.Client method)</a>
 </li>

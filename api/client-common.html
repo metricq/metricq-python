@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Miscellaneous" href="misc.html" />
+    <link rel="next" title="Exceptions" href="exceptions.html" />
     <link rel="prev" title="History Client" href="history-client.html" /> 
 </head>
 
@@ -88,6 +88,7 @@
 <li class="toctree-l2"><a class="reference internal" href="source.html">Source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="history-client.html">History Client</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Common client operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
 </ul>
 </li>
@@ -224,10 +225,39 @@ By default it schedules the Client to stop by calling <a class="reference intern
 </dd></dl>
 
 <dl class="py method">
+<dt id="metricq.Client.rpc">
+<em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">rpc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Client.rpc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoke an RPC on the management exchange</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>function</strong></dt><dd><p>Name of the RPC to invoke</p>
+</dd>
+<dt><strong>kwargs</strong></dt><dd><p><p>Additional arguments are forwarded to <code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.rpc()</span></code>.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">exchange</span></code>, <code class="code docutils literal notranslate"><span class="pre">routing_key</span></code>, and <code class="code docutils literal notranslate"><span class="pre">cleanup_on_response</span></code>
+are not allowed in <code class="code docutils literal notranslate"><span class="pre">kwargs</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Argument names are required to be in <code class="docutils literal notranslate"><span class="pre">&quot;javaScriptSnakeCase&quot;</span></code>.</p>
+</div>
+</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>PublishError</strong> – if the RPC could not be published</p></li>
+<li><p><a class="reference internal" href="exceptions.html#metricq.exceptions.RPCError" title="metricq.exceptions.RPCError"><strong>RPCError</strong></a> – if the remote returns an error</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="metricq.Client.run">
 <code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catch_signals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('SIGINT',</span> <span class="pre">'SIGTERM')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancel_on_exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Client.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run an Agent by calling <a class="reference internal" href="#metricq.Client.connect" title="metricq.Client.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> and waiting for it to be stopped via <a class="reference internal" href="#metricq.Client.stop" title="metricq.Client.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>.</p>
-<p>If <a class="reference internal" href="#metricq.Client.connect" title="metricq.Client.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> raises an exception, ConnectFailedError is
+<p>If <a class="reference internal" href="#metricq.Client.connect" title="metricq.Client.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> raises an exception, ConnectFailed is
 raised, with the offending exception attached as a cause.  Any
 exception passed to <a class="reference internal" href="#metricq.Client.stop" title="metricq.Client.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a> is reraised.</p>
 <dl class="field-list simple">
@@ -293,7 +323,7 @@ how to retrieve this exception.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="misc.html" class="btn btn-neutral float-right" title="Miscellaneous" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="exceptions.html" class="btn btn-neutral float-right" title="Exceptions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="history-client.html" class="btn btn-neutral float-left" title="History Client" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

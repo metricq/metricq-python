@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Metric Metadata" href="../metadata.html" />
-    <link rel="prev" title="Common client operation" href="client-common.html" /> 
+    <link rel="prev" title="Exceptions" href="exceptions.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -88,6 +88,7 @@
 <li class="toctree-l2"><a class="reference internal" href="source.html">Source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="history-client.html">History Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-common.html">Common client operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Miscellaneous</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#timestamps">Timestamps</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#timedeltas-durations">Timedeltas (Durations)</a></li>
@@ -749,6 +750,17 @@ Accepted units are:</p>
 <dd><p>time spanned by this aggregate in nanoseconds</p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="metricq.TimeAggregate.from_value_pair">
+<em class="property"><span class="pre">staticmethod</span> </em><code class="sig-name descname"><span class="pre">from_value_pair</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp_before</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate.from_value_pair" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a TimeAggregate from a pair of class:<a href="#id1"><span class="problematic" id="id2">`</span></a>Timestamp`s and one value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="exceptions.html#metricq.exceptions.NonMonotonicTimestamps" title="metricq.exceptions.NonMonotonicTimestamps"><strong>NonMonotonicTimestamps</strong></a> – if the two timestamps are not strictly monotonic</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -801,7 +813,7 @@ i.e. <a class="reference internal" href="sink.html#metricq.Sink" title="metricq.
         <a href="../metadata.html" class="btn btn-neutral float-right" title="Metric Metadata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="client-common.html" class="btn btn-neutral float-left" title="Common client operation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="exceptions.html" class="btn btn-neutral float-left" title="Exceptions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

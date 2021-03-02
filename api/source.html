@@ -86,12 +86,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../howto/index.html">How to use this library</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="sink.html">Sink</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Source</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#exceptions">Exceptions</a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="history-client.html">History Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-common.html">Common client operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
 </ul>
 </li>
@@ -270,7 +268,7 @@ See <a class="reference internal" href="#metricq.Source.chunk_size" title="metri
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metricq.source.MetricSendError" title="metricq.source.MetricSendError"><strong>MetricSendError</strong></a> – if sending a data point failed</p>
+<dd class="field-odd"><p><a class="reference internal" href="exceptions.html#metricq.exceptions.PublishFailed" title="metricq.exceptions.PublishFailed"><strong>PublishFailed</strong></a> – if sending a data point failed</p>
 </dd>
 </dl>
 <div class="admonition warning">
@@ -374,16 +372,6 @@ constant update rate.</p>
 
 </dd></dl>
 
-<div class="section" id="exceptions">
-<h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="metricq.source.MetricSendError">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">metricq.source.</span></code><code class="sig-name descname"><span class="pre">MetricSendError</span></code><a class="headerlink" href="#metricq.source.MetricSendError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Exception raised when sending a data point for a metric failed.</p>
-<p>The underlying exception is attached as a cause.</p>
-</dd></dl>
-
-</div>
 </div>
 
 
