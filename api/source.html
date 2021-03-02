@@ -284,7 +284,7 @@ Otherwise duplicate data points will be sent, which results in an invalid <a cla
 
 <dl class="py method">
 <dt id="metricq.Source.task">
-<em class="property"><span class="pre">abstractmethod</span> </em><code class="sig-name descname"><span class="pre">task</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.task" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">abstractmethod</span> <span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">task</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Override this with your main task for generating data points.</p>
 <p>The task is started after the source has connected and received its initial configuration.</p>
 <div class="admonition note">
