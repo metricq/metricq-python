@@ -9,4 +9,5 @@ API Reference
     source
     history-client
     client-common
+    exceptions
     misc

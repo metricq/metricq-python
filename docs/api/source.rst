@@ -16,7 +16,3 @@ Source
         update,
         period,
 
-Exceptions
-----------
-
-.. autoclass:: metricq.source.MetricSendError

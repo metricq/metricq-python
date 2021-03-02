@@ -37,6 +37,7 @@ from typing import Union
 
 from . import history_pb2
 from ._deprecation import deprecated
+from .exceptions import NonMonotonicTimestamps
 
 
 @total_ordering
@@ -592,7 +593,19 @@ class TimeAggregate:
     def from_value_pair(
         timestamp_before: Timestamp, timestamp: Timestamp, value: float
     ):
-        assert timestamp > timestamp_before
+        """Create a TimeAggregate from a pair of class:`Timestamp`s and one value
+
+        Raises:
+            NonMonotonicTimestamps: if the two timestamps are not strictly monotonic
+        """
+        # Can't use (https://github.com/python/mypy/issues/4610)
+        # if timestamp_before >= timestamp:
+        if not timestamp_before < timestamp:
+            raise NonMonotonicTimestamps(
+                "Timestamps in HistoryResponse are not strictly monotonic ({} -> {})".format(
+                    timestamp_before, timestamp
+                )
+            )
         delta = timestamp - timestamp_before
         return TimeAggregate(
             timestamp=timestamp_before,

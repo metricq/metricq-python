@@ -45,53 +45,20 @@ from aio_pika.exceptions import ChannelInvalidStateError
 from yarl import URL
 
 from .connection_watchdog import ConnectionWatchdog
+from .exceptions import (
+    AgentStopped,
+    ConnectFailed,
+    PublishFailed,
+    ReceivedSignal,
+    ReconnectTimeout,
+    RPCError,
+)
 from .logging import get_logger
 from .rpc import RPCDispatcher
 from .version import __version__
 
 logger = get_logger(__name__)
 timer = time.monotonic
-
-
-class AgentStoppedError(Exception):
-    pass
-
-
-class ReceivedSignalError(AgentStoppedError):
-    def __init__(self, signal, *args):
-        self.signal = signal
-        super().__init__(f"Received signal {signal} while running Agent", *args)
-
-
-class ConnectFailedError(AgentStoppedError):
-    pass
-
-
-class ReconnectTimeoutError(AgentStoppedError):
-    pass
-
-
-class RPCError(RuntimeError):
-    pass
-
-
-class PublishFailedError(Exception):
-    """Exception raised when publishing to an exchange failed unexpectedly
-
-    The source exception is always attached as a cause.
-    """
-
-    pass
-
-
-class RpcRequestError(PublishFailedError):
-    """Exception raised when issuing an RPC request failed"""
-
-    pass
-
-
-class RpcReplyError(PublishFailedError):
-    pass
 
 
 class Agent(RPCDispatcher):
@@ -120,7 +87,7 @@ class Agent(RPCDispatcher):
         self._management_connection = None
         self._management_connection_watchdog = ConnectionWatchdog(
             on_timeout_callback=lambda watchdog: self._schedule_stop(
-                ReconnectTimeoutError(
+                ReconnectTimeout(
                     f"Failed to reestablish {watchdog.connection_name} after {watchdog.timeout} seconds"
                 )
             ),
@@ -223,7 +190,7 @@ class Agent(RPCDispatcher):
     ) -> None:
         """Run an Agent by calling :py:meth:`connect` and waiting for it to be stopped via :meth:`stop`.
 
-        If :py:meth:`connect` raises an exception, ConnectFailedError is
+        If :py:meth:`connect` raises an exception, ConnectFailed is
         raised, with the offending exception attached as a cause.  Any
         exception passed to :py:meth:`stop` is reraised.
 
@@ -261,7 +228,7 @@ class Agent(RPCDispatcher):
                 )
 
                 # Check for successful connection, if connect() failed with
-                # an unhandled exception, raise ConnectFailedError and attach
+                # an unhandled exception, raise ConnectFailed and attach
                 # the unhandled exception as its cause.
                 if connect_task in done:
                     exc = connect_task.exception()
@@ -272,7 +239,7 @@ class Agent(RPCDispatcher):
                             exc,
                             type(exc).__qualname__,
                         )
-                        raise ConnectFailedError("Failed to connect Agent") from exc
+                        raise ConnectFailed("Failed to connect Agent") from exc
 
                 # If the Agent was stopped explicitly, return `None`.  If it was
                 # stopped because of an exception, reraise it.
@@ -309,6 +276,7 @@ class Agent(RPCDispatcher):
             exchange:
                 RabbitMQ exchange on which the request is published
             routing_key:
+                Routing key must be at most 255 bytes (UTF-8)
             response_callback:
                 If given, this callable will be invoked with any response once it arrives.
                 In this case, this function immediately returns :literal:`None`.
@@ -318,6 +286,7 @@ class Agent(RPCDispatcher):
                 After the timeout, a response will not be dispatched to the handler.
             cleanup_on_response:
                 If set, only the first response will be dispatched.
+                Must be :literal:`True` when no :code:`response_callback` is given.
             kwargs:
                 Any additional arguments that are forwarded as arguments to the RPC itsel.
 
@@ -329,10 +298,21 @@ class Agent(RPCDispatcher):
             otherwise a :class:`dict` containing the RPC response.
 
         :meta private:
+        :raises PublishError: if the RPC fails to be published
+        :raises RPCError: if the remote returns an error
+        :raises TypeError: if the :code:`function` keyword-only argument is missing
+        :raises TypeError: if :code:`response_callback is None and cleanup_on_response=True`
+        :raises ValueError: if the routing key is longer than 255 bytes
         """
         function = kwargs.get("function")
         if function is None:
-            raise KeyError('all RPCs must contain a "function" argument')
+            raise TypeError(
+                "rpc() is missing required keyword-only argument: 'function'"
+            )
+        if len(routing_key.encode("utf-8")) > 255:
+            raise ValueError(
+                "Metric names (amqp routing keys) must be at most 255 bytes long"
+            )
 
         assert self.management_rpc_queue is not None
 
@@ -364,7 +344,7 @@ class Agent(RPCDispatcher):
                 # trying to set the future result multiple times ... after the future was
                 # already evaluated
                 raise TypeError(
-                    "no cleanup_on_response requested while no response callback is given"
+                    "Neither a response_callback was given nor cleanup_on_response was set."
                 )
 
             def default_response_callback(**response_kwargs):
@@ -387,9 +367,11 @@ class Agent(RPCDispatcher):
         try:
             await exchange.publish(msg, routing_key=routing_key)
         except ChannelInvalidStateError as e:
-            errmsg = f"Failed to issue RPC request {function!r} to exchange {exchange}"
+            errmsg = (
+                f"Failed to issue RPC request '{function!r}' to exchange ''{exchange}'"
+            )
             logger.error("{}: {}", errmsg, e)
-            raise RpcRequestError(errmsg) from e
+            raise PublishFailed(errmsg) from e
 
         def cleanup():
             self._rpc_response_handlers.pop(correlation_id, None)
@@ -431,7 +413,7 @@ class Agent(RPCDispatcher):
         """
         logger.info("Received signal {}, stopping...", signal)
         self._schedule_stop(
-            exception=None if signal == "SIGINT" else ReceivedSignalError(signal)
+            exception=None if signal == "SIGINT" else ReceivedSignal(signal)
         )
 
     def on_exception(self, loop: asyncio.AbstractEventLoop, context):
@@ -490,7 +472,7 @@ class Agent(RPCDispatcher):
                 if exception is not None:
                     # Wrap the exception (to preserve traceback information)
                     # and reraise it.
-                    raise AgentStoppedError("Agent stopped unexpectedly") from exception
+                    raise AgentStopped("Agent stopped unexpectedly") from exception
                 else:
                     return
             else:
@@ -532,6 +514,8 @@ class Agent(RPCDispatcher):
     async def _on_management_message(self, message: aio_pika.IncomingMessage):
         """
         :param message: This is either an RPC or an RPC response
+
+        :raises PublishError: if the reply could not be published
         """
         assert self._management_channel is not None
         assert self._management_channel.default_exchange is not None
@@ -591,10 +575,10 @@ class Agent(RPCDispatcher):
                     )
                 except ChannelInvalidStateError as e:
                     errmsg = (
-                        "Failed to reply to {message.reply_to} for RPC {function!r}"
+                        "Failed to reply to '{message.reply_to}' for RPC '{function!r}'"
                     )
                     logger.error("{}: {}", errmsg, e)
-                    raise RpcReplyError(errmsg) from e
+                    raise PublishFailed(errmsg) from e
             else:
                 logger.debug("message is an RPC response")
                 try:

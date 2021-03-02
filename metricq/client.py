@@ -31,17 +31,13 @@
 from socket import gethostname
 from typing import Any, Dict, Optional, Sequence, Union
 
-from .agent import Agent, RpcRequestError
+from .agent import Agent
 from .logging import get_logger
 from .rpc import rpc_handler
 from .types import Timestamp
 from .version import __version__
 
 logger = get_logger(__name__)
-
-
-class ManagementRpcPublishError(RpcRequestError):
-    pass
 
 
 _GetMetricsResult = Union[Sequence[str], Sequence[dict]]
@@ -105,20 +101,33 @@ class Client(Agent):
         await self.rpc_consume()
 
     async def rpc(self, function, **kwargs):
+        """Invoke an RPC on the management exchange
+
+        Args:
+            function:
+                Name of the RPC to invoke
+            kwargs:
+                Additional arguments are forwarded to :meth:`Agent.rpc`.
+
+                :code:`exchange`, :code:`routing_key`, and :code:`cleanup_on_response`
+                are not allowed in :code:`kwargs`.
+
+                Note:
+                    Argument names are required to be in :literal:`"javaScriptSnakeCase"`.
+
+        Raises:
+            PublishError: if the RPC could not be published
+            RPCError: if the remote returns an error
+        """
         logger.debug("Waiting for management connection to be reestablished...")
         await self._management_connection_watchdog.established()
-        try:
-            return await super().rpc(
-                function=function,
-                exchange=self._management_exchange,
-                routing_key=function,
-                cleanup_on_response=True,
-                **kwargs,
-            )
-        except RpcRequestError as e:
-            raise ManagementRpcPublishError(
-                f"Failed to send management RPC request {function!r}"
-            ) from e
+        return await super().rpc(
+            function=function,
+            exchange=self._management_exchange,
+            routing_key=function,
+            cleanup_on_response=True,
+            **kwargs,
+        )
 
     @rpc_handler("discover")
     async def _on_discover(self, **kwargs):

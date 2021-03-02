@@ -35,9 +35,9 @@ from typing import Any, Dict, Optional
 import aio_pika
 from aiormq import ChannelInvalidStateError
 
-from .agent import PublishFailedError
 from .data_client import DataClient
 from .datachunk_pb2 import DataChunk
+from .exceptions import PublishFailed
 from .logging import get_logger
 from .rpc import rpc_handler
 from .source_metric import SourceMetric
@@ -46,15 +46,6 @@ from .types import Timestamp
 logger = get_logger(__name__)
 
 MetadataDict = Dict[str, Any]
-
-
-class MetricSendError(PublishFailedError):
-    """Exception raised when sending a data point for a metric failed.
-
-    The underlying exception is attached as a cause.
-    """
-
-    pass
 
 
 class Source(DataClient):
@@ -141,7 +132,6 @@ class Source(DataClient):
             This task is not restarted if it fails.
             You are responsible for handling all relevant exceptions.
         """
-        pass
 
     def __getitem__(self, id):
         if id not in self.metrics:
@@ -198,7 +188,7 @@ class Source(DataClient):
             See :attr:`chunk_size` how to control chunking behaviour.
 
         Raises:
-            MetricSendError: if sending a data point failed
+            PublishFailed: if sending a data point failed
 
         Warning:
             In case of failure, unsent data points remain buffered.
@@ -223,9 +213,14 @@ class Source(DataClient):
         await asyncio.gather(*[m.flush() for m in self.metrics.values() if not m.empty])
 
     async def _send(self, metric, data_chunk: DataChunk):
-        """
-        Actual send of a chunk,
-        don't call from anywhere other than SourceMetric
+        """Actually send a chunk (publish a data message).
+
+        Don't call from anywhere other than SourceMetric.
+
+        Raises:
+            PublishFailed
+
+        :meta private:
         """
         msg = aio_pika.Message(data_chunk.SerializeToString())
         await self._data_connection_watchdog.established()
@@ -236,9 +231,9 @@ class Source(DataClient):
         except ChannelInvalidStateError as e:
             # Trying to publish on a closed channel results in a ChannelInvalidStateError
             # from aiormq.  Let's wrap that in a more descriptive error.
-            raise MetricSendError(
-                f"Failed to publish data chunk for metric {metric!r} "
-                f"on exchange {self.data_exchange} ({self.data_connection})"
+            raise PublishFailed(
+                f"Failed to publish data chunk for metric '{metric!r}' "
+                f"on exchange '{self.data_exchange}' ({self.data_connection})"
             ) from e
 
     @rpc_handler("config")

@@ -3,14 +3,9 @@ from unittest.mock import create_autospec
 import pytest
 from pytest_mock import MockerFixture
 
-from metricq import history_pb2
-from metricq.history_client import (
-    HistoryClient,
-    HistoryResponse,
-    HistoryResponseType,
-    InvalidHistoryResponse,
-)
-from metricq.types import TimeAggregate, Timestamp, TimeValue
+from metricq import HistoryClient, TimeAggregate, Timestamp, TimeValue, history_pb2
+from metricq.exceptions import InvalidHistoryResponse
+from metricq.history_client import HistoryResponse, HistoryResponseType
 
 pytestmark = pytest.mark.asyncio
 
