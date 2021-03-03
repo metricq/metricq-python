@@ -36,7 +36,6 @@ from numbers import Real
 from typing import Union
 
 from . import history_pb2
-from ._deprecation import deprecated
 from .exceptions import NonMonotonicTimestamps
 
 
@@ -548,22 +547,6 @@ class TimeAggregate:
     # TODO maybe convert to Timedelta
     active_time: int
     """time spanned by this aggregate in nanoseconds"""
-
-    @deprecated(
-        reason="unpacking TimeAggregate is deprecated, access members directly instead"
-    )
-    def __iter__(self):
-        return iter(
-            (
-                self.timestamp,
-                self.minimum,
-                self.maximum,
-                self.sum,
-                self.count,
-                self.integral,
-                self.active_time,
-            )
-        )
 
     @staticmethod
     def from_proto(timestamp: Timestamp, proto: history_pb2.HistoryResponse.Aggregate):
