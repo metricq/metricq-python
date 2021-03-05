@@ -576,9 +576,8 @@ class TimeAggregate:
     # TODO maybe convert to 1s based integral (rather than 1ns)
     integral: float
     """integral of all values over the whole period"""
-    # TODO maybe convert to Timedelta
-    active_time: int
-    """time spanned by this aggregate in nanoseconds"""
+    active_time: Timedelta
+    """time spanned by this aggregate"""
 
     @staticmethod
     def from_proto(timestamp: Timestamp, proto: history_pb2.HistoryResponse.Aggregate):
@@ -589,7 +588,7 @@ class TimeAggregate:
             sum=proto.sum,
             count=proto.count,
             integral=proto.integral,
-            active_time=proto.active_time,
+            active_time=Timedelta(proto.active_time),
         )
 
     @staticmethod
@@ -601,7 +600,7 @@ class TimeAggregate:
             sum=value,
             count=1,
             integral=0,
-            active_time=0,
+            active_time=Timedelta(0),
         )
 
     @staticmethod
@@ -629,19 +628,19 @@ class TimeAggregate:
             sum=value,
             count=1,
             integral=delta.ns * value,
-            active_time=delta.ns,
+            active_time=delta,
         )
 
     @property
     def mean(self) -> float:
-        if self.active_time > 0:
+        if self.active_time.ns > 0:
             return self.mean_integral
         else:
             return self.mean_sum
 
     @property
     def mean_integral(self) -> float:
-        return self.integral / self.active_time
+        return self.integral / self.active_time.ns
 
     @property
     def mean_sum(self) -> float:

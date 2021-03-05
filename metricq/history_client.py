@@ -300,7 +300,7 @@ class HistoryResponse:
                     sum=average,
                     count=1,
                     integral=0,
-                    active_time=0,
+                    active_time=Timedelta(0),
                 )
             return
 
