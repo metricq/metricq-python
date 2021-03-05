@@ -1,5 +1,5 @@
 from logging import getLogger
-from math import isclose, pow
+from math import isclose
 from random import Random
 
 import pytest
@@ -112,7 +112,7 @@ def timedelta_random_list():
 
 def powers_of_ten():
     for i in range(17):
-        yield Timedelta(pow(10, i))
+        yield Timedelta(10 ** i)
 
 
 @pytest.mark.parametrize(
