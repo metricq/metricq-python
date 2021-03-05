@@ -34,7 +34,6 @@ from typing import Iterator, Optional
 import aio_pika
 
 from . import history_pb2
-from ._deprecation import deprecated
 from .client import Client, _GetMetricsResult
 from .exceptions import InvalidHistoryResponse
 from .logging import get_logger
@@ -601,22 +600,6 @@ class HistoryClient(Client):
             return response.values(convert=False)
         except ValueError:
             raise InvalidHistoryResponse("Response contained no values")
-
-    @deprecated(reason="use get_metrics() instead")
-    async def history_metric_list(self, selector=None, historic=True, timeout=None):
-        return await self.get_metrics(
-            selector=selector, historic=historic, timeout=timeout
-        )
-
-    @deprecated(reason="use get_metrics(..., metadata=True) instead")
-    async def history_metric_metadata(self, selector=None, historic=True):
-        arguments = {"format": "object"}
-        if selector:
-            arguments["selector"] = selector
-        if historic is not None:
-            arguments["historic"] = historic
-        result = await self.rpc("history.get_metrics", **arguments)
-        return result["metrics"]
 
     @rpc_handler("config")
     async def _history_config(self, **kwargs):
