@@ -33,7 +33,7 @@ import re
 from dataclasses import dataclass
 from functools import total_ordering
 from numbers import Real
-from typing import Union
+from typing import Union, overload
 
 from . import history_pb2
 from .exceptions import NonMonotonicTimestamps
@@ -247,6 +247,18 @@ class Timedelta:
         microseconds = self._value // 1000
         return datetime.timedelta(microseconds=microseconds)
 
+    @overload
+    def __add__(self, other: "Timedelta") -> "Timedelta":
+        ...
+
+    @overload
+    def __add__(self, other: "Timestamp") -> "Timestamp":
+        ...
+
+    @overload
+    def __add__(self, other: datetime.timedelta) -> "Timedelta":
+        ...
+
     def __add__(self, other: Union["Timedelta", "Timestamp", datetime.timedelta]):
         if isinstance(other, Timedelta):
             return Timedelta(self._value + other._value)
@@ -254,6 +266,18 @@ class Timedelta:
             return self + Timedelta.from_timedelta(other)
         # Fallback to Timestamp.__add__
         return other + self
+
+    @overload
+    def __sub__(self, other: "Timedelta") -> "Timedelta":
+        ...
+
+    @overload
+    def __sub__(self, other: "Timestamp") -> "Timestamp":
+        ...
+
+    @overload
+    def __sub__(self, other: datetime.timedelta) -> "Timedelta":
+        ...
 
     def __sub__(self, other: Union["Timedelta", "Timestamp", datetime.timedelta]):
         if isinstance(other, Timedelta):
@@ -264,10 +288,10 @@ class Timedelta:
             "invalid type to subtract from Timedelta: {}".format(type(other))
         )
 
-    def __truediv__(self, factor):
+    def __truediv__(self, factor) -> "Timedelta":
         return Timedelta(self._value // factor)
 
-    def __mul__(self, factor):
+    def __mul__(self, factor) -> "Timedelta":
         return Timedelta(self._value * factor)
 
     def __str__(self):
@@ -439,6 +463,14 @@ class Timestamp:
             :class:`Timestamp`
         """
         return Timestamp(self._value + delta.ns)
+
+    @overload
+    def __sub__(self, other: "Timedelta") -> "Timestamp":
+        ...
+
+    @overload
+    def __sub__(self, other: "Timestamp") -> "Timedelta":
+        ...
 
     def __sub__(self, other: Union["Timedelta", "Timestamp"]):
         if isinstance(other, Timedelta):
