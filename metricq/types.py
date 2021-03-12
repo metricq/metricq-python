@@ -36,6 +36,7 @@ from numbers import Real
 from typing import Union, overload
 
 from . import history_pb2
+from ._deprecation import deprecated
 from .exceptions import NonMonotonicTimestamps
 
 
@@ -559,7 +560,7 @@ class TimeAggregate:
         "maximum",
         "sum",
         "count",
-        "integral",
+        "integral_ns",
         "active_time",
     )
 
@@ -573,9 +574,8 @@ class TimeAggregate:
     """sum of all values"""
     count: int
     """total number of values"""
-    # TODO maybe convert to 1s based integral (rather than 1ns)
-    integral: float
-    """integral of all values over the whole period"""
+    integral_ns: float
+    """Integral of values in this aggregate over its active time, nanoseconds-based"""
     active_time: Timedelta
     """time spanned by this aggregate"""
 
@@ -587,7 +587,7 @@ class TimeAggregate:
             maximum=proto.maximum,
             sum=proto.sum,
             count=proto.count,
-            integral=proto.integral,
+            integral_ns=proto.integral,
             active_time=Timedelta(proto.active_time),
         )
 
@@ -599,7 +599,7 @@ class TimeAggregate:
             maximum=value,
             sum=value,
             count=1,
-            integral=0,
+            integral_ns=0,
             active_time=Timedelta(0),
         )
 
@@ -627,9 +627,28 @@ class TimeAggregate:
             maximum=value,
             sum=value,
             count=1,
-            integral=delta.ns * value,
+            integral_ns=delta.ns * value,
             active_time=delta,
         )
+
+    @property
+    def integral_s(self) -> float:
+        """Integral of values in this aggregate over its active time, seconds-based"""
+        return self.integral_ns / 1e9
+
+    @property  # type: ignore
+    # mypy does not supported decorated properties (https://github.com/python/mypy/issues/1362)
+    @deprecated(
+        reason="Use the explicit seconds-based integral attribute `TimeAggregate.integral_s`"
+    )
+    def integral(self) -> float:
+        """Integral of all values over the whole period.
+
+        .. deprecated:: 2.0.0
+
+            Use the explicit seconds-based integral attribute :attr:`integral_s`.
+        """
+        return self.integral_s
 
     @property
     def mean(self) -> float:
@@ -640,7 +659,7 @@ class TimeAggregate:
 
     @property
     def mean_integral(self) -> float:
-        return self.integral / self.active_time.ns
+        return self.integral_ns / self.active_time.ns
 
     @property
     def mean_sum(self) -> float:

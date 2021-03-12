@@ -155,7 +155,7 @@ def test_timeaggregate_from_value(timestamp):
     assert agg.minimum == VALUE
     assert agg.maximum == VALUE
     assert agg.sum == VALUE
-    assert agg.integral == 0
+    assert agg.integral_ns == 0
 
     assert isclose(agg.mean, VALUE)
     assert isclose(agg.mean_sum, VALUE)
@@ -179,7 +179,7 @@ def test_timeaggregate_from_value_pair(timestamp: Timestamp, time_delta_10s: Tim
     assert agg.minimum == VALUE
     assert agg.maximum == VALUE
     assert agg.sum == VALUE
-    assert agg.integral == time_delta_10s.ns * VALUE
+    assert agg.integral_ns == time_delta_10s.ns * VALUE
 
     assert isclose(agg.mean, VALUE)
     assert isclose(agg.mean_integral, VALUE)
