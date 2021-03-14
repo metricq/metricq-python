@@ -273,14 +273,10 @@ class Timedelta:
         ...
 
     @overload
-    def __sub__(self, other: "Timestamp") -> "Timestamp":
-        ...
-
-    @overload
     def __sub__(self, other: datetime.timedelta) -> "Timedelta":
         ...
 
-    def __sub__(self, other: Union["Timedelta", "Timestamp", datetime.timedelta]):
+    def __sub__(self, other: Union["Timedelta", datetime.timedelta]):
         if isinstance(other, Timedelta):
             return Timedelta(self._value - other._value)
         if isinstance(other, datetime.timedelta):

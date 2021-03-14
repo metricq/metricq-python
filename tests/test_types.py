@@ -144,6 +144,18 @@ def test_timedelta_from_string(input, expected_ns):
     assert Timedelta.from_string(input) == Timedelta(expected_ns)
 
 
+def test_timedelta_sub_timestamp_raises_type_error(
+    time_delta_10s: Timedelta, timestamp: Timestamp
+):
+    """Assert that one cannot subtract a Timestamp from a Timedelta.
+
+    Previously, the type annotations on Timedelta.__sub__ suggested
+    that this was possible.
+    """
+    with pytest.raises(TypeError):
+        time_delta_10s - timestamp  # type: ignore
+
+
 def test_timeaggregate_from_value(timestamp):
     VALUE = 42.0
     agg = TimeAggregate.from_value(timestamp=timestamp, value=VALUE)
