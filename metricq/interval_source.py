@@ -28,7 +28,6 @@
 
 import asyncio
 from abc import abstractmethod
-from numbers import Real
 from typing import Optional, Union
 
 from .exceptions import PublishFailed
@@ -75,7 +74,7 @@ class IntervalSource(Source):
                     self.counter += 1
     """
 
-    def __init__(self, *args, period: Union[Real, Timedelta, None] = None, **kwargs):
+    def __init__(self, *args, period: Union[float, Timedelta, None] = None, **kwargs):
         super().__init__(*args, **kwargs)
         self._period: Optional[Timedelta]
         if period is None:
@@ -95,7 +94,7 @@ class IntervalSource(Source):
         return self._period.s
 
     @period.setter
-    def period(self, duration: Union[Real, Timedelta]):
+    def period(self, duration: Union[float, Timedelta]):  # type: ignore
         if isinstance(duration, Timedelta):
             self._period = duration
         else:

@@ -32,7 +32,6 @@ import datetime
 import re
 from dataclasses import dataclass
 from functools import total_ordering
-from numbers import Real
 from typing import Union, overload
 
 from . import history_pb2
@@ -168,7 +167,7 @@ class Timedelta:
         raise ValueError("invalid duration unit {}".format(unit))
 
     @staticmethod
-    def from_us(microseconds: Real):
+    def from_us(microseconds: float):
         """Create a duration from a number of microseconds
 
         Args:
@@ -179,7 +178,7 @@ class Timedelta:
         return Timedelta(int(microseconds * 1e3))
 
     @staticmethod
-    def from_ms(milliseconds: Real):
+    def from_ms(milliseconds: float):
         """Create a duration from a number of milliseconds
 
         Args:
@@ -190,7 +189,7 @@ class Timedelta:
         return Timedelta(int(milliseconds * 1e6))
 
     @staticmethod
-    def from_s(seconds: Real):
+    def from_s(seconds: float):
         """Create a duration from a number of seconds
 
         Args:
@@ -333,7 +332,7 @@ class Timestamp:
         """
 
     @classmethod
-    def from_posix_seconds(cls, seconds: Real):
+    def from_posix_seconds(cls, seconds: float):
         """Create a Timestamp from a POSIX timestamp
 
         Args:
