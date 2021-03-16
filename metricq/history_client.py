@@ -299,8 +299,8 @@ class HistoryResponse:
                     maximum=maximum,
                     sum=average,
                     count=1,
-                    integral=0,
-                    active_time=0,
+                    integral_ns=0,
+                    active_time=Timedelta(0),
                 )
             return
 

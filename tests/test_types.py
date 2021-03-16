@@ -1,12 +1,18 @@
 from logging import getLogger
-from math import pow
+from math import isclose
 from random import Random
 
 import pytest
 
-from metricq.types import Timedelta
+from metricq.exceptions import NonMonotonicTimestamps
+from metricq.types import TimeAggregate, Timedelta, Timestamp
 
 logger = getLogger(__name__)
+
+
+@pytest.fixture
+def timestamp():
+    return Timestamp.from_iso8601("2021-03-03T18:00:0.0Z")
 
 
 @pytest.fixture
@@ -106,7 +112,7 @@ def timedelta_random_list():
 
 def powers_of_ten():
     for i in range(17):
-        yield Timedelta(pow(10, i))
+        yield Timedelta(10 ** i)
 
 
 @pytest.mark.parametrize(
@@ -136,3 +142,56 @@ def test_timedelta_precise_string_roundtrip(values):
 )
 def test_timedelta_from_string(input, expected_ns):
     assert Timedelta.from_string(input) == Timedelta(expected_ns)
+
+
+def test_timeaggregate_from_value(timestamp):
+    VALUE = 42.0
+    agg = TimeAggregate.from_value(timestamp=timestamp, value=VALUE)
+
+    assert agg.timestamp == timestamp
+    assert agg.active_time == Timedelta(0)
+    assert agg.count == 1
+
+    assert agg.minimum == VALUE
+    assert agg.maximum == VALUE
+    assert agg.sum == VALUE
+    assert agg.integral_ns == 0
+
+    assert isclose(agg.mean, VALUE)
+    assert isclose(agg.mean_sum, VALUE)
+
+    with pytest.raises(ZeroDivisionError):
+        agg.mean_integral
+
+
+def test_timeaggregate_from_value_pair(timestamp: Timestamp, time_delta_10s: Timedelta):
+    VALUE = 42.0
+    later = timestamp + time_delta_10s
+
+    agg = TimeAggregate.from_value_pair(
+        timestamp_before=timestamp, timestamp=later, value=VALUE
+    )
+
+    assert agg.timestamp == timestamp
+    assert agg.active_time == time_delta_10s
+    assert agg.count == 1
+
+    assert agg.minimum == VALUE
+    assert agg.maximum == VALUE
+    assert agg.sum == VALUE
+    assert agg.integral_ns == time_delta_10s.ns * VALUE
+
+    assert isclose(agg.mean, VALUE)
+    assert isclose(agg.mean_integral, VALUE)
+    assert isclose(agg.mean_sum, VALUE)
+
+
+def test_timeaggregate_from_value_pair_non_monotonic(
+    timestamp: Timestamp, time_delta_10s: Timedelta
+):
+    later = timestamp + time_delta_10s
+
+    with pytest.raises(NonMonotonicTimestamps):
+        TimeAggregate.from_value_pair(
+            timestamp_before=later, timestamp=timestamp, value=42.0
+        )

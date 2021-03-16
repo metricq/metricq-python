@@ -33,9 +33,10 @@ import re
 from dataclasses import dataclass
 from functools import total_ordering
 from numbers import Real
-from typing import Union
+from typing import Union, overload
 
 from . import history_pb2
+from ._deprecation import deprecated
 from .exceptions import NonMonotonicTimestamps
 
 
@@ -247,6 +248,18 @@ class Timedelta:
         microseconds = self._value // 1000
         return datetime.timedelta(microseconds=microseconds)
 
+    @overload
+    def __add__(self, other: "Timedelta") -> "Timedelta":
+        ...
+
+    @overload
+    def __add__(self, other: "Timestamp") -> "Timestamp":
+        ...
+
+    @overload
+    def __add__(self, other: datetime.timedelta) -> "Timedelta":
+        ...
+
     def __add__(self, other: Union["Timedelta", "Timestamp", datetime.timedelta]):
         if isinstance(other, Timedelta):
             return Timedelta(self._value + other._value)
@@ -254,6 +267,18 @@ class Timedelta:
             return self + Timedelta.from_timedelta(other)
         # Fallback to Timestamp.__add__
         return other + self
+
+    @overload
+    def __sub__(self, other: "Timedelta") -> "Timedelta":
+        ...
+
+    @overload
+    def __sub__(self, other: "Timestamp") -> "Timestamp":
+        ...
+
+    @overload
+    def __sub__(self, other: datetime.timedelta) -> "Timedelta":
+        ...
 
     def __sub__(self, other: Union["Timedelta", "Timestamp", datetime.timedelta]):
         if isinstance(other, Timedelta):
@@ -264,10 +289,10 @@ class Timedelta:
             "invalid type to subtract from Timedelta: {}".format(type(other))
         )
 
-    def __truediv__(self, factor):
+    def __truediv__(self, factor) -> "Timedelta":
         return Timedelta(self._value // factor)
 
-    def __mul__(self, factor):
+    def __mul__(self, factor) -> "Timedelta":
         return Timedelta(self._value * factor)
 
     def __str__(self):
@@ -440,6 +465,14 @@ class Timestamp:
         """
         return Timestamp(self._value + delta.ns)
 
+    @overload
+    def __sub__(self, other: "Timedelta") -> "Timestamp":
+        ...
+
+    @overload
+    def __sub__(self, other: "Timestamp") -> "Timedelta":
+        ...
+
     def __sub__(self, other: Union["Timedelta", "Timestamp"]):
         if isinstance(other, Timedelta):
             return Timestamp(self._value - other.ns)
@@ -527,7 +560,7 @@ class TimeAggregate:
         "maximum",
         "sum",
         "count",
-        "integral",
+        "integral_ns",
         "active_time",
     )
 
@@ -541,12 +574,10 @@ class TimeAggregate:
     """sum of all values"""
     count: int
     """total number of values"""
-    # TODO maybe convert to 1s based integral (rather than 1ns)
-    integral: float
-    """integral of all values over the whole period"""
-    # TODO maybe convert to Timedelta
-    active_time: int
-    """time spanned by this aggregate in nanoseconds"""
+    integral_ns: float
+    """Integral of values in this aggregate over its active time, nanoseconds-based"""
+    active_time: Timedelta
+    """time spanned by this aggregate"""
 
     @staticmethod
     def from_proto(timestamp: Timestamp, proto: history_pb2.HistoryResponse.Aggregate):
@@ -556,8 +587,8 @@ class TimeAggregate:
             maximum=proto.maximum,
             sum=proto.sum,
             count=proto.count,
-            integral=proto.integral,
-            active_time=proto.active_time,
+            integral_ns=proto.integral,
+            active_time=Timedelta(proto.active_time),
         )
 
     @staticmethod
@@ -568,8 +599,8 @@ class TimeAggregate:
             maximum=value,
             sum=value,
             count=1,
-            integral=0,
-            active_time=0,
+            integral_ns=0,
+            active_time=Timedelta(0),
         )
 
     @staticmethod
@@ -596,20 +627,39 @@ class TimeAggregate:
             maximum=value,
             sum=value,
             count=1,
-            integral=delta.ns * value,
-            active_time=delta.ns,
+            integral_ns=delta.ns * value,
+            active_time=delta,
         )
 
     @property
+    def integral_s(self) -> float:
+        """Integral of values in this aggregate over its active time, seconds-based"""
+        return self.integral_ns / 1e9
+
+    @property  # type: ignore
+    # mypy does not supported decorated properties (https://github.com/python/mypy/issues/1362)
+    @deprecated(
+        reason="Use the explicit seconds-based integral attribute `TimeAggregate.integral_s`"
+    )
+    def integral(self) -> float:
+        """Integral of all values over the whole period.
+
+        .. deprecated:: 2.0.0
+
+            Use the explicit seconds-based integral attribute :attr:`integral_s`.
+        """
+        return self.integral_s
+
+    @property
     def mean(self) -> float:
-        if self.active_time > 0:
+        if self.active_time.ns > 0:
             return self.mean_integral
         else:
             return self.mean_sum
 
     @property
     def mean_integral(self) -> float:
-        return self.integral / self.active_time
+        return self.integral_ns / self.active_time.ns
 
     @property
     def mean_sum(self) -> float:
