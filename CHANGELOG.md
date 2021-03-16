@@ -14,6 +14,7 @@
 - Consider updating types of TimeAggregate.{integral,active\_time} [\#76](https://github.com/metricq/metricq-python/issues/76)
 - Remove deprecated methods/behavior [\#73](https://github.com/metricq/metricq-python/issues/73)
 - Add chunk size to metadata [\#65](https://github.com/metricq/metricq-python/issues/65)
+- Support HistoryResponse error messages [\#62](https://github.com/metricq/metricq-python/issues/62)
 
 **Merged pull requests:**
 
@@ -22,6 +23,7 @@
 - Spring cleanup [\#74](https://github.com/metricq/metricq-python/pull/74) ([phijor](https://github.com/phijor))
 - Require python 3.8 for ssl fixes [\#70](https://github.com/metricq/metricq-python/pull/70) ([kinnarr](https://github.com/kinnarr))
 - Augment "chunkSize" to metadata when declaring new metrics [\#68](https://github.com/metricq/metricq-python/pull/68) ([phijor](https://github.com/phijor))
+- Handle error messages in history responses [\#66](https://github.com/metricq/metricq-python/pull/66) ([bmario](https://github.com/bmario))
 - Management channel is a RobustChannel [\#64](https://github.com/metricq/metricq-python/pull/64) ([phijor](https://github.com/phijor))
 - Improve Error Handling [\#63](https://github.com/metricq/metricq-python/pull/63) ([tilsche](https://github.com/tilsche))
 - fix\(ci\): Fix changelog workflow [\#61](https://github.com/metricq/metricq-python/pull/61) ([bmario](https://github.com/bmario))
