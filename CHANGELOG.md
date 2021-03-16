@@ -11,11 +11,13 @@
 
 **Closed issues:**
 
+- Consider updating types of TimeAggregate.{integral,active\_time} [\#76](https://github.com/metricq/metricq-python/issues/76)
 - Remove deprecated methods/behavior [\#73](https://github.com/metricq/metricq-python/issues/73)
 - Add chunk size to metadata [\#65](https://github.com/metricq/metricq-python/issues/65)
 
 **Merged pull requests:**
 
+- Fix TimeAggregate member types [\#80](https://github.com/metricq/metricq-python/pull/80) ([phijor](https://github.com/phijor))
 - Remove deprecated methods [\#78](https://github.com/metricq/metricq-python/pull/78) ([phijor](https://github.com/phijor))
 - Spring cleanup [\#74](https://github.com/metricq/metricq-python/pull/74) ([phijor](https://github.com/phijor))
 - Require python 3.8 for ssl fixes [\#70](https://github.com/metricq/metricq-python/pull/70) ([kinnarr](https://github.com/kinnarr))
@@ -24,7 +26,6 @@
 - Improve Error Handling [\#63](https://github.com/metricq/metricq-python/pull/63) ([tilsche](https://github.com/tilsche))
 - fix\(ci\): Fix changelog workflow [\#61](https://github.com/metricq/metricq-python/pull/61) ([bmario](https://github.com/bmario))
 - Fixes missing non-historic metrics in metricq spy [\#60](https://github.com/metricq/metricq-python/pull/60) ([bmario](https://github.com/bmario))
-- Fix mypy protobuf packaging [\#43](https://github.com/metricq/metricq-python/pull/43) ([tilsche](https://github.com/tilsche))
 
 ## [v1.4.0](https://github.com/metricq/metricq-python/tree/v1.4.0) (2020-12-12)
 
@@ -76,6 +77,7 @@
 - Fix release workflow [\#53](https://github.com/metricq/metricq-python/pull/53) ([kinnarr](https://github.com/kinnarr))
 - Trigger python package workflow from release workflow [\#52](https://github.com/metricq/metricq-python/pull/52) ([kinnarr](https://github.com/kinnarr))
 - Adds a workflow for docker image build and upload [\#49](https://github.com/metricq/metricq-python/pull/49) ([bmario](https://github.com/bmario))
+- Fix mypy protobuf packaging [\#43](https://github.com/metricq/metricq-python/pull/43) ([tilsche](https://github.com/tilsche))
 - Release workflow [\#42](https://github.com/metricq/metricq-python/pull/42) ([kinnarr](https://github.com/kinnarr))
 - Issue 27 - Precise and Pretty Timedelta [\#28](https://github.com/metricq/metricq-python/pull/28) ([Daddelhai](https://github.com/Daddelhai))
 - Fix reconnect issues [\#44](https://github.com/metricq/metricq-python/pull/44) ([bmario](https://github.com/bmario))
