@@ -1,6 +1,7 @@
 from logging import getLogger
 from math import isclose
 from random import Random
+from typing import Union
 
 import pytest
 
@@ -154,6 +155,45 @@ def test_timedelta_sub_timestamp_raises_type_error(
     """
     with pytest.raises(TypeError):
         time_delta_10s - timestamp  # type: ignore
+
+
+@pytest.mark.parametrize(
+    ("ns", "factor", "expected_ns"),
+    [
+        (3, 0.5, 6),  # Division by a float results in integer nanoseconds
+        (3, 2.0, 1),  # Decimals are truncated
+        (3, 2, 1),
+        (3, 0.2, 15),
+        # True division casts to float first, use floor division
+        (89384152596986340, 1, 89384152596986336),
+    ],
+)
+def test_timedelta_truediv(ns: int, factor: Union[int, float], expected_ns: int):
+    timedelta = Timedelta(ns)
+
+    assert (timedelta / factor) == Timedelta(expected_ns)
+
+
+@pytest.mark.parametrize(
+    ("ns", "factor", "expected_ns"),
+    [
+        (3, 2, 1),
+        # Floor division does not lose precision, as noted here:
+        # https://www.python.org/dev/peps/pep-0238/#semantics-of-true-division
+        (89384152596986340, 1, 89384152596986340),
+        # Floor division by floats yields *surprising* results, this is actively discouraged
+        (3, 0.2, 14),
+    ],
+)
+def test_timedelta_floordiv(ns: int, factor: int, expected_ns: int):
+    timedelta = Timedelta(ns)
+
+    assert (timedelta // factor) == Timedelta(expected_ns)
+
+
+@pytest.mark.parametrize("random_timedelta", timedelta_random_list())
+def test_timedelta_random_floordiv_one(random_timedelta: Timedelta):
+    assert random_timedelta // 1 == random_timedelta
 
 
 def test_timeaggregate_from_value(timestamp):

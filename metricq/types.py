@@ -47,31 +47,36 @@ class Timedelta:
         nanoseconds: duration in nanoseconds
 
     Supported operations:
-        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------+
-        | Operation        | Types                                            | Result                                                                              |
-        +==================+==================================================+=====================================================================================+
-        | :code:`d1 + d2`  | * :code:`d1`, :code:`d2`: :class:`Timedelta`     | the sum of the duration of :code:`d1` and :code:`d2` as a :class:`Timedelta` object |
-        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------+
-        | :code:`d + dt`   | * :code:`d`: :class:`Timedelta`                  | the combined duration of :code:`d` and                                              |
-        |                  | * :code:`dt`: :class:`python:datetime.timedelta` | :code:`Timedelta.from_timedelta(dt)` as a :class:`Timedelta` object                 |
-        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------+
-        | :code:`d + t`    | * :code:`d`: :class:`Timedelta`                  | a :class:`Timestamp` offset by duration :code:`d`                                   |
-        |                  | * :code:`t`: :class:`Timestamp`                  | (the same as :code:`t + d`, see :class:`Timestamp.__add__`)                         |
-        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------+
-        | :code:`d1 == d2` | * :code:`d1`, :code:`d2`: :class:`Timedelta`     | :code:`True` if :code:`d1` and :code:`d2` describe the same duration of time        |
-        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------+
-        | :code:`d == dt`  | * :code:`d`: :class:`Timedelta`                  | :code:`True` if :code:`d.datetime == dt`                                            |
-        |                  | * :code:`dt`: :class:`python:datetime.timedelta` | (see :class:`python:datetime.timedelta`)                                            |
-        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------+
-        | :code:`d1 < d2`  | * :code:`d1`, :code:`d2`: :class:`Timedelta`     | :code:`True` if :code:`d1` is shorter than :code:`d2`                               |
-        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------+
-        | :code:`d < dt`   | * :code:`d`: :class:`Timedelta`                  | :code:`True` if :code:`d.datetime < dt`                                             |
-        |                  | * :code:`dt`: :class:`python:datetime.timedelta` | (see :class:`python:datetime.timedelta`)                                            |
-        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------+
-        | :code:`d * c`,   | * :code:`d`: :class:`Timedelta`                  | the same as :code:`Timedelta(d.ns * c)`                                             |
-        |                  | * :code:`d`: :class:`Timedelta`                  | the same as :code:`Timedelta(d.ns * c)`                                             |
-        | :code:`d / c`    |                                                  |                                                                                     |
-        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------+
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | Operation        | Types                                            | Result                                                                                    |
+        +==================+==================================================+===========================================================================================+
+        | :code:`d1 + d2`  | * :code:`d1`, :code:`d2`: :class:`Timedelta`     | the sum of the duration of :code:`d1` and :code:`d2` as a :class:`Timedelta` object       |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d + dt`   | * :code:`d`: :class:`Timedelta`                  | the combined duration of :code:`d` and                                                    |
+        |                  | * :code:`dt`: :class:`python:datetime.timedelta` | :code:`Timedelta.from_timedelta(dt)` as a :class:`Timedelta` object                       |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d + t`    | * :code:`d`: :class:`Timedelta`                  | a :class:`Timestamp` offset by duration :code:`d`                                         |
+        |                  | * :code:`t`: :class:`Timestamp`                  | (the same as :code:`t + d`, see :class:`Timestamp.__add__`)                               |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d1 == d2` | * :code:`d1`, :code:`d2`: :class:`Timedelta`     | :code:`True` if :code:`d1` and :code:`d2` describe the same duration of time              |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d == dt`  | * :code:`d`: :class:`Timedelta`                  | :code:`True` if :code:`d.datetime == dt`                                                  |
+        |                  | * :code:`dt`: :class:`python:datetime.timedelta` | (see :class:`python:datetime.timedelta`)                                                  |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d1 < d2`  | * :code:`d1`, :code:`d2`: :class:`Timedelta`     | :code:`True` if :code:`d1` is shorter than :code:`d2`                                     |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d < dt`   | * :code:`d`: :class:`Timedelta`                  | :code:`True` if :code:`d.datetime < dt`                                                   |
+        |                  | * :code:`dt`: :class:`python:datetime.timedelta` | (see :class:`python:datetime.timedelta`)                                                  |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d * c`    | * :code:`d`: :class:`Timedelta`                  | The duration scaled by the factor :code:`c`, truncated to nanosecond precision            |
+        |                  | * :code:`c`: :class:`float` or :class:`int`      | See :meth:`__mul__`.                                                                      |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d / c`    | * :code:`d`: :class:`Timedelta`                  | The duration divided by :code:`c`, truncated to nanosecond precision.                     |
+        |                  | * :code:`c`: :class:`float`                      | See :meth:`__truediv__`.                                                                  |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d // n`   | * :code:`d`: :class:`Timedelta`                  | The duration divided by an *integer* factor :code:`n`, truncated to nanosecond precision. |
+        |                  | * :code:`n`: :class:`int`                        | See :meth:`__floordiv__`.                                                                 |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
 
         In addition to :code:`<` and :code:`=`, all other relational operations are supported and behave as you would expect.
     """
@@ -284,8 +289,47 @@ class Timedelta:
             "invalid type to subtract from Timedelta: {}".format(type(other))
         )
 
-    def __truediv__(self, factor: float) -> "Timedelta":
+    def __floordiv__(self, factor: int) -> "Timedelta":
+        """Divide a duration by an integer factor.
+
+        >>> td = Timedelta.from_s(10) // 3
+        >>> td.s
+        3.333333333
+        >>> td.precise_string
+        '3333333333ns'
+
+        This divides the number of nanoseconds in this duration by `factor`
+        using `Floor Division <https://www.python.org/dev/peps/pep-0238/#semantics-of-floor-division>`_,
+        i.e. for some :code:`n: int` and :code:`td: Timedelta` we have
+
+        >>> assert (td // n).ns == td.ns // n
+
+        Note:
+            Floor Division produces *surprising* results for :code:`float` arguments
+            (i.e. :code:`3 // 0.2 == 14.0`).
+            Use :meth:`__truediv__` if you want to scale a duration by a non-integer factor.
+        """
         return Timedelta(int(self._value // factor))
+
+    def __truediv__(self, factor: float) -> "Timedelta":
+        """Divide a duration by a (floating point) factor.
+
+        >>> (Timedelta.from_s(10) / 2.5).precise_string
+        '4s'
+
+        This divides the number of nanoseconds in this duration by `factor`
+        using `True Division <https://www.python.org/dev/peps/pep-0238/#semantics-of-true-division>`_,
+        but truncates the result to an :code:`int`:
+
+        >>> assert (td / x).ns == int(td.ns / x)
+
+        where :code:`td: Timedelta` and :code:`x: float`.
+
+        Note:
+            Use :meth:`__floordiv__` if you know that the factor is an integer,
+            this will prevent rounding errors.
+        """
+        return Timedelta(int(self._value / factor))
 
     def __mul__(self, factor: float) -> "Timedelta":
         return Timedelta(int(self._value * factor))
