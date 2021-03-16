@@ -285,11 +285,11 @@ class Timedelta:
             "invalid type to subtract from Timedelta: {}".format(type(other))
         )
 
-    def __truediv__(self, factor) -> "Timedelta":
-        return Timedelta(self._value // factor)
+    def __truediv__(self, factor: float) -> "Timedelta":
+        return Timedelta(int(self._value // factor))
 
-    def __mul__(self, factor) -> "Timedelta":
-        return Timedelta(self._value * factor)
+    def __mul__(self, factor: float) -> "Timedelta":
+        return Timedelta(int(self._value * factor))
 
     def __str__(self):
         """A string containing the number of seconds of this duration
