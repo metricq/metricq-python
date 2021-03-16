@@ -632,21 +632,10 @@ class HistoryClient(Client):
             history_response_pb = history_pb2.HistoryResponse()
             history_response_pb.ParseFromString(body)
 
-            try:
-                future = self._request_futures[correlation_id]
+            future = self._request_futures.get(correlation_id)
 
-                history_response = HistoryResponse(
-                    history_response_pb, request_duration
-                )
-
-                logger.debug("message is an history response")
-                future.set_result(history_response)
-            except HistoryError as e:
-                logger.debug(
-                    "message is an history response containing an error: {}", e
-                )
-                future.set_exception(e)
-            except (KeyError, asyncio.InvalidStateError):
+            # Make sure this message corresponds to a request we sent
+            if future is None:
                 logger.error(
                     "received history response with unknown correlation id {} "
                     "from {}",
@@ -654,3 +643,25 @@ class HistoryClient(Client):
                     from_token,
                 )
                 return
+
+            # Ensure we did not already handle this response
+            if future.done():
+                logger.error(
+                    "history response from {} with correlation ID {} was handled already",
+                    from_token,
+                    correlation_id,
+                )
+                return
+
+            # Parse the history response.  If the database returned an error,
+            # raise HistoryError in the code awaiting the parsed response.
+            try:
+                history_response = HistoryResponse(
+                    history_response_pb, request_duration
+                )
+
+                logger.debug("message is a history response")
+                future.set_result(history_response)
+            except HistoryError as e:
+                logger.debug("message is a history response containing an error: {}", e)
+                future.set_exception(e)
