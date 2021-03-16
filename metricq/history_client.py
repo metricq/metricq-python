@@ -35,7 +35,7 @@ import aio_pika
 
 from . import history_pb2
 from .client import Client, _GetMetricsResult
-from .exceptions import InvalidHistoryResponse
+from .exceptions import HistoryError, InvalidHistoryResponse
 from .logging import get_logger
 from .rpc import rpc_handler
 from .types import TimeAggregate, Timedelta, Timestamp, TimeValue
@@ -114,7 +114,10 @@ class HistoryResponse:
         """
         self.request_duration = request_duration
         count = len(proto.time_delta)
-        if count == 0:
+        if proto.error != "":
+            raise HistoryError(f"request failed on database: {proto.error}")
+
+        elif count == 0:
             self._mode = HistoryResponseType.EMPTY
             if (
                 len(proto.value_min) != 0
@@ -629,12 +632,20 @@ class HistoryClient(Client):
             history_response_pb = history_pb2.HistoryResponse()
             history_response_pb.ParseFromString(body)
 
-            history_response = HistoryResponse(history_response_pb, request_duration)
-
-            logger.debug("message is an history response")
             try:
                 future = self._request_futures[correlation_id]
+
+                history_response = HistoryResponse(
+                    history_response_pb, request_duration
+                )
+
+                logger.debug("message is an history response")
                 future.set_result(history_response)
+            except HistoryError as e:
+                logger.debug(
+                    "message is an history response containing an error: {}", e
+                )
+                future.set_exception(e)
             except (KeyError, asyncio.InvalidStateError):
                 logger.error(
                     "received history response with unknown correlation id {} "

@@ -4,7 +4,7 @@ import pytest
 from pytest_mock import MockerFixture
 
 from metricq import HistoryClient, TimeAggregate, Timestamp, TimeValue, history_pb2
-from metricq.exceptions import InvalidHistoryResponse
+from metricq.exceptions import HistoryError, InvalidHistoryResponse
 from metricq.history_client import HistoryResponse, HistoryResponseType
 
 pytestmark = pytest.mark.asyncio
@@ -19,6 +19,7 @@ DEFAULT_METRIC = "test.foo"
 
 
 def mock_history_response(**response_fields) -> HistoryResponse:
+    response_fields.setdefault("error", "")
     proto = create_autospec(
         history_pb2.HistoryResponse, spec_set=True, **response_fields
     )
@@ -71,6 +72,17 @@ async def test_history_no_aggregate(
 
     with pytest.raises(InvalidHistoryResponse):
         await history_client.history_aggregate(DEFAULT_METRIC)
+
+
+async def test_history_error(
+    history_client: HistoryClient,
+    mocker: MockerFixture,
+    empty_history_response: HistoryResponse,
+):
+    patch_history_data_request(mocker, empty_history_response)
+
+    with pytest.raises(HistoryError):
+        mock_history_response(error="A test error")
 
 
 async def test_history_last_value(history_client: HistoryClient, mocker: MockerFixture):
