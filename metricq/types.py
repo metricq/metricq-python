@@ -653,7 +653,7 @@ class TimeAggregate:
     def from_value_pair(
         timestamp_before: Timestamp, timestamp: Timestamp, value: float
     ):
-        """Create a TimeAggregate from a pair of class:`Timestamp`s and one value
+        """Create a TimeAggregate from a pair of timestamps (class:`Timestamp`) and one value
 
         Raises:
             NonMonotonicTimestamps: if the two timestamps are not strictly monotonic

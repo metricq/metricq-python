@@ -73,3 +73,18 @@ Removal of previously deprecated methods
 
         -await client.history_metric_metadata(...)
         +await client.get_metrics(..., metadata=True)
+
+
+Type changes to reduce ambiguity
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Some class attributes were raw numbers;
+we gave them appropriate wrapper types that make it harder to accidentally misuse them.
+
+:attr:`TimeAggregate.active_time` and :attr:`IntervalSource.period`:
+    These are now proper durations (:class:`Timedelta`) instead of a raw numbers of seconds.
+
+    >>> now = Timestamp.now()
+    >>> agg = TimeAggregate.from_value_pair(now, now + Timedelta.from_ms(500), value=42.0)
+    >>> agg.active_time.precise_string
+    '500ms'
