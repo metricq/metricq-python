@@ -236,6 +236,7 @@ setup(
     install_requires=[
         "aio-pika~=6.7, >=6.7.1",
         get_protobuf_requirement(),
+        "python-dateutil ~= 2.8, >=2.8.1",
         "yarl",
         "setuptools",
     ],

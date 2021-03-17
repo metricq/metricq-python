@@ -13,7 +13,7 @@ logger = getLogger(__name__)
 
 @pytest.fixture
 def timestamp():
-    return Timestamp.from_iso8601("2021-03-03T18:00:0.0Z")
+    return Timestamp.from_iso8601("2021-03-03T18:00:00Z")
 
 
 @pytest.fixture
@@ -247,3 +247,20 @@ def test_timeaggregate_from_value_pair_non_monotonic(
         TimeAggregate.from_value_pair(
             timestamp_before=later, timestamp=timestamp, value=42.0
         )
+
+
+@pytest.mark.parametrize(
+    ("date_string", "expected"),
+    [
+        # Sanity check
+        ("1970-01-01T00:00:00Z", Timestamp(0)),
+        # Parser supports sub-second digits
+        ("1970-01-01T00:00:00.0Z", Timestamp(0)),
+        # Parser drops sub-microsecond digits
+        ("1970-01-01T00:00:00.000001337Z", Timestamp(1000)),
+        # Timezones other that UTC are supported
+        ("1970-01-01T00:00:00-01:00", Timestamp(Timedelta.from_string("1h").ns)),
+    ],
+)
+def test_timestamp_from_iso8601(date_string: str, expected: Timestamp):
+    assert Timestamp.from_iso8601(date_string) == expected

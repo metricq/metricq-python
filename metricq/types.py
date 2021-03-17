@@ -34,6 +34,8 @@ from dataclasses import dataclass
 from functools import total_ordering
 from typing import Union, overload
 
+from dateutil.parser import isoparse as dateutil_isoparse
+
 from . import history_pb2
 from ._deprecation import deprecated
 from .exceptions import NonMonotonicTimestamps
@@ -403,23 +405,28 @@ class Timestamp:
         return Timestamp(microseconds * 1000)
 
     @classmethod
-    def from_iso8601(cls, iso_string: str):
-        """Create a Timestamp from an **UTC** `ISO 8601` date-time string:
+    def from_iso8601(cls, iso_string: str) -> "Timestamp":
+        """Create a Timestamp from a `ISO 8601` date-time string.
 
         >>> Timestamp.from_iso8601("1970-01-01T00:00:00.0Z") == Timestamp(0)
         True
 
-        Args:
-            iso_string: a date-time string matching the format ``%Y-%m-%dT%H:%M:%S.%fZ``, see :meth:`python:datetime.datetime.strptime`
+        This is a convenience method that parses the date-time string into a
+        :class:`python:datetime.datetime` using
+        :meth:`dateutil:dateutil.parser.isoparse`,
+        and then calls :meth:`from_datetime` to create a :class:`Timestamp` from that.
 
-        Returns:
-            :class:`Timestamp`
+        Note:
+            The parser only supports up to *6 sub-second digits*,
+            further digits are simply dropped.
+            If you need to parse timestamps with higher precision,
+            you need to convert the string to nanoseconds yourself.
+
+        Args:
+            iso_string: a date-time string in `ISO 8601` format.
         """
-        return cls.from_datetime(
-            datetime.datetime.strptime(iso_string, "%Y-%m-%dT%H:%M:%S.%fZ").replace(
-                tzinfo=datetime.timezone.utc
-            )
-        )
+        dt = dateutil_isoparse(iso_string)
+        return cls.from_datetime(dt)
 
     @classmethod
     def ago(cls, delta: Timedelta):
