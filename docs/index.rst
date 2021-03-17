@@ -13,6 +13,7 @@ Welcome to MetricQ's documentation!
     howto/index
     api/index
     metadata
+    upgrading
     glossary
 
 
@@ -30,6 +31,12 @@ Install ``metricq`` from `PyPI`_:
     $ pip install metricq
 
 ..  _PyPI: https://pypi.org/project/metricq/
+
+
+Upgrading from an older version
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+See :ref:`upgrading` for instruction on how to upgrade to a newer version of this library.
 
 
 Indices and tables
