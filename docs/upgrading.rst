@@ -53,3 +53,23 @@ Validation of :class:`Source` chunk sizes
 Previously, anything could be assigned to :attr:`Source.chunk_size`,
 now only :literal:`None` (to disable automatic chunking)
 and *positive* integers are accepted.
+
+
+Removal of previously deprecated methods
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Support for tuple-unpacking instances of :class:`TimeAggregate` has been removed.
+* The methods :code:`history_metric_list` and :code:`history_metric_metadata`
+  on :class:`HistoryClient` have been removed.
+  They are superseeded by the more general :meth:`HistoryClient.get_metrics`;
+  to upgrade make the following changes:
+
+    .. code-block:: diff
+
+        client = HistoryClient(...)
+
+        -await client.history_metric_list(...)
+        +await client.get_metrics(...)
+
+        -await client.history_metric_metadata(...)
+        +await client.get_metrics(..., metadata=True)
