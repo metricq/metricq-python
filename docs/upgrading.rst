@@ -45,3 +45,11 @@ Removed exceptions
     Removed, the exception that caused them is raised directly.
 
 
+.. py:currentmodule:: metricq
+
+Validation of :class:`Source` chunk sizes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Previously, anything could be assigned to :attr:`Source.chunk_size`,
+now only :literal:`None` (to disable automatic chunking)
+and *positive* integers are accepted.
