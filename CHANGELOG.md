@@ -11,6 +11,7 @@
 
 **Closed issues:**
 
+- IntervalSource.period should be a Timedelta, not a float. [\#81](https://github.com/metricq/metricq-python/issues/81)
 - Consider updating types of TimeAggregate.{integral,active\_time} [\#76](https://github.com/metricq/metricq-python/issues/76)
 - Remove deprecated methods/behavior [\#73](https://github.com/metricq/metricq-python/issues/73)
 - Add chunk size to metadata [\#65](https://github.com/metricq/metricq-python/issues/65)
@@ -18,6 +19,7 @@
 
 **Merged pull requests:**
 
+- Make `IntervalSource.period` a `Timedelta` [\#85](https://github.com/metricq/metricq-python/pull/85) ([phijor](https://github.com/phijor))
 - Prevent possibly unbound variable in history response handler [\#84](https://github.com/metricq/metricq-python/pull/84) ([phijor](https://github.com/phijor))
 - Timedelta typing changes and proper division support [\#82](https://github.com/metricq/metricq-python/pull/82) ([phijor](https://github.com/phijor))
 - Fix TimeAggregate member types [\#80](https://github.com/metricq/metricq-python/pull/80) ([phijor](https://github.com/phijor))
