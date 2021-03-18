@@ -305,20 +305,31 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 <dl class="py method">
 <dt id="metricq.Timestamp.from_iso8601">
 <em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">from_iso8601</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_iso8601" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a Timestamp from an <strong>UTC</strong> <cite>ISO 8601</cite> date-time string:</p>
+<dd><p>Create a Timestamp from a <cite>ISO 8601</cite> date-time string.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Timestamp</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p">(</span><span class="s2">&quot;1970-01-01T00:00:00.0Z&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
 </div>
+<p>This is a convenience method that parses the date-time string into a
+<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a> using
+<a class="reference external" href="https://dateutil.readthedocs.io/en/stable/parser.html#dateutil.parser.isoparse" title="(in dateutil v2.8.1)"><code class="docutils literal notranslate"><span class="pre">dateutil.parser.isoparse()</span></code></a>,
+and then calls <a class="reference internal" href="#metricq.Timestamp.from_datetime" title="metricq.Timestamp.from_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_datetime()</span></code></a> to create a <a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a> from that.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The parser only supports up to <em>6 sub-second digits</em>,
+further digits are simply dropped.
+If you need to parse timestamps with higher precision,
+you need to convert the string to nanoseconds yourself.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>iso_string</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>a date-time string matching the format <code class="docutils literal notranslate"><span class="pre">%Y-%m-%dT%H:%M:%S.%fZ</span></code>, see <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime.strptime" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">datetime.datetime.strptime()</span></code></a></p>
+<dt><strong>iso_string</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>a date-time string in <cite>ISO 8601</cite> format.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><span class="annotation terse"><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></span><span class="annotation full"><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
