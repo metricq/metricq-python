@@ -16,9 +16,11 @@
 - Remove deprecated methods/behavior [\#73](https://github.com/metricq/metricq-python/issues/73)
 - Add chunk size to metadata [\#65](https://github.com/metricq/metricq-python/issues/65)
 - Support HistoryResponse error messages [\#62](https://github.com/metricq/metricq-python/issues/62)
+- Timestamps from iso strings [\#7](https://github.com/metricq/metricq-python/issues/7)
 
 **Merged pull requests:**
 
+- Properly parse ISO 8601 date strings to Timestamp [\#86](https://github.com/metricq/metricq-python/pull/86) ([phijor](https://github.com/phijor))
 - Make `IntervalSource.period` a `Timedelta` [\#85](https://github.com/metricq/metricq-python/pull/85) ([phijor](https://github.com/phijor))
 - Prevent possibly unbound variable in history response handler [\#84](https://github.com/metricq/metricq-python/pull/84) ([phijor](https://github.com/phijor))
 - Timedelta typing changes and proper division support [\#82](https://github.com/metricq/metricq-python/pull/82) ([phijor](https://github.com/phijor))
