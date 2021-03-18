@@ -15,7 +15,10 @@ Timedeltas (Durations)
 
 .. autoclass:: Timedelta
     :members:
-    :special-members: __str__
+    :special-members:
+        __str__,
+        __truediv__,
+        __floordiv__,
 
 Time-value pairs and aggregates
 -------------------------------
