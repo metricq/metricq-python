@@ -40,7 +40,10 @@ extensions = [
     "scanpydoc.definition_list_typed_field",
 ]
 
-intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+    "dateutil": ("https://dateutil.readthedocs.io/en/stable/", None),
+}
 
 # See https://icb-scanpydoc.readthedocs-hosted.com/en/latest/scanpydoc.elegant_typehints.html
 # why this is necessary.
