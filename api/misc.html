@@ -99,6 +99,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../metadata.html">Metric Metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upgrading.html">Upgrading <code class="docutils literal notranslate"><span class="pre">metricq</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 
@@ -837,7 +838,7 @@ Accepted units are:</p>
 <dl class="py method">
 <dt id="metricq.TimeAggregate.from_value_pair">
 <em class="property"><span class="pre">staticmethod</span> </em><code class="sig-name descname"><span class="pre">from_value_pair</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp_before</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate.from_value_pair" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a TimeAggregate from a pair of class:<a href="#id1"><span class="problematic" id="id2">`</span></a>Timestamp`s and one value</p>
+<dd><p>Create a TimeAggregate from a pair of timestamps (class:<cite>Timestamp</cite>) and one value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><a class="reference internal" href="exceptions.html#metricq.exceptions.NonMonotonicTimestamps" title="metricq.exceptions.NonMonotonicTimestamps"><strong>NonMonotonicTimestamps</strong></a> – if the two timestamps are not strictly monotonic</p>

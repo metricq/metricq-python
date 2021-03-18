@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Upgrading metricq &mdash; MetricQ  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/typehints.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Glossary" href="glossary.html" />
+    <link rel="prev" title="Metric Metadata" href="metadata.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MetricQ
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="howto/index.html">How to use this library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metadata.html">Metric Metadata</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Upgrading <code class="docutils literal notranslate"><span class="pre">metricq</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#x-2-0"><cite>1.x</cite> → <cite>2.0</cite></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#location-of-exception-classes">Location of exception classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#removed-exceptions">Removed exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validation-of-source-chunk-sizes">Validation of <code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code> chunk sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#removal-of-previously-deprecated-methods">Removal of previously deprecated methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#type-changes-to-reduce-ambiguity">Type changes to reduce ambiguity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deprecation-of-timeaggregate-integral">Deprecation of <code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MetricQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Upgrading <code class="docutils literal notranslate"><span class="pre">metricq</span></code></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/upgrading.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="upgrading-metricq">
+<span id="upgrading"></span><h1>Upgrading <code class="docutils literal notranslate"><span class="pre">metricq</span></code><a class="headerlink" href="#upgrading-metricq" title="Permalink to this headline">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">metricq</span></code> follows the <cite>semver</cite> versioning scheme,
+so releases of new major versions contain breaking changes.
+These are listed below, together with suggested steps to
+take when upgrading.</p>
+<div class="section" id="x-2-0">
+<h2><cite>1.x</cite> → <cite>2.0</cite><a class="headerlink" href="#x-2-0" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="location-of-exception-classes">
+<h3>Location of exception classes<a class="headerlink" href="#location-of-exception-classes" title="Permalink to this headline">¶</a></h3>
+<p>All exception classes have moved into the module <a class="reference internal" href="api/exceptions.html#module-metricq.exceptions" title="metricq.exceptions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metricq.exceptions</span></code></a>,
+documented <a class="reference internal" href="api/exceptions.html#exceptions"><span class="std std-ref">here</span></a>.
+If you are importing exceptions from other submodules directly, your code might
+now fail with an <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ImportError" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">ImportError</span></code></a>.</p>
+<dl class="simple">
+<dt><code class="code docutils literal notranslate"><span class="pre">AgentStoppedError</span></code>, <code class="code docutils literal notranslate"><span class="pre">ConnectFailedError</span></code>, <code class="code docutils literal notranslate"><span class="pre">ReceivedSignalError</span></code>, <code class="code docutils literal notranslate"><span class="pre">PublishFailedError</span></code>:</dt><dd><p>Import them from <a class="reference internal" href="api/exceptions.html#module-metricq.exceptions" title="metricq.exceptions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metricq.exceptions</span></code></a>, without the <code class="docutils literal notranslate"><span class="pre">...Error</span></code>-suffix:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/exceptions.html#metricq.exceptions.AgentStopped" title="metricq.exceptions.AgentStopped"><code class="xref py py-exc docutils literal notranslate"><span class="pre">AgentStopped</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/exceptions.html#metricq.exceptions.ConnectFailed" title="metricq.exceptions.ConnectFailed"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ConnectFailed</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/exceptions.html#metricq.exceptions.ReceivedSignal" title="metricq.exceptions.ReceivedSignal"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ReceivedSignal</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/exceptions.html#metricq.exceptions.PublishFailed" title="metricq.exceptions.PublishFailed"><code class="xref py py-exc docutils literal notranslate"><span class="pre">PublishFailed</span></code></a></p></li>
+</ul>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">metricq.agent.RPCError</span></code>, <code class="code docutils literal notranslate"><span class="pre">metricq.history_client.InvalidHistoryResponse</span></code>:</dt><dd><p>Moved to <a class="reference internal" href="api/exceptions.html#module-metricq.exceptions" title="metricq.exceptions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metricq.exceptions</span></code></a>:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/exceptions.html#metricq.exceptions.RPCError" title="metricq.exceptions.RPCError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">RPCError</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/exceptions.html#metricq.exceptions.InvalidHistoryResponse" title="metricq.exceptions.InvalidHistoryResponse"><code class="xref py py-exc docutils literal notranslate"><span class="pre">InvalidHistoryResponse</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="removed-exceptions">
+<h3>Removed exceptions<a class="headerlink" href="#removed-exceptions" title="Permalink to this headline">¶</a></h3>
+<dl class="simple">
+<dt><code class="code docutils literal notranslate"><span class="pre">metricq.source.MetricSendError</span></code>, <code class="code docutils literal notranslate"><span class="pre">metricq.agent.RPCReplyError</span></code>, <code class="code docutils literal notranslate"><span class="pre">metricq.client.ManagementRpcPublishError</span></code>:</dt><dd><p>Handle <a class="reference internal" href="api/exceptions.html#metricq.exceptions.PublishFailed" title="metricq.exceptions.PublishFailed"><code class="xref py py-exc docutils literal notranslate"><span class="pre">PublishFailed</span></code></a> instead.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">metricq.sink.SinkError</span></code>, <code class="code docutils literal notranslate"><span class="pre">metricq.sink.SinkResubscribeError</span></code>:</dt><dd><p>Removed, the exception that caused them is raised directly.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="validation-of-source-chunk-sizes">
+<h3>Validation of <a class="reference internal" href="api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> chunk sizes<a class="headerlink" href="#validation-of-source-chunk-sizes" title="Permalink to this headline">¶</a></h3>
+<p>Previously, anything could be assigned to <a class="reference internal" href="api/source.html#metricq.Source.chunk_size" title="metricq.Source.chunk_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Source.chunk_size</span></code></a>,
+now only <code class="docutils literal notranslate"><span class="pre">None</span></code> (to disable automatic chunking)
+and <em>positive</em> integers are accepted.</p>
+</div>
+<div class="section" id="removal-of-previously-deprecated-methods">
+<h3>Removal of previously deprecated methods<a class="headerlink" href="#removal-of-previously-deprecated-methods" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>Support for tuple-unpacking instances of <a class="reference internal" href="api/misc.html#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a> has been removed.</p></li>
+<li><p>The methods <code class="code docutils literal notranslate"><span class="pre">history_metric_list</span></code> and <code class="code docutils literal notranslate"><span class="pre">history_metric_metadata</span></code>
+on <a class="reference internal" href="api/history-client.html#metricq.HistoryClient" title="metricq.HistoryClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryClient</span></code></a> have been removed.
+They are superseeded by the more general <a class="reference internal" href="api/history-client.html#metricq.HistoryClient.get_metrics" title="metricq.HistoryClient.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.get_metrics()</span></code></a>;
+to upgrade make the following changes:</p>
+<blockquote>
+<div><div class="highlight-diff notranslate"><div class="highlight"><pre><span></span>client = HistoryClient(...)
+
+<span class="gd">-await client.history_metric_list(...)</span>
+<span class="gi">+await client.get_metrics(...)</span>
+
+<span class="gd">-await client.history_metric_metadata(...)</span>
+<span class="gi">+await client.get_metrics(..., metadata=True)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="type-changes-to-reduce-ambiguity">
+<h3>Type changes to reduce ambiguity<a class="headerlink" href="#type-changes-to-reduce-ambiguity" title="Permalink to this headline">¶</a></h3>
+<p>Some class attributes were raw numbers;
+we gave them appropriate wrapper types that make it harder to accidentally misuse them.</p>
+<dl>
+<dt><a class="reference internal" href="api/misc.html#metricq.TimeAggregate.active_time" title="metricq.TimeAggregate.active_time"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.active_time</span></code></a> and <a class="reference internal" href="api/source.html#metricq.IntervalSource.period" title="metricq.IntervalSource.period"><code class="xref py py-attr docutils literal notranslate"><span class="pre">IntervalSource.period</span></code></a>:</dt><dd><p>These are now proper durations (<a class="reference internal" href="api/misc.html#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a>) instead of a raw numbers of seconds.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">TimeAggregate</span><span class="o">.</span><span class="n">from_value_pair</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">now</span> <span class="o">+</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_ms</span><span class="p">(</span><span class="mi">500</span><span class="p">),</span> <span class="n">value</span><span class="o">=</span><span class="mf">42.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="o">.</span><span class="n">active_time</span><span class="o">.</span><span class="n">precise_string</span>
+<span class="go">&#39;500ms&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="deprecation-of-timeaggregate-integral">
+<h3>Deprecation of <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.integral" title="metricq.TimeAggregate.integral"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code></a><a class="headerlink" href="#deprecation-of-timeaggregate-integral" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="api/misc.html#metricq.TimeAggregate.integral" title="metricq.TimeAggregate.integral"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code></a> returns the integral of values over the time
+spanned by a <a class="reference internal" href="api/misc.html#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a>.
+To reduce confusion over which time unit is used to integrate,
+we deprecated it and added <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.integral_s" title="metricq.TimeAggregate.integral_s"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.integral_s</span></code></a> and <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.integral_ns" title="metricq.TimeAggregate.integral_ns"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.integral_ns</span></code></a>
+for seconds- and nanoseconds-based integrals, respectively.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="metadata.html" class="btn btn-neutral float-left" title="Metric Metadata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, TU Dresden
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
