@@ -18,6 +18,7 @@
 
 **Merged pull requests:**
 
+- Prevent possibly unbound variable in history response handler [\#84](https://github.com/metricq/metricq-python/pull/84) ([phijor](https://github.com/phijor))
 - Fix TimeAggregate member types [\#80](https://github.com/metricq/metricq-python/pull/80) ([phijor](https://github.com/phijor))
 - Remove deprecated methods [\#78](https://github.com/metricq/metricq-python/pull/78) ([phijor](https://github.com/phijor))
 - Spring cleanup [\#74](https://github.com/metricq/metricq-python/pull/74) ([phijor](https://github.com/phijor))
