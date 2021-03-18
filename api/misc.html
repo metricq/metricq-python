@@ -345,7 +345,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>seconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span></dt><dd><p>number of seconds since the UNIX epoch</p>
+<dt><strong>seconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>number of seconds since the UNIX epoch</p>
 </dd>
 </dl>
 </dd>
@@ -410,9 +410,9 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 <dl>
 <dt>Supported operations:</dt><dd><table class="docutils align-default">
 <colgroup>
-<col style="width: 12%" />
-<col style="width: 33%" />
-<col style="width: 56%" />
+<col style="width: 11%" />
+<col style="width: 31%" />
+<col style="width: 57%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Operation</p></th>
@@ -478,22 +478,68 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 <td><p><code class="code docutils literal notranslate"><span class="pre">True</span></code> if <code class="code docutils literal notranslate"><span class="pre">d.datetime</span> <span class="pre">&lt;</span> <span class="pre">dt</span></code>
 (see <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.9)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a>)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">d</span> <span class="pre">*</span> <span class="pre">c</span></code>,</p>
-<p><code class="code docutils literal notranslate"><span class="pre">d</span> <span class="pre">/</span> <span class="pre">c</span></code></p>
-</td>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">d</span> <span class="pre">*</span> <span class="pre">c</span></code></p></td>
 <td><ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">d</span></code>: <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">d</span></code>: <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">c</span></code>: <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p></li>
 </ul>
 </td>
-<td><p>the same as <code class="code docutils literal notranslate"><span class="pre">Timedelta(d.ns</span> <span class="pre">*</span> <span class="pre">c)</span></code>
-the same as <code class="code docutils literal notranslate"><span class="pre">Timedelta(d.ns</span> <span class="pre">*</span> <span class="pre">c)</span></code></p></td>
+<td><p>The duration scaled by the factor <code class="code docutils literal notranslate"><span class="pre">c</span></code>, truncated to nanosecond precision
+See <code class="xref py py-meth docutils literal notranslate"><span class="pre">__mul__()</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">d</span> <span class="pre">/</span> <span class="pre">c</span></code></p></td>
+<td><ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">d</span></code>: <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">c</span></code>: <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></p></li>
+</ul>
+</td>
+<td><p>The duration divided by <code class="code docutils literal notranslate"><span class="pre">c</span></code>, truncated to nanosecond precision.
+See <a class="reference internal" href="#metricq.Timedelta.__truediv__" title="metricq.Timedelta.__truediv__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__truediv__()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">d</span> <span class="pre">//</span> <span class="pre">n</span></code></p></td>
+<td><ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">d</span></code>: <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">n</span></code>: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p></li>
+</ul>
+</td>
+<td><p>The duration divided by an <em>integer</em> factor <code class="code docutils literal notranslate"><span class="pre">n</span></code>, truncated to nanosecond precision.
+See <a class="reference internal" href="#metricq.Timedelta.__floordiv__" title="metricq.Timedelta.__floordiv__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__floordiv__()</span></code></a>.</p></td>
 </tr>
 </tbody>
 </table>
 <p>In addition to <code class="code docutils literal notranslate"><span class="pre">&lt;</span></code> and <code class="code docutils literal notranslate"><span class="pre">=</span></code>, all other relational operations are supported and behave as you would expect.</p>
 </dd>
 </dl>
+<dl class="py method">
+<dt id="metricq.Timedelta.__floordiv__">
+<code class="sig-name descname"><span class="pre">__floordiv__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__floordiv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divide a duration by an integer factor.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">td</span> <span class="o">=</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">td</span><span class="o">.</span><span class="n">s</span>
+<span class="go">3.333333333</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">td</span><span class="o">.</span><span class="n">precise_string</span>
+<span class="go">&#39;3333333333ns&#39;</span>
+</pre></div>
+</div>
+<p>This divides the number of nanoseconds in this duration by <cite>factor</cite>
+using <a class="reference external" href="https://www.python.org/dev/peps/pep-0238/#semantics-of-floor-division">Floor Division</a>,
+i.e. for some <code class="code docutils literal notranslate"><span class="pre">n:</span> <span class="pre">int</span></code> and <code class="code docutils literal notranslate"><span class="pre">td:</span> <span class="pre">Timedelta</span></code> we have</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="p">(</span><span class="n">td</span> <span class="o">//</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">ns</span> <span class="o">==</span> <span class="n">td</span><span class="o">.</span><span class="n">ns</span> <span class="o">//</span> <span class="n">n</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Floor Division produces <em>surprising</em> results for <code class="code docutils literal notranslate"><span class="pre">float</span></code> arguments
+(i.e. <code class="code docutils literal notranslate"><span class="pre">3</span> <span class="pre">//</span> <span class="pre">0.2</span> <span class="pre">==</span> <span class="pre">14.0</span></code>).
+Use <a class="reference internal" href="#metricq.Timedelta.__truediv__" title="metricq.Timedelta.__truediv__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__truediv__()</span></code></a> if you want to scale a duration by a non-integer factor.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span><span class="annotation full"><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="metricq.Timedelta.__str__">
 <code class="sig-name descname"><span class="pre">__str__</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__str__" title="Permalink to this definition">¶</a></dt>
@@ -505,13 +551,40 @@ the same as <code class="code docutils literal notranslate"><span class="pre">Ti
 </dd></dl>
 
 <dl class="py method">
+<dt id="metricq.Timedelta.__truediv__">
+<code class="sig-name descname"><span class="pre">__truediv__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__truediv__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divide a duration by a (floating point) factor.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.5</span><span class="p">)</span><span class="o">.</span><span class="n">precise_string</span>
+<span class="go">&#39;4s&#39;</span>
+</pre></div>
+</div>
+<p>This divides the number of nanoseconds in this duration by <cite>factor</cite>
+using <a class="reference external" href="https://www.python.org/dev/peps/pep-0238/#semantics-of-true-division">True Division</a>,
+but truncates the result to an <code class="code docutils literal notranslate"><span class="pre">int</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="p">(</span><span class="n">td</span> <span class="o">/</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">ns</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">ns</span> <span class="o">/</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="code docutils literal notranslate"><span class="pre">td:</span> <span class="pre">Timedelta</span></code> and <code class="code docutils literal notranslate"><span class="pre">x:</span> <span class="pre">float</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use <a class="reference internal" href="#metricq.Timedelta.__floordiv__" title="metricq.Timedelta.__floordiv__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__floordiv__()</span></code></a> if you know that the factor is an integer,
+this will prevent rounding errors.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span><span class="annotation full"><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="metricq.Timedelta.from_ms">
 <em class="property"><span class="pre">staticmethod</span> </em><code class="sig-name descname"><span class="pre">from_ms</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">milliseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_ms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a duration from a number of milliseconds</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>milliseconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span></dt><dd><p>number of milliseconds</p>
+<dt><strong>milliseconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>number of milliseconds</p>
 </dd>
 </dl>
 </dd>
@@ -528,7 +601,7 @@ the same as <code class="code docutils literal notranslate"><span class="pre">Ti
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>seconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span></dt><dd><p>number of seconds</p>
+<dt><strong>seconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>number of seconds</p>
 </dd>
 </dl>
 </dd>
@@ -633,7 +706,7 @@ Accepted units are:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>microseconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/numbers.html#numbers.Real" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Real</span></code></a></span></dt><dd><p>number of microseconds</p>
+<dt><strong>microseconds</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>number of microseconds</p>
 </dd>
 </dl>
 </dd>
