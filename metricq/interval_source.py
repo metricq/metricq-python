@@ -84,17 +84,20 @@ class IntervalSource(Source):
         self._interval_task_stop_future = None
 
     @property
-    def period(self) -> Optional[float]:
-        """Time interval (in seconds) at which :meth:`update` is called.
+    def period(self) -> Optional[Timedelta]:
+        """Time interval at which :meth:`update` is called.
 
         You can set this value at any time and it will be picked up before the next time :meth:`update` is run.
+
+        .. versionchanged:: 2.0.0
+            Return period as :class:`Timedelta` instead of a number of seconds.
         """
         if self._period is None:
             return None
-        return self._period.s
+        return self._period
 
     @period.setter
-    def period(self, duration: Union[float, Timedelta]):  # type: ignore
+    def period(self, duration: Union[float, Timedelta]):  # type: ignore # see comment in __init__()
         if isinstance(duration, Timedelta):
             self._period = duration
         else:
