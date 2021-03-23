@@ -4,6 +4,20 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v1.4.0...HEAD)
 
+**Breaking changes:**
+
+- Make `IntervalSource.period` a `Timedelta` [\#85](https://github.com/metricq/metricq-python/pull/85) ([phijor](https://github.com/phijor))
+- Fix TimeAggregate member types [\#80](https://github.com/metricq/metricq-python/pull/80) ([phijor](https://github.com/phijor))
+- Remove deprecated methods [\#78](https://github.com/metricq/metricq-python/pull/78) ([phijor](https://github.com/phijor))
+- Require python 3.8 for ssl fixes [\#70](https://github.com/metricq/metricq-python/pull/70) ([kinnarr](https://github.com/kinnarr))
+- Augment "chunkSize" to metadata when declaring new metrics [\#68](https://github.com/metricq/metricq-python/pull/68) ([phijor](https://github.com/phijor))
+- Improve Error Handling [\#63](https://github.com/metricq/metricq-python/pull/63) ([tilsche](https://github.com/tilsche))
+
+**Implemented enhancements:**
+
+- Add python version to discover [\#89](https://github.com/metricq/metricq-python/issues/89)
+- Add python version to discover response [\#90](https://github.com/metricq/metricq-python/pull/90) ([phijor](https://github.com/phijor))
+
 **Fixed bugs:**
 
 - Docker action seems to be broken on linux/arm64 [\#69](https://github.com/metricq/metricq-python/issues/69)
@@ -23,18 +37,12 @@
 
 - Upgrading instructions [\#87](https://github.com/metricq/metricq-python/pull/87) ([phijor](https://github.com/phijor))
 - Properly parse ISO 8601 date strings to Timestamp [\#86](https://github.com/metricq/metricq-python/pull/86) ([phijor](https://github.com/phijor))
-- Make `IntervalSource.period` a `Timedelta` [\#85](https://github.com/metricq/metricq-python/pull/85) ([phijor](https://github.com/phijor))
 - Prevent possibly unbound variable in history response handler [\#84](https://github.com/metricq/metricq-python/pull/84) ([phijor](https://github.com/phijor))
 - Timedelta typing changes and proper division support [\#82](https://github.com/metricq/metricq-python/pull/82) ([phijor](https://github.com/phijor))
-- Fix TimeAggregate member types [\#80](https://github.com/metricq/metricq-python/pull/80) ([phijor](https://github.com/phijor))
 - Tool metric send [\#79](https://github.com/metricq/metricq-python/pull/79) ([bmario](https://github.com/bmario))
-- Remove deprecated methods [\#78](https://github.com/metricq/metricq-python/pull/78) ([phijor](https://github.com/phijor))
 - Spring cleanup [\#74](https://github.com/metricq/metricq-python/pull/74) ([phijor](https://github.com/phijor))
-- Require python 3.8 for ssl fixes [\#70](https://github.com/metricq/metricq-python/pull/70) ([kinnarr](https://github.com/kinnarr))
-- Augment "chunkSize" to metadata when declaring new metrics [\#68](https://github.com/metricq/metricq-python/pull/68) ([phijor](https://github.com/phijor))
 - Handle error messages in history responses [\#66](https://github.com/metricq/metricq-python/pull/66) ([bmario](https://github.com/bmario))
 - Management channel is a RobustChannel [\#64](https://github.com/metricq/metricq-python/pull/64) ([phijor](https://github.com/phijor))
-- Improve Error Handling [\#63](https://github.com/metricq/metricq-python/pull/63) ([tilsche](https://github.com/tilsche))
 - fix\(ci\): Fix changelog workflow [\#61](https://github.com/metricq/metricq-python/pull/61) ([bmario](https://github.com/bmario))
 - Fixes missing non-historic metrics in metricq spy [\#60](https://github.com/metricq/metricq-python/pull/60) ([bmario](https://github.com/bmario))
 
@@ -90,7 +98,6 @@
 - Adds a workflow for docker image build and upload [\#49](https://github.com/metricq/metricq-python/pull/49) ([bmario](https://github.com/bmario))
 - Fix mypy protobuf packaging [\#43](https://github.com/metricq/metricq-python/pull/43) ([tilsche](https://github.com/tilsche))
 - Release workflow [\#42](https://github.com/metricq/metricq-python/pull/42) ([kinnarr](https://github.com/kinnarr))
-- Issue 27 - Precise and Pretty Timedelta [\#28](https://github.com/metricq/metricq-python/pull/28) ([Daddelhai](https://github.com/Daddelhai))
 - Fix reconnect issues [\#44](https://github.com/metricq/metricq-python/pull/44) ([bmario](https://github.com/bmario))
 - Generate changelog for closed PRs and issues [\#40](https://github.com/metricq/metricq-python/pull/40) ([kinnarr](https://github.com/kinnarr))
 - Split release job [\#37](https://github.com/metricq/metricq-python/pull/37) ([kinnarr](https://github.com/kinnarr))
@@ -118,6 +125,7 @@
 
 **Merged pull requests:**
 
+- Issue 27 - Precise and Pretty Timedelta [\#28](https://github.com/metricq/metricq-python/pull/28) ([Daddelhai](https://github.com/Daddelhai))
 - Use protobuf version from compile time [\#21](https://github.com/metricq/metricq-python/pull/21) ([kinnarr](https://github.com/kinnarr))
 - Fix package version related issues [\#16](https://github.com/metricq/metricq-python/pull/16) ([phijor](https://github.com/phijor))
 
