@@ -87,11 +87,13 @@ class DiscoverResponse:
         starting_time: Optional[str] = None,
         uptime: Optional[int] = None,
         metricq_version: Optional[str] = None,
+        python_version: Optional[str] = None,
         client_version: Optional[str] = None,
         hostname: Optional[str] = None,
     ):
         self.alive = alive
         self.metricq_version = metricq_version
+        self.python_version = python_version
         self.client_version = client_version
         self.hostname = hostname
 
@@ -125,6 +127,7 @@ class DiscoverResponse:
             uptime=response.get("uptime"),
             metricq_version=response.get("metricqVersion"),
             client_version=response.get("version"),
+            python_version=response.get("pythonVersion"),
             hostname=response.get("hostname"),
         )
 
@@ -160,6 +163,9 @@ class DiscoverResponse:
 
         if self.client_version:
             yield f"version {self.client_version}"
+
+        if self.python_version:
+            yield f"(python {self.python_version})"
 
         if self.metricq_version:
             yield f"running {self.metricq_version}"

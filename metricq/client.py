@@ -29,6 +29,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from socket import gethostname
+from sys import version_info as sys_version
 from typing import Any, Dict, Optional, Sequence, Union
 
 from .agent import Agent
@@ -141,6 +142,7 @@ class Client(Agent):
             "startingTime": self.starting_time.datetime.isoformat(),
             "uptime": uptime,
             "metricqVersion": f"metricq-python/{__version__}",
+            "pythonVersion": f"{sys_version.major}.{sys_version.minor}.{sys_version.micro}",
             "hostname": gethostname(),
         }
 
