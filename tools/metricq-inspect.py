@@ -44,7 +44,6 @@ from metricq.logging import get_logger
 logger = get_logger()
 
 click_log.basic_config(logger)
-logger.setLevel("INFO")
 logger.handlers[0].formatter = logging.Formatter(
     fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
 )
@@ -53,20 +52,42 @@ click_completion.init()
 
 
 class InspectSink(metricq.Sink):
-    def __init__(self, metric: str, histo: bool, *args, **kwargs):
+    def __init__(
+        self,
+        metric: str,
+        intervals_histogram: bool,
+        chunk_sizes_histogram: bool,
+        values_histogram: bool,
+        print_data: bool,
+        *args,
+        **kwargs,
+    ):
         self._metric = metric
-        self.tokens = set()
-        self.histo = histo
+        self.tokens = {}
+
+        self.print_intervals = intervals_histogram
+        self.print_chunk_sizes = chunk_sizes_histogram
+        self.print_values = values_histogram
+        self.print_data = print_data
+
         self.timestamps = []
         self.last_timestamp = None
         self.intervals = []
         self.values = []
+        self.chunk_sizes = []
         super().__init__(*args, **kwargs)
 
     async def connect(self):
         await super().connect()
 
         await self.subscribe([self._metric])
+
+        click.echo(
+            click.style(
+                f"Inspecting the metric '{self._metric}'... (Hit ctrl+C to stop)",
+                fg="green",
+            )
+        )
 
     async def _on_data_message(self, message: aio_pika.IncomingMessage):
         async with message.process(requeue=True):
@@ -76,15 +97,22 @@ class InspectSink(metricq.Sink):
                 from_token = message.client_id
             metric = message.routing_key
 
-            self.tokens.add(from_token if from_token else "N/A")
+            if from_token not in self.tokens:
+                self.tokens[from_token] = 0
+
+            self.tokens[from_token] += 1
 
             data_response = DataChunk()
             data_response.ParseFromString(body)
 
+            self.chunk_sizes.append(len(data_response.value))
+
             await self._on_data_chunk(metric, data_response)
 
     async def on_data(self, metric: str, timestamp: metricq.Timestamp, value: float):
-        click.echo(click.style("{}: {}".format(timestamp, value), fg="bright_blue"))
+        if self.print_data:
+            click.echo(click.style("{}: {}".format(timestamp, value), fg="bright_blue"))
+
         self.timestamps.append(timestamp.posix)
         if self.last_timestamp:
             self.intervals.append(timestamp.posix - self.last_timestamp)
@@ -96,24 +124,55 @@ class InspectSink(metricq.Sink):
             click.echo()
             click.echo(
                 click.style(
-                    "Received messages from: {}".format(", ".join(self.tokens)),
+                    "Received messages from: ",
                     fg="bright_red",
                 )
             )
 
-            if self.histo and self.last_timestamp:
-                self.print_histograms()
+            for token, messages in self.tokens.items():
+                click.echo(
+                    click.style(
+                        "{}: {}".format(token if token else "<unknown>", messages),
+                        fg="bright_red",
+                    )
+                )
 
+            click.echo()
+
+            self.print_histograms()
         finally:
             super().on_signal(signal)
 
     def print_histogram(self, values):
-        counts, bin_edges = np.histogram(values)
+        counts, bin_edges = np.histogram(values, bins="doane")
         fig = tpl.figure()
-        fig.hist(counts, bin_edges, orientation="horizontal", force_ascii=False)
+        labels = [
+            "[{:#.6g} - {:#.6g})".format(bin_edges[k], bin_edges[k + 1])
+            for k in range(len(bin_edges) - 2)
+        ]
+        labels.append(
+            "[{:#.6g} - {:#.6g}]".format(
+                bin_edges[len(bin_edges) - 2], bin_edges[len(bin_edges) - 1]
+            )
+        )
+        fig.barh(counts, labels=labels)
         fig.show()
 
-    def print_histograms(self):
+    def print_chunk_sizes_histogram(self):
+        click.echo(
+            click.style(
+                "Distribution of the chunk sizes",
+                fg="yellow",
+            )
+        )
+        click.echo()
+
+        self.print_histogram(self.chunk_sizes)
+
+        click.echo()
+        click.echo()
+
+    def print_intervals_histogram(self):
         click.echo(
             click.style(
                 "Distribution of the duration between consecutive data points in seconds",
@@ -127,6 +186,7 @@ class InspectSink(metricq.Sink):
         click.echo()
         click.echo()
 
+    def print_values_histogram(self):
         click.echo(
             click.style("Distribution of the values of the data points", fg="yellow")
         )
@@ -134,21 +194,63 @@ class InspectSink(metricq.Sink):
 
         self.print_histogram(self.values)
 
+    def print_histograms(self):
+        if self.print_chunk_sizes:
+            self.print_chunk_sizes_histogram()
 
-@click.command()
+        if self.print_intervals and self.last_timestamp:
+            self.print_intervals_histogram()
+
+        if self.print_values:
+            self.print_values_histogram()
+
+
+@click.command(
+    short_help="A tool usable to get an idea about the *current* behavior of a given metric. By definition, this only exploits live data."
+)
 @click.option("--server", default="amqp://localhost/")
 @click.option("--token", default="metricq-inspect")
-@click.option("--histo", is_flag=True)
+@click.option(
+    "--intervals-histogram/--no-intervals-histogram",
+    "-i/-I",
+    default=True,
+    help="Show an histogram of the observed distribution of durations between data points.",
+)
+@click.option(
+    "--values-histogram/--no-values-histogram",
+    "-h/-H",
+    default=True,
+    help="Show an histogram of the observed metric values.",
+)
+@click.option(
+    "--chunk-sizes-histogram/--no-chunk-sizes-histogram",
+    "-c/-C",
+    default=False,
+    help="Show an histogram of the observed chunk sizes of all messages received.",
+)
+@click.option("--print-data-points/--no-print-data-points", "-d/-D", default=False)
 @click.argument("metric", required=True, nargs=1)
-@click_log.simple_verbosity_option(logger)
-def source(server, token, metric, histo):
-    # Initialize the DummySink class with a list of metrics given on the
-    # command line.
-    sink = InspectSink(metric=metric, token=token, management_url=server, histo=histo)
-
-    # Run the sink.  This call will block until the connection is closed.
+@click_log.simple_verbosity_option(logger, default="WARNING")
+def main(
+    server,
+    token,
+    metric,
+    intervals_histogram,
+    values_histogram,
+    chunk_sizes_histogram,
+    print_data_points,
+):
+    sink = InspectSink(
+        metric=metric,
+        token=token,
+        management_url=server,
+        intervals_histogram=intervals_histogram,
+        chunk_sizes_histogram=chunk_sizes_histogram,
+        values_histogram=values_histogram,
+        print_data=print_data_points,
+    )
     sink.run()
 
 
 if __name__ == "__main__":
-    source()
+    main()
