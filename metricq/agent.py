@@ -320,7 +320,7 @@ class Agent(RPCDispatcher):
 
         correlation_id = self._make_correlation_id()
         body = json.dumps(kwargs)
-        logger.info(
+        logger.debug(
             "sending RPC {}, ex: {}, rk: {}, ci: {}, args: {}",
             function,
             exchange.name,
@@ -349,7 +349,7 @@ class Agent(RPCDispatcher):
 
             def default_response_callback(**response_kwargs):
                 assert not request_future.done()
-                logger.info("rpc completed in {} s", timer() - time_begin)
+                logger.debug("rpc completed in {} s", timer() - time_begin)
                 if "error" in response_kwargs:
                     request_future.set_exception(RPCError(response_kwargs["error"]))
                 else:
@@ -526,7 +526,7 @@ class Agent(RPCDispatcher):
             from_token = message.app_id
             correlation_id = message.correlation_id
 
-            logger.info(
+            logger.debug(
                 "received message from {}, correlation id: {}, reply_to: {}, length: {}\n{}",
                 from_token,
                 correlation_id,
@@ -554,8 +554,8 @@ class Agent(RPCDispatcher):
                     response = dict()
                 duration = timer() - time_begin
                 body = json.dumps(response)
-                logger.info(
-                    "rpc response to {}, correlation id: {}, length: {}, time: {} s\n{}",
+                logger.debug(
+                    "RPC response to {}, correlation id: {}, length: {}, time: {} s\n{}",
                     from_token,
                     correlation_id,
                     len(body),
