@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.0...HEAD)
 
+**Implemented enhancements:**
+
+- Feature: New tool metricq-inspect [\#96](https://github.com/metricq/metricq-python/pull/96) ([bmario](https://github.com/bmario))
+
 **Closed issues:**
 
 - Change log level for rpc logging to debug [\#93](https://github.com/metricq/metricq-python/issues/93)
@@ -111,7 +115,6 @@
 - Fix mypy protobuf packaging [\#43](https://github.com/metricq/metricq-python/pull/43) ([tilsche](https://github.com/tilsche))
 - Release workflow [\#42](https://github.com/metricq/metricq-python/pull/42) ([kinnarr](https://github.com/kinnarr))
 - Issue 27 - Precise and Pretty Timedelta [\#28](https://github.com/metricq/metricq-python/pull/28) ([Daddelhai](https://github.com/Daddelhai))
-- Fix package version related issues [\#16](https://github.com/metricq/metricq-python/pull/16) ([phijor](https://github.com/phijor))
 - Fix reconnect issues [\#44](https://github.com/metricq/metricq-python/pull/44) ([bmario](https://github.com/bmario))
 - Generate changelog for closed PRs and issues [\#40](https://github.com/metricq/metricq-python/pull/40) ([kinnarr](https://github.com/kinnarr))
 - Split release job [\#37](https://github.com/metricq/metricq-python/pull/37) ([kinnarr](https://github.com/kinnarr))
@@ -140,6 +143,7 @@
 **Merged pull requests:**
 
 - Use protobuf version from compile time [\#21](https://github.com/metricq/metricq-python/pull/21) ([kinnarr](https://github.com/kinnarr))
+- Fix package version related issues [\#16](https://github.com/metricq/metricq-python/pull/16) ([phijor](https://github.com/phijor))
 
 ## [v1.1.4](https://github.com/metricq/metricq-python/tree/v1.1.4) (2020-06-24)
 
