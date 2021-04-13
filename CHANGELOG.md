@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.0...HEAD)
+
+**Closed issues:**
+
+- Change log level for rpc logging to debug [\#93](https://github.com/metricq/metricq-python/issues/93)
+
+**Merged pull requests:**
+
+- Reduce log level when handling RPCs to DEBUG [\#94](https://github.com/metricq/metricq-python/pull/94) ([phijor](https://github.com/phijor))
+
 ## [v2.0.0](https://github.com/metricq/metricq-python/tree/v2.0.0) (2021-03-23)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v1.4.0...v2.0.0)
@@ -25,26 +37,26 @@
 
 **Closed issues:**
 
+- Add chunk size to metadata [\#65](https://github.com/metricq/metricq-python/issues/65)
 - Document all breaking changes for v2 [\#83](https://github.com/metricq/metricq-python/issues/83)
 - IntervalSource.period should be a Timedelta, not a float. [\#81](https://github.com/metricq/metricq-python/issues/81)
 - Consider updating types of TimeAggregate.{integral,active\_time} [\#76](https://github.com/metricq/metricq-python/issues/76)
 - Remove deprecated methods/behavior [\#73](https://github.com/metricq/metricq-python/issues/73)
-- Add chunk size to metadata [\#65](https://github.com/metricq/metricq-python/issues/65)
 - Support HistoryResponse error messages [\#62](https://github.com/metricq/metricq-python/issues/62)
 - Timestamps from iso strings [\#7](https://github.com/metricq/metricq-python/issues/7)
 
 **Merged pull requests:**
 
-- Upgrading instructions [\#87](https://github.com/metricq/metricq-python/pull/87) ([phijor](https://github.com/phijor))
-- Properly parse ISO 8601 date strings to Timestamp [\#86](https://github.com/metricq/metricq-python/pull/86) ([phijor](https://github.com/phijor))
 - Prevent possibly unbound variable in history response handler [\#84](https://github.com/metricq/metricq-python/pull/84) ([phijor](https://github.com/phijor))
-- Timedelta typing changes and proper division support [\#82](https://github.com/metricq/metricq-python/pull/82) ([phijor](https://github.com/phijor))
 - Tool metric send [\#79](https://github.com/metricq/metricq-python/pull/79) ([bmario](https://github.com/bmario))
 - Spring cleanup [\#74](https://github.com/metricq/metricq-python/pull/74) ([phijor](https://github.com/phijor))
-- Handle error messages in history responses [\#66](https://github.com/metricq/metricq-python/pull/66) ([bmario](https://github.com/bmario))
 - Management channel is a RobustChannel [\#64](https://github.com/metricq/metricq-python/pull/64) ([phijor](https://github.com/phijor))
 - fix\(ci\): Fix changelog workflow [\#61](https://github.com/metricq/metricq-python/pull/61) ([bmario](https://github.com/bmario))
 - Fixes missing non-historic metrics in metricq spy [\#60](https://github.com/metricq/metricq-python/pull/60) ([bmario](https://github.com/bmario))
+- Upgrading instructions [\#87](https://github.com/metricq/metricq-python/pull/87) ([phijor](https://github.com/phijor))
+- Properly parse ISO 8601 date strings to Timestamp [\#86](https://github.com/metricq/metricq-python/pull/86) ([phijor](https://github.com/phijor))
+- Timedelta typing changes and proper division support [\#82](https://github.com/metricq/metricq-python/pull/82) ([phijor](https://github.com/phijor))
+- Handle error messages in history responses [\#66](https://github.com/metricq/metricq-python/pull/66) ([bmario](https://github.com/bmario))
 
 ## [v1.4.0](https://github.com/metricq/metricq-python/tree/v1.4.0) (2020-12-12)
 
