@@ -8,12 +8,17 @@
 
 - Feature: New tool metricq-inspect [\#96](https://github.com/metricq/metricq-python/pull/96) ([bmario](https://github.com/bmario))
 
+**Fixed bugs:**
+
+- Setting period to None in IntervalSource [\#92](https://github.com/metricq/metricq-python/issues/92)
+
 **Closed issues:**
 
 - Change log level for rpc logging to debug [\#93](https://github.com/metricq/metricq-python/issues/93)
 
 **Merged pull requests:**
 
+- IntervalSource: Raise descriptive error on period reset [\#95](https://github.com/metricq/metricq-python/pull/95) ([phijor](https://github.com/phijor))
 - Reduce log level when handling RPCs to DEBUG [\#94](https://github.com/metricq/metricq-python/pull/94) ([phijor](https://github.com/phijor))
 
 ## [v2.0.0](https://github.com/metricq/metricq-python/tree/v2.0.0) (2021-03-23)
