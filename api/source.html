@@ -368,6 +368,10 @@ constant update rate.</p>
 <code class="sig-name descname"><span class="pre">period</span></code><a class="headerlink" href="#metricq.IntervalSource.period" title="Permalink to this definition">¶</a></dt>
 <dd><p>Time interval at which <a class="reference internal" href="#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> is called.</p>
 <p>You can set this value at any time and it will be picked up before the next time <a class="reference internal" href="#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> is run.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently, the interval source period cannot be reset to <code class="code docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</div>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 2.0.0: </span>Return period as <a class="reference internal" href="misc.html#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> instead of a number of seconds.</p>
 </div>
