@@ -89,6 +89,9 @@ class IntervalSource(Source):
 
         You can set this value at any time and it will be picked up before the next time :meth:`update` is run.
 
+        Note:
+            Currently, the interval source period cannot be reset to :code:`None`.
+
         .. versionchanged:: 2.0.0
             Return period as :class:`Timedelta` instead of a number of seconds.
         """
@@ -100,6 +103,9 @@ class IntervalSource(Source):
     def period(self, duration: Union[float, Timedelta]):  # type: ignore # see comment in __init__()
         if isinstance(duration, Timedelta):
             self._period = duration
+        elif duration is None:
+            # Raise a descriptive exception if someone tries to reset the period.
+            raise TypeError("Cannot reset period to None once set")
         else:
             self._period = Timedelta.from_s(duration)
 

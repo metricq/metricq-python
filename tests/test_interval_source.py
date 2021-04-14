@@ -45,6 +45,6 @@ def test_period_setter_normalizing(
 def test_period_no_reset(interval_source: _TestIntervalSource):
     """Currently, the interval source period cannot be reset to None"""
 
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="Cannot reset period"):
         # type checking warns you that this is not supported
         interval_source.period = None  # type: ignore
