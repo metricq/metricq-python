@@ -87,10 +87,22 @@ class IntervalSource(Source):
     def period(self) -> Optional[Timedelta]:
         """Time interval at which :meth:`update` is called.
 
-        You can set this value at any time and it will be picked up before the next time :meth:`update` is run.
+        Initially, this is set to :code:`None`.
+        *Must* be set to a :class:`Timedelta` before :meth:`update` is run for the first time.
+
+        To change the update period at a later time, overwrite this value.
+        The change will be picked up before :meth:`update` is run the next time.
 
         Note:
-            Currently, the interval source period cannot be reset to :code:`None`.
+            Setting this value to :code:`None` in application code is *not* supported and will raise a :exc:`TypeError`.
+            In particular:
+
+                * Once set, the period *cannot* be reset to :code:`None` to stop the :meth:`update` task.
+                * There's no need to initialize this value to :code:`None`,
+                  :class:`IntervalSource` takes care of that.
+
+        Exceptions:
+            TypeError: if a period-reset is attempted by assigning :code:`None`
 
         .. versionchanged:: 2.0.0
             Return period as :class:`Timedelta` instead of a number of seconds.
@@ -105,7 +117,9 @@ class IntervalSource(Source):
             self._period = duration
         elif duration is None:
             # Raise a descriptive exception if someone tries to reset the period.
-            raise TypeError("Cannot reset period to None once set")
+            raise TypeError(
+                "Setting the IntervalSource update period to None is not supported"
+            )
         else:
             self._period = Timedelta.from_s(duration)
 

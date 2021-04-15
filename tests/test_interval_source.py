@@ -45,6 +45,26 @@ def test_period_setter_normalizing(
 def test_period_no_reset(interval_source: _TestIntervalSource):
     """Currently, the interval source period cannot be reset to None"""
 
-    with pytest.raises(TypeError, match="Cannot reset period"):
+    with pytest.raises(TypeError, match=r"Setting .* to None is not supported"):
         # type checking warns you that this is not supported
         interval_source.period = None  # type: ignore
+
+
+def test_period_no_explicit_init():
+    """Some clients were explicitly initializing the update period to None.
+    *Don't do that.*
+
+    Make sure that ignoring this advise raises a TypeError.
+    """
+    with patch("metricq.interval_source.IntervalSource.rpc"):
+
+        class _FaultySource(_TestIntervalSource):
+            def __init__(self):
+                super().__init__(
+                    token="source-interval-test", management_url="amqps://test.invalid"
+                )
+
+                self.period = None  # type: ignore
+
+        with pytest.raises(TypeError, match=r"Setting .* to None is not supported"):
+            _FaultySource()
