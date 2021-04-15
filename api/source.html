@@ -367,11 +367,26 @@ constant update rate.</p>
 <dt id="metricq.IntervalSource.period">
 <code class="sig-name descname"><span class="pre">period</span></code><a class="headerlink" href="#metricq.IntervalSource.period" title="Permalink to this definition">¶</a></dt>
 <dd><p>Time interval at which <a class="reference internal" href="#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> is called.</p>
-<p>You can set this value at any time and it will be picked up before the next time <a class="reference internal" href="#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> is run.</p>
+<p>Initially, this is set to <code class="code docutils literal notranslate"><span class="pre">None</span></code>.
+<em>Must</em> be set to a <a class="reference internal" href="misc.html#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> before <a class="reference internal" href="#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> is run for the first time.</p>
+<p>To change the update period at a later time, overwrite this value.
+The change will be picked up before <a class="reference internal" href="#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> is run the next time.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Currently, the interval source period cannot be reset to <code class="code docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>Setting this value to <code class="code docutils literal notranslate"><span class="pre">None</span></code> in application code is <em>not</em> supported and will raise a <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TypeError</span></code></a>.
+In particular:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Once set, the period <em>cannot</em> be reset to <code class="code docutils literal notranslate"><span class="pre">None</span></code> to stop the <a class="reference internal" href="#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> task.</p></li>
+<li><p>There’s no need to initialize this value to <code class="code docutils literal notranslate"><span class="pre">None</span></code>,
+<a class="reference internal" href="#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a> takes care of that.</p></li>
+</ul>
+</div></blockquote>
 </div>
+<dl class="simple">
+<dt>Exceptions:</dt><dd><p>TypeError: if a period-reset is attempted by assigning <code class="code docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+</dl>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 2.0.0: </span>Return period as <a class="reference internal" href="misc.html#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> instead of a number of seconds.</p>
 </div>
