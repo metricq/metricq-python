@@ -18,6 +18,7 @@
 
 **Merged pull requests:**
 
+- IntervalSource.period=None is definitely not supported [\#97](https://github.com/metricq/metricq-python/pull/97) ([phijor](https://github.com/phijor))
 - IntervalSource: Raise descriptive error on period reset [\#95](https://github.com/metricq/metricq-python/pull/95) ([phijor](https://github.com/phijor))
 - Reduce log level when handling RPCs to DEBUG [\#94](https://github.com/metricq/metricq-python/pull/94) ([phijor](https://github.com/phijor))
 
