@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+## [v2.0.1](https://github.com/metricq/metricq-python/tree/v2.0.1) (2021-04-21)
 
-[Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.0...HEAD)
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.0...v2.0.1)
 
 **Implemented enhancements:**
 
