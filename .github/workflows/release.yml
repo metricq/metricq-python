@@ -67,3 +67,10 @@ jobs:
         workflow: Python package
         token: ${{ secrets.REPO_ACCESS_TOKEN }}
         ref: "refs/tags/v${{ github.event.inputs.version }}"
+    - name: Invoke docker workflow for version tag
+      if: github.event.ref == 'refs/heads/master'
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: Build and push docker image
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        ref: "refs/tags/v${{ github.event.inputs.version }}"
