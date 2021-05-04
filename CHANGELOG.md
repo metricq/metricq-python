@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.1...HEAD)
+
+**Implemented enhancements:**
+
+- Improve the availability of the tools [\#91](https://github.com/metricq/metricq-python/issues/91)
+
+**Merged pull requests:**
+
+- Trigger docker workflow on release [\#100](https://github.com/metricq/metricq-python/pull/100) ([kinnarr](https://github.com/kinnarr))
+
 ## [v2.0.1](https://github.com/metricq/metricq-python/tree/v2.0.1) (2021-04-21)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.0...v2.0.1)
@@ -18,9 +30,9 @@
 
 **Merged pull requests:**
 
-- IntervalSource.period=None is definitely not supported [\#97](https://github.com/metricq/metricq-python/pull/97) ([phijor](https://github.com/phijor))
 - IntervalSource: Raise descriptive error on period reset [\#95](https://github.com/metricq/metricq-python/pull/95) ([phijor](https://github.com/phijor))
 - Reduce log level when handling RPCs to DEBUG [\#94](https://github.com/metricq/metricq-python/pull/94) ([phijor](https://github.com/phijor))
+- IntervalSource.period=None is definitely not supported [\#97](https://github.com/metricq/metricq-python/pull/97) ([phijor](https://github.com/phijor))
 
 ## [v2.0.0](https://github.com/metricq/metricq-python/tree/v2.0.0) (2021-03-23)
 
