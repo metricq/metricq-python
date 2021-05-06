@@ -63,6 +63,17 @@ $ ./examples/metricq_sink.py --server 'amqp://localhost/' --metrics 'test.py.dum
 
 and you should see new values for the metric `test.py.dummy` appear ever 2 seconds.
 
+## Tools and utility scripts
+
+The repository [metricq/metricq-tools](https://github.com/metricq/metricq-tools)
+contains a collection of tools and utility scripts to monitor and administrate
+a MetricQ network.
+Install them from [PyPI](https://pypi.org/project/metricq-tools/):
+
+```
+$ pip install metricq-tools
+```
+
 ## Development setup
 
 Clone the repository, and in a virtual environment run
