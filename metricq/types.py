@@ -37,7 +37,6 @@ from typing import Union, overload
 from dateutil.parser import isoparse as dateutil_isoparse
 
 from . import history_pb2
-from ._deprecation import deprecated
 from .exceptions import NonMonotonicTimestamps
 
 
@@ -681,20 +680,6 @@ class TimeAggregate:
     def integral_s(self) -> float:
         """Integral of values in this aggregate over its active time, seconds-based"""
         return self.integral_ns / 1e9
-
-    @property  # type: ignore
-    # mypy does not supported decorated properties (https://github.com/python/mypy/issues/1362)
-    @deprecated(
-        reason="Use the explicit seconds-based integral attribute `TimeAggregate.integral_s`"
-    )
-    def integral(self) -> float:
-        """Integral of all values over the whole period.
-
-        .. deprecated:: 2.0.0
-
-            Use the explicit seconds-based integral attribute :attr:`integral_s`.
-        """
-        return self.integral_s
 
     @property
     def mean(self) -> float:
