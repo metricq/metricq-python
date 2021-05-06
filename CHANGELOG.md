@@ -8,8 +8,13 @@
 
 - Improve the availability of the tools [\#91](https://github.com/metricq/metricq-python/issues/91)
 
+**Closed issues:**
+
+- Remove tools directory, refer to dedicated metricq-tools repo [\#99](https://github.com/metricq/metricq-python/issues/99)
+
 **Merged pull requests:**
 
+- Move tools to their own repository [\#101](https://github.com/metricq/metricq-python/pull/101) ([phijor](https://github.com/phijor))
 - Trigger docker workflow on release [\#100](https://github.com/metricq/metricq-python/pull/100) ([kinnarr](https://github.com/kinnarr))
 
 ## [v2.0.1](https://github.com/metricq/metricq-python/tree/v2.0.1) (2021-04-21)
