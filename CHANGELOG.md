@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.1...HEAD)
 
+**Breaking changes:**
+
+- fix: remove broken TimeAggregate.integral [\#102](https://github.com/metricq/metricq-python/pull/102) ([kinnarr](https://github.com/kinnarr))
+
 **Implemented enhancements:**
 
 - Improve the availability of the tools [\#91](https://github.com/metricq/metricq-python/issues/91)
@@ -11,6 +15,7 @@
 **Closed issues:**
 
 - Remove tools directory, refer to dedicated metricq-tools repo [\#99](https://github.com/metricq/metricq-python/issues/99)
+- RPC errors / timeouts should lead to FAILURE terminationEnsure that RPC timeouts [\#11](https://github.com/metricq/metricq-python/issues/11)
 
 **Merged pull requests:**
 
@@ -20,10 +25,6 @@
 ## [v2.0.1](https://github.com/metricq/metricq-python/tree/v2.0.1) (2021-04-21)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.0...v2.0.1)
-
-**Implemented enhancements:**
-
-- Feature: New tool metricq-inspect [\#96](https://github.com/metricq/metricq-python/pull/96) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
 
@@ -55,6 +56,7 @@
 **Implemented enhancements:**
 
 - Add python version to discover [\#89](https://github.com/metricq/metricq-python/issues/89)
+- Feature: New tool metricq-inspect [\#96](https://github.com/metricq/metricq-python/pull/96) ([bmario](https://github.com/bmario))
 - Add python version to discover response [\#90](https://github.com/metricq/metricq-python/pull/90) ([phijor](https://github.com/phijor))
 
 **Fixed bugs:**
