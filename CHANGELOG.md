@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+## [v3.0.0](https://github.com/metricq/metricq-python/tree/v3.0.0) (2021-05-06)
 
-[Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.1...HEAD)
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.1...v3.0.0)
 
 **Breaking changes:**
 
@@ -25,6 +25,10 @@
 ## [v2.0.1](https://github.com/metricq/metricq-python/tree/v2.0.1) (2021-04-21)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.0...v2.0.1)
+
+**Implemented enhancements:**
+
+- Feature: New tool metricq-inspect [\#96](https://github.com/metricq/metricq-python/pull/96) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
 
@@ -56,7 +60,6 @@
 **Implemented enhancements:**
 
 - Add python version to discover [\#89](https://github.com/metricq/metricq-python/issues/89)
-- Feature: New tool metricq-inspect [\#96](https://github.com/metricq/metricq-python/pull/96) ([bmario](https://github.com/bmario))
 - Add python version to discover response [\#90](https://github.com/metricq/metricq-python/pull/90) ([phijor](https://github.com/phijor))
 
 **Fixed bugs:**
