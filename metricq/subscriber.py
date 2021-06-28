@@ -26,53 +26,32 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from typing import Optional, Sequence, Union
+from typing import Union, List
 from .logging import get_logger
-from .sink import Sink
-import aio_pika
-from .datachunk_pb2 import DataChunk
+from .client import Client
 
 logger = get_logger(__name__)
 
 
-class Subscriber(Sink):
+class Subscriber(Client):
     def __init__(
         self,
         *args,
         add_uuid=True,
-        metrics=[],
+        metrics: List[str] =[],
         connection_timeout: Union[int, float] = 60,
         **kwargs,
     ):
         super().__init__(
-            *args, add_uuid, connection_timeout=connection_timeout, **kwargs
+            *args, add_uuid=add_uuid, connection_timeout=connection_timeout, **kwargs
         )
         self._metrics = metrics
         self._timeout = connection_timeout
 
-    def add(self, metric):
-        if metric is str:
-            self._metrics.append(metric)
-        else:
-            for m in metric:
-                self._metrics.append(m)
-
     async def connect(self, **kwargs):
         await super().connect()
 
-        if self._data_queue is not None:
-            kwargs["dataQueue"] = self._data_queue.name
         response = await self.rpc("sink.subscribe", metrics=self._metrics, **kwargs)
 
-        self._subscribed_metrics.update(self._metrics)
-        # Save the subscription RPC args in case we need to resubscribe (after a reconnect).
-        self._subscribe_args = kwargs
-
-        return response["dataQueue"]
-
-    @property
-    def queue(self):
-        return self._data_queue
-
-    async def on_data(self, id, time, value):
-        return
+        self.queue = response["dataQueue"]
+        await self.stop()

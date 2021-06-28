@@ -26,6 +26,7 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import asyncio
 from .types import Timestamp
 from .logging import get_logger
 from .sink import Sink
@@ -44,52 +45,35 @@ class Drain(Sink):
         super().__init__(*args, add_uuid=True, **kwargs)
         if len(queue) == 0:
             raise DataError("Queue must not be empty")
-        self._metrics_queue = queue
+        self._queue = queue
         self._metrics = metrics
 
-    def add(self, metric):
-        if metric is str:
-            self._metrics.append(metric)
-        else:
-            for m in metric:
-                self._metrics.append(m)
+        self.data: dict[str,tuple] = {}
+        for m in self._metrics:
+            self.data[m] = []
 
     async def connect(self):
         await super().connect()
         assert len(self._metrics) > 0
 
         response = await self.rpc(
-            "sink.unsubscribe", data_queue=self._metrics_queue, metrics=self._metrics
+            "sink.unsubscribe", dataQueue=self._queue, metrics=self._metrics
         )
-        assert len(self._metrics_queue) > 0
-        self.sink_config(response)
+
+        assert len(self._queue) > 0
+        await self.sink_config(**response)
 
     async def _on_data_message(self, message: aio_pika.IncomingMessage):
 
         if message.type == "end":
             with message.process():
                 logger.debug("received end message")
-                await self.rpc("sink.release", dataQueue=self._metrics_queue)
+                await self.rpc("sink.release", dataQueue=self._queue)
+                asyncio.create_task(self.stop())
                 return
 
         await super()._on_data_message(message)
 
-
-class SimpleDrain(Drain):
-    def __init__(self, *args, queue, **kwargs):
-        super().__init__(*args, queue=queue, **kwargs)
-        self._metrics_data = {}
-
-    def get(self):
-        return self._metrics_data
-
-    def at(self, metric):
-        return self._metrics_data[metric]
-
     async def on_data(self, metric: str, time: Timestamp, value):
-        self._metrics_data[metric].append((time, value))
+        self.data[metric].append((time, value))
 
-    async def connect(self):
-        await super().connect()
-        for m in self._metrics:
-            self._metrics_data[m] = []
