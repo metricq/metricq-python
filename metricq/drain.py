@@ -48,7 +48,7 @@ class Drain(Sink):
         self._queue = queue
         self._metrics = metrics
 
-        self.data: dict[str,tuple] = {}
+        self.data: dict[str, tuple] = {}
         for m in self._metrics:
             self.data[m] = []
 
@@ -56,9 +56,7 @@ class Drain(Sink):
         await super().connect()
         assert len(self._metrics) > 0
 
-        response = await self.rpc(
-            "sink.unsubscribe", dataQueue=self._queue, metrics=self._metrics
-        )
+        response = await self.rpc("sink.unsubscribe", dataQueue=self._queue, metrics=self._metrics)
 
         assert len(self._queue) > 0
         await self.sink_config(**response)
@@ -76,4 +74,3 @@ class Drain(Sink):
 
     async def on_data(self, metric: str, time: Timestamp, value):
         self.data[metric].append((time, value))
-

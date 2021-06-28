@@ -38,13 +38,11 @@ class Subscriber(Client):
         self,
         *args,
         add_uuid=True,
-        metrics: List[str] =[],
+        metrics: List[str] = [],
         connection_timeout: Union[int, float] = 60,
         **kwargs,
     ):
-        super().__init__(
-            *args, add_uuid=add_uuid, connection_timeout=connection_timeout, **kwargs
-        )
+        super().__init__(*args, add_uuid=add_uuid, connection_timeout=connection_timeout, **kwargs)
         self._metrics = metrics
         self._timeout = connection_timeout
 

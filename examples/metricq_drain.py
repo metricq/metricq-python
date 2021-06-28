@@ -34,25 +34,19 @@ from metricq.subscriber import Subscriber
 import asyncio
 from metricq.drain import Drain
 
+
 async def source():
     print("subscribing")
-    subscriber = Subscriber(
-        "example",
-        "amqp://admin:admin@localhost",
-        metrics=["dummy.source"]
-    )
+    subscriber = Subscriber("example", "amqp://admin:admin@localhost", metrics=["dummy.source"])
     await subscriber.connect()
-    
+
     print("sleeping...")
     await asyncio.sleep(10)
     print("sleeping... over")
     print("collecting data")
 
     drain = Drain(
-        "example",
-        "amqp://admin:admin@localhost",
-        metrics=["dummy.source"],
-        queue=subscriber.queue
+        "example", "amqp://admin:admin@localhost", metrics=["dummy.source"], queue=subscriber.queue
     )
     await drain.connect()
     await drain.stopped()
@@ -62,6 +56,3 @@ async def source():
 
 if __name__ == "__main__":
     asyncio.run(source())
-
-
-
