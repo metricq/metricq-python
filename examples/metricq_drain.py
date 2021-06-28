@@ -29,9 +29,7 @@
 
 import asyncio
 
-from metricq.types import Timedelta
 from metricq.subscriber import Subscriber
-import asyncio
 from metricq.drain import Drain
 
 

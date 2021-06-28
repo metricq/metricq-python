@@ -31,7 +31,6 @@ from .types import Timestamp
 from .logging import get_logger
 from .sink import Sink
 import aio_pika
-from .datachunk_pb2 import DataChunk
 
 logger = get_logger(__name__)
 
