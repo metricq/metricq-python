@@ -27,48 +27,41 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import logging
+import asyncio
 
-import click
-
-import click_completion
-import click_log
-import metricq
+from metricq.types import Timedelta
 from metricq.subscriber import Subscriber
-from metricq.drain import SimpleDrain
-from metricq.logging import get_logger
+import asyncio
+from metricq.drain import Drain
 
-logger = get_logger()
-
-click_log.basic_config(logger)
-logger.setLevel("INFO")
-logger.handlers[0].formatter = logging.Formatter(
-    fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
-)
-
-click_completion.init()
-
-
-@click.command()
-@click.option("--server", default="amqp://localhost/")
-@click.option("--token", default="sink-py-dummy")
-@click.option("-m", "--metrics", multiple=True, required=True)
-@click_log.simple_verbosity_option(logger)
-def source(server, token, metrics):
-    sub = Subscriber(metrics=metrics, management_url=server, connection_timeout=60)
-    sub.run()
-
-    drain = SimpleDrain(
-        queue=sub.queue,
-        metrics=metrics,
-        token=token,
-        management_url=server,
-        connection_timeout=60,
+async def source():
+    print("subscribing")
+    subscriber = Subscriber(
+        "example",
+        "amqp://admin:admin@localhost",
+        metrics=["dummy.source"]
     )
-    drain.run()
-    test = drain.get()
-    print(test)
+    await subscriber.connect()
+    
+    print("sleeping...")
+    await asyncio.sleep(10)
+    print("sleeping... over")
+    print("collecting data")
+
+    drain = Drain(
+        "example",
+        "amqp://admin:admin@localhost",
+        metrics=["dummy.source"],
+        queue=subscriber.queue
+    )
+    await drain.connect()
+    await drain.stopped()
+
+    print("done: " + len(drain.data["dummy.source"]) + " data points received")
 
 
 if __name__ == "__main__":
-    source()
+    asyncio.run(source())
+
+
+
