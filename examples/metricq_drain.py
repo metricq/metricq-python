@@ -29,8 +29,8 @@
 
 import asyncio
 
-from metricq.subscriber import Subscriber
 from metricq.drain import Drain
+from metricq.subscriber import Subscriber
 
 
 async def source():

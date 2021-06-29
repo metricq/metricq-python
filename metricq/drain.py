@@ -27,10 +27,12 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import asyncio
-from .types import Timestamp
+
+import aio_pika
+
 from .logging import get_logger
 from .sink import Sink
-import aio_pika
+from .types import Timestamp
 
 logger = get_logger(__name__)
 
