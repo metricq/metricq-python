@@ -55,7 +55,9 @@ class Drain(Sink):
         await super().connect()
         assert len(self._metrics) > 0
 
-        response = await self.rpc("sink.unsubscribe", dataQueue=self._queue, metrics=self._metrics)
+        response = await self.rpc(
+            "sink.unsubscribe", dataQueue=self._queue, metrics=self._metrics
+        )
 
         assert len(self._queue) > 0
         await self.sink_config(**response)

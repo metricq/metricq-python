@@ -35,7 +35,9 @@ from metricq.drain import Drain
 
 async def source():
     print("subscribing")
-    subscriber = Subscriber("example", "amqp://admin:admin@localhost", metrics=["dummy.source"])
+    subscriber = Subscriber(
+        "example", "amqp://admin:admin@localhost", metrics=["dummy.source"]
+    )
     await subscriber.connect()
 
     print("sleeping...")
@@ -44,7 +46,10 @@ async def source():
     print("collecting data")
 
     drain = Drain(
-        "example", "amqp://admin:admin@localhost", metrics=["dummy.source"], queue=subscriber.queue
+        "example",
+        "amqp://admin:admin@localhost",
+        metrics=["dummy.source"],
+        queue=subscriber.queue,
     )
     await drain.connect()
     await drain.stopped()

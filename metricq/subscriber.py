@@ -42,7 +42,9 @@ class Subscriber(Client):
         connection_timeout: Union[int, float] = 60,
         **kwargs,
     ):
-        super().__init__(*args, add_uuid=add_uuid, connection_timeout=connection_timeout, **kwargs)
+        super().__init__(
+            *args, add_uuid=add_uuid, connection_timeout=connection_timeout, **kwargs
+        )
         self._metrics = metrics
         self._timeout = connection_timeout
 
