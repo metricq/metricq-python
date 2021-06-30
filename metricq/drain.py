@@ -37,16 +37,11 @@ from asyncio import Queue
 
 logger = get_logger(__name__)
 
-
-class DataError(Exception):
-    pass
-
-
 class Drain(Sink):
     def __init__(self, *args, queue, metrics=[], **kwargs):
         super().__init__(*args, add_uuid=True, **kwargs)
         if len(queue) == 0:
-            raise DataError("Queue must not be empty")
+            raise ValueError("Queue must not be empty")
         self._queue = queue
         self._metrics = metrics
 
