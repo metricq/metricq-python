@@ -77,3 +77,9 @@ class Drain(Sink):
 
     async def on_data(self, metric: str, time: Timestamp, value):
         self.data[metric].append((time, value))
+
+    async def __aenter__(self):
+        await self.connect()
+
+    async def __aexit__(self):
+        await self.stopped()
