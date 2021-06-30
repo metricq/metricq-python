@@ -61,6 +61,8 @@ class Subscriber(Client):
         self.queue = response["dataQueue"]
         await self.stop()
 
+        return self.queue
+
     async def simple_drain(self):
         async with Drain(
             *self._args,
