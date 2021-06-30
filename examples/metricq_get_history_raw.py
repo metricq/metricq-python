@@ -32,9 +32,9 @@ import logging
 from datetime import timedelta
 
 import click
-
 import click_completion
 import click_log
+
 import metricq
 from metricq.history_client import HistoryRequestType
 

@@ -30,7 +30,7 @@ from typing import Optional
 
 from yarl import URL
 
-from .agent import ReconnectTimeoutError
+from .agent import ReconnectTimeout
 from .client import Client
 from .connection_watchdog import ConnectionWatchdog
 from .logging import get_logger
@@ -48,7 +48,7 @@ class DataClient(Client):
         self.data_exchange = None
         self._data_connection_watchdog = ConnectionWatchdog(
             on_timeout_callback=lambda watchdog: self._schedule_stop(
-                ReconnectTimeoutError(
+                ReconnectTimeout(
                     f"Failed to reestablish {watchdog.connection_name} after {watchdog.timeout} seconds"
                 )
             ),
@@ -58,7 +58,9 @@ class DataClient(Client):
 
     async def data_config(self, dataServerAddress, **kwargs):
         """
-        You should not call this in child classes because it is a registered RPC handler
+        This method is a registered RPC handler, do not call this in child classes.
+
+        :meta private:
         """
         logger.debug("data_config(dataServerAddress={})", dataServerAddress)
         if not dataServerAddress:
@@ -108,8 +110,8 @@ class DataClient(Client):
         self.data_exchange = None
         await super().stop(exception)
 
-    def _on_data_connection_close(self, _exception: Optional[Exception]):
+    def _on_data_connection_close(self, sender, _exception: Optional[Exception]):
         self._data_connection_watchdog.set_closed()
 
-    def _on_data_connection_reconnect(self, _connection):
+    def _on_data_connection_reconnect(self, sender, _connection):
         self._data_connection_watchdog.set_established()

@@ -28,7 +28,8 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from .agent import Agent, RPCError
+from . import exceptions
+from .agent import Agent
 from .client import Client
 from .data_client import DataClient
 from .history_client import HistoryClient
@@ -38,23 +39,25 @@ from .rpc import rpc_handler
 from .sink import DurableSink, Sink
 from .source import Source
 from .synchronous_source import SynchronousSource
-from .types import Timedelta, Timestamp
+from .types import TimeAggregate, Timedelta, Timestamp, TimeValue
 from .version import __version__
 
 __all__ = [
-    Agent,
-    Client,
-    DataClient,
-    DurableSink,
-    HistoryClient,
-    IntervalSource,
-    RPCError,
-    Sink,
-    Source,
-    SynchronousSource,
-    Timedelta,
-    Timestamp,
-    get_logger,
-    rpc_handler,
-    __version__,
+    "exceptions",
+    "Agent",
+    "Client",
+    "DataClient",
+    "DurableSink",
+    "HistoryClient",
+    "IntervalSource",
+    "Sink",
+    "Source",
+    "SynchronousSource",
+    "Timedelta",
+    "Timestamp",
+    "TimeValue",
+    "TimeAggregate",
+    "get_logger",
+    "rpc_handler",
+    "__version__",
 ]

@@ -1,13 +1,12 @@
 [build-system]
-requires = ["setuptools>=40.6.0", "wheel"]
+requires = ["setuptools>=40.6.0", "wheel", "mypy-protobuf~=1.23"]
 build-backend = 'setuptools.build_meta'
 
 [tool.black]
 line-length = 88
 target_version = ['py37']
-include = '\.pyi?$'
+include = '\.py$'
 exclude = '''
-
 (
   /(
       \.eggs         # exclude a few common directories in the
@@ -27,3 +26,38 @@ exclude = '''
   )/
 )
 '''
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 88
+skip_glob = [
+    "**/*_pb2.py",
+    "**/*_pb2.pyi",
+]
+skip = [
+    "setup.py", # setuptools needs to be loaded before distutils.
+                # Instruct isort not to go there. There be dragons.
+    "docs/conf.py",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".tox",
+    ".venv",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "venv",
+]
+order_by_type = true
+
+[tool.check-manifest]
+ignore = [
+    "*_pb2.py",
+    "*_pb2.pyi",
+    "**/_protobuf_version.py",
+]

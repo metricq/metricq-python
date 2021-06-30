@@ -1,14 +1,16 @@
 name: Python package
 
-on: [push]
+on: [push, pull_request, workflow_dispatch]
+
+env:
+  release-python-version: 3.8
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.8, 3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -21,59 +23,87 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install .
+        pip install .[typing,lint,test]
     - name: Lint with flake8
       run: |
-        pip install flake8
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        flake8 .
+    - name: Test with pytest
+      run: |
+        pytest
     - name: Format using black
-      uses: lgeiger/black-action@master
+      run: |
+        black --check .
+    - name: Sort imports with isort
+      run: |
+        isort --diff --check .
+    - name: Build protobuf files
+      run: python setup.py build_protobuf
+    - name: Run mypy
+      uses: kolonialno/mypy-action@v1
       with:
-        args: ". --check"
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        max-errors: 0
+        paths: metricq
+
+  build:
+    needs: [test]
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ env.release-python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ env.release-python-version }}
+    - name: Install Protoc
+      uses: arduino/setup-protoc@master
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+    - name: Build Python distribution
+      run: pip wheel --wheel-dir dist/ .
+    - name: Upload distribution artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: distribution-packages
+        path: dist/metricq-*.whl
 
   release:
     needs: [build]
     runs-on: ubuntu-latest
-    
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && startsWith(github.event.ref, 'refs/tags/v')
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.6
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.6
-    - name: Install Protoc
-      uses: Arduino/setup-protoc@master
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install wheel
-        pip install .
-    - name: Build Python distribution
-      run: python setup.py sdist bdist_wheel
-    - name: Upload distribution artifacts
-      uses: actions/upload-artifact@v1
+    - name: Download distribution artifacts
+      uses: actions/download-artifact@v1
       with:
         name: distribution-packages
-        path: dist/  
+        path: dist/
     - name: Publish a Python distribution to PyPI
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
       uses: pypa/gh-action-pypi-publish@master
       with:
         user: __token__
         password: ${{ secrets.pypi_password }}
     - name: Reformat version number
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
       id: reformat_release
       uses: frabert/replace-string-action@v1.1
       with:
         pattern: 'refs\/tags\/v([0-9.]+)'
         string: ${{ github.ref }}
         replace-with: '$1'
+    - name: Generate release changelog
+      uses: charmixer/auto-changelog-action@v1.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        since_tag: v${{ steps.reformat_release.outputs.replaced }}
+        base: "none.md" # ignore the HISTORY.md file
+        output: release-changelog.md
+    - name: Upload release changelog artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-changelog
+        path: release-changelog.md
     - name: Create Release
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/v')
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -83,3 +113,53 @@ jobs:
         release_name: Python Release ${{ steps.reformat_release.outputs.replaced }}
         draft: false
         prerelease: false
+        body_path: release-changelog.md
+
+  docs:
+    needs: [build]
+    runs-on: ubuntu-latest
+    env:
+      OUTPUT_DIR: build/sphinx
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ env.release-python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ env.release-python-version }}
+    - name: Install Protoc
+      uses: arduino/setup-protoc@master
+    - name: Install pip
+      run: |
+        python -m pip install --upgrade pip
+    - name: Install build dependencies
+      # To build the protobuf files (see below why they are necessary), install
+      # all necessary build dependencies.  This is currently the least painful
+      # solution. See https://github.com/pypa/pip/issues/8049#issuecomment-633845028
+      run: |
+        pip install toml
+        python -c 'import toml; print("\n".join(toml.load("pyproject.toml")["build-system"]["requires"]))' \
+          | pip install -r /dev/stdin
+    - name: Install dependencies
+      run: |
+        pip install '.[docs]'
+    - name: Build protobuf files
+      # Sphinx autodoc needs to import from generated *_pb2.py files
+      run: |
+        python setup.py build_protobuf
+    - name: Build documentation
+      run: |
+        # run HTML builder (-b) in nitpicky mode (-n) in a fresh environment (-E)
+        sphinx-build -b html -n -E docs ${{ env.OUTPUT_DIR }}
+    - name: Upload generated HTML as build artifact
+      uses: actions/upload-artifact@v2
+      with:
+        path: ${{ env.OUTPUT_DIR }}
+        name: docs
+    - name: Deploy documentation to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@3.7.1
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      with:
+        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: ${{ env.OUTPUT_DIR }}

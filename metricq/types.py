@@ -30,32 +30,132 @@
 
 import datetime
 import re
+from dataclasses import dataclass
 from functools import total_ordering
-from numbers import Number
-from typing import NamedTuple, Union
+from typing import Union, overload
+
+from dateutil.parser import isoparse as dateutil_isoparse
 
 from . import history_pb2
+from .exceptions import NonMonotonicTimestamps
 
 
 @total_ordering
 class Timedelta:
+    """A (possibly negative) duration of time
+
+    Args:
+        nanoseconds: duration in nanoseconds
+
+    Supported operations:
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | Operation        | Types                                            | Result                                                                                    |
+        +==================+==================================================+===========================================================================================+
+        | :code:`d1 + d2`  | * :code:`d1`, :code:`d2`: :class:`Timedelta`     | the sum of the duration of :code:`d1` and :code:`d2` as a :class:`Timedelta` object       |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d + dt`   | * :code:`d`: :class:`Timedelta`                  | the combined duration of :code:`d` and                                                    |
+        |                  | * :code:`dt`: :class:`python:datetime.timedelta` | :code:`Timedelta.from_timedelta(dt)` as a :class:`Timedelta` object                       |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d + t`    | * :code:`d`: :class:`Timedelta`                  | a :class:`Timestamp` offset by duration :code:`d`                                         |
+        |                  | * :code:`t`: :class:`Timestamp`                  | (the same as :code:`t + d`, see :class:`Timestamp.__add__`)                               |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d1 == d2` | * :code:`d1`, :code:`d2`: :class:`Timedelta`     | :code:`True` if :code:`d1` and :code:`d2` describe the same duration of time              |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d == dt`  | * :code:`d`: :class:`Timedelta`                  | :code:`True` if :code:`d.datetime == dt`                                                  |
+        |                  | * :code:`dt`: :class:`python:datetime.timedelta` | (see :class:`python:datetime.timedelta`)                                                  |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d1 < d2`  | * :code:`d1`, :code:`d2`: :class:`Timedelta`     | :code:`True` if :code:`d1` is shorter than :code:`d2`                                     |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d < dt`   | * :code:`d`: :class:`Timedelta`                  | :code:`True` if :code:`d.datetime < dt`                                                   |
+        |                  | * :code:`dt`: :class:`python:datetime.timedelta` | (see :class:`python:datetime.timedelta`)                                                  |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d * c`    | * :code:`d`: :class:`Timedelta`                  | The duration scaled by the factor :code:`c`, truncated to nanosecond precision            |
+        |                  | * :code:`c`: :class:`float` or :class:`int`      | See :meth:`__mul__`.                                                                      |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d / c`    | * :code:`d`: :class:`Timedelta`                  | The duration divided by :code:`c`, truncated to nanosecond precision.                     |
+        |                  | * :code:`c`: :class:`float`                      | See :meth:`__truediv__`.                                                                  |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+        | :code:`d // n`   | * :code:`d`: :class:`Timedelta`                  | The duration divided by an *integer* factor :code:`n`, truncated to nanosecond precision. |
+        |                  | * :code:`n`: :class:`int`                        | See :meth:`__floordiv__`.                                                                 |
+        +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
+
+        In addition to :code:`<` and :code:`=`, all other relational operations are supported and behave as you would expect.
+    """
+
+    def __init__(self, nanoseconds: int):
+        self._value = nanoseconds
+
     @staticmethod
-    def from_timedelta(delta):
+    def from_timedelta(delta: datetime.timedelta):
+        """Convert from a standard ``timedelta`` object.
+
+        Args:
+            delta: a standard :class:`python:datetime.timedelta` object
+        Returns:
+            A :class:`Timedelta` object
+        """
         seconds = (delta.days * 24 * 3600) + delta.seconds
         microseconds = seconds * 1000000 + delta.microseconds
         return Timedelta(microseconds * 1000)
 
     @staticmethod
     def from_string(duration_str: str):
-        m = re.fullmatch(r"\s*([+-]?\d*[.,]?\d+)\s*([^\d]*)\s*", duration_str)
+        """Parse a human-readable string representation of a duration.
+
+        >>> "One day has {} seconds".format(Timedelta.from_string("1 day"))
+        'One day has 86400.0s seconds'
+
+        Args:
+            duration_str:
+                A duration string in the form of "`<number> <unit>`".
+                Accepted units are:
+
+                    ============ ========= =====================================
+                    Name         short     long
+                    ============ ========= =====================================
+                    Seconds      ``"s"``   ``"second"``,      ``"seconds"``
+                    Milliseconds ``"ms"``  ``"millisecond"``, ``"milliseconds"``
+                    Microseconds ``"us"``  ``"microsecond"``, ``"microseconds"``
+                    Nanoseconds  ``"ns"``  ``"nanosecond"``,  ``"nanoseconds"``
+                    Minutes      ``"min"`` ``"minute"``,      ``"minutes"``
+                    Hours        ``"h"``   ``"hour"``,        ``"hours"``
+                    Days         ``"d"``   ``"day"``,         ``"days"``
+                    ============ ========= =====================================
+
+        Returns:
+            The parsed :class:`Timedelta` object
+
+        Raises:
+            ValueError: if the string is not of the correct format or an invalid unit was specified
+        """
+
+        m = re.fullmatch(
+            r"""
+            \s*
+                (?P<value_integral>[+-]?\d*)
+                (?P<value_fractional>([.,]\d*)?)
+            \s*
+                (?P<unit>[^\d]*)
+            \s*
+            """,
+            duration_str,
+            flags=re.X,
+        )
         if not m:
             raise ValueError(
                 'invalid duration string {}, not of form "number unit"'.format(
                     duration_str
                 )
             )
-        value = float(m.group(1))
-        unit = m.group(2)
+
+        groups = m.groupdict()
+        value: float = int(groups["value_integral"])
+
+        if groups["value_fractional"]:
+            value += float(groups["value_fractional"].replace(",", "."))
+
+        unit = groups["unit"]
+
         if unit in ("", "s", "second", "seconds"):
             return Timedelta(int(value * 1_000_000_000))
         if unit in ("ms", "millisecond", "milliseconds"):
@@ -73,22 +173,37 @@ class Timedelta:
         raise ValueError("invalid duration unit {}".format(unit))
 
     @staticmethod
-    def from_us(value: Number):
-        return Timedelta(int(value * 1e3))
+    def from_us(microseconds: float):
+        """Create a duration from a number of microseconds
+
+        Args:
+            microseconds: number of microseconds
+        Returns:
+            A :class:`Timedelta` object
+        """
+        return Timedelta(int(microseconds * 1e3))
 
     @staticmethod
-    def from_ms(value: Number):
-        return Timedelta(int(value * 1e6))
+    def from_ms(milliseconds: float):
+        """Create a duration from a number of milliseconds
+
+        Args:
+            milliseconds: number of milliseconds
+        Returns:
+            A :class:`Timedelta` object
+        """
+        return Timedelta(int(milliseconds * 1e6))
 
     @staticmethod
-    def from_s(value: Number):
-        return Timedelta(int(value * 1e9))
+    def from_s(seconds: float):
+        """Create a duration from a number of seconds
 
-    def __init__(self, value: int):
+        Args:
+            seconds: number of seconds
+        Returns:
+            A :class:`Timedelta` object
         """
-        :param value: integer duration in nanoseconds
-        """
-        self._value = value
+        return Timedelta(int(seconds * 1e9))
 
     @property
     def precise_string(self):
@@ -114,24 +229,41 @@ class Timedelta:
 
     @property
     def ns(self):
+        """Number of nanoseconds in this duration"""
         return self._value
 
     @property
     def us(self):
+        """Number of microseconds in this duration"""
         return self._value / 1e3
 
     @property
     def ms(self):
+        """Number of milliseconds in this duration"""
         return self._value / 1e6
 
     @property
     def s(self):
+        """Number of seconds in this duration"""
         return self._value / 1e9
 
     @property
-    def timedelta(self):
+    def timedelta(self) -> datetime.timedelta:
+        """This duration as a standard :class:`python:datetime.timedelta` object"""
         microseconds = self._value // 1000
         return datetime.timedelta(microseconds=microseconds)
+
+    @overload
+    def __add__(self, other: "Timedelta") -> "Timedelta":
+        ...
+
+    @overload
+    def __add__(self, other: "Timestamp") -> "Timestamp":
+        ...
+
+    @overload
+    def __add__(self, other: datetime.timedelta) -> "Timedelta":
+        ...
 
     def __add__(self, other: Union["Timedelta", "Timestamp", datetime.timedelta]):
         if isinstance(other, Timedelta):
@@ -141,7 +273,15 @@ class Timedelta:
         # Fallback to Timestamp.__add__
         return other + self
 
-    def __sub__(self, other: Union["Timedelta", "Timestamp", datetime.timedelta]):
+    @overload
+    def __sub__(self, other: "Timedelta") -> "Timedelta":
+        ...
+
+    @overload
+    def __sub__(self, other: datetime.timedelta) -> "Timedelta":
+        ...
+
+    def __sub__(self, other: Union["Timedelta", datetime.timedelta]):
         if isinstance(other, Timedelta):
             return Timedelta(self._value - other._value)
         if isinstance(other, datetime.timedelta):
@@ -150,19 +290,68 @@ class Timedelta:
             "invalid type to subtract from Timedelta: {}".format(type(other))
         )
 
-    def __truediv__(self, factor):
-        return Timedelta(self._value // factor)
+    def __floordiv__(self, factor: int) -> "Timedelta":
+        """Divide a duration by an integer factor.
 
-    def __mul__(self, factor):
-        return Timedelta(self._value * factor)
+        >>> td = Timedelta.from_s(10) // 3
+        >>> td.s
+        3.333333333
+        >>> td.precise_string
+        '3333333333ns'
+
+        This divides the number of nanoseconds in this duration by `factor`
+        using `Floor Division <https://www.python.org/dev/peps/pep-0238/#semantics-of-floor-division>`_,
+        i.e. for some :code:`n: int` and :code:`td: Timedelta` we have
+
+        >>> assert (td // n).ns == td.ns // n
+
+        Note:
+            Floor Division produces *surprising* results for :code:`float` arguments
+            (i.e. :code:`3 // 0.2 == 14.0`).
+            Use :meth:`__truediv__` if you want to scale a duration by a non-integer factor.
+        """
+        return Timedelta(int(self._value // factor))
+
+    def __truediv__(self, factor: float) -> "Timedelta":
+        """Divide a duration by a (floating point) factor.
+
+        >>> (Timedelta.from_s(10) / 2.5).precise_string
+        '4s'
+
+        This divides the number of nanoseconds in this duration by `factor`
+        using `True Division <https://www.python.org/dev/peps/pep-0238/#semantics-of-true-division>`_,
+        but truncates the result to an :code:`int`:
+
+        >>> assert (td / x).ns == int(td.ns / x)
+
+        where :code:`td: Timedelta` and :code:`x: float`.
+
+        Note:
+            Use :meth:`__floordiv__` if you know that the factor is an integer,
+            this will prevent rounding errors.
+        """
+        return Timedelta(int(self._value / factor))
+
+    def __mul__(self, factor: float) -> "Timedelta":
+        return Timedelta(int(self._value * factor))
 
     def __str__(self):
+        """A string containing the number of seconds of this duration
+
+        >>> "One day has {} seconds".format(Timedelta.from_string("1 day"))
+        'One day has 86400.0s seconds'
+        """
         return "{}s".format(self.s)
 
-    def __eq__(self, other: Union["Timedelta", datetime.timedelta]):
+    def __repr__(self):
+        return f"Timedelta({self.ns})"
+
+    def __eq__(self, other: object):
         if isinstance(other, datetime.timedelta):
             return self.timedelta == other
-        return self._value == other._value
+        if isinstance(other, Timedelta):
+            return self._value == other._value
+        return NotImplemented
 
     def __lt__(self, other: Union["Timedelta", datetime.timedelta]):
         if isinstance(other, datetime.timedelta):
@@ -172,17 +361,42 @@ class Timedelta:
 
 @total_ordering
 class Timestamp:
+    """A MetricQ Timestamp
+
+    Args:
+        nanoseconds: number of nanoseconds elapsed since the UNIX epoch
+    """
+
     _EPOCH = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
 
+    def __init__(self, nanoseconds: int):
+        self._value = nanoseconds
+        """Timestamp value in nanoseconds since :const:`Timestamp._EPOCH`,
+
+        :meta private:
+        """
+
     @classmethod
-    def from_posix_seconds(cls, seconds):
+    def from_posix_seconds(cls, seconds: float):
+        """Create a Timestamp from a POSIX timestamp
+
+        Args:
+            seconds: number of seconds since the UNIX epoch
+
+        Returns:
+            :class:`Timestamp`
+        """
         return Timestamp(int(seconds * 1e9))
 
     @classmethod
     def from_datetime(cls, dt: datetime.datetime):
-        """
-        :param dt: Must be an aware datetime object
-        :return:
+        """Create a Timestamp from an aware datetime object
+
+        Args:
+            dt: an aware datetime object
+
+        Returns:
+            :class:`Timestamp`
         """
         delta = dt - Timestamp._EPOCH
         seconds = (delta.days * 24 * 3600) + delta.seconds
@@ -190,52 +404,89 @@ class Timestamp:
         return Timestamp(microseconds * 1000)
 
     @classmethod
-    def from_iso8601(cls, iso_string: str):
-        return cls.from_datetime(
-            datetime.datetime.strptime(iso_string, "%Y-%m-%dT%H:%M:%S.%fZ").replace(
-                tzinfo=datetime.timezone.utc
-            )
-        )
+    def from_iso8601(cls, iso_string: str) -> "Timestamp":
+        """Create a Timestamp from a `ISO 8601` date-time string.
 
-    @classmethod
-    def now(cls):
-        return cls.from_datetime(datetime.datetime.now(datetime.timezone.utc))
+        >>> Timestamp.from_iso8601("1970-01-01T00:00:00.0Z") == Timestamp(0)
+        True
+
+        This is a convenience method that parses the date-time string into a
+        :class:`python:datetime.datetime` using
+        :meth:`dateutil:dateutil.parser.isoparse`,
+        and then calls :meth:`from_datetime` to create a :class:`Timestamp` from that.
+
+        Note:
+            The parser only supports up to *6 sub-second digits*,
+            further digits are simply dropped.
+            If you need to parse timestamps with higher precision,
+            you need to convert the string to nanoseconds yourself.
+
+        Args:
+            iso_string: a date-time string in `ISO 8601` format.
+        """
+        dt = dateutil_isoparse(iso_string)
+        return cls.from_datetime(dt)
 
     @classmethod
     def ago(cls, delta: Timedelta):
+        """Return a timestamp `delta` in the past.
+
+        This is equivalent to::
+
+            Timestamp.now() - delta
+
+        Returns:
+            :class:`Timestamp`
+        """
         return cls.now() - delta
 
     @classmethod
     def from_now(cls, delta: Timedelta):
+        """Return a timestamp `delta` in the future.
+
+        This is equivalent to::
+
+            Timestamp.now() + delta
+
+        Returns:
+            :class:`Timestamp`
+        """
         return cls.now() + delta
 
-    def __init__(self, value: int):
+    @classmethod
+    def now(cls):
+        """Return a Timestamp corresponding to "now"
+
+        Returns:
+            :class:`Timestamp`
         """
-        :param value: integer posix timestamp in nanoseconds
-        """
-        self._value = value
+        return cls.from_datetime(datetime.datetime.now(datetime.timezone.utc))
 
     @property
     def posix_ns(self):
+        """Number of nanoseconds since the UNIX epoch"""
         return self._value
 
     @property
     def posix_us(self):
+        """Number of microseconds since the UNIX epoch"""
         return self._value / 1000
 
     @property
     def posix_ms(self):
+        """Number of milliseconds since the UNIX epoch"""
         return self._value / 1000000
 
     @property
     def posix(self):
+        """Number of seconds since the UNIX epoch"""
         return self._value / 1000000000
 
     @property
-    def datetime(self):
-        """
-        This creates an aware UTC datetime object.
-        We know in MetricQ that timestamps are POSIX timestamps, hence UTC.
+    def datetime(self) -> datetime.datetime:
+        """Create an aware UTC datetime object
+
+        All MetricQ timestamps are POSIX timestamps, hence UTC.
         """
         # We use timedelta in the hope that this doesn't break
         # on non-POSIX systems, where fromtimestamp apparently may omit leap seconds
@@ -244,7 +495,28 @@ class Timestamp:
         return Timestamp._EPOCH + datetime.timedelta(microseconds=microseconds)
 
     def __add__(self, delta: Timedelta):
+        """Return the timestamp `delta` in the future (or in the past, if `delta` is negative), relative to a :class:`Timestamp` instance.
+
+        >>> epoch = Timestamp(0)
+        >>> a_week_later = epoch + Timedelta.from_string("7 days")
+        >>> str(a_week_later)
+        '[604800000000000] 1970-01-08 01:00:00+01:00'
+
+        Args:
+            delta: a time duration, possibly negative
+
+        Returns:
+            :class:`Timestamp`
+        """
         return Timestamp(self._value + delta.ns)
+
+    @overload
+    def __sub__(self, other: "Timedelta") -> "Timestamp":
+        ...
+
+    @overload
+    def __sub__(self, other: "Timestamp") -> "Timedelta":
+        ...
 
     def __sub__(self, other: Union["Timedelta", "Timestamp"]):
         if isinstance(other, Timedelta):
@@ -256,34 +528,101 @@ class Timestamp:
         )
 
     def __lt__(self, other: "Timestamp"):
+        """Compare whether this timestamp describes a time before another timestamp.
+
+        >>> now = Timestamp.now()
+        >>> later = now + Timedelta.from_s(10)
+        >>> now < later
+        True
+
+        Together with :meth:`__eq__`, all relational operations (``<=``, ``>``, ``!=``, etc.) are supported.
+        Timestamps are `totally ordered` (as supplied by :func:`python:functools.total_ordering`).
+
+        Args:
+            other: another timestamp
+        """
+
         return self._value < other._value
 
-    def __eq__(self, other: "Timestamp"):
+    def __eq__(self, other: object):
+        """Check whether two :class:`Timestamps<Timestamp>` refer to the same instance of time:
+
+        >>> now = Timestamp.now()
+        >>> later = now + Timedelta.from_s(10)
+        >>> now == later
+        False
+
+        Args:
+            other: another timestamp
+        """
+        if not isinstance(other, Timestamp):
+            return NotImplemented
+
         return self._value == other._value
 
     def __str__(self):
+        """Yield a human-readable date-time string in the local timezone:
+
+        >>> # in UTC+01:00, it was already 1 in the night when the UNIX epoch happened
+        >>> str(Timestamp(0))
+        '[0] 1970-01-01 01:00:00+01:00'
+        """
+
         # Note we convert to local timezone with astimezone for printing
         return "[{}] {}".format(self.posix_ns, str(self.datetime.astimezone()))
 
     def __repr__(self):
-        return str(self.posix_ns)
+        return f"Timestamp({self.posix_ns})"
 
 
-class TimeValue(NamedTuple):
+@dataclass(frozen=True)
+class TimeValue:
+    """A `timestamp-value` pair.
+
+    Unpack it like so:
+
+    >>> tv = TimeValue(Timestamp.now(), 42.0)
+    >>> (timestamp, value) = tv
+
+    """
+
+    __slots__ = ("timestamp", "value")
+
     timestamp: Timestamp
     value: float
 
+    def __iter__(self):
+        return iter((self.timestamp, self.value))
 
-class TimeAggregate(NamedTuple):
+
+@dataclass(frozen=True)
+class TimeAggregate:
+    """Summary of a metric's values within a certain period of time."""
+
+    __slots__ = (
+        "timestamp",
+        "minimum",
+        "maximum",
+        "sum",
+        "count",
+        "integral_ns",
+        "active_time",
+    )
+
     timestamp: Timestamp
+    """starting time of this aggregate"""
     minimum: float
+    """minimum value"""
     maximum: float
+    """maximum value"""
     sum: float
+    """sum of all values"""
     count: int
-    # TODO maybe convert to 1s based integral (rather than 1ns)
-    integral: float
-    # TODO maybe convert to Timedelta
-    active_time: int
+    """total number of values"""
+    integral_ns: float
+    """Integral of values in this aggregate over its active time, nanoseconds-based"""
+    active_time: Timedelta
+    """time spanned by this aggregate"""
 
     @staticmethod
     def from_proto(timestamp: Timestamp, proto: history_pb2.HistoryResponse.Aggregate):
@@ -293,8 +632,8 @@ class TimeAggregate(NamedTuple):
             maximum=proto.maximum,
             sum=proto.sum,
             count=proto.count,
-            integral=proto.integral,
-            active_time=proto.active_time,
+            integral_ns=proto.integral,
+            active_time=Timedelta(proto.active_time),
         )
 
     @staticmethod
@@ -305,15 +644,27 @@ class TimeAggregate(NamedTuple):
             maximum=value,
             sum=value,
             count=1,
-            integral=0,
-            active_time=0,
+            integral_ns=0,
+            active_time=Timedelta(0),
         )
 
     @staticmethod
     def from_value_pair(
         timestamp_before: Timestamp, timestamp: Timestamp, value: float
     ):
-        assert timestamp > timestamp_before
+        """Create a TimeAggregate from a pair of timestamps (class:`Timestamp`) and one value
+
+        Raises:
+            NonMonotonicTimestamps: if the two timestamps are not strictly monotonic
+        """
+        # Can't use (https://github.com/python/mypy/issues/4610)
+        # if timestamp_before >= timestamp:
+        if not timestamp_before < timestamp:
+            raise NonMonotonicTimestamps(
+                "Timestamps in HistoryResponse are not strictly monotonic ({} -> {})".format(
+                    timestamp_before, timestamp
+                )
+            )
         delta = timestamp - timestamp_before
         return TimeAggregate(
             timestamp=timestamp_before,
@@ -321,21 +672,31 @@ class TimeAggregate(NamedTuple):
             maximum=value,
             sum=value,
             count=1,
-            integral=delta.ns * value,
-            active_time=delta.ns,
+            integral_ns=delta.ns * value,
+            active_time=delta,
         )
 
     @property
-    def mean(self):
-        if self.active_time > 0:
+    def integral_s(self) -> float:
+        """Integral of values in this aggregate over its active time, seconds-based"""
+        return self.integral_ns / 1e9
+
+    @property
+    def mean(self) -> float:
+        if self.active_time.ns > 0:
             return self.mean_integral
         else:
             return self.mean_sum
 
     @property
-    def mean_integral(self):
-        return self.integral / self.active_time
+    def mean_integral(self) -> float:
+        return self.integral_ns / self.active_time.ns
 
     @property
-    def mean_sum(self):
+    def mean_sum(self) -> float:
         return self.sum / self.count
+
+
+Metric = str
+"""Type alias for strings that represent metric names
+"""

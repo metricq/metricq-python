@@ -31,9 +31,9 @@ import logging
 import random
 
 import click
-
 import click_completion
 import click_log
+
 import metricq
 from metricq.logging import get_logger
 
@@ -41,8 +41,6 @@ logger = get_logger()
 
 click_log.basic_config(logger)
 logger.setLevel("INFO")
-# Use this if we ever use threads
-# logger.handlers[0].formatter = logging.Formatter(fmt='%(asctime)s %(threadName)-16s %(levelname)-8s %(message)s')
 logger.handlers[0].formatter = logging.Formatter(
     fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
 )
@@ -58,17 +56,24 @@ class DummySource(metricq.IntervalSource):
     @metricq.rpc_handler("config")
     async def _on_config(self, **config):
         logger.info("DummySource config: {}", config)
+
+        # Set the update period
         rate = config["rate"]
         self.period = 1 / rate
-        meta = {
+
+        # Supply some metadata for the metric declared below
+        metadata = {
             "rate": rate,
-            "description": "A simple dummy metric from python",
-            "unit": "m",
+            "description": "A simple dummy metric providing random values, sent from a python DummySource",
+            "unit": "",  # unit-less metrics indicate this with an empty string
         }
-        await self.declare_metrics({"test.py.dummy": meta})
+        await self.declare_metrics({"test.py.dummy": metadata})
 
     async def update(self):
-        await self.send("test.py.dummy", metricq.Timestamp.now(), random.random())
+        # Send a random value at the current time:
+        await self.send(
+            "test.py.dummy", time=metricq.Timestamp.now(), value=random.random()
+        )
 
 
 @click.command()

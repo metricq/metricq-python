@@ -1,0 +1,76 @@
+# This is a basic workflow that is manually triggered
+
+name: Release a new python version
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      version:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Version number for release (x.y.z)'
+        # Input has to be provided for the workflow to run
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set version number
+      run: echo -n "${{ github.event.inputs.version }}" > .version
+    - name: Generate changelog
+      uses: charmixer/auto-changelog-action@v1.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        future_release: "v${{ github.event.inputs.version }}"
+    - name: Commit files
+      id: commit
+      env:
+        CI_USER: ${{ github.actor }}
+        CI_EMAIL: "action@github.com"
+      run: |
+        git config --local user.email "$CI_EMAIL"
+        git config --local user.name "$CI_USER"
+        git add CHANGELOG.md .version && git commit -m 'Release v${{ github.event.inputs.version }}' && echo ::set-output name=push::1 || echo "No changes to commit"
+    - name: Tag changes
+      if: steps.commit.outputs.push == 1 && github.event.ref == 'refs/heads/master'
+      env:
+        CI_USER: ${{ github.actor }}
+        CI_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git tag 'v${{ github.event.inputs.version }}'
+    - name: Push changes
+      if: steps.commit.outputs.push == 1
+      env:
+        CI_USER: ${{ github.actor }}
+        CI_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        echo "Push to ${{ github.ref }}"
+        git push --tags "https://$CI_USER:$CI_TOKEN@github.com/$GITHUB_REPOSITORY.git" HEAD:${{ github.ref }}
+    - name: Invoke test and build workflow for current branch
+      if: github.event.ref != 'refs/heads/master'
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: Python package
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        ref: ${{ github.ref }}
+    - name: Invoke test, build and release workflow for version tag
+      if: github.event.ref == 'refs/heads/master'
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: Python package
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        ref: "refs/tags/v${{ github.event.inputs.version }}"
+    - name: Invoke docker workflow for version tag
+      if: github.event.ref == 'refs/heads/master'
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: Build and push docker image
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        ref: "refs/tags/v${{ github.event.inputs.version }}"

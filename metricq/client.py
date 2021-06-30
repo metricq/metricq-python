@@ -28,10 +28,11 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from typing import Optional, Sequence, Union
 from socket import gethostname
+from sys import version_info as sys_version
+from typing import Any, Dict, Optional, Sequence, Union
 
-from .agent import Agent, RpcRequestError
+from .agent import Agent
 from .logging import get_logger
 from .rpc import rpc_handler
 from .types import Timestamp
@@ -40,15 +41,43 @@ from .version import __version__
 logger = get_logger(__name__)
 
 
-class ManagementRpcPublishError(RpcRequestError):
-    pass
+_GetMetricsResult = Union[Sequence[str], Sequence[dict]]
 
 
 class Client(Agent):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, client_version: Optional[str] = None, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.starting_time = Timestamp.now()
+        self._client_version: Optional[str] = (
+            client_version if client_version is not None else self._find_version()
+        )
+
+        logger.info(
+            "Initializing client (version: {})", self._client_version or "unknown"
+        )
+
+    def _find_version(self) -> Optional[str]:
+        client_cls = type(self)
+        client_name = client_cls.__qualname__
+
+        try:
+            from inspect import getmodule
+
+            logger.debug(
+                "Looking for client version of {}...",
+                client_name,
+            )
+
+            # We can ignore the undefined attribute error here as we check for exceptions anyway
+            client_version = getmodule(client_cls).__version__  # type: ignore[union-attr]
+
+            logger.debug("Client {} has version {!r}", client_name, client_version)
+
+            return client_version
+        except Exception as e:
+            logger.warning("Failed to find version of {}: {}", client_name, e)
+            return None
 
     @property
     def name(self):
@@ -57,8 +86,10 @@ class Client(Agent):
     async def connect(self):
         await super().connect()
 
-        self._management_broadcast_exchange = await self._management_channel.declare_exchange(
-            name=self._management_broadcast_exchange_name, passive=True
+        self._management_broadcast_exchange = (
+            await self._management_channel.declare_exchange(
+                name=self._management_broadcast_exchange_name, passive=True
+            )
         )
         self._management_exchange = await self._management_channel.declare_exchange(
             name=self._management_exchange_name, passive=True
@@ -71,20 +102,33 @@ class Client(Agent):
         await self.rpc_consume()
 
     async def rpc(self, function, **kwargs):
+        """Invoke an RPC on the management exchange
+
+        Args:
+            function:
+                Name of the RPC to invoke
+            kwargs:
+                Additional arguments are forwarded to :meth:`Agent.rpc`.
+
+                :code:`exchange`, :code:`routing_key`, and :code:`cleanup_on_response`
+                are not allowed in :code:`kwargs`.
+
+                Note:
+                    Argument names are required to be in :literal:`"javaScriptSnakeCase"`.
+
+        Raises:
+            PublishError: if the RPC could not be published
+            RPCError: if the remote returns an error
+        """
         logger.debug("Waiting for management connection to be reestablished...")
         await self._management_connection_watchdog.established()
-        try:
-            return await super().rpc(
-                function=function,
-                exchange=self._management_exchange,
-                routing_key=function,
-                cleanup_on_response=True,
-                **kwargs,
-            )
-        except RpcRequestError as e:
-            raise ManagementRpcPublishError(
-                f"Failed to send management RPC request {function!r}"
-            ) from e
+        return await super().rpc(
+            function=function,
+            exchange=self._management_exchange,
+            routing_key=function,
+            cleanup_on_response=True,
+            **kwargs,
+        )
 
     @rpc_handler("discover")
     async def _on_discover(self, **kwargs):
@@ -92,14 +136,20 @@ class Client(Agent):
         now = Timestamp.now()
         uptime: int = (now - self.starting_time).ns
 
-        return {
+        response = {
             "alive": True,
             "currentTime": now.datetime.isoformat(),
             "startingTime": self.starting_time.datetime.isoformat(),
             "uptime": uptime,
             "metricqVersion": f"metricq-python/{__version__}",
+            "pythonVersion": f"{sys_version.major}.{sys_version.minor}.{sys_version.micro}",
             "hostname": gethostname(),
         }
+
+        if self._client_version is not None:
+            response["version"] = self._client_version
+
+        return response
 
     async def get_metrics(
         self,
@@ -110,18 +160,35 @@ class Client(Agent):
         prefix: Optional[str] = None,
         infix: Optional[str] = None,
         limit: Optional[int] = None,
-    ) -> Union[Sequence[str], Sequence[dict]]:
+    ) -> _GetMetricsResult:
+        """Retrieve information for metrics matching a selector pattern.
+
+        Args:
+            selector:
+                Either:
+
+                * a regex matching parts of the metric name
+                * a sequence of metric names
+            historic:
+                Only include metrics with the :literal:`historic` flag set.
+            metadata:
+                If true, include metric metadata in the response.
+            timeout:
+                Operation timeout in seconds.
+            prefix:
+                Filter results by prefix on the key.
+            infix:
+                Filter results by infix on the key.
+            limit:
+                Maximum number of matches to return.
+
+        Returns:
+            *
+                a dictionary mapping matching metric names to their
+                :ref:`metadata<metric-metadata>` (if :code:`metadata=True`)
+            * otherwise, a sequence of matching metric names
         """
-        :param selector: regex for partial matching the metric name or sequence of possible metric names
-        :param historic: filter by historic flag
-        :param metadata: if true, metadata is included in response
-        :param timeout: timeout for the RPC in seconds
-        :param prefix: filter results by prefix on the key
-        :param infix: filter results by infix on the key
-        :param limit: limit the number of results to return
-        :return: either a {name: metadata} dict (metadata=True) or a list of metric names (metadata=False)
-        """
-        arguments = {"format": "object" if metadata else "array"}
+        arguments: Dict[str, Any] = {"format": "object" if metadata else "array"}
         if selector is not None:
             arguments["selector"] = selector
         if timeout is not None:

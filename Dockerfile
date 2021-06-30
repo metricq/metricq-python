@@ -3,7 +3,7 @@ LABEL maintainer="mario.bielert@tu-dresden.de"
 
 RUN useradd -m metricq
 RUN pip install virtualenv
-RUN apt-get update && apt-get install -y protobuf-compiler
+RUN apt-get update && apt-get install -y protobuf-compiler build-essential
 
 USER metricq
 COPY --chown=metricq:metricq . /home/metricq/metricq
