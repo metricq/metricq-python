@@ -30,6 +30,7 @@ from typing import List, Union
 
 from .client import Client
 from .logging import get_logger
+from .drain import Drain
 
 logger = get_logger(__name__)
 
@@ -49,6 +50,9 @@ class Subscriber(Client):
         self._metrics = metrics
         self._timeout = connection_timeout
 
+        self._args = args
+        self._kwargs = kwargs
+
     async def connect(self, **kwargs):
         await super().connect()
 
@@ -56,3 +60,21 @@ class Subscriber(Client):
 
         self.queue = response["dataQueue"]
         await self.stop()
+
+    async def simple_drain(self):
+        async with Drain(
+            *self._args,
+            **self._kwargs,
+            queue=self.queue,
+            metrics=self._metrics
+        ) as drain:
+            async for metric, time, value in drain:
+                yield metric, time, value
+
+                
+    async def __aenter__(self):
+        await self.connect()
+        return self
+
+    async def __aexit__(self, *args, **kwargs):
+        pass

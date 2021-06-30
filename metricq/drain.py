@@ -33,6 +33,7 @@ import aio_pika
 from .logging import get_logger
 from .sink import Sink
 from .types import Timestamp
+from asyncio import Queue
 
 logger = get_logger(__name__)
 
@@ -49,9 +50,7 @@ class Drain(Sink):
         self._queue = queue
         self._metrics = metrics
 
-        self.data: dict[str, tuple] = {}
-        for m in self._metrics:
-            self.data[m] = []
+        self._data: Queue[tuple] = Queue()
 
     async def connect(self):
         await super().connect()
@@ -71,15 +70,27 @@ class Drain(Sink):
                 logger.debug("received end message")
                 await self.rpc("sink.release", dataQueue=self._queue)
                 asyncio.create_task(self.stop())
+                self._data.put_nowait(())
                 return
 
         await super()._on_data_message(message)
 
     async def on_data(self, metric: str, time: Timestamp, value):
-        self.data[metric].append((time, value))
+        await self._data.put((metric, time, value))
 
     async def __aenter__(self):
         await self.connect()
+        return self
 
-    async def __aexit__(self):
+    async def __aexit__(self, *args, **kwargs):
         await self.stopped()
+
+    def __aiter__(self):
+        return self
+
+    async def __anext__(self):
+        try:
+            metric, time, value = await self._data.get()
+        except ValueError:
+            raise StopAsyncIteration()
+        return metric, time, value
