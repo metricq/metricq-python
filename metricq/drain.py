@@ -38,7 +38,7 @@ from asyncio import Queue
 logger = get_logger(__name__)
 
 class Drain(Sink):
-    def __init__(self, *args, queue, metrics=[], **kwargs):
+    def __init__(self, *args, queue:str, metrics:list[str]=[], **kwargs):
         super().__init__(*args, add_uuid=True, **kwargs)
         if len(queue) == 0:
             raise ValueError("Queue must not be empty")
