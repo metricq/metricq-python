@@ -44,6 +44,13 @@ class Subscriber(Client):
         connection_timeout: Union[int, float] = 60,
         **kwargs,
     ):
+        """Subscribes to a list of metrics and
+
+        Args:
+            add_uuid (bool, optional): If true, it will add a uuid. Defaults to True.
+            metrics (List[str], optional): List of metrics that you want to subscribe to. Defaults to [].
+            connection_timeout (Union[int, float], optional): Request timeout time. Defaults to 60.
+        """
         super().__init__(
             *args, add_uuid=add_uuid, connection_timeout=connection_timeout, **kwargs
         )
@@ -64,6 +71,11 @@ class Subscriber(Client):
         return self.queue
 
     async def simple_drain(self):
+        """Returns the incoming data.
+
+        Yields:
+            tuple[str, Timestamp, float]: Tuple of the Metric, Timestamp and the Value
+        """
         async with Drain(
             *self._args,
             **self._kwargs,
