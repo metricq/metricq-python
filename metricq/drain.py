@@ -65,13 +65,13 @@ class Drain(Sink):
                 logger.debug("received end message")
                 await self.rpc("sink.release", dataQueue=self._queue)
                 asyncio.create_task(self.stop())
-                self._data.put_nowait(())
+                await self._data.put(())
                 return
 
         await super()._on_data_message(message)
 
     async def on_data(self, metric: str, time: Timestamp, value):
-        await self._data.put((metric, time, value))
+        self._data.put_nowait((metric, time, value))
 
     async def __aenter__(self):
         await self.connect()
