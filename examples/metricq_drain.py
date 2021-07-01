@@ -42,7 +42,7 @@ async def source():
 
         counter = 0
         async for metric, time, value in subscription.simple_drain():
-            print(str(counter) + " " + str(time) + " " + str(value))
+            print(str(metric) + " " + str(time) + " " + str(value))
             counter += 1
 
         print("done: " + str(counter) + " data points received")
