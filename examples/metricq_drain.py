@@ -36,12 +36,13 @@ from metricq.subscriber import Subscriber
 async def source():
     async with Subscriber(
         "example", "amqp://admin:admin@localhost", metrics=["dummy.source"]
-    ) as subscriber:
+    ) as subscription:
 
         await asyncio.sleep(10)
 
         counter = 0
-        async for metric, time, value in subscriber.simple_drain():
+        async for metric, time, value in subscription.simple_drain():
+            print(str(counter) + " " + str(time) + " " + str(value))
             counter += 1
 
         print("done: " + str(counter) + " data points received")
