@@ -71,7 +71,7 @@ class Subscriber(Client):
         return self.queue
 
     async def simple_drain(self):
-        """Returns the incoming data.
+        """Uses a fully configured Drain to return the incoming data.
 
         Yields:
             tuple[str, Timestamp, float]: Tuple of the Metric, Timestamp and the Value
