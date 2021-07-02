@@ -29,7 +29,6 @@
 
 import asyncio
 
-from metricq.drain import Drain
 from metricq.subscriber import Subscriber
 
 
