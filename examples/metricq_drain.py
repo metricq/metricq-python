@@ -40,9 +40,10 @@ async def source():
         await asyncio.sleep(10)
 
         counter = 0
-        async for metric, time, value in subscription.simple_drain():
-            print(str(metric) + " " + str(time) + " " + str(value))
-            counter += 1
+        with subscription.drain() as drain:
+            async for metric, time, value in drain:
+                print(str(metric) + " " + str(time) + " " + str(value))
+                counter += 1
 
         print("done: " + str(counter) + " data points received")
 
