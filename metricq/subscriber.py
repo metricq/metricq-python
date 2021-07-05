@@ -88,5 +88,6 @@ class Subscriber(Client):
         await self.connect()
         return self
 
-    async def __aexit__(self, *args, **kwargs):
-        pass
+    async def __aexit__(self, exc_type, exc_value, exc_traceback):
+        if exc_type is not None:
+            raise exc_value

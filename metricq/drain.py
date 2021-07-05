@@ -78,8 +78,10 @@ class Drain(Sink):
         await self.connect()
         return self
 
-    async def __aexit__(self, *args, **kwargs):
+    async def __aexit__(self, exc_type, exc_value, exc_traceback):
         await self.stopped()
+        if exc_type is not None:
+            raise exc_value
 
     def __aiter__(self):
         return self
