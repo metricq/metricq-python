@@ -40,7 +40,7 @@ class Subscription(Client):
         self,
         *args,
         add_uuid=True,
-        metrics: List[str] = [],
+        metrics: List[str],
         connection_timeout: Union[int, float] = 60,
         **kwargs,
     ):
