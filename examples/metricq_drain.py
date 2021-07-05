@@ -29,11 +29,11 @@
 
 import asyncio
 
-from metricq.subscriber import Subscriber
+from metricq.subscription import Subscription
 
 
 async def source():
-    async with Subscriber(
+    async with Subscription(
         "example", "amqp://admin:admin@localhost", metrics=["dummy.source"]
     ) as subscription:
 

@@ -35,7 +35,7 @@ from .drain import Drain
 logger = get_logger(__name__)
 
 
-class Subscriber(Client):
+class Subscription(Client):
     def __init__(
         self,
         *args,
