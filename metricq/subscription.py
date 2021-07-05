@@ -41,7 +41,6 @@ class Subscription(Client):
         *args,
         add_uuid=True,
         metrics: List[str],
-        connection_timeout: Union[int, float] = 60,
         **kwargs,
     ):
         """Subscribes to a list of metrics and
@@ -52,10 +51,9 @@ class Subscription(Client):
             connection_timeout (Union[int, float], optional): Request timeout time. Defaults to 60.
         """
         super().__init__(
-            *args, add_uuid=add_uuid, connection_timeout=connection_timeout, **kwargs
+            *args, add_uuid=add_uuid, **kwargs
         )
         self._metrics = metrics
-        self._timeout = connection_timeout
 
         self._args = args
         self._kwargs = kwargs
