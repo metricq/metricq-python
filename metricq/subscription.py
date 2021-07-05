@@ -71,10 +71,10 @@ class Subscription(Client):
         return self.queue
 
     async def drain(self):
-        """Uses a fully configured Drain to return the incoming data.
+        """Returns a fully configured instance of a Drain, by using the given settings used for the subscription.
 
-        Yields:
-            tuple[str, Timestamp, float]: Tuple of the Metric, Timestamp and the Value
+        Returns:
+            Drain: Fully configured instance of a Drain
         """
         return Drain(
             *self._args,

@@ -89,6 +89,8 @@ class Drain(Sink):
     async def __anext__(self):
         try:
             metric, time, value = await self._data.get()
-        except ValueError:
+        except ValueError: 
+            # Value Error is part of control flow
+            # -> raised on empty tuple at the end, inserted with the end message
             raise StopAsyncIteration()
         return metric, time, value
