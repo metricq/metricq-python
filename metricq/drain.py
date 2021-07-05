@@ -1,4 +1,4 @@
-# Copyright (c) 2020, ZIH, Technische Universitaet Dresden, Federal Republic of Germany
+# Copyright (c) 2021, ZIH, Technische Universitaet Dresden, Federal Republic of Germany
 #
 # All rights reserved.
 #
