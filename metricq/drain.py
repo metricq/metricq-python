@@ -72,7 +72,7 @@ class Drain(Sink):
         await super()._on_data_message(message)
 
     async def on_data(self, metric: str, time: Timestamp, value):
-        self._data.put_nowait((metric, time, value))
+        await self._data.put((metric, time, value))
 
     async def __aenter__(self):
         await self.connect()
