@@ -70,20 +70,18 @@ class Subscriber(Client):
 
         return self.queue
 
-    async def simple_drain(self):
+    async def drain(self):
         """Uses a fully configured Drain to return the incoming data.
 
         Yields:
             tuple[str, Timestamp, float]: Tuple of the Metric, Timestamp and the Value
         """
-        async with Drain(
+        return Drain(
             *self._args,
             **self._kwargs,
             queue=self.queue,
             metrics=self._metrics
-        ) as drain:
-            async for metric, time, value in drain:
-                yield metric, time, value
+        )
 
                 
     async def __aenter__(self):
