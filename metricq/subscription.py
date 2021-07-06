@@ -26,7 +26,7 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from typing import List, Union
+from typing import List
 
 from .client import Client
 from .logging import get_logger
@@ -82,8 +82,7 @@ class Subscription(Client):
             queue=self.queue,
             metrics=self._metrics
         )
-
-                
+      
     async def __aenter__(self):
         await self.connect()
         return self

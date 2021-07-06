@@ -39,7 +39,7 @@ from asyncio import Queue
 logger = get_logger(__name__)
 
 class Drain(Sink):
-    def __init__(self, *args, queue:str, metrics:List[str], **kwargs):
+    def __init__(self, *args, queue: str, metrics: List[str], **kwargs):
         super().__init__(*args, add_uuid=True, **kwargs)
         if len(queue) == 0:
             raise ValueError("Queue must not be empty")
@@ -89,7 +89,7 @@ class Drain(Sink):
     async def __anext__(self):
         try:
             metric, time, value = await self._data.get()
-        except ValueError: 
+        except ValueError:
             # Value Error is part of control flow
             # -> raised on empty tuple at the end, inserted with the end message
             raise StopAsyncIteration()
