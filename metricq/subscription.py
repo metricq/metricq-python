@@ -68,15 +68,17 @@ class Subscription(Client):
 
         return self.queue
 
-    async def drain(self):
+    async def drain(self, **kwargs):
         """Returns a fully configured instance of a Drain, by using the given settings used for the subscription.
 
         Returns:
             Drain: Fully configured instance of a Drain
         """
+        new_kwargs = self._kwargs
+        new_kwargs.update(kwargs)
         return Drain(
             *self._args,
-            **self._kwargs,
+            **new_kwargs,
             queue=self.queue,
             metrics=self._metrics
         )
