@@ -40,7 +40,7 @@ async def source():
         await asyncio.sleep(10)
 
         counter = 0
-        async with await subscription.drain() as drain:
+        async with subscription.drain() as drain:
             async for metric, time, value in drain:
                 print(f"{metric} {time} {value}")
                 counter += 1
