@@ -89,5 +89,5 @@ class Subscription(Client):
         return self
 
     async def __aexit__(self, exc_type, exc_value, exc_traceback):
-        if exc_type is not None:
-            raise exc_value
+        if (exc_value is not None):
+            logger.error(f"Exception occured: {exc_value}")

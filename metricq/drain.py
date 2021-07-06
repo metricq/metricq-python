@@ -80,8 +80,8 @@ class Drain(Sink):
 
     async def __aexit__(self, exc_type, exc_value, exc_traceback):
         await self.stopped()
-        if exc_type is not None:
-            raise exc_value
+        if (exc_value is not None):
+            logger.error(f"Exception occured: {exc_value}")
 
     def __aiter__(self):
         return self
