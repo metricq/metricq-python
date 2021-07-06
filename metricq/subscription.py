@@ -50,9 +50,7 @@ class Subscription(Client):
             metrics (List[str], optional): List of metrics that you want to subscribe to. Defaults to [].
             connection_timeout (Union[int, float], optional): Request timeout time. Defaults to 60.
         """
-        super().__init__(
-            *args, add_uuid=add_uuid, **kwargs
-        )
+        super().__init__(*args, add_uuid=add_uuid, **kwargs)
         self._metrics = metrics
 
         self._args = args
@@ -76,17 +74,12 @@ class Subscription(Client):
         """
         new_kwargs = self._kwargs
         new_kwargs.update(kwargs)
-        return Drain(
-            *self._args,
-            **new_kwargs,
-            queue=self.queue,
-            metrics=self._metrics
-        )
+        return Drain(*self._args, **new_kwargs, queue=self.queue, metrics=self._metrics)
 
     async def __aenter__(self):
         await self.connect()
         return self
 
     async def __aexit__(self, exc_type, exc_value, exc_traceback):
-        if (exc_value is not None):
+        if exc_value is not None:
             logger.error(f"Exception occured: {exc_value}")

@@ -40,7 +40,6 @@ logger = get_logger(__name__)
 
 
 class Drain(Sink):
-
     def __init__(self, *args, queue: str, metrics: List[str], **kwargs):
         super().__init__(*args, add_uuid=True, **kwargs)
         if len(queue) == 0:
@@ -82,7 +81,7 @@ class Drain(Sink):
 
     async def __aexit__(self, exc_type, exc_value, exc_traceback):
         await self.stopped()
-        if (exc_value is not None):
+        if exc_value is not None:
             logger.error(f"Exception occured: {exc_value}")
 
     def __aiter__(self):
