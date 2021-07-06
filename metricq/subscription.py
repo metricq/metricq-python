@@ -29,8 +29,8 @@
 from typing import List
 
 from .client import Client
-from .logging import get_logger
 from .drain import Drain
+from .logging import get_logger
 
 logger = get_logger(__name__)
 

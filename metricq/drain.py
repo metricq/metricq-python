@@ -27,6 +27,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import asyncio
+from asyncio import Queue
 from typing import List
 
 import aio_pika
@@ -34,7 +35,6 @@ import aio_pika
 from .logging import get_logger
 from .sink import Sink
 from .types import Timestamp
-from asyncio import Queue
 
 logger = get_logger(__name__)
 
