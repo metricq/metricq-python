@@ -82,7 +82,7 @@ class Subscription(Client):
             queue=self.queue,
             metrics=self._metrics
         )
-      
+
     async def __aenter__(self):
         await self.connect()
         return self
