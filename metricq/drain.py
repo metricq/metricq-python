@@ -65,7 +65,7 @@ class Drain(Sink):
     async def _on_data_message(self, message: aio_pika.IncomingMessage):
 
         if message.type == "end":
-            with message.process():
+            async with message.process():
                 logger.debug("received end message")
                 await self.rpc("sink.release", dataQueue=self._queue)
                 asyncio.create_task(self.stop())
