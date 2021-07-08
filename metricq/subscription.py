@@ -50,6 +50,9 @@ class Subscription(Client):
             metrics (List[str], optional): List of metrics that you want to subscribe to. Defaults to [].
             connection_timeout (Union[int, float], optional): Request timeout time. Defaults to 60.
         """
+        if not metrics:
+            raise ValueError("Metrics list must not be empty")
+
         super().__init__(*args, add_uuid=add_uuid, **kwargs)
         self._metrics = metrics
 
