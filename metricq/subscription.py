@@ -64,8 +64,6 @@ class Subscription(Client):
         self.queue = response["dataQueue"]
         await self.stop()
 
-        return self.queue
-
     def drain(self, **kwargs):
         """Returns a fully configured instance of a Drain, by using the given settings used for the subscription.
 
