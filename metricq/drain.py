@@ -42,6 +42,8 @@ logger = get_logger(__name__)
 class Drain(Sink):
     def __init__(self, *args, queue: str, metrics: List[str], **kwargs):
         super().__init__(*args, add_uuid=True, **kwargs)
+        if not metrics:
+            raise ValueError("Metrics list must not be empty")
         if not queue:
             raise ValueError("Queue must not be empty")
         self._queue = queue

@@ -184,7 +184,7 @@ class Sink(DataClient):
             await self._on_data_chunk(metric, data_response)
 
     async def _on_data_chunk(self, metric, data_chunk: DataChunk):
-        """ Only override this if absolutely necessary for performance """
+        """Only override this if absolutely necessary for performance"""
         last_timed = 0
         zipped_tv = zip(data_chunk.time_delta, data_chunk.value)
         for time_delta, value in zipped_tv:
