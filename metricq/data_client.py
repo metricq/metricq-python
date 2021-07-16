@@ -80,7 +80,10 @@ class DataClient(Client):
                 URL(dataServerAddress).with_password("***"),
             )
             self.data_server_address = dataServerAddress
-            self.data_connection = await self.make_connection(self.data_server_address)
+            self.data_connection = await self.make_connection(
+                self.data_server_address,
+                connection_name="data connection {}".format(self.token),
+            )
 
             self.data_connection.add_close_callback(self._on_data_connection_close)
             self.data_connection.add_reconnect_callback(

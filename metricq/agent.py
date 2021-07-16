@@ -141,7 +141,7 @@ class Agent(RPCDispatcher):
         assert self._event_loop is None
         self._event_loop = loop
 
-    async def make_connection(self, url):
+    async def make_connection(self, url, connection_name=None):
         if url.startswith("amqps"):
             ssl_options = {
                 "cert_reqs": ssl.CERT_REQUIRED,
@@ -150,8 +150,19 @@ class Agent(RPCDispatcher):
         else:
             ssl_options = None
 
+        client_properties = None
+        if connection_name:
+            # TODO remove outer client_properties with aiormq >= 5.1.1
+            client_properties = {
+                "client_properties": {"connection_name": connection_name}
+            }
+
         connection = await aio_pika.connect_robust(
-            url, loop=self.event_loop, reconnect_interval=30, ssl_options=ssl_options
+            url,
+            loop=self.event_loop,
+            reconnect_interval=30,
+            ssl_options=ssl_options,
+            client_properties=client_properties,
         )
 
         # How stupid that we can't easily add the handlers *before* actually connecting.
@@ -168,7 +179,10 @@ class Agent(RPCDispatcher):
             URL(self._management_url).with_password("***"),
         )
 
-        self._management_connection = await self.make_connection(self._management_url)
+        self._management_connection = await self.make_connection(
+            self._management_url,
+            connection_name="management connection {}".format(self.token),
+        )
         self._management_connection.add_close_callback(
             self._on_management_connection_close
         )
