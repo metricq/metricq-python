@@ -234,6 +234,8 @@ class ProtoDevelop(develop):
 # For all other setuptools options, see setup.cfg
 setup(
     install_requires=[
+        # TODO remove outer client_properties in metricq.agent.Agent.make_connection with aiormq >= 5.1.1, which might
+        #  be available with the next aio-pika release
         "aio-pika~=6.7, >=6.7.1",
         get_protobuf_requirement(),
         "python-dateutil ~= 2.8, >=2.8.1",

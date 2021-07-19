@@ -331,7 +331,10 @@ class HistoryClient(Client):
         logger.debug("register response: {}", response)
 
         self.data_server_address = self.derive_address(response["dataServerAddress"])
-        self.history_connection = await self.make_connection(self.data_server_address)
+        self.history_connection = await self.make_connection(
+            self.data_server_address,
+            connection_name="history connection {}".format(self.token),
+        )
         self.history_channel = await self.history_connection.channel()
         self.history_exchange = await self.history_channel.declare_exchange(
             name=response["historyExchange"], passive=True
