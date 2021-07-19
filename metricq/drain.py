@@ -27,7 +27,6 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import asyncio
-from asyncio import Queue
 from typing import List
 
 import aio_pika
@@ -49,7 +48,7 @@ class Drain(Sink):
         self._queue = queue
         self._metrics = metrics
 
-        self._data: Queue[tuple] = Queue()
+        self._data: asyncio.Queue[tuple] = asyncio.Queue()
 
     async def connect(self):
         await super().connect()

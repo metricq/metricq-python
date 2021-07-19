@@ -59,7 +59,7 @@ class Subscription(Client):
         self._args = args
         self._kwargs = kwargs
 
-    async def connect(self, **kwargs):
+    async def connect(self, **kwargs) -> None:
         await super().connect()
 
         response = await self.rpc("sink.subscribe", metrics=self._metrics, **kwargs)
@@ -67,7 +67,7 @@ class Subscription(Client):
         self.queue = response["dataQueue"]
         await self.stop()
 
-    def drain(self, **kwargs):
+    def drain(self, **kwargs) -> Drain:
         """Returns a fully configured instance of a Drain, by using the given settings used for the subscription.
 
         Returns:
