@@ -9,7 +9,7 @@ maintenance overhead.
 
 In the following, we assume the project is called :literal:`metricq-example`, and all
 filesystem paths are relative to the project root directory (:file:`/path/to/metricq-example/`).
-The Python package build from this project is called :literal:`metricq_example`,
+The Python package built from this project is called :literal:`metricq-example`,
 and its source code lives in directory :file:`metricq_example`.
 
 
@@ -86,9 +86,9 @@ include a dummy :file:`setup.py`:
 .. note::
    Keep :file:`setup.cfg` the single source of truth for package metadata.
    Only add entries to :file:`setup.py` if they otherwise cannot be determined statically.
-   A notable exception to this is build-time dependency detection:
-   :literal:`metricq` itself must match the `PyPI`-version of :literal:`protobuf`
-   with the host-version of :literal:`protoc`.
+   For example, :literal:`metricq` has to determine its dependencies at build-time:
+   it must install a `PyPI`-provided version of :literal:`protobuf`
+   that is compatible with the host-installed version of the :literal:`protobuf`-compiler, :literal:`protoc`.
 
 
 Command line interfaces
@@ -147,8 +147,9 @@ Project versioning
 In order to be a good network citizen, any MetricQ client should provide a version string when asked.
 The single source of truth of a project's version should be its :code:`git` tags.
 Where possible, use a `semver`-compatible version scheme.
-Use :code:`setuptools_scm` as **build dependency** to create a version string that will automatically
-be added to the package metadata and is accessible to code at runtime:
+Use :code:`setuptools_scm` as a **build dependency** to create a version string
+that will automatically be added to the package metadata and is accessible to
+code at runtime:
 
 .. code-block:: toml
 
@@ -166,7 +167,7 @@ be added to the package metadata and is accessible to code at runtime:
     write_to = "metricq_example/version.py"
 
 
-On installation, this will create a file :file:`metricq_example/version.py` that
+On installation, this creates a file :file:`metricq_example/version.py` that
 includes variables :code:`version` (a :code:`str`) and :code:`version_tuple`
 with the parsed version information.
 Exclude this file from being tracked by :code:`git`:
@@ -186,7 +187,7 @@ This file *must* be included in the final package, so add it to the package mani
 ----
 
 The :code:`metricq` library will provide client information on request,
-but you will need to supply a version string.
+but you will need to supply a *client* version string.
 When building a client, declare an identifier :code:`__version__` *in the same
 module* as your client class to have it be picked up automatically by the
 :literal:`metricq` library:
