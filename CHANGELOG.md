@@ -15,7 +15,12 @@
 
 **Closed issues:**
 
+- Unify docstring style [\#71](https://github.com/metricq/metricq-python/issues/71)
 - Consider declaring queues as "auto-delete" for transient sinks [\#67](https://github.com/metricq/metricq-python/issues/67)
+
+**Merged pull requests:**
+
+- Unify docstrings to use Google style [\#113](https://github.com/metricq/metricq-python/pull/113) ([phijor](https://github.com/phijor))
 
 ## [v3.0.0](https://github.com/metricq/metricq-python/tree/v3.0.0) (2021-05-06)
 
