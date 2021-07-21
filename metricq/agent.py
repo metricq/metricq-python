@@ -38,7 +38,7 @@ import time
 import traceback
 import uuid
 from contextlib import suppress
-from typing import Callable, Dict, Optional, Tuple, Union
+from typing import Callable, Dict, Iterable, Optional, Tuple, Union
 
 import aio_pika
 from aio_pika.exceptions import ChannelInvalidStateError
@@ -200,24 +200,28 @@ class Agent(RPCDispatcher):
         self._management_connection_watchdog.set_established()
 
     def run(
-        self, catch_signals=("SIGINT", "SIGTERM"), cancel_on_exception=False
+        self,
+        catch_signals: Iterable[str] = ("SIGINT", "SIGTERM"),
+        cancel_on_exception=False,
     ) -> None:
-        """Run an Agent by calling :py:meth:`connect` and waiting for it to be stopped via :meth:`stop`.
+        """Run an Agent by calling :meth:`connect` and waiting for it to be stopped via :meth:`stop`.
 
-        If :py:meth:`connect` raises an exception, ConnectFailed is
+        If :meth:`connect` raises an exception, :exc:`.ConnectFailed` is
         raised, with the offending exception attached as a cause.  Any
-        exception passed to :py:meth:`stop` is reraised.
+        exception passed to :meth:`stop` is reraised.
 
-        :param catch_signals:
-            Call :py:meth:`on_signal` if any of theses signals were raised.
-        :type catch_signals: list[str]
-        :param bool cancel_on_exception:
-            Stop the running Agent when an unhandled exception occurs.  The
-            exception is reraised from this method.
+        Args:
+            catch_signals:
+                Call :meth:`on_signal` if any of theses signals were raised.
+            cancel_on_exception:
+                Stop the running Agent when an unhandled exception occurs.
+                The exception is reraised from this method.
 
-        :raises Exception:
-            Any exception passed to :py:meth:`stop`, or any exception raised by
-            :py:meth:`connect`.
+        Raises:
+            ConnectFailed:
+                Failed to :meth:`connect` to the MetricQ network.
+                The source exception is attached as a cause.
+            Exception: Any exception passed to :meth:`stop`.
         """
         self._cancel_on_exception = cancel_on_exception
         self.event_loop.set_exception_handler(self.on_exception)
@@ -284,6 +288,10 @@ class Agent(RPCDispatcher):
     ):
         """Invoke an RPC over the network.
 
+        .. warning::
+            This function is *not part of the public API*, but is included for reference.
+            Use :meth:`Client.rpc` instead.
+
         Args:
             function:
                 Name of the RPC to invoke
@@ -302,7 +310,7 @@ class Agent(RPCDispatcher):
                 If set, only the first response will be dispatched.
                 Must be :literal:`True` when no :code:`response_callback` is given.
             kwargs:
-                Any additional arguments that are forwarded as arguments to the RPC itsel.
+                Any additional arguments that are forwarded as arguments to the RPC itself.
 
                 Note:
                     Argument names are required to be in :literal:`"javaScriptSnakeCase"`.
@@ -311,12 +319,14 @@ class Agent(RPCDispatcher):
             :literal:`None` if :code:`response_callback` is given,
             otherwise a :class:`dict` containing the RPC response.
 
+        Raises:
+            PublishFailed: Failed to publish this RPC to the network.
+            RPCError: The remote returned an error.
+            TypeError: The :code:`function` keyword-only argument is missing.
+            TypeError: :code:`response_callback` is None but :code:`cleanup_on_response=True`
+            ValueError: The routing key is longer than 255 bytes
+
         :meta private:
-        :raises PublishError: if the RPC fails to be published
-        :raises RPCError: if the remote returns an error
-        :raises TypeError: if the :code:`function` keyword-only argument is missing
-        :raises TypeError: if :code:`response_callback is None and cleanup_on_response=True`
-        :raises ValueError: if the routing key is longer than 255 bytes
         """
         function = kwargs.get("function")
         if function is None:
@@ -419,11 +429,14 @@ class Agent(RPCDispatcher):
             loop=self.event_loop,
         )
 
-    def on_signal(self, signal):
+    def on_signal(self, signal: str):
         """Callback invoked when a signal is received.
 
         Override this method for custom signal handling.
         By default it schedules the Client to stop by calling :meth:`stop`.
+
+        Args:
+            signal: Name of the signal that occurred, e.g. :code:`"SIGTERM"`, :code:`"SIGINT"`, etc.
         """
         logger.info("Received signal {}, stopping...", signal)
         self._schedule_stop(
@@ -466,10 +479,11 @@ class Agent(RPCDispatcher):
     async def stop(self, exception: Optional[Exception] = None):
         """Stop a running Agent.
 
-        :param exception:
-            An optional exception that will be raised by :py:meth:`run` if given.
-            If the Agent was not started from :py:meth:`run`, see :py:meth:`stopped`
-            how to retrieve this exception.
+        Args:
+            exception:
+                An optional exception that will be raised by :meth:`run` if given.
+                If the Agent was not started from :meth:`run`, see :meth:`stopped`
+                how to retrieve this exception.
         """
         if self._stop_in_progress:
             logger.debug("Stop in progress! ({})", exception)
@@ -501,10 +515,11 @@ class Agent(RPCDispatcher):
 
         If the agent stopped unexpectedly, this method raises an exception.
 
-        :raises AgentStoppedError:
-            if the Agent was stopped via :meth:`stop` and an exception was passed
-        :raises Exception:
-            if the Agent encountered any other unhandled exception
+        Raises:
+            AgentStopped:
+                The Agent was stopped via :meth:`stop` and an exception was passed.
+            Exception:
+                The Agent encountered any other unhandled exception.
         """
         if self._stop_future is None:
             self._stop_future = self.event_loop.create_future()
@@ -526,10 +541,13 @@ class Agent(RPCDispatcher):
         return "metricq-rpc-py-{}-{}".format(self.token, uuid.uuid4().hex)
 
     async def _on_management_message(self, message: aio_pika.IncomingMessage):
-        """
-        :param message: This is either an RPC or an RPC response
+        """Callback invoked when a message is received.
 
-        :raises PublishError: if the reply could not be published
+        Args:
+            message: Either an RPC request or an RPC response.
+
+        Raises:
+            PublishError: The reply could not be published.
         """
         assert self._management_channel is not None
         assert self._management_channel.default_exchange is not None

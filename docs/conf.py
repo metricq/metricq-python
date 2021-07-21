@@ -43,6 +43,7 @@ extensions = [
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
     "dateutil": ("https://dateutil.readthedocs.io/en/stable/", None),
+    "aio_pika": ("https://aio-pika.readthedocs.io/en/latest/", None),
 }
 
 # See https://icb-scanpydoc.readthedocs-hosted.com/en/latest/scanpydoc.elegant_typehints.html
@@ -56,6 +57,7 @@ qualname_overrides = {
     "metricq.types.Timestamp": "metricq.Timestamp",
     "metricq.types.TimeValue": "metricq.TimeValue",
     "metricq.types.TimeAggregate": "metricq.TimeAggregate",
+    "aio_pika.exchange.Exchange": "aio_pika.Exchange",
 }
 
 # Add any paths that contain templates here, relative to this directory.

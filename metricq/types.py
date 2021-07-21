@@ -333,6 +333,7 @@ class Timedelta:
         return Timedelta(int(self._value / factor))
 
     def __mul__(self, factor: float) -> "Timedelta":
+        """Scale a duration by a :class:`float` factor."""
         return Timedelta(int(self._value * factor))
 
     def __str__(self):
