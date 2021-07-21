@@ -57,8 +57,7 @@ class DataClient(Client):
         )
 
     async def data_config(self, dataServerAddress, **kwargs):
-        """
-        This method is a registered RPC handler, do not call this in child classes.
+        """This method is a registered RPC handler, do not call this in child classes.
 
         :meta private:
         """

@@ -20,15 +20,14 @@ class ConnectionWatchdog:
         established/closed events.  Use :py:meth:`start` to start the
         connection watchdog.
 
-        :param on_timeout_callback:
-            Function called when the connection failed to reconnect before the
-            timeout occurs.
-        :param timeout: Union[int, float]
-            Time duration given until the connection is considered to have
-            failed to reconnect.  Use :py:meth:`set_established` to signal
-            reconnection.
-        :param connection_name: str
-            Human readable name of the connection, used in log messages.
+        Args:
+            on_timeout_callback:
+                Function called when the connection failed to reconnect before the timeout occurs.
+            timeout:
+                Time duration given until the connection is considered to have failed to reconnect.
+                Use :meth:`set_established` to signal reconnection.
+            connection_name:
+                Human readable name of the connection, used in log messages.
         """
         self.connection_name = connection_name
         self.timeout = timeout
@@ -94,9 +93,9 @@ class ConnectionWatchdog:
         self._established_event.set()
 
     def set_closed(self):
-        """Signal that the connection has been closed.
-        Note: Can be called when the watchdog is already stopped, so we need to check here
-        """
+        """Signal that the connection has been closed."""
+
+        # Might be called when the watchdog is already stopped, so we need to check here.
         if self._closed_event is None:
             return
         self._established_event.clear()
