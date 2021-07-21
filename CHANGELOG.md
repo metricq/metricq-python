@@ -4,6 +4,11 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v3.0.0...HEAD)
 
+**Implemented enhancements:**
+
+- feat: add a connection name for better identification in the management UI [\#110](https://github.com/metricq/metricq-python/pull/110) ([kinnarr](https://github.com/kinnarr))
+- feat: add required py.typed file to support typing when used as library [\#105](https://github.com/metricq/metricq-python/pull/105) ([kinnarr](https://github.com/kinnarr))
+
 **Fixed bugs:**
 
 - Protobuf dependency pip thingy? [\#26](https://github.com/metricq/metricq-python/issues/26)
@@ -11,10 +16,6 @@
 **Closed issues:**
 
 - Consider declaring queues as "auto-delete" for transient sinks [\#67](https://github.com/metricq/metricq-python/issues/67)
-
-**Merged pull requests:**
-
-- feat: add a connection name for better identification in the management UI [\#110](https://github.com/metricq/metricq-python/pull/110) ([kinnarr](https://github.com/kinnarr))
 
 ## [v3.0.0](https://github.com/metricq/metricq-python/tree/v3.0.0) (2021-05-06)
 
