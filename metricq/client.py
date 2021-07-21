@@ -160,6 +160,7 @@ class Client(Agent):
         prefix: Optional[str] = None,
         infix: Optional[str] = None,
         limit: Optional[int] = None,
+        hidden: Optional[bool] = None,
     ) -> _GetMetricsResult:
         """Retrieve information for metrics matching a selector pattern.
 
@@ -181,6 +182,9 @@ class Client(Agent):
                 Filter results by infix on the key.
             limit:
                 Maximum number of matches to return.
+            hidden:
+                Only include metrics where :literal:`hidden` is :literal:`True`/:literal:`False`. If not set return all
+                matching metrics.
 
         Returns:
             *
@@ -201,6 +205,8 @@ class Client(Agent):
             arguments["infix"] = infix
         if limit is not None:
             arguments["limit"] = limit
+        if hidden is not None:
+            arguments["hidden"] = hidden
 
         # Note: checks are done in the manager (e.g. must not have prefix and historic/selector at the same time)
 
