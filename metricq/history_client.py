@@ -162,10 +162,10 @@ class HistoryResponse:
         This determines the behavior of :meth:`aggregates` and :meth:`values`:
 
         :attr:`mode` is :attr:`~HistoryResponseType.VALUES`:
-            :meth:`values` will return a iterator of :class:`TimeValue`.
+            :meth:`values` will return a iterator of :class:`~metricq.TimeValue`.
             :meth:`aggregates` will fail with :exc:`ValueError`, except if called with :code:`convert=True`.
         :attr:`mode` is :attr:`~HistoryResponseType.AGGREGATES`:
-            :meth:`aggregates` will return a iterator of :class:`TimeAggregate`.
+            :meth:`aggregates` will return a iterator of :class:`~metricq.TimeAggregate`.
             :meth:`values` will fail with :exc:`ValueError`, except if called with :code:`convert=True`.
         :attr:`mode` is :attr:`~HistoryResponseType.EMPTY`:
             Both :meth:`values` and :meth:`aggregates` return an empty iterator.
@@ -245,7 +245,7 @@ class HistoryResponse:
         Raises:
             ValueError:
                 if :code:`convert=False` and the underlying response does not contain aggregates
-            NonMonotonicError:
+            NonMonotonicTimestamps:
                 if the underling data has mode :attr:`~HistoryResponseType.VALUES` and
                 timestamps are not strictly monotonically increasing
         """

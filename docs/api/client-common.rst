@@ -11,3 +11,9 @@ or :meth:`connect<Client.connect>` to the MetricQ network if you derive a custom
     :members:
     :inherited-members:
     :no-private-members:
+
+----
+
+The following method is not part of the public API, but is included for reference:
+
+.. automethod:: metricq.Agent.rpc

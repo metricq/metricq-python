@@ -108,7 +108,7 @@ This method gets called once our Source is connected and received its initial co
 
 .. note::
     The coroutine overriding :meth:`Source.task` is not restarted if it returned an exception.
-    Make sure to handle errors appropriately, such as :meth:`Source.send` raising :exc:`source.MetricSendError`.
+    Make sure to handle errors appropriately, such as :meth:`Source.send` raising :exc:`~exceptions.PublishFailed`.
 
 Improving constant-rate sources: using :class:`IntervalSource`
 --------------------------------------------------------------

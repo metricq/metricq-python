@@ -288,6 +288,10 @@ class Agent(RPCDispatcher):
     ):
         """Invoke an RPC over the network.
 
+        .. warning::
+            This function is *not part of the public API*, but is included for reference.
+            Use :meth:`Client.rpc` instead.
+
         Args:
             function:
                 Name of the RPC to invoke
@@ -306,7 +310,7 @@ class Agent(RPCDispatcher):
                 If set, only the first response will be dispatched.
                 Must be :literal:`True` when no :code:`response_callback` is given.
             kwargs:
-                Any additional arguments that are forwarded as arguments to the RPC itsel.
+                Any additional arguments that are forwarded as arguments to the RPC itself.
 
                 Note:
                     Argument names are required to be in :literal:`"javaScriptSnakeCase"`.
@@ -316,7 +320,7 @@ class Agent(RPCDispatcher):
             otherwise a :class:`dict` containing the RPC response.
 
         Raises:
-            PublishError: Failed to publish this RPC to the network.
+            PublishFailed: Failed to publish this RPC to the network.
             RPCError: The remote returned an error.
             TypeError: The :code:`function` keyword-only argument is missing.
             TypeError: :code:`response_callback` is None but :code:`cleanup_on_response=True`
@@ -512,7 +516,7 @@ class Agent(RPCDispatcher):
         If the agent stopped unexpectedly, this method raises an exception.
 
         Raises:
-            AgentStoppedError:
+            AgentStopped:
                 The Agent was stopped via :meth:`stop` and an exception was passed.
             Exception:
                 The Agent encountered any other unhandled exception.

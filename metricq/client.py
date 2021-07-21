@@ -117,7 +117,7 @@ class Client(Agent):
                     Argument names are required to be in :literal:`"javaScriptSnakeCase"`.
 
         Raises:
-            PublishError: if the RPC could not be published
+            PublishFailed: if the RPC could not be published
             RPCError: if the remote returns an error
         """
         logger.debug("Waiting for management connection to be reestablished...")
