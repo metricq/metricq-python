@@ -497,7 +497,7 @@ you need to convert the string to nanoseconds yourself.</p>
 </ul>
 </td>
 <td><p>The duration scaled by the factor <code class="code docutils literal notranslate"><span class="pre">c</span></code>, truncated to nanosecond precision
-See <code class="xref py py-meth docutils literal notranslate"><span class="pre">__mul__()</span></code>.</p></td>
+See <a class="reference internal" href="#metricq.Timedelta.__mul__" title="metricq.Timedelta.__mul__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__mul__()</span></code></a>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">d</span> <span class="pre">/</span> <span class="pre">c</span></code></p></td>
 <td><ul class="simple">
@@ -545,6 +545,17 @@ i.e. for some <code class="code docutils literal notranslate"><span class="pre">
 (i.e. <code class="code docutils literal notranslate"><span class="pre">3</span> <span class="pre">//</span> <span class="pre">0.2</span> <span class="pre">==</span> <span class="pre">14.0</span></code>).
 Use <a class="reference internal" href="#metricq.Timedelta.__truediv__" title="metricq.Timedelta.__truediv__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__truediv__()</span></code></a> if you want to scale a duration by a non-integer factor.</p>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span><span class="annotation full"><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="metricq.Timedelta.__mul__">
+<code class="sig-name descname"><span class="pre">__mul__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale a duration by a <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> factor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><span class="annotation terse"><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span><span class="annotation full"><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span></p>

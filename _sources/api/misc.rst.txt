@@ -17,6 +17,7 @@ Timedeltas (Durations)
     :members:
     :special-members:
         __str__,
+        __mul__,
         __truediv__,
         __floordiv__,
 

@@ -90,10 +90,10 @@ we gave them appropriate wrapper types that make it harder to accidentally misus
     '500ms'
 
 
-Deprecation of :attr:`TimeAggregate.integral`
+Deprecation of :code:`TimeAggregate.integral`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-:attr:`TimeAggregate.integral` returns the integral of values over the time
+The property :code:`TimeAggregate.integral` returned the integral of values over the time
 spanned by a :class:`TimeAggregate`.
 To reduce confusion over which time unit is used to integrate,
 we deprecated it and added :attr:`TimeAggregate.integral_s` and :attr:`TimeAggregate.integral_ns`

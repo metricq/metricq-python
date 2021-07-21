@@ -223,6 +223,14 @@ or <a class="reference internal" href="#metricq.Client.connect" title="metricq.C
 <dd><p>Callback invoked when a signal is received.</p>
 <p>Override this method for custom signal handling.
 By default it schedules the Client to stop by calling <a class="reference internal" href="#metricq.Client.stop" title="metricq.Client.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>signal</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Name of the signal that occurred, e.g. <code class="code docutils literal notranslate"><span class="pre">&quot;SIGTERM&quot;</span></code>, <code class="code docutils literal notranslate"><span class="pre">&quot;SIGINT&quot;</span></code>, etc.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -234,7 +242,7 @@ By default it schedules the Client to stop by calling <a class="reference intern
 <dd class="field-odd"><dl class="simple">
 <dt><strong>function</strong></dt><dd><p>Name of the RPC to invoke</p>
 </dd>
-<dt><strong>kwargs</strong></dt><dd><p><p>Additional arguments are forwarded to <code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.rpc()</span></code>.</p>
+<dt><strong>kwargs</strong></dt><dd><p><p>Additional arguments are forwarded to <a class="reference internal" href="#metricq.Agent.rpc" title="metricq.Agent.rpc"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.rpc()</span></code></a>.</p>
 <p><code class="code docutils literal notranslate"><span class="pre">exchange</span></code>, <code class="code docutils literal notranslate"><span class="pre">routing_key</span></code>, and <code class="code docutils literal notranslate"><span class="pre">cleanup_on_response</span></code>
 are not allowed in <code class="code docutils literal notranslate"><span class="pre">kwargs</span></code>.</p>
 <div class="admonition note">
@@ -247,7 +255,7 @@ are not allowed in <code class="code docutils literal notranslate"><span class="
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>PublishError</strong> – if the RPC could not be published</p></li>
+<li><p><a class="reference internal" href="exceptions.html#metricq.exceptions.PublishFailed" title="metricq.exceptions.PublishFailed"><strong>PublishFailed</strong></a> – if the RPC could not be published</p></li>
 <li><p><a class="reference internal" href="exceptions.html#metricq.exceptions.RPCError" title="metricq.exceptions.RPCError"><strong>RPCError</strong></a> – if the remote returns an error</p></li>
 </ul>
 </dd>
@@ -258,22 +266,25 @@ are not allowed in <code class="code docutils literal notranslate"><span class="
 <dt id="metricq.Client.run">
 <code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catch_signals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('SIGINT',</span> <span class="pre">'SIGTERM')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancel_on_exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Client.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run an Agent by calling <a class="reference internal" href="#metricq.Client.connect" title="metricq.Client.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> and waiting for it to be stopped via <a class="reference internal" href="#metricq.Client.stop" title="metricq.Client.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>.</p>
-<p>If <a class="reference internal" href="#metricq.Client.connect" title="metricq.Client.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> raises an exception, ConnectFailed is
+<p>If <a class="reference internal" href="#metricq.Client.connect" title="metricq.Client.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> raises an exception, <a class="reference internal" href="exceptions.html#metricq.exceptions.ConnectFailed" title="metricq.exceptions.ConnectFailed"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ConnectFailed</span></code></a> is
 raised, with the offending exception attached as a cause.  Any
 exception passed to <a class="reference internal" href="#metricq.Client.stop" title="metricq.Client.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a> is reraised.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>catch_signals</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em></dt><dd><p>Call <a class="reference internal" href="#metricq.Client.on_signal" title="metricq.Client.on_signal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on_signal()</span></code></a> if any of theses signals were raised.</p>
+<dt><strong>catch_signals</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span> (default: <code class="docutils literal notranslate"><span class="pre">('SIGINT',</span> <span class="pre">'SIGTERM')</span></code>)</dt><dd><p>Call <a class="reference internal" href="#metricq.Client.on_signal" title="metricq.Client.on_signal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on_signal()</span></code></a> if any of theses signals were raised.</p>
 </dd>
-<dt><strong>cancel_on_exception</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a></dt><dd><p>Stop the running Agent when an unhandled exception occurs.  The
-exception is reraised from this method.</p>
+<dt><strong>cancel_on_exception</strong></dt><dd><p>Stop the running Agent when an unhandled exception occurs.
+The exception is reraised from this method.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><strong>Exception</strong></a> – Any exception passed to <a class="reference internal" href="#metricq.Client.stop" title="metricq.Client.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>, or any exception raised by
-<a class="reference internal" href="#metricq.Client.connect" title="metricq.Client.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a>.</p>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="exceptions.html#metricq.exceptions.ConnectFailed" title="metricq.exceptions.ConnectFailed"><strong>ConnectFailed</strong></a> – Failed to <a class="reference internal" href="#metricq.Client.connect" title="metricq.Client.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> to the MetricQ network.
+    The source exception is attached as a cause.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><strong>Exception</strong></a> – Any exception passed to <a class="reference internal" href="#metricq.Client.stop" title="metricq.Client.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>.</p></li>
+</ul>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
@@ -305,13 +316,68 @@ how to retrieve this exception.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>AgentStoppedError</strong> – if the Agent was stopped via <a class="reference internal" href="#metricq.Client.stop" title="metricq.Client.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a> and an exception was passed</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><strong>Exception</strong></a> – if the Agent encountered any other unhandled exception</p></li>
+<li><p><a class="reference internal" href="exceptions.html#metricq.exceptions.AgentStopped" title="metricq.exceptions.AgentStopped"><strong>AgentStopped</strong></a> – The Agent was stopped via <a class="reference internal" href="#metricq.Client.stop" title="metricq.Client.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a> and an exception was passed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.9)"><strong>Exception</strong></a> – The Agent encountered any other unhandled exception.</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<hr class="docutils" />
+<p>The following method is not part of the public API, but is included for reference:</p>
+<dl class="py method">
+<dt id="metricq.Agent.rpc">
+<em class="property"><span class="pre">await</span> </em><code class="sig-prename descclassname"><span class="pre">Agent.</span></code><code class="sig-name descname"><span class="pre">rpc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exchange</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">routing_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup_on_response</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Agent.rpc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoke an RPC over the network.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function is <em>not part of the public API</em>, but is included for reference.
+Use <a class="reference internal" href="#metricq.Client.rpc" title="metricq.Client.rpc"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Client.rpc()</span></code></a> instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>function</strong></dt><dd><p>Name of the RPC to invoke</p>
+</dd>
+<dt><strong>exchange</strong> : <span class="annotation terse"><a class="reference external" href="https://aio-pika.readthedocs.io/en/latest/apidoc.html#aio_pika.Exchange" title="(in aio-pika v6.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exchange</span></code></a></span><span class="annotation full"><a class="reference external" href="https://aio-pika.readthedocs.io/en/latest/apidoc.html#aio_pika.Exchange" title="(in aio-pika v6.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exchange</span></code></a></span></dt><dd><p>RabbitMQ exchange on which the request is published</p>
+</dd>
+<dt><strong>routing_key</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></dt><dd><p>Routing key must be at most 255 bytes (UTF-8)</p>
+</dd>
+<dt><strong>response_callback</strong></dt><dd><p><p>If given, this callable will be invoked with any response once it arrives.
+In this case, this function immediately returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>If omitted (or <code class="docutils literal notranslate"><span class="pre">None</span></code>), this function will wait for and return the first response instead.</p>
+</p>
+</dd>
+<dt><strong>timeout</strong></dt><dd><p>After the timeout, a response will not be dispatched to the handler.</p>
+</dd>
+<dt><strong>cleanup_on_response</strong></dt><dd><p>If set, only the first response will be dispatched.
+Must be <code class="docutils literal notranslate"><span class="pre">True</span></code> when no <code class="code docutils literal notranslate"><span class="pre">response_callback</span></code> is given.</p>
+</dd>
+<dt><strong>kwargs</strong></dt><dd><p><p>Any additional arguments that are forwarded as arguments to the RPC itself.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Argument names are required to be in <code class="docutils literal notranslate"><span class="pre">&quot;javaScriptSnakeCase&quot;</span></code>.</p>
+</div>
+</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code> if <code class="code docutils literal notranslate"><span class="pre">response_callback</span></code> is given,
+otherwise a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a> containing the RPC response.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="exceptions.html#metricq.exceptions.PublishFailed" title="metricq.exceptions.PublishFailed"><strong>PublishFailed</strong></a> – Failed to publish this RPC to the network.</p></li>
+<li><p><a class="reference internal" href="exceptions.html#metricq.exceptions.RPCError" title="metricq.exceptions.RPCError"><strong>RPCError</strong></a> – The remote returned an error.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – The <code class="code docutils literal notranslate"><span class="pre">function</span></code> keyword-only argument is missing.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <code class="code docutils literal notranslate"><span class="pre">response_callback</span></code> is None but <code class="code docutils literal notranslate"><span class="pre">cleanup_on_response=True</span></code></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – The routing key is longer than 255 bytes</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
