@@ -11,6 +11,7 @@
 
 **Fixed bugs:**
 
+- Timedelta properties missing in documentation [\#115](https://github.com/metricq/metricq-python/issues/115)
 - Protobuf dependency pip thingy? [\#26](https://github.com/metricq/metricq-python/issues/26)
 
 **Closed issues:**
@@ -20,6 +21,7 @@
 
 **Merged pull requests:**
 
+- feat: support new hidden parameter for get\_metrics RPC [\#114](https://github.com/metricq/metricq-python/pull/114) ([kinnarr](https://github.com/kinnarr))
 - Unify docstrings to use Google style [\#113](https://github.com/metricq/metricq-python/pull/113) ([phijor](https://github.com/phijor))
 
 ## [v3.0.0](https://github.com/metricq/metricq-python/tree/v3.0.0) (2021-05-06)
