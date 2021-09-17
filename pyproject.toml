@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=40.6.0", "wheel", "mypy-protobuf~=1.23"]
+requires = ["setuptools>=40.6.0", "wheel", "mypy-protobuf~=1.23", "six"]
 build-backend = 'setuptools.build_meta'
 
 [tool.black]
@@ -61,3 +61,6 @@ ignore = [
     "*_pb2.pyi",
     "**/_protobuf_version.py",
 ]
+
+[tool.mypy]
+exclude = 'setup.py|\.?.*env|conf.py|build'
