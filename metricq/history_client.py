@@ -730,11 +730,11 @@ class HistoryClient(Client):
                     self._history_connection_watchdog.set_established()
                 else:
                     logger.error(
-                        f"Resubscription failed with an unhandled exception: {exception}"
+                        f"Reregister failed with an unhandled exception: {exception}"
                     )
                     raise exception
             except CancelledError:
-                logger.warning("Resubscribe task was cancelled!")
+                logger.warning("Reregister task was cancelled!")
 
         self._reregister_task.add_done_callback(reregister_done)
 
@@ -743,12 +743,27 @@ class HistoryClient(Client):
             "Reregistering as history client...",
         )
         response = await self.rpc("history.register")
+
+        assert response["historyExchange"] == self.history_exchange.name
+        assert (
+            self.derive_address(response["dataServerAddress"])
+            == self.data_server_address
+        )
+
         await self._declare_history_queue(response["historyQueue"])
+
+        if "config" in response:
+            await self.rpc_dispatch("config", **response["config"])
 
         logger.debug("Restarting consume...")
         await self._history_consume()
 
     async def _declare_history_queue(self, name: str):
+        # The manager declares the queue and we only connect to that queue with passive=True
+        # But when a disconnect happens, the queue gets deleted. Therefore, there is no
+        # way, how a robust connection could reconnect to that queue. Hence, we set
+        # robust=False and handle the reconnect ourselfs.
+        # (See self._on_history_connection_reconnect())
         self.history_response_queue = await self.history_channel.declare_queue(
             name=name, passive=True, robust=False
         )
