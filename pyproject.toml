@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=40.6.0", "wheel", "mypy-protobuf~=1.23", "six"]
+requires = ["setuptools>=40.6.0", "wheel", "mypy-protobuf~=2.0"]
 build-backend = 'setuptools.build_meta'
 
 [tool.black]
