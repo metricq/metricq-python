@@ -28,14 +28,22 @@
 
 import asyncio
 import uuid
+from asyncio import CancelledError, Task
 from enum import Enum, auto
 from typing import Iterator, Optional
 
 import aio_pika
+from aiormq import ChannelInvalidStateError
 
 from . import history_pb2
 from .client import Client, _GetMetricsResult
-from .exceptions import HistoryError, InvalidHistoryResponse
+from .connection_watchdog import ConnectionWatchdog
+from .exceptions import (
+    HistoryError,
+    InvalidHistoryResponse,
+    PublishFailed,
+    ReconnectTimeout,
+)
 from .logging import get_logger
 from .rpc import rpc_handler
 from .types import TimeAggregate, Timedelta, Timestamp, TimeValue
@@ -322,7 +330,18 @@ class HistoryClient(Client):
         self.history_exchange = None
         self.history_response_queue = None
 
+        self._history_connection_watchdog = ConnectionWatchdog(
+            on_timeout_callback=lambda watchdog: self._schedule_stop(
+                ReconnectTimeout(
+                    f"Failed to reestablish {watchdog.connection_name} after {watchdog.timeout} seconds"
+                )
+            ),
+            timeout=kwargs.get("connection_timeout", 60),
+            connection_name="history connection",
+        )
+
         self._request_futures = dict()
+        self._reregister_task: Optional[Task] = None
 
     async def connect(self):
         """Connect to the MetricQ network and register this HistoryClient."""
@@ -335,21 +354,28 @@ class HistoryClient(Client):
             self.data_server_address,
             connection_name="history connection {}".format(self.token),
         )
+        self.history_connection.add_close_callback(self._on_history_connection_close)
+        self.history_connection.add_reconnect_callback(
+            self._on_history_connection_reconnect
+        )
+
         self.history_channel = await self.history_connection.channel()
         self.history_exchange = await self.history_channel.declare_exchange(
             name=response["historyExchange"], passive=True
         )
-        self.history_response_queue = await self.history_channel.declare_queue(
-            name=response["historyQueue"], passive=True
-        )
+        await self._declare_history_queue(response["historyQueue"])
 
         if "config" in response:
             await self.rpc_dispatch("config", **response["config"])
+
+        self._history_connection_watchdog.start(loop=self.event_loop)
+        self._history_connection_watchdog.set_established()
 
         await self._history_consume()
 
     async def stop(self, exception: Optional[Exception] = None):
         logger.info("closing history channel and connection.")
+        await self._history_connection_watchdog.stop()
         if self.history_channel:
             await self.history_channel.close()
             self.history_channel = None
@@ -433,7 +459,19 @@ class HistoryClient(Client):
         )
 
         self._request_futures[correlation_id] = asyncio.Future(loop=self.event_loop)
-        await self.history_exchange.publish(msg, routing_key=metric)
+        await self._history_connection_watchdog.established()
+
+        try:
+            # TOC/TOU hazard: by the time we publish, the data connection might
+            # be gone again, even if we waited for it to be established before.
+            await self.history_exchange.publish(msg, routing_key=metric)
+        except ChannelInvalidStateError as e:
+            # Trying to publish on a closed channel results in a ChannelInvalidStateError
+            # from aiormq.  Let's wrap that in a more descriptive error.
+            raise PublishFailed(
+                f"Failed to publish data chunk for metric '{metric!r}' "
+                f"on exchange '{self.history_exchange}' ({self.history_connection})"
+            ) from e
 
         try:
             result = await asyncio.wait_for(
@@ -668,3 +706,64 @@ class HistoryClient(Client):
             except HistoryError as e:
                 logger.debug("message is a history response containing an error: {}", e)
                 future.set_exception(e)
+
+    def _on_history_connection_close(self, sender, _exception: Optional[Exception]):
+        self._history_connection_watchdog.set_closed()
+
+    def _on_history_connection_reconnect(self, sender, connection):
+        logger.info("History connection ({}) reestablished!", connection)
+
+        if self._reregister_task is not None and not self._reregister_task.done():
+            logger.warning(
+                "History connection was reestablished, but another reregister task is still running!"
+            )
+            self._reregister_task.cancel()
+
+        self._reregister_task = self.event_loop.create_task(
+            self._reregister(connection)
+        )
+
+        def reregister_done(task: Task):
+            try:
+                exception = task.exception()
+                if exception is None:
+                    self._history_connection_watchdog.set_established()
+                else:
+                    logger.error(
+                        f"Reregister failed with an unhandled exception: {exception}"
+                    )
+                    raise exception
+            except CancelledError:
+                logger.warning("Reregister task was cancelled!")
+
+        self._reregister_task.add_done_callback(reregister_done)
+
+    async def _reregister(self, connection):
+        logger.info(
+            "Reregistering as history client...",
+        )
+        response = await self.rpc("history.register")
+
+        assert response["historyExchange"] == self.history_exchange.name
+        assert (
+            self.derive_address(response["dataServerAddress"])
+            == self.data_server_address
+        )
+
+        await self._declare_history_queue(response["historyQueue"])
+
+        if "config" in response:
+            await self.rpc_dispatch("config", **response["config"])
+
+        logger.debug("Restarting consume...")
+        await self._history_consume()
+
+    async def _declare_history_queue(self, name: str):
+        # The manager declares the queue and we only connect to that queue with passive=True
+        # But when a disconnect happens, the queue gets deleted. Therefore, there is no
+        # way, how a robust connection could reconnect to that queue. Hence, we set
+        # robust=False and handle the reconnect ourselfs.
+        # (See self._on_history_connection_reconnect())
+        self.history_response_queue = await self.history_channel.declare_queue(
+            name=name, passive=True, robust=False
+        )
