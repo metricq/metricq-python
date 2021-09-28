@@ -16,6 +16,7 @@
 
 **Closed issues:**
 
+- Add a how-to for new projects [\#106](https://github.com/metricq/metricq-python/issues/106)
 - Unify docstring style [\#71](https://github.com/metricq/metricq-python/issues/71)
 - Consider declaring queues as "auto-delete" for transient sinks [\#67](https://github.com/metricq/metricq-python/issues/67)
 
@@ -23,6 +24,7 @@
 
 - feat: support new hidden parameter for get\_metrics RPC [\#114](https://github.com/metricq/metricq-python/pull/114) ([kinnarr](https://github.com/kinnarr))
 - Unify docstrings to use Google style [\#113](https://github.com/metricq/metricq-python/pull/113) ([phijor](https://github.com/phijor))
+- Add project setup how-to [\#112](https://github.com/metricq/metricq-python/pull/112) ([phijor](https://github.com/phijor))
 
 ## [v3.0.0](https://github.com/metricq/metricq-python/tree/v3.0.0) (2021-05-06)
 
@@ -132,7 +134,6 @@
 
 **Merged pull requests:**
 
-- Add history request convenience methods [\#57](https://github.com/metricq/metricq-python/pull/57) ([phijor](https://github.com/phijor))
 - Add sphinx-based documentation [\#6](https://github.com/metricq/metricq-python/pull/6) ([phijor](https://github.com/phijor))
 
 ## [v1.3.0](https://github.com/metricq/metricq-python/tree/v1.3.0) (2020-10-14)
@@ -161,6 +162,7 @@
 
 **Merged pull requests:**
 
+- Add history request convenience methods [\#57](https://github.com/metricq/metricq-python/pull/57) ([phijor](https://github.com/phijor))
 - Fix release workflow [\#53](https://github.com/metricq/metricq-python/pull/53) ([kinnarr](https://github.com/kinnarr))
 - Trigger python package workflow from release workflow [\#52](https://github.com/metricq/metricq-python/pull/52) ([kinnarr](https://github.com/kinnarr))
 - Adds a workflow for docker image build and upload [\#49](https://github.com/metricq/metricq-python/pull/49) ([bmario](https://github.com/bmario))
