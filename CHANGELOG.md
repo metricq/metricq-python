@@ -4,6 +4,11 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v3.0.0...HEAD)
 
+**Breaking changes:**
+
+- Handle channel errors in `HistoryClient` [\#108](https://github.com/metricq/metricq-python/issues/108)
+- history client reconnect issues [\#75](https://github.com/metricq/metricq-python/issues/75)
+
 **Implemented enhancements:**
 
 - feat: add a connection name for better identification in the management UI [\#110](https://github.com/metricq/metricq-python/pull/110) ([kinnarr](https://github.com/kinnarr))
@@ -12,6 +17,7 @@
 **Fixed bugs:**
 
 - Timedelta properties missing in documentation [\#115](https://github.com/metricq/metricq-python/issues/115)
+- HistoryClient reconnects [\#58](https://github.com/metricq/metricq-python/issues/58)
 - Protobuf dependency pip thingy? [\#26](https://github.com/metricq/metricq-python/issues/26)
 
 **Closed issues:**
@@ -22,6 +28,7 @@
 
 **Merged pull requests:**
 
+- Fix reconnect for HistoryClients [\#116](https://github.com/metricq/metricq-python/pull/116) ([bmario](https://github.com/bmario))
 - feat: support new hidden parameter for get\_metrics RPC [\#114](https://github.com/metricq/metricq-python/pull/114) ([kinnarr](https://github.com/kinnarr))
 - Unify docstrings to use Google style [\#113](https://github.com/metricq/metricq-python/pull/113) ([phijor](https://github.com/phijor))
 - Add project setup how-to [\#112](https://github.com/metricq/metricq-python/pull/112) ([phijor](https://github.com/phijor))
@@ -134,6 +141,7 @@
 
 **Merged pull requests:**
 
+- Add history request convenience methods [\#57](https://github.com/metricq/metricq-python/pull/57) ([phijor](https://github.com/phijor))
 - Add sphinx-based documentation [\#6](https://github.com/metricq/metricq-python/pull/6) ([phijor](https://github.com/phijor))
 
 ## [v1.3.0](https://github.com/metricq/metricq-python/tree/v1.3.0) (2020-10-14)
@@ -162,7 +170,6 @@
 
 **Merged pull requests:**
 
-- Add history request convenience methods [\#57](https://github.com/metricq/metricq-python/pull/57) ([phijor](https://github.com/phijor))
 - Fix release workflow [\#53](https://github.com/metricq/metricq-python/pull/53) ([kinnarr](https://github.com/kinnarr))
 - Trigger python package workflow from release workflow [\#52](https://github.com/metricq/metricq-python/pull/52) ([kinnarr](https://github.com/kinnarr))
 - Adds a workflow for docker image build and upload [\#49](https://github.com/metricq/metricq-python/pull/49) ([bmario](https://github.com/bmario))
