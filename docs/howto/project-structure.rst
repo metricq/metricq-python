@@ -299,8 +299,8 @@ that transitively includes all optional dependencies needed for a local developm
     lint =
         ... # Dependencies needed to run linters
     dev =
-        %(test)
-        %(lint)
+        %(test)s
+        %(lint)s
         ...
 
 The string :literal:`%(foo)` includes all dependencies of extra :literal:`foo` in another extra.
@@ -329,7 +329,7 @@ and :literal:`pytest-asyncio` when testing :code:`async` code:
         pytest
         pytest-asyncio
     dev =
-        %(test)
+        %(test)s
         ...
 
 
@@ -382,7 +382,7 @@ We recommend a basic set of linters that (hopefully) help producing better code:
         isort ~= 5.0
         pre-commit
     dev =
-        %(lint)
+        %(lint)s
         ...
 
 This includes:
@@ -444,7 +444,7 @@ This includes:
     .. code-block:: yaml
 
         default_language_version:
-        python: python3.9
+          python: python3.9
 
         repos:
         - repo: https://gitlab.com/pycqa/flake8
