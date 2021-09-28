@@ -1,5 +1,5 @@
-Creating a new project using :literal:`metricq`
-===============================================
+Creating a new project for MetricQ
+==================================
 
 In this section, we explain some of the conventions that we (the :literal:`metricq`
 authors) use when setting up a new project using the library.
@@ -10,7 +10,7 @@ maintenance overhead.
 In the following, we assume the project is called :literal:`metricq-example`, and all
 filesystem paths are relative to the project root directory (:file:`/path/to/metricq-example/`).
 The Python package built from this project is called :literal:`metricq-example`,
-and its source code lives in directory :file:`metricq_example`.
+and its source code lives in the subdirectory :file:`metricq_example` of the project root.
 
 
 Dependencies, building and installation
@@ -22,8 +22,8 @@ Build system
 Any new projects should use a :pep:`517`-compliant build system.
 Use :literal:`setuptools` for this.
 The directory :file:`metricq_example` contains the Python source code of the
-project, create a new file :file:`pythonproject.toml`, and declare the
-necessary build dependencies:
+project, create a new file :file:`pyproject.toml` in the project root,
+and declare the necessary build dependencies:
 
 .. code-block:: toml
 
@@ -79,7 +79,7 @@ include a dummy :file:`setup.py`:
 Optional dependencies
 ---------------------
 
-If your has *optional* features that requires additional dependencies,
+If your project has *optional* features that requires additional dependencies,
 include them in section :code:`options.extras_require` of :file:`setup.cfg`.
 For each feature :code:`my_feature`, define a new *extra* that lists all
 additional dependencies:
@@ -466,5 +466,3 @@ This includes:
           hooks:
           - id: check-manifest
 
-CI workflows
-^^^^^^^^^^^^
