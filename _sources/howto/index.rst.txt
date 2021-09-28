@@ -8,3 +8,4 @@ How to use this library
     source
     history-client
     metric-lookup
+    project-structure
