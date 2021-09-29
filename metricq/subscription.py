@@ -102,9 +102,13 @@ class Subscriber(Client):
                 async for metric, time, value in data:
                     # ... process metric data
 
+        Must only be called after :meth:`connect()` has finished successfully.
+
         Returns:
             Drain: Fully configured instance of a Drain
         """
+        assert self.queue is not None
+
         new_kwargs = self._kwargs
         new_kwargs.update(kwargs)
         return Drain(*self._args, **new_kwargs, queue=self.queue, metrics=self._metrics)
