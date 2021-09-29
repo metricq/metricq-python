@@ -11,6 +11,7 @@
 
 **Implemented enhancements:**
 
+- Implement drain [\#12](https://github.com/metricq/metricq-python/issues/12)
 - feat: add a connection name for better identification in the management UI [\#110](https://github.com/metricq/metricq-python/pull/110) ([kinnarr](https://github.com/kinnarr))
 - feat: add required py.typed file to support typing when used as library [\#105](https://github.com/metricq/metricq-python/pull/105) ([kinnarr](https://github.com/kinnarr))
 
@@ -32,6 +33,7 @@
 - feat: support new hidden parameter for get\_metrics RPC [\#114](https://github.com/metricq/metricq-python/pull/114) ([kinnarr](https://github.com/kinnarr))
 - Unify docstrings to use Google style [\#113](https://github.com/metricq/metricq-python/pull/113) ([phijor](https://github.com/phijor))
 - Add project setup how-to [\#112](https://github.com/metricq/metricq-python/pull/112) ([phijor](https://github.com/phijor))
+- Feature Drain and Subscription [\#111](https://github.com/metricq/metricq-python/pull/111) ([Daddelhai](https://github.com/Daddelhai))
 
 ## [v3.0.0](https://github.com/metricq/metricq-python/tree/v3.0.0) (2021-05-06)
 
