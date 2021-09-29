@@ -40,6 +40,12 @@ logger = get_logger(__name__)
 
 class Drain(Sink):
     def __init__(self, *args, queue: str, metrics: List[str], **kwargs):
+        """Drain the given queue of all buffered metric data
+
+        Args:
+            queue (str): The name of the queue that contains the subscribed data.
+            metrics (List[str], optional): List of metrics that you want to subscribe to.
+        """
         super().__init__(*args, add_uuid=True, **kwargs)
         if not metrics:
             raise ValueError("Metrics list must not be empty")
@@ -77,6 +83,17 @@ class Drain(Sink):
         await self._data.put((metric, time, value))
 
     async def __aenter__(self):
+        """Allows to use the Drain as a context manager.
+
+        The connection to MetricQ will automatically established and closed.
+
+        Use it like this::
+
+            async with Drain(...) as drain:
+                pass
+
+        """
+
         await self.connect()
         return self
 
@@ -84,6 +101,14 @@ class Drain(Sink):
         await self.stopped()
 
     def __aiter__(self):
+        """Allows to asynchronously iterate over all metric data as it gets received.
+
+        Use it like this::
+
+            async for metric, time, value in my_drain:
+                pass
+
+        """
         return self
 
     async def __anext__(self):
