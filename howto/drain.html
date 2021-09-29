@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Building a MetricQ Drain &mdash; MetricQ  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Metric lookup" href="metric-lookup.html" />
+    <link rel="prev" title="Fetching historical metric data" href="history-client.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetricQ
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">How to use this library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="sink.html">Building a MetricQ Sink</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source.html">Building a MetricQ Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history-client.html">Fetching historical metric data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Building a MetricQ Drain</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-a-drain">What is a Drain?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subscribe-to-metrics">Subscribe to metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receive-the-buffered-metric-data">Receive the buffered metric data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metric-lookup.html">Metric lookup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="project-structure.html">Creating a new project for MetricQ</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metadata.html">Metric Metadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../upgrading.html">Upgrading <code class="docutils literal notranslate"><span class="pre">metricq</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetricQ</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">How to use this library</a> &raquo;</li>
+        
+      <li>Building a MetricQ Drain</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/howto/drain.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="building-a-metricq-drain">
+<h1>Building a MetricQ Drain<a class="headerlink" href="#building-a-metricq-drain" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-a-drain">
+<h2>What is a Drain?<a class="headerlink" href="#what-is-a-drain" title="Permalink to this headline">¶</a></h2>
+<p>A <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> is a special case of a MetricQ <a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>. Both are used to
+collect the live metric data stream from MetricQ. In contrast to a <a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>,
+which is continously connected to MetricQ, a <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> is only shartly
+connected to MetricQ. In particular, after the inital connection, all wanted
+metrics are subscribed and the connection is closed. While the connection is
+closed, MetricQ buffers the subscribed metric data and the client can perform other
+task without any perturbation caused by the connection. Once the metric is required,
+a new connection gets established and the buffered data can be received and
+processed like in a normal sink.</p>
+<p>This bahavior is particular useful for measurements, where it is important to
+reduce perturbation as much as possible.</p>
+</div>
+<div class="section" id="subscribe-to-metrics">
+<h2>Subscribe to metrics<a class="headerlink" href="#subscribe-to-metrics" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way to implement this approach is to use the classes <a class="reference internal" href="../api/subscriber.html#metricq.Subscriber" title="metricq.Subscriber"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscriber</span></code></a>
+and <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> provided by MetricQ.</p>
+<p>In particular, the first connection is handled by the <a class="reference internal" href="../api/subscriber.html#metricq.Subscriber" title="metricq.Subscriber"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscriber</span></code></a>.</p>
+<p>Given a server and a list of metrics, we want to subscribe to:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">server</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;amqps://user:pass@metricq.example.org/&quot;</span>
+<span class="n">metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># ...</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>We can use the subscriber to perform the initial connect and post the subscription.
+For that, we use the <a class="reference internal" href="../api/subscriber.html#metricq.Subscriber" title="metricq.Subscriber"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscriber</span></code></a> as a context manager:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">Subscriber</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">server</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">expires</span><span class="o">=....</span><span class="p">)</span> <span class="k">as</span> <span class="n">subscriber</span><span class="p">:</span>
+    <span class="c1"># ... run task</span>
+</pre></div>
+</div>
+<p>The most important parameter here is the <cite>expires</cite>. As the connection is closed to
+MetricQ, the created subscription may never be stopped, if the program gets
+terminated, the <cite>expires</cite> parameter is required. It represents the time until the
+MetricQ server will automatically delete all buffered data and is given in seconds
+or a <a class="reference internal" href="../api/misc.html#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Per design, the <a class="reference internal" href="../api/subscriber.html#metricq.Subscriber" title="metricq.Subscriber"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscriber</span></code></a> closes the connection right after the
+subscribe request. In particluar, in the above context, the <cite>subscriber</cite>
+object does not have an open connection even within the <cite>with</cite>-statement.</p>
+</div>
+<p>Within this <cite>with</cite>-context, you can now perform any task, for instance start
+the measured program with <code class="xref py py-meth docutils literal notranslate"><span class="pre">asyncio.create_subprocess_exec()</span></code>.</p>
+</div>
+<div class="section" id="receive-the-buffered-metric-data">
+<h2>Receive the buffered metric data<a class="headerlink" href="#receive-the-buffered-metric-data" title="Permalink to this headline">¶</a></h2>
+<p>Once the collection of data shall stop and we want to receive the buffered data,
+we use a <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> instance. Again, the <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> can be used as context
+manager as well as it is an iterable over the data. In particular, we can use the
+following code, to connect to MetricQ, stop the buffering of incoming data, and
+fetch all currently buffered data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">drain</span><span class="p">()</span> <span class="k">as</span> <span class="n">data</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="c1"># ... consume the data point</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="metric-lookup.html" class="btn btn-neutral float-right" title="Metric lookup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="history-client.html" class="btn btn-neutral float-left" title="Fetching historical metric data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, TU Dresden
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

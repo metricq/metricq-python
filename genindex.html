@@ -165,6 +165,7 @@
  | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -177,14 +178,24 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/misc.html#metricq.Timestamp.__add__">__add__() (metricq.Timestamp method)</a>
 </li>
+      <li><a href="api/drain.html#metricq.Drain.__aenter__">__aenter__() (metricq.Drain method)</a>
+</li>
+      <li><a href="api/drain.html#metricq.Drain.__aiter__">__aiter__() (metricq.Drain method)</a>
+</li>
       <li><a href="api/misc.html#metricq.Timestamp.__eq__">__eq__() (metricq.Timestamp method)</a>
 </li>
       <li><a href="api/misc.html#metricq.Timedelta.__floordiv__">__floordiv__() (metricq.Timedelta method)</a>
 </li>
-      <li><a href="api/misc.html#metricq.Timestamp.__lt__">__lt__() (metricq.Timestamp method)</a>
+      <li><a href="api/drain.html#metricq.Drain.__init__">__init__() (metricq.Drain method)</a>
+
+      <ul>
+        <li><a href="api/subscriber.html#metricq.Subscriber.__init__">(metricq.Subscriber method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/misc.html#metricq.Timestamp.__lt__">__lt__() (metricq.Timestamp method)</a>
+</li>
       <li><a href="api/misc.html#metricq.Timedelta.__mul__">__mul__() (metricq.Timedelta method)</a>
 </li>
       <li><a href="api/misc.html#metricq.Timedelta.__str__">__str__() (metricq.Timedelta method)</a>
@@ -234,11 +245,15 @@
       <li><a href="api/client-common.html#metricq.Client.connect">connect() (metricq.Client method)</a>
 
       <ul>
+        <li><a href="api/drain.html#metricq.Drain.connect">(metricq.Drain method)</a>
+</li>
         <li><a href="api/history-client.html#metricq.HistoryClient.connect">(metricq.HistoryClient method)</a>
 </li>
         <li><a href="api/sink.html#metricq.Sink.connect">(metricq.Sink method)</a>
 </li>
         <li><a href="api/source.html#metricq.Source.connect">(metricq.Source method)</a>
+</li>
+        <li><a href="api/subscriber.html#metricq.Subscriber.connect">(metricq.Subscriber method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -255,11 +270,15 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="glossary.html#term-Data-Point"><strong>Data Point</strong></a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/misc.html#metricq.Timestamp.datetime">datetime() (metricq.Timestamp property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/source.html#metricq.Source.declare_metrics">declare_metrics() (metricq.Source method)</a>
+</li>
+      <li><a href="api/drain.html#metricq.Drain">Drain (class in metricq)</a>
+</li>
+      <li><a href="api/subscriber.html#metricq.Subscriber.drain">drain() (metricq.Subscriber method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -469,6 +488,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/subscriber.html#metricq.Subscriber.queue">queue (metricq.Subscriber attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -530,6 +557,8 @@
       <li><a href="api/client-common.html#metricq.Client.stopped">stopped() (metricq.Client method)</a>
 </li>
       <li><a href="api/sink.html#metricq.Sink.subscribe">subscribe() (metricq.Sink method)</a>
+</li>
+      <li><a href="api/subscriber.html#metricq.Subscriber">Subscriber (class in metricq)</a>
 </li>
       <li><a href="api/misc.html#metricq.TimeAggregate.sum">sum (metricq.TimeAggregate attribute)</a>
 </li>
