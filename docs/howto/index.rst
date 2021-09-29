@@ -7,5 +7,6 @@ How to use this library
     sink
     source
     history-client
+    drain
     metric-lookup
     project-structure

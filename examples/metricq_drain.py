@@ -1,6 +1,5 @@
-# Copyright (c) 2018, ZIH,
-# Technische Universitaet Dresden,
-# Federal Republic of Germany
+#!/usr/bin/env python3
+# Copyright (c) 2021, ZIH, Technische Universitaet Dresden, Federal Republic of Germany
 #
 # All rights reserved.
 #
@@ -28,40 +27,26 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from . import exceptions
-from .agent import Agent
-from .client import Client
-from .data_client import DataClient
-from .drain import Drain
-from .history_client import HistoryClient
-from .interval_source import IntervalSource
-from .logging import get_logger
-from .rpc import rpc_handler
-from .sink import DurableSink, Sink
-from .source import Source
-from .subscription import Subscriber
-from .synchronous_source import SynchronousSource
-from .types import TimeAggregate, Timedelta, Timestamp, TimeValue
-from .version import __version__
+import asyncio
 
-__all__ = [
-    "exceptions",
-    "Agent",
-    "Client",
-    "DataClient",
-    "DurableSink",
-    "HistoryClient",
-    "IntervalSource",
-    "Sink",
-    "Source",
-    "Subscriber",
-    "Drain",
-    "SynchronousSource",
-    "Timedelta",
-    "Timestamp",
-    "TimeValue",
-    "TimeAggregate",
-    "get_logger",
-    "rpc_handler",
-    "__version__",
-]
+from metricq.subscription import Subscriber
+
+
+async def source():
+    async with Subscriber(
+        "example", "amqp://admin:admin@localhost", metrics=["dummy.source"]
+    ) as subscription:
+
+        await asyncio.sleep(10)
+
+        counter = 0
+        async with subscription.drain() as drain:
+            async for metric, time, value in drain:
+                print(f"{metric} {time} {value}")
+                counter += 1
+
+        print(f"done: {counter} data points received")
+
+
+if __name__ == "__main__":
+    asyncio.run(source())
