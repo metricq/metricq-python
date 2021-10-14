@@ -32,7 +32,7 @@ import datetime
 import re
 from dataclasses import dataclass
 from functools import total_ordering
-from typing import Any, Dict, Iterator, Type, TypeVar, Union, overload
+from typing import Any, Dict, Iterator, Union, overload
 
 from dateutil.parser import isoparse as dateutil_isoparse
 
@@ -362,9 +362,6 @@ class Timedelta:
         return self._value < other._value
 
 
-TimestampT = TypeVar("TimestampT", bound="Timestamp")
-
-
 @total_ordering
 class Timestamp:
     """A MetricQ Timestamp
@@ -434,28 +431,28 @@ class Timestamp:
         return cls.from_datetime(dt)
 
     @classmethod
-    def ago(cls: Type[TimestampT], delta: Timedelta) -> "Timestamp":
+    def ago(cls, delta: Timedelta) -> "Timestamp":
         """Return a timestamp `delta` in the past.
 
         This is equivalent to::
 
             Timestamp.now() - delta
 
-        Returns:
-            :class:`Timestamp`
+        Args:
+            delta: the time difference to now
         """
         return cls.now() - delta
 
     @classmethod
-    def from_now(cls: Type[TimestampT], delta: Timedelta) -> "Timestamp":
+    def from_now(cls, delta: Timedelta) -> "Timestamp":
         """Return a timestamp `delta` in the future.
 
         This is equivalent to::
 
             Timestamp.now() + delta
 
-        Returns:
-            :class:`Timestamp`
+        Args:
+            delta: the time difference to now
         """
         return cls.now() + delta
 

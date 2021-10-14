@@ -20,9 +20,8 @@ sys.path.insert(0, str(_docs_dir.parent.resolve()))
 # -- Project information -----------------------------------------------------
 
 project = "MetricQ"
-copyright = "2020, TU Dresden"
+copyright = "2021, TU Dresden"
 author = "TU Dresden"
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -33,8 +32,10 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
+    "sphinx_autodoc_typehints",
     "sphinx_rtd_theme",
     "sphinxcontrib_trio",
+    "scanpydoc.elegant_typehints",
     "scanpydoc.definition_list_typed_field",
 ]
 
@@ -51,6 +52,8 @@ qualname_overrides = {
     "metricq.source.Source": "metricq.Source",
     "metricq.source.IntervalSource": "metricq.IntervalSource",
     "metricq.history_client.HistoryClient": "metricq.HistoryClient",
+    "metricq.drain.Drain": "metricq.Drain",
+    "metricq.subscription.Subscriber": "metricq.Subscriber",
     "metricq.types.Timedelta": "metricq.Timedelta",
     "metricq.types.Timestamp": "metricq.Timestamp",
     "metricq.types.TimeValue": "metricq.TimeValue",
@@ -73,7 +76,9 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
-html_theme_options = {"style_external_links": True}
+html_theme_options = {
+    "style_external_links": True,
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

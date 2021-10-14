@@ -44,8 +44,8 @@ class Drain(Sink):
         """Drain the given queue of all buffered metric data
 
         Args:
-            queue (str): The name of the queue that contains the subscribed data.
-            metrics (List[str], optional): List of metrics that you want to subscribe to.
+            queue: The name of the queue that contains the subscribed data.
+            metrics: List of metrics that you want to subscribe to.
         """
         super().__init__(*args, add_uuid=True, **kwargs)
         if not metrics:
