@@ -199,6 +199,11 @@
 <dt id="metricq.Source.connect">
 <em class="property"><span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.connect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to the MetricQ network</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -238,6 +243,11 @@ to arbitrary values.</p>
         <span class="p">})</span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -246,6 +256,11 @@ to arbitrary values.</p>
 <dd><p>Flush all unsent data points to the network immediately.</p>
 <p>If automatic chunking is turned off (<a class="reference internal" href="#metricq.Source.chunk_size" title="metricq.Source.chunk_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">chunk_size</span></code></a> is <code class="docutils literal notranslate"><span class="pre">None</span></code>),
 use this method to send data points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -259,7 +274,7 @@ use this method to send data points.</p>
 </dd>
 <dt><strong>timestamp</strong></dt><dd><p>timepoint at which this metric was measured</p>
 </dd>
-<dt><strong>value</strong></dt><dd><p>value of the metric at time of measurement</p>
+<dt><strong>value</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>value of the metric at time of measurement</p>
 </dd>
 </dl>
 </dd>
@@ -283,6 +298,11 @@ either manually or on the next call to <a class="reference internal" href="#metr
 even if the first call failed.
 Otherwise duplicate data points will be sent, which results in an invalid <a class="reference internal" href="../glossary.html#term-Metric"><span class="xref std std-term">metric</span></a>.</p>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -295,6 +315,11 @@ Otherwise duplicate data points will be sent, which results in an invalid <a cla
 <p>This task is not restarted if it fails.
 You are responsible for handling all relevant exceptions.</p>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -404,6 +429,11 @@ In particular:</p>
 <em class="property"><span class="pre">abstractmethod</span> <span class="pre">await</span> </em><code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.IntervalSource.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>A user-provided method called at intervals given by <a class="reference internal" href="#metricq.IntervalSource.period" title="metricq.IntervalSource.period"><code class="xref py py-attr docutils literal notranslate"><span class="pre">period</span></code></a>.</p>
 <p>Override this method to produce data points at a constant rate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -430,7 +460,7 @@ In particular:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2020, TU Dresden
+        &copy; Copyright 2021, TU Dresden
 
     </p>
   </div>
