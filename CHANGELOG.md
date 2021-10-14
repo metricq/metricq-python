@@ -4,13 +4,9 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v3.0.0...HEAD)
 
-**Breaking changes:**
-
-- Handle channel errors in `HistoryClient` [\#108](https://github.com/metricq/metricq-python/issues/108)
-- history client reconnect issues [\#75](https://github.com/metricq/metricq-python/issues/75)
-
 **Implemented enhancements:**
 
+- Consider declaring queues as "auto-delete" for transient sinks [\#67](https://github.com/metricq/metricq-python/issues/67)
 - Implement drain [\#12](https://github.com/metricq/metricq-python/issues/12)
 - feat: add a connection name for better identification in the management UI [\#110](https://github.com/metricq/metricq-python/pull/110) ([kinnarr](https://github.com/kinnarr))
 - feat: add required py.typed file to support typing when used as library [\#105](https://github.com/metricq/metricq-python/pull/105) ([kinnarr](https://github.com/kinnarr))
@@ -18,17 +14,21 @@
 **Fixed bugs:**
 
 - Timedelta properties missing in documentation [\#115](https://github.com/metricq/metricq-python/issues/115)
+- Handle channel errors in `HistoryClient` [\#108](https://github.com/metricq/metricq-python/issues/108)
+- history client reconnect issues [\#75](https://github.com/metricq/metricq-python/issues/75)
 - HistoryClient reconnects [\#58](https://github.com/metricq/metricq-python/issues/58)
 - Protobuf dependency pip thingy? [\#26](https://github.com/metricq/metricq-python/issues/26)
 
 **Closed issues:**
 
+- Skip mypy check in workflow for external PRs [\#109](https://github.com/metricq/metricq-python/issues/109)
 - Add a how-to for new projects [\#106](https://github.com/metricq/metricq-python/issues/106)
+- Fix changelog in Github release [\#103](https://github.com/metricq/metricq-python/issues/103)
 - Unify docstring style [\#71](https://github.com/metricq/metricq-python/issues/71)
-- Consider declaring queues as "auto-delete" for transient sinks [\#67](https://github.com/metricq/metricq-python/issues/67)
 
 **Merged pull requests:**
 
+- Feature strict typing [\#117](https://github.com/metricq/metricq-python/pull/117) ([bmario](https://github.com/bmario))
 - Fix reconnect for HistoryClients [\#116](https://github.com/metricq/metricq-python/pull/116) ([bmario](https://github.com/bmario))
 - feat: support new hidden parameter for get\_metrics RPC [\#114](https://github.com/metricq/metricq-python/pull/114) ([kinnarr](https://github.com/kinnarr))
 - Unify docstrings to use Google style [\#113](https://github.com/metricq/metricq-python/pull/113) ([phijor](https://github.com/phijor))
