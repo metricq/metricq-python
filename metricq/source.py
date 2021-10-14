@@ -104,17 +104,19 @@ class Source(DataClient):
         ValueError: if value set not a positive, non-zero integer
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
-        self.metrics = dict()
+        self.metrics: Dict[str, SourceMetric] = dict()
         self.chunk_size = 1
 
-    async def connect(self):
+    async def connect(self) -> None:
         await super().connect()
         response = await self.rpc("source.register")
         assert response is not None
         logger.info("register response: {}", response)
         await self.data_config(**response)
+
+        assert self.data_channel
 
         self.data_exchange = await self.data_channel.declare_exchange(
             name=response["dataExchange"], passive=True
@@ -126,7 +128,7 @@ class Source(DataClient):
         self.event_loop.create_task(self.task())
 
     @abstractmethod
-    async def task(self):
+    async def task(self) -> None:
         """Override this with your main task for generating data points.
 
         The task is started after the source has connected and received its initial configuration.
@@ -154,7 +156,7 @@ class Source(DataClient):
 
         return augmented
 
-    async def declare_metrics(self, metrics: Dict[str, MetadataDict]):
+    async def declare_metrics(self, metrics: Dict[str, MetadataDict]) -> None:
         """Declare a set of :term:`metrics<Metric>` this Source produces values for.
 
         Before producing :term:`data points<Data Point>` for some metric, a Source must have declared that Metric.
@@ -193,7 +195,7 @@ class Source(DataClient):
         logger.debug("declare_metrics({})", metrics)
         await self.rpc("source.declare_metrics", metrics=metrics)
 
-    async def send(self, metric: str, time: Timestamp, value):
+    async def send(self, metric: str, time: Timestamp, value: float) -> None:
         """Send a :term:`data point<Data Point>` for a Metric.
 
         Args:
@@ -222,7 +224,7 @@ class Source(DataClient):
         assert metric_object is not None
         await metric_object.send(time, value)
 
-    async def flush(self):
+    async def flush(self) -> None:
         """Flush all unsent data points to the network immediately.
 
         If automatic chunking is turned off (:attr:`chunk_size` is :literal:`None`),
@@ -230,7 +232,7 @@ class Source(DataClient):
         """
         await asyncio.gather(*[m.flush() for m in self.metrics.values() if not m.empty])
 
-    async def _send(self, metric, data_chunk: DataChunk):
+    async def _send(self, metric: str, data_chunk: DataChunk) -> None:
         """Actually send a chunk (publish a data message).
 
         Don't call from anywhere other than SourceMetric.
@@ -241,6 +243,7 @@ class Source(DataClient):
         :meta private:
         """
         msg = aio_pika.Message(data_chunk.SerializeToString())
+        assert self.data_exchange is not None
         await self._data_connection_watchdog.established()
         try:
             # TOC/TOU hazard: by the time we publish, the data connection might
@@ -255,5 +258,5 @@ class Source(DataClient):
             ) from e
 
     @rpc_handler("config")
-    async def _source_config(self, **kwargs):
+    async def _source_config(self, **kwargs: Any) -> None:
         logger.info("received config {}", kwargs)

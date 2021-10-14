@@ -31,6 +31,9 @@
 from abc import ABCMeta
 from collections import defaultdict
 from collections.abc import Awaitable
+from typing import Any, Callable, DefaultDict, Dict, List, Optional, Tuple
+
+RPCHandlerType = Callable[..., Optional[Any]]
 
 
 class RPCMeta(ABCMeta):
@@ -40,11 +43,17 @@ class RPCMeta(ABCMeta):
     In each list, the base-class rpc handlers will be before the child class ones
     """
 
-    def __new__(mcs, name, bases, attrs, **kwargs):
-        rpc_handlers = defaultdict(list)
+    def __new__(
+        mcs: type,
+        name: str,
+        bases: Tuple[type, ...],
+        attrs: Dict[Any, Any],
+        **kwargs: Any,
+    ) -> "RPCMeta":
+        rpc_handlers: DefaultDict[str, List[RPCHandlerType]] = defaultdict(list)
         for base in bases:
             try:
-                for function_tag, handlers in base._rpc_handlers.items():
+                for function_tag, handlers in base._rpc_handlers.items():  # type: ignore
                     rpc_handlers[function_tag] += handlers
             except AttributeError:
                 pass
@@ -59,11 +68,15 @@ class RPCMeta(ABCMeta):
                 pass
 
         attrs["_rpc_handlers"] = rpc_handlers
-        return super().__new__(mcs, name, bases, attrs)
+        # Mypy complains about arguments of super(). Seems like this issue:
+        # https://github.com/python/mypy/issues/9282
+        return super().__new__(mcs, name, bases, attrs)  # type: ignore
 
 
 class RPCDispatcher(metaclass=RPCMeta):
-    async def rpc_dispatch(self, function, **kwargs):
+    _rpc_handlers: DefaultDict[str, List[RPCHandlerType]] = defaultdict(list)
+
+    async def rpc_dispatch(self, function: str, **kwargs: Any) -> Any:
         """Dispatch an incoming (or fake) RPC to all handlers, beginning with the base class handlers
 
         :meta private:
@@ -101,7 +114,9 @@ class RPCDispatcher(metaclass=RPCMeta):
                 )
 
 
-def rpc_handler(*function_tags: str):
+def rpc_handler(
+    *function_tags: str,
+) -> Callable[[RPCHandlerType], RPCHandlerType]:
     """A Decorator to mark an :code:`async` method as an RPC handler
 
     Arguments:
@@ -129,8 +144,8 @@ def rpc_handler(*function_tags: str):
         i.e. :class:`Sink`, :class:`Source`, :class:`IntervalSource`, :class:`HistoryClient`, etc.
     """
 
-    def decorator(handler):
-        handler.__rpc_tags = function_tags
+    def decorator(handler: RPCHandlerType) -> RPCHandlerType:
+        setattr(handler, "__rpc_tags", function_tags)
         return handler
 
     return decorator

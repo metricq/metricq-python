@@ -29,8 +29,9 @@
 import asyncio
 import uuid
 from asyncio import CancelledError, Task
+from asyncio.futures import Future
 from enum import Enum, auto
-from typing import Iterator, Optional
+from typing import Any, Dict, Iterator, List, Optional
 
 import aio_pika
 from aiormq import ChannelInvalidStateError
@@ -113,7 +114,11 @@ class HistoryResponse:
     to transparently convert the data to the desired type.
     """
 
-    def __init__(self, proto: history_pb2.HistoryResponse, request_duration=None):
+    def __init__(
+        self,
+        proto: history_pb2.HistoryResponse,
+        request_duration: Optional[float] = None,
+    ):
         """HistoryResponse objects are created by the HistoryClient methods.
 
         Don't bother instantiating on your own.
@@ -160,7 +165,7 @@ class HistoryResponse:
 
         self._proto = proto
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self._proto.time_delta)
 
     @property
@@ -321,14 +326,14 @@ class HistoryResponse:
 class HistoryClient(Client):
     """A MetricQ client to access historical metric data."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
 
-        self.data_server_address = None
-        self.history_connection = None
-        self.history_channel = None
-        self.history_exchange = None
-        self.history_response_queue = None
+        self.data_server_address: Optional[str] = None
+        self.history_connection: Optional[aio_pika.RobustConnection] = None
+        self.history_channel: Optional[aio_pika.RobustChannel] = None
+        self.history_exchange: Optional[aio_pika.Exchange] = None
+        self.history_response_queue: Optional[aio_pika.Queue] = None
 
         self._history_connection_watchdog = ConnectionWatchdog(
             on_timeout_callback=lambda watchdog: self._schedule_stop(
@@ -340,14 +345,16 @@ class HistoryClient(Client):
             connection_name="history connection",
         )
 
-        self._request_futures = dict()
-        self._reregister_task: Optional[Task] = None
+        self._request_futures: Dict[str, Future[HistoryResponse]] = dict()
+        self._reregister_task: Optional[Task[None]] = None
 
-    async def connect(self):
+    async def connect(self) -> None:
         """Connect to the MetricQ network and register this HistoryClient."""
         await super().connect()
         response = await self.rpc("history.register")
         logger.debug("register response: {}", response)
+
+        assert response is not None
 
         self.data_server_address = self.derive_address(response["dataServerAddress"])
         self.history_connection = await self.make_connection(
@@ -356,10 +363,11 @@ class HistoryClient(Client):
         )
         self.history_connection.add_close_callback(self._on_history_connection_close)
         self.history_connection.add_reconnect_callback(
-            self._on_history_connection_reconnect
+            self._on_history_connection_reconnect  # type: ignore
         )
 
         self.history_channel = await self.history_connection.channel()
+        assert self.history_channel is not None
         self.history_exchange = await self.history_channel.declare_exchange(
             name=response["historyExchange"], passive=True
         )
@@ -373,20 +381,20 @@ class HistoryClient(Client):
 
         await self._history_consume()
 
-    async def stop(self, exception: Optional[Exception] = None):
+    async def stop(self, exception: Optional[Exception] = None) -> None:
         logger.info("closing history channel and connection.")
         await self._history_connection_watchdog.stop()
         if self.history_channel:
-            await self.history_channel.close()
+            await self.history_channel.close()  # type: ignore
             self.history_channel = None
         if self.history_connection:
             # We need not pass anything as exception to this close. It will only hurt.
-            await self.history_connection.close()
+            await self.history_connection.close()  # type: ignore
             self.history_connection = None
         self.history_exchange = None
         await super().stop(exception)
 
-    async def get_metrics(self, *args, **kwargs) -> _GetMetricsResult:
+    async def get_metrics(self, *args: Any, **kwargs: Any) -> _GetMetricsResult:
         """Retrieve information for **historic** metrics matching a selector pattern.
 
         This is like :meth:`Client.get_metrics`, but sets :code:`historic=True` by default.
@@ -402,7 +410,7 @@ class HistoryClient(Client):
         end_time: Optional[Timestamp],
         interval_max: Optional[Timedelta],
         request_type: HistoryRequestType = HistoryRequestType.AGGREGATE_TIMELINE,
-        timeout=60,
+        timeout: float = 60,
     ) -> HistoryResponse:
         """Request historical data points of a metric.
 
@@ -452,6 +460,8 @@ class HistoryClient(Client):
         if request_type is not None:
             request.type = request_type.value
 
+        assert self.history_response_queue is not None
+
         msg = aio_pika.Message(
             body=request.SerializeToString(),
             correlation_id=correlation_id,
@@ -459,6 +469,7 @@ class HistoryClient(Client):
         )
 
         self._request_futures[correlation_id] = asyncio.Future(loop=self.event_loop)
+        assert self.history_exchange is not None
         await self._history_connection_watchdog.established()
 
         try:
@@ -486,7 +497,7 @@ class HistoryClient(Client):
         metric: str,
         start_time: Optional[Timestamp] = None,
         end_time: Optional[Timestamp] = None,
-        timeout=60,
+        timeout: float = 60,
     ) -> TimeAggregate:
         """Aggregate values of a metric for the specified span of time.
 
@@ -531,7 +542,7 @@ class HistoryClient(Client):
         interval_max: Timedelta,
         start_time: Optional[Timestamp] = None,
         end_time: Optional[Timestamp] = None,
-        timeout=60,
+        timeout: float = 60,
     ) -> Iterator[TimeAggregate]:
         """Aggregate values of a metric in multiple steps.
 
@@ -573,7 +584,9 @@ class HistoryClient(Client):
         except ValueError:
             raise InvalidHistoryResponse("AGGREGATE_TIMELINE contains no aggregates")
 
-    async def history_last_value(self, metric: str, timeout=60) -> Optional[TimeValue]:
+    async def history_last_value(
+        self, metric: str, timeout: float = 60
+    ) -> Optional[TimeValue]:
         """Fetch the last value recorded for a metric.
 
         If this metric has no values recorded, return :literal:`None`.
@@ -606,7 +619,7 @@ class HistoryClient(Client):
         metric: str,
         start_time: Optional[Timestamp] = None,
         end_time: Optional[Timestamp] = None,
-        timeout=60,
+        timeout: float = 60,
     ) -> Iterator[TimeValue]:
         """Retrieve raw values of a metric within the specified span of time.
 
@@ -646,18 +659,19 @@ class HistoryClient(Client):
             raise InvalidHistoryResponse("Response contained no values")
 
     @rpc_handler("config")
-    async def _history_config(self, **kwargs):
+    async def _history_config(self, **kwargs: Any) -> None:
         logger.info("received config {}", kwargs)
 
-    async def _history_consume(self, extra_queues=[]):
+    async def _history_consume(self, extra_queues: List[aio_pika.Queue] = []) -> None:
         logger.info("starting history consume")
+        assert self.history_response_queue is not None
         queues = [self.history_response_queue] + extra_queues
         await asyncio.gather(
             *[queue.consume(self._on_history_response) for queue in queues],
             loop=self.event_loop,
         )
 
-    async def _on_history_response(self, message: aio_pika.IncomingMessage):
+    async def _on_history_response(self, message: aio_pika.IncomingMessage) -> None:
         async with message.process(requeue=True):
             body = message.body
             from_token = message.app_id
@@ -707,10 +721,14 @@ class HistoryClient(Client):
                 logger.debug("message is a history response containing an error: {}", e)
                 future.set_exception(e)
 
-    def _on_history_connection_close(self, sender, _exception: Optional[Exception]):
+    def _on_history_connection_close(
+        self, sender: Any, _exception: Optional[BaseException]
+    ) -> None:
         self._history_connection_watchdog.set_closed()
 
-    def _on_history_connection_reconnect(self, sender, connection):
+    def _on_history_connection_reconnect(
+        self, sender: Any, connection: aio_pika.Connection
+    ) -> None:
         logger.info("History connection ({}) reestablished!", connection)
 
         if self._reregister_task is not None and not self._reregister_task.done():
@@ -723,7 +741,7 @@ class HistoryClient(Client):
             self._reregister(connection)
         )
 
-        def reregister_done(task: Task):
+        def reregister_done(task: Task[None]) -> None:
             try:
                 exception = task.exception()
                 if exception is None:
@@ -738,12 +756,14 @@ class HistoryClient(Client):
 
         self._reregister_task.add_done_callback(reregister_done)
 
-    async def _reregister(self, connection):
+    async def _reregister(self, connection: aio_pika.Connection) -> None:
         logger.info(
             "Reregistering as history client...",
         )
         response = await self.rpc("history.register")
 
+        assert response is not None
+        assert self.history_exchange is not None
         assert response["historyExchange"] == self.history_exchange.name
         assert (
             self.derive_address(response["dataServerAddress"])
@@ -758,12 +778,13 @@ class HistoryClient(Client):
         logger.debug("Restarting consume...")
         await self._history_consume()
 
-    async def _declare_history_queue(self, name: str):
+    async def _declare_history_queue(self, name: str) -> None:
         # The manager declares the queue and we only connect to that queue with passive=True
         # But when a disconnect happens, the queue gets deleted. Therefore, there is no
         # way, how a robust connection could reconnect to that queue. Hence, we set
         # robust=False and handle the reconnect ourselfs.
         # (See self._on_history_connection_reconnect())
+        assert self.history_channel is not None
         self.history_response_queue = await self.history_channel.declare_queue(
             name=name, passive=True, robust=False
         )

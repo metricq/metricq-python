@@ -29,20 +29,21 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import math
-from typing import Optional
+from typing import Any, Optional, cast
 
+from . import source
 from .datachunk_pb2 import DataChunk
 from .types import Metric, Timestamp
 
 
 class ChunkSize:
-    def __set_name__(self, owner, name):
+    def __set_name__(self, owner: Any, name: str) -> None:
         self._field_name = f"_{name}"
 
-    def __get__(self, instance, cls=None) -> Optional[int]:
-        return getattr(instance, self._field_name)
+    def __get__(self, instance: "SourceMetric", cls: Optional[type] = None) -> int:
+        return cast(int, getattr(instance, self._field_name))
 
-    def __set__(self, instance, chunk_size: Optional[int]):
+    def __set__(self, instance: "SourceMetric", chunk_size: Optional[int]) -> None:
         if chunk_size is not None:
             if not isinstance(chunk_size, int):
                 raise TypeError("chunk_size must be `None` or a positive integer")
@@ -60,7 +61,9 @@ class SourceMetric:
     See :attr:`Source.chunk_size` for more information.
     """
 
-    def __init__(self, id: Metric, source, chunk_size: Optional[int] = 1):
+    def __init__(
+        self, id: Metric, source: "source.Source", chunk_size: Optional[int] = 1
+    ):
         self.id = id
         self.source = source
 
@@ -68,7 +71,7 @@ class SourceMetric:
         self.previous_timestamp = 0
         self.chunk = DataChunk()
 
-    def append(self, time: Timestamp, value):
+    def append(self, time: Timestamp, value: float) -> None:
         """
         Like send, but synchronous and will never flush
         """
@@ -79,7 +82,7 @@ class SourceMetric:
 
         assert len(self.chunk.time_delta) == len(self.chunk.value)
 
-    async def send(self, time: Timestamp, value):
+    async def send(self, time: Timestamp, value: float) -> None:
         self.append(time, value)
 
         if self.chunk_size is None:
@@ -88,15 +91,15 @@ class SourceMetric:
         if self.chunk_size <= len(self.chunk.time_delta):
             await self.flush()
 
-    async def error(self, time: Timestamp):
+    async def error(self, time: Timestamp) -> None:
         await self.send(time, math.nan)
 
     @property
-    def empty(self):
+    def empty(self) -> bool:
         assert len(self.chunk.time_delta) == len(self.chunk.value)
         return len(self.chunk.time_delta) == 0
 
-    async def flush(self):
+    async def flush(self) -> None:
         assert len(self.chunk.time_delta) == len(self.chunk.value)
         if len(self.chunk.time_delta) == 0:
             return

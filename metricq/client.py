@@ -30,22 +30,22 @@
 
 from socket import gethostname
 from sys import version_info as sys_version
-from typing import Any, Dict, Optional, Sequence, Union
+from typing import Any, Dict, Optional, Sequence, Union, cast
 
 from .agent import Agent
 from .logging import get_logger
 from .rpc import rpc_handler
-from .types import Timestamp
+from .types import JsonDict, Timestamp
 from .version import __version__
 
 logger = get_logger(__name__)
 
 
-_GetMetricsResult = Union[Sequence[str], Sequence[dict]]
+_GetMetricsResult = Union[Sequence[str], Sequence[Dict[str, Any]]]
 
 
 class Client(Agent):
-    def __init__(self, *args, client_version: Optional[str] = None, **kwargs):
+    def __init__(self, *args: Any, client_version: Optional[str] = None, **kwargs: Any):
         super().__init__(*args, **kwargs)
 
         self.starting_time = Timestamp.now()
@@ -70,7 +70,7 @@ class Client(Agent):
             )
 
             # We can ignore the undefined attribute error here as we check for exceptions anyway
-            client_version = getmodule(client_cls).__version__  # type: ignore[union-attr]
+            client_version = cast(str, getmodule(client_cls).__version__)  # type: ignore[union-attr]
 
             logger.debug("Client {} has version {!r}", client_name, client_version)
 
@@ -80,28 +80,36 @@ class Client(Agent):
             return None
 
     @property
-    def name(self):
+    def name(self) -> str:
         return "client-" + self.token
 
-    async def connect(self):
+    async def connect(self) -> None:
         await super().connect()
+
+        assert self._management_channel is not None
 
         self._management_broadcast_exchange = (
             await self._management_channel.declare_exchange(
                 name=self._management_broadcast_exchange_name, passive=True
             )
         )
+
         self._management_exchange = await self._management_channel.declare_exchange(
             name=self._management_exchange_name, passive=True
         )
 
+        assert self.management_rpc_queue is not None
         await self.management_rpc_queue.bind(
             exchange=self._management_broadcast_exchange, routing_key="#"
         )
 
         await self.rpc_consume()
 
-    async def rpc(self, function, **kwargs):
+    # The superclass has extra parameters, which we fill in in the overloads of the subclasses.
+    # So this is fine! But mypy complains and we carefully considered the feedback.
+    async def rpc(  # type: ignore
+        self, function: str, *args: Any, **kwargs: Any
+    ) -> Optional[JsonDict]:
         """Invoke an RPC on the management exchange
 
         Args:
@@ -122,6 +130,7 @@ class Client(Agent):
         """
         logger.debug("Waiting for management connection to be reestablished...")
         await self._management_connection_watchdog.established()
+        assert self._management_exchange is not None
         return await super().rpc(
             function=function,
             exchange=self._management_exchange,
@@ -131,7 +140,7 @@ class Client(Agent):
         )
 
     @rpc_handler("discover")
-    async def _on_discover(self, **kwargs):
+    async def _on_discover(self, **kwargs: Any) -> JsonDict:
         logger.info("responding to discover")
         now = Timestamp.now()
         uptime: int = (now - self.starting_time).ns
@@ -211,4 +220,5 @@ class Client(Agent):
         # Note: checks are done in the manager (e.g. must not have prefix and historic/selector at the same time)
 
         result = await self.rpc("get_metrics", **arguments)
-        return result["metrics"]
+        assert result is not None
+        return cast(_GetMetricsResult, result["metrics"])

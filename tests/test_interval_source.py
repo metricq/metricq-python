@@ -1,3 +1,4 @@
+from typing import Generator
 from unittest.mock import AsyncMock, patch
 
 import pytest
@@ -9,14 +10,14 @@ pytestmark = pytest.mark.asyncio
 
 
 class _TestIntervalSource(IntervalSource):
-    async def update(self):
+    async def update(self) -> None:
         assert False, "This should not be run"
 
     rpc: AsyncMock
 
 
 @pytest.fixture
-def interval_source():
+def interval_source() -> Generator[IntervalSource, None, None]:
 
     with patch("metricq.interval_source.IntervalSource.rpc"):
         source = _TestIntervalSource(
@@ -33,8 +34,8 @@ def interval_source():
     ],
 )
 def test_period_setter_normalizing(
-    interval_source: _TestIntervalSource, period, normalized
-):
+    interval_source: _TestIntervalSource, period: Timedelta, normalized: Timedelta
+) -> None:
     """Internally, the interval source period is normalized to a Timedelta"""
     assert interval_source.period is None
 
@@ -42,15 +43,14 @@ def test_period_setter_normalizing(
     assert interval_source.period == normalized
 
 
-def test_period_no_reset(interval_source: _TestIntervalSource):
+def test_period_no_reset(interval_source: _TestIntervalSource) -> None:
     """Currently, the interval source period cannot be reset to None"""
 
     with pytest.raises(TypeError, match=r"Setting .* to None is not supported"):
-        # type checking warns you that this is not supported
-        interval_source.period = None  # type: ignore
+        interval_source.period = None
 
 
-def test_period_no_explicit_init():
+def test_period_no_explicit_init() -> None:
     """Some clients were explicitly initializing the update period to None.
     *Don't do that.*
 
@@ -59,12 +59,12 @@ def test_period_no_explicit_init():
     with patch("metricq.interval_source.IntervalSource.rpc"):
 
         class _FaultySource(_TestIntervalSource):
-            def __init__(self):
+            def __init__(self) -> None:
                 super().__init__(
                     token="source-interval-test", management_url="amqps://test.invalid"
                 )
 
-                self.period = None  # type: ignore
+                self.period = None
 
         with pytest.raises(TypeError, match=r"Setting .* to None is not supported"):
             _FaultySource()

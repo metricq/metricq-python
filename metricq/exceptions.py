@@ -33,6 +33,8 @@ Contrary, misuse of the API generally yields specific built-in errors, i.e., Typ
 AssertionError / assert is only used for checking invariants within the library itself.
 """
 
+from typing import Any
+
 
 class RemoteError(Exception):
     """The remote has replied with an error."""
@@ -59,7 +61,7 @@ class MessageError(Exception):
 class InvalidHistoryResponse(MessageError):
     """A response to a history request could not be decoded."""
 
-    def __init__(self, extra_message):
+    def __init__(self, extra_message: str):
         super().__init__(
             (
                 "Failed to parse inconsistent history response message: {}."
@@ -82,7 +84,7 @@ class AgentStopped(Exception):
 class ReceivedSignal(AgentStopped):
     """The agent was stopped by a specific signal."""
 
-    def __init__(self, signal, *args):
+    def __init__(self, signal: str, *args: Any):
         self.signal = signal
         super().__init__(f"Received signal {signal} while running Agent", *args)
 

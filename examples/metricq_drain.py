@@ -32,9 +32,12 @@ import asyncio
 from metricq.subscription import Subscriber
 
 
-async def source():
+async def source() -> None:
     async with Subscriber(
-        "example", "amqp://admin:admin@localhost", metrics=["dummy.source"]
+        "example",
+        "amqp://admin:admin@localhost",
+        metrics=["dummy.source"],
+        expires=3600,
     ) as subscription:
 
         await asyncio.sleep(10)

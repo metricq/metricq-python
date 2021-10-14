@@ -31,7 +31,7 @@
 import logging
 import time
 
-from metricq import SynchronousSource, get_logger
+from metricq import SynchronousSource, Timestamp, get_logger
 
 logger = get_logger()
 
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     try:
         while True:
             for i in range(5):
-                sources[i % len(sources)].send("foo", time.time(), i)
+                sources[i % len(sources)].send("foo", Timestamp.now(), i)
                 time.sleep(0.1)
     except KeyboardInterrupt:
         print("Exiting")

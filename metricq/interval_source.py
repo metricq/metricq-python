@@ -28,7 +28,7 @@
 
 import asyncio
 from abc import abstractmethod
-from typing import Optional, Union
+from typing import Any, Optional, Union
 
 from .exceptions import PublishFailed
 from .logging import get_logger
@@ -74,14 +74,16 @@ class IntervalSource(Source):
                     self.counter += 1
     """
 
-    def __init__(self, *args, period: Union[float, Timedelta, None] = None, **kwargs):
+    def __init__(
+        self, *args: Any, period: Union[float, Timedelta, None] = None, **kwargs: Any
+    ):
         super().__init__(*args, **kwargs)
         self._period: Optional[Timedelta]
         if period is None:
             self._period = None
         else:
             self.period = period  # type: ignore # https://github.com/python/mypy/issues/3004
-        self._interval_task_stop_future = None
+        self._interval_task_stop_future: Optional[asyncio.Future[None]] = None
 
     @property
     def period(self) -> Optional[Timedelta]:
@@ -112,7 +114,7 @@ class IntervalSource(Source):
         return self._period
 
     @period.setter
-    def period(self, duration: Union[float, Timedelta]):  # type: ignore # see comment in __init__()
+    def period(self, duration: Union[float, Timedelta]) -> None:
         if isinstance(duration, Timedelta):
             self._period = duration
         elif duration is None:
@@ -123,7 +125,7 @@ class IntervalSource(Source):
         else:
             self._period = Timedelta.from_s(duration)
 
-    async def task(self):
+    async def task(self) -> None:
         self._interval_task_stop_future = self.event_loop.create_future()
         deadline = Timestamp.now()
         while True:
@@ -157,14 +159,14 @@ class IntervalSource(Source):
                 # This is the normal case, just continue with the loop
                 continue
 
-    async def stop(self, exception: Optional[Exception] = None):
+    async def stop(self, exception: Optional[Exception] = None) -> None:
         logger.debug("stop()")
         if self._interval_task_stop_future is not None:
             self._interval_task_stop_future.set_result(None)
         await super().stop(exception)
 
     @abstractmethod
-    async def update(self):
+    async def update(self) -> None:
         """A user-provided method called at intervals given by :attr:`period`.
 
         Override this method to produce data points at a constant rate.

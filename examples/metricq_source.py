@@ -29,10 +29,11 @@
 
 import logging
 import random
+from typing import Any
 
 import click
-import click_completion
-import click_log
+import click_completion  # type: ignore
+import click_log  # type: ignore
 
 import metricq
 from metricq.logging import get_logger
@@ -49,12 +50,12 @@ click_completion.init()
 
 
 class DummySource(metricq.IntervalSource):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any):
         logger.info("initializing DummySource")
         super().__init__(*args, **kwargs)
 
     @metricq.rpc_handler("config")
-    async def _on_config(self, **config):
+    async def _on_config(self, **config: Any) -> None:
         logger.info("DummySource config: {}", config)
 
         # Set the update period
@@ -69,7 +70,7 @@ class DummySource(metricq.IntervalSource):
         }
         await self.declare_metrics({"test.py.dummy": metadata})
 
-    async def update(self):
+    async def update(self) -> None:
         # Send a random value at the current time:
         await self.send(
             "test.py.dummy", time=metricq.Timestamp.now(), value=random.random()
@@ -79,8 +80,8 @@ class DummySource(metricq.IntervalSource):
 @click.command()
 @click.option("--server", default="amqp://localhost/")
 @click.option("--token", default="source-py-dummy")
-@click_log.simple_verbosity_option(logger)
-def source(server, token):
+@click_log.simple_verbosity_option(logger)  # type: ignore
+def source(server: str, token: str) -> None:
     src = DummySource(token=token, management_url=server)
     src.run()
 

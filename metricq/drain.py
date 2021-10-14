@@ -27,7 +27,8 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import asyncio
-from typing import List
+from inspect import Traceback
+from typing import Any, List, Optional, Tuple, cast
 
 import aio_pika
 
@@ -39,12 +40,12 @@ logger = get_logger(__name__)
 
 
 class Drain(Sink):
-    def __init__(self, *args, queue: str, metrics: List[str], **kwargs):
+    def __init__(self, *args: Any, queue: str, metrics: List[str], **kwargs: Any):
         """Drain the given queue of all buffered metric data
 
         Args:
-            queue (str): The name of the queue that contains the subscribed data.
-            metrics (List[str], optional): List of metrics that you want to subscribe to.
+            queue: The name of the queue that contains the subscribed data.
+            metrics: List of metrics that you want to subscribe to.
         """
         super().__init__(*args, add_uuid=True, **kwargs)
         if not metrics:
@@ -54,9 +55,9 @@ class Drain(Sink):
         self._queue = queue
         self._metrics = metrics
 
-        self._data: asyncio.Queue[tuple] = asyncio.Queue()
+        self._data: asyncio.Queue[Tuple[str, Timestamp, float]] = asyncio.Queue()
 
-    async def connect(self):
+    async def connect(self) -> None:
         await super().connect()
         assert len(self._metrics) > 0
 
@@ -64,25 +65,26 @@ class Drain(Sink):
             "sink.unsubscribe", dataQueue=self._queue, metrics=self._metrics
         )
 
+        assert response is not None
         assert len(self._queue) > 0
         await self.sink_config(**response)
 
-    async def _on_data_message(self, message: aio_pika.IncomingMessage):
-
+    async def _on_data_message(self, message: aio_pika.IncomingMessage) -> None:
         if message.type == "end":
             async with message.process():
                 logger.debug("received end message")
                 await self.rpc("sink.release", dataQueue=self._queue)
                 asyncio.create_task(self.stop())
-                await self._data.put(())
+                await self._data.put(cast(Tuple[str, Timestamp, float], ()))
+
                 return
 
         await super()._on_data_message(message)
 
-    async def on_data(self, metric: str, time: Timestamp, value):
+    async def on_data(self, metric: str, time: Timestamp, value: float) -> None:
         await self._data.put((metric, time, value))
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "Drain":
         """Allows to use the Drain as a context manager.
 
         The connection to MetricQ will automatically established and closed.
@@ -97,10 +99,15 @@ class Drain(Sink):
         await self.connect()
         return self
 
-    async def __aexit__(self, exc_type, exc_value, exc_traceback):
+    async def __aexit__(
+        self,
+        exc_type: Optional[type],
+        exc_value: Optional[BaseException],
+        exc_traceback: Optional[Traceback],
+    ) -> None:
         await self.stopped()
 
-    def __aiter__(self):
+    def __aiter__(self) -> "Drain":
         """Allows to asynchronously iterate over all metric data as it gets received.
 
         Use it like this::
@@ -111,7 +118,7 @@ class Drain(Sink):
         """
         return self
 
-    async def __anext__(self):
+    async def __anext__(self) -> Tuple[str, Timestamp, float]:
         try:
             metric, time, value = await self._data.get()
         except ValueError:
