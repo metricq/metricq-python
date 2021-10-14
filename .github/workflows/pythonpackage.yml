@@ -39,11 +39,8 @@ jobs:
     - name: Build protobuf files
       run: python setup.py build_protobuf
     - name: Run mypy
-      uses: kolonialno/mypy-action@v1
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        max-errors: 0
-        paths: metricq
+      run: |
+        mypy --strict metricq examples tests
 
   build:
     needs: [test]
