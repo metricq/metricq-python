@@ -29,15 +29,17 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import asyncio
 from threading import Event, Lock, Thread
+from typing import Any, Dict
 
 from .logging import get_logger
-from .source import Source
+from .source import MetadataDict, Source
+from .types import Timestamp
 
 logger = get_logger(__name__)
 
 
 class _SynchronousSource(Source):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
         # Remember this is a threading.Event, which is threadsafe
         # not a asyncio.Event which is not threadsafe
@@ -46,22 +48,24 @@ class _SynchronousSource(Source):
         self.exception = None
         self._ready_event = Event()
 
-    async def connect(self):
+    async def connect(self) -> None:
         await super().connect()
         self._ready_event.set()
 
-    def on_exception(self, loop, context):
+    def on_exception(
+        self, loop: asyncio.AbstractEventLoop, context: Dict[str, Any]
+    ) -> None:
         super().on_exception(loop, context)
 
         if not self._ready_event.is_set():
             self.exception = context["exception"]
             self._ready_event.set()
 
-    async def task(self):
+    async def task(self) -> None:
         # Nothing to do, we are called from the outside
         pass
 
-    def wait_for_ready(self, timeout):
+    def wait_for_ready(self, timeout: float) -> None:
         if not self._ready_event.wait(timeout):
             raise TimeoutError("SynchronousSource not ready in time")
         if self.exception is not None:
@@ -70,7 +74,7 @@ class _SynchronousSource(Source):
             )
             raise self.exception
 
-    def run(self):
+    def run(self, *args: Any, **kwargs: Any) -> None:
         super().run(catch_signals=())
 
 
@@ -78,7 +82,7 @@ class SynchronousSource:
     _lock = Lock()
     _tid = 0
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any):
         self._source = _SynchronousSource(*args, **kwargs)
         self._thread = Thread(target=self._source.run)
 
@@ -98,7 +102,14 @@ class SynchronousSource:
 
         logger.info("[SynchronousSource] ready")
 
-    def send(self, metric, time, value, block=True, timeout=60):
+    def send(
+        self,
+        metric: str,
+        time: Timestamp,
+        value: float,
+        block: bool = True,
+        timeout: float = 60,
+    ) -> None:
         f = asyncio.run_coroutine_threadsafe(
             self._source.send(metric, time, value), self._source.event_loop
         )
@@ -110,7 +121,9 @@ class SynchronousSource:
                 # self.stop()
                 # raise exception
 
-    def declare_metrics(self, metrics, block=True, timeout=60):
+    def declare_metrics(
+        self, metrics: Dict[str, MetadataDict], block: bool = True, timeout: float = 60
+    ) -> None:
         f = asyncio.run_coroutine_threadsafe(
             self._source.declare_metrics(metrics), self._source.event_loop
         )
@@ -119,7 +132,7 @@ class SynchronousSource:
             if exception:
                 logger.error("[SynchronousSource] failed to send data {}", exception)
 
-    def stop(self, timeout=60):
+    def stop(self, timeout: float = 60) -> None:
         logger.info("[SynchronousSource] stopping")
         f = asyncio.run_coroutine_threadsafe(
             self._source.stop(), self._source.event_loop

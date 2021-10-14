@@ -32,7 +32,7 @@ import datetime
 import re
 from dataclasses import dataclass
 from functools import total_ordering
-from typing import Union, overload
+from typing import Any, Dict, Iterator, Type, TypeVar, Union, overload
 
 from dateutil.parser import isoparse as dateutil_isoparse
 
@@ -86,7 +86,7 @@ class Timedelta:
         self._value = nanoseconds
 
     @staticmethod
-    def from_timedelta(delta: datetime.timedelta):
+    def from_timedelta(delta: datetime.timedelta) -> "Timedelta":
         """Convert from a standard ``timedelta`` object.
 
         Args:
@@ -99,7 +99,7 @@ class Timedelta:
         return Timedelta(microseconds * 1000)
 
     @staticmethod
-    def from_string(duration_str: str):
+    def from_string(duration_str: str) -> "Timedelta":
         """Parse a human-readable string representation of a duration.
 
         >>> "One day has {} seconds".format(Timedelta.from_string("1 day"))
@@ -173,7 +173,7 @@ class Timedelta:
         raise ValueError("invalid duration unit {}".format(unit))
 
     @staticmethod
-    def from_us(microseconds: float):
+    def from_us(microseconds: float) -> "Timedelta":
         """Create a duration from a number of microseconds
 
         Args:
@@ -184,7 +184,7 @@ class Timedelta:
         return Timedelta(int(microseconds * 1e3))
 
     @staticmethod
-    def from_ms(milliseconds: float):
+    def from_ms(milliseconds: float) -> "Timedelta":
         """Create a duration from a number of milliseconds
 
         Args:
@@ -195,7 +195,7 @@ class Timedelta:
         return Timedelta(int(milliseconds * 1e6))
 
     @staticmethod
-    def from_s(seconds: float):
+    def from_s(seconds: float) -> "Timedelta":
         """Create a duration from a number of seconds
 
         Args:
@@ -206,7 +206,7 @@ class Timedelta:
         return Timedelta(int(seconds * 1e9))
 
     @property
-    def precise_string(self):
+    def precise_string(self) -> str:
         if self._value % 1_000 != 0:
             return f"{self._value}ns"
 
@@ -228,22 +228,22 @@ class Timedelta:
         return f"{self._value // (1_000_000_000 * 3600 * 24)}d"
 
     @property
-    def ns(self):
+    def ns(self) -> int:
         """Number of nanoseconds in this duration"""
         return self._value
 
     @property
-    def us(self):
+    def us(self) -> float:
         """Number of microseconds in this duration"""
         return self._value / 1e3
 
     @property
-    def ms(self):
+    def ms(self) -> float:
         """Number of milliseconds in this duration"""
         return self._value / 1e6
 
     @property
-    def s(self):
+    def s(self) -> float:
         """Number of seconds in this duration"""
         return self._value / 1e9
 
@@ -265,7 +265,9 @@ class Timedelta:
     def __add__(self, other: datetime.timedelta) -> "Timedelta":
         ...
 
-    def __add__(self, other: Union["Timedelta", "Timestamp", datetime.timedelta]):
+    def __add__(
+        self, other: Union["Timedelta", "Timestamp", datetime.timedelta]
+    ) -> Union["Timedelta", "Timestamp"]:
         if isinstance(other, Timedelta):
             return Timedelta(self._value + other._value)
         if isinstance(other, datetime.timedelta):
@@ -281,7 +283,7 @@ class Timedelta:
     def __sub__(self, other: datetime.timedelta) -> "Timedelta":
         ...
 
-    def __sub__(self, other: Union["Timedelta", datetime.timedelta]):
+    def __sub__(self, other: Union["Timedelta", datetime.timedelta]) -> "Timedelta":
         if isinstance(other, Timedelta):
             return Timedelta(self._value - other._value)
         if isinstance(other, datetime.timedelta):
@@ -336,7 +338,7 @@ class Timedelta:
         """Scale a duration by a :class:`float` factor."""
         return Timedelta(int(self._value * factor))
 
-    def __str__(self):
+    def __str__(self) -> str:
         """A string containing the number of seconds of this duration
 
         >>> "One day has {} seconds".format(Timedelta.from_string("1 day"))
@@ -344,20 +346,23 @@ class Timedelta:
         """
         return "{}s".format(self.s)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Timedelta({self.ns})"
 
-    def __eq__(self, other: object):
+    def __eq__(self, other: object) -> bool:
         if isinstance(other, datetime.timedelta):
             return self.timedelta == other
         if isinstance(other, Timedelta):
             return self._value == other._value
         return NotImplemented
 
-    def __lt__(self, other: Union["Timedelta", datetime.timedelta]):
+    def __lt__(self, other: Union["Timedelta", datetime.timedelta]) -> bool:
         if isinstance(other, datetime.timedelta):
             return self.timedelta < other
         return self._value < other._value
+
+
+TimestampT = TypeVar("TimestampT", bound="Timestamp")
 
 
 @total_ordering
@@ -378,7 +383,7 @@ class Timestamp:
         """
 
     @classmethod
-    def from_posix_seconds(cls, seconds: float):
+    def from_posix_seconds(cls, seconds: float) -> "Timestamp":
         """Create a Timestamp from a POSIX timestamp
 
         Args:
@@ -390,7 +395,7 @@ class Timestamp:
         return Timestamp(int(seconds * 1e9))
 
     @classmethod
-    def from_datetime(cls, dt: datetime.datetime):
+    def from_datetime(cls, dt: datetime.datetime) -> "Timestamp":
         """Create a Timestamp from an aware datetime object
 
         Args:
@@ -429,7 +434,7 @@ class Timestamp:
         return cls.from_datetime(dt)
 
     @classmethod
-    def ago(cls, delta: Timedelta):
+    def ago(cls: Type[TimestampT], delta: Timedelta) -> "Timestamp":
         """Return a timestamp `delta` in the past.
 
         This is equivalent to::
@@ -442,7 +447,7 @@ class Timestamp:
         return cls.now() - delta
 
     @classmethod
-    def from_now(cls, delta: Timedelta):
+    def from_now(cls: Type[TimestampT], delta: Timedelta) -> "Timestamp":
         """Return a timestamp `delta` in the future.
 
         This is equivalent to::
@@ -455,7 +460,7 @@ class Timestamp:
         return cls.now() + delta
 
     @classmethod
-    def now(cls):
+    def now(cls) -> "Timestamp":
         """Return a Timestamp corresponding to "now"
 
         Returns:
@@ -464,22 +469,22 @@ class Timestamp:
         return cls.from_datetime(datetime.datetime.now(datetime.timezone.utc))
 
     @property
-    def posix_ns(self):
+    def posix_ns(self) -> int:
         """Number of nanoseconds since the UNIX epoch"""
         return self._value
 
     @property
-    def posix_us(self):
+    def posix_us(self) -> float:
         """Number of microseconds since the UNIX epoch"""
         return self._value / 1000
 
     @property
-    def posix_ms(self):
+    def posix_ms(self) -> float:
         """Number of milliseconds since the UNIX epoch"""
         return self._value / 1000000
 
     @property
-    def posix(self):
+    def posix(self) -> float:
         """Number of seconds since the UNIX epoch"""
         return self._value / 1000000000
 
@@ -495,7 +500,7 @@ class Timestamp:
         microseconds = self._value // 1000
         return Timestamp._EPOCH + datetime.timedelta(microseconds=microseconds)
 
-    def __add__(self, delta: Timedelta):
+    def __add__(self, delta: Timedelta) -> "Timestamp":
         """Return the timestamp `delta` in the future (or in the past, if `delta` is negative), relative to a :class:`Timestamp` instance.
 
         >>> epoch = Timestamp(0)
@@ -519,7 +524,9 @@ class Timestamp:
     def __sub__(self, other: "Timestamp") -> "Timedelta":
         ...
 
-    def __sub__(self, other: Union["Timedelta", "Timestamp"]):
+    def __sub__(
+        self, other: Union["Timedelta", "Timestamp"]
+    ) -> Union["Timestamp", "Timedelta"]:
         if isinstance(other, Timedelta):
             return Timestamp(self._value - other.ns)
         if isinstance(other, Timestamp):
@@ -528,7 +535,7 @@ class Timestamp:
             "Invalid type to subtract from Timestamp: {}".format(type(other))
         )
 
-    def __lt__(self, other: "Timestamp"):
+    def __lt__(self, other: "Timestamp") -> bool:
         """Compare whether this timestamp describes a time before another timestamp.
 
         >>> now = Timestamp.now()
@@ -545,7 +552,7 @@ class Timestamp:
 
         return self._value < other._value
 
-    def __eq__(self, other: object):
+    def __eq__(self, other: object) -> bool:
         """Check whether two :class:`Timestamps<Timestamp>` refer to the same instance of time:
 
         >>> now = Timestamp.now()
@@ -561,7 +568,7 @@ class Timestamp:
 
         return self._value == other._value
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Yield a human-readable date-time string in the local timezone:
 
         >>> # in UTC+01:00, it was already 1 in the night when the UNIX epoch happened
@@ -572,7 +579,7 @@ class Timestamp:
         # Note we convert to local timezone with astimezone for printing
         return "[{}] {}".format(self.posix_ns, str(self.datetime.astimezone()))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Timestamp({self.posix_ns})"
 
 
@@ -592,7 +599,7 @@ class TimeValue:
     timestamp: Timestamp
     value: float
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Union["Timestamp", float]]:
         return iter((self.timestamp, self.value))
 
 
@@ -626,7 +633,9 @@ class TimeAggregate:
     """time spanned by this aggregate"""
 
     @staticmethod
-    def from_proto(timestamp: Timestamp, proto: history_pb2.HistoryResponse.Aggregate):
+    def from_proto(
+        timestamp: Timestamp, proto: history_pb2.HistoryResponse.Aggregate
+    ) -> "TimeAggregate":
         return TimeAggregate(
             timestamp=timestamp,
             minimum=proto.minimum,
@@ -638,7 +647,7 @@ class TimeAggregate:
         )
 
     @staticmethod
-    def from_value(timestamp: Timestamp, value: float):
+    def from_value(timestamp: Timestamp, value: float) -> "TimeAggregate":
         return TimeAggregate(
             timestamp=timestamp,
             minimum=value,
@@ -652,7 +661,7 @@ class TimeAggregate:
     @staticmethod
     def from_value_pair(
         timestamp_before: Timestamp, timestamp: Timestamp, value: float
-    ):
+    ) -> "TimeAggregate":
         """Create a TimeAggregate from a pair of timestamps (class:`Timestamp`) and one value
 
         Raises:
@@ -700,4 +709,8 @@ class TimeAggregate:
 
 Metric = str
 """Type alias for strings that represent metric names
+"""
+
+JsonDict = Dict[str, Any]
+"""Type alias for dicts that represent JSON data
 """

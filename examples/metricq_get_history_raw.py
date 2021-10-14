@@ -32,8 +32,8 @@ import logging
 from datetime import timedelta
 
 import click
-import click_completion
-import click_log
+import click_completion  # type: ignore
+import click_log  # type: ignore
 
 import metricq
 from metricq.history_client import HistoryRequestType
@@ -51,7 +51,7 @@ logger.handlers[0].formatter = logging.Formatter(
 click_completion.init()
 
 
-async def aget_history(server, token, metric):
+async def aget_history(server: str, token: str, metric: str) -> None:
     client = metricq.HistoryClient(
         token=token, management_url=server, event_loop=asyncio.get_running_loop()
     )
@@ -92,8 +92,8 @@ async def aget_history(server, token, metric):
 @click.option("--server", default="amqp://localhost/")
 @click.option("--token", default="history-py-dummy")
 @click.argument("metric")
-@click_log.simple_verbosity_option(logger)
-def get_history(server, token, metric):
+@click_log.simple_verbosity_option(logger)  # type: ignore
+def get_history(server: str, token: str, metric: str) -> None:
     asyncio.run(aget_history(server, token, metric))
 
 

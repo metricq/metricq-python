@@ -34,8 +34,8 @@ import random
 import time
 
 import click
-import click_completion
-import click_log
+import click_completion  # type: ignore
+import click_log  # type: ignore
 
 from metricq import SynchronousSource, get_logger
 from metricq.types import Timestamp
@@ -54,8 +54,8 @@ click_completion.init()
 @click.command()
 @click.option("--server", default="amqp://localhost/")
 @click.option("--token", default="source-py-dummy")
-@click_log.simple_verbosity_option(logger)
-def synchronous_source(server, token):
+@click_log.simple_verbosity_option(logger)  # type: ignore
+def synchronous_source(server: str, token: str) -> None:
     ssource = SynchronousSource(token=token, management_url=server)
     ssource.declare_metrics(
         {

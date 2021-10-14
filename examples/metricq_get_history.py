@@ -33,8 +33,8 @@ import pprint
 from datetime import timedelta
 
 import click
-import click_completion
-import click_log
+import click_completion  # type: ignore
+import click_log  # type: ignore
 
 import metricq
 
@@ -51,13 +51,15 @@ logger.handlers[0].formatter = logging.Formatter(
 click_completion.init()
 
 
-async def aget_history(server, token, metric, list_metrics, list_metadata):
+async def aget_history(
+    server: str, token: str, metric: str, list_metrics: bool, list_metadata: bool
+) -> None:
     client = metricq.HistoryClient(
         token=token, management_url=server, event_loop=asyncio.get_running_loop()
     )
     await client.connect()
     if list_metrics:
-        metrics = await client.history_metric_list(metric)
+        metrics = await client.get_metrics(metric, metadata=False)
         click.echo(
             click.style(
                 "metrics matching {}:\n{}".format(metric, metrics), fg="bright_blue"
@@ -67,7 +69,7 @@ async def aget_history(server, token, metric, list_metrics, list_metadata):
         return
 
     if list_metadata:
-        metadata = await client.history_metric_metadata(metric)
+        metadata = await client.get_metrics(metric)
         pp = pprint.PrettyPrinter(indent=4)
         click.echo(
             click.style(
@@ -80,6 +82,7 @@ async def aget_history(server, token, metric, list_metrics, list_metadata):
 
     now = metricq.Timestamp.now()
     last_timevalue = await client.history_last_value(metric)
+    assert last_timevalue is not None
     click.echo(
         click.style(
             "Last entry: {} ({} ago) value: {}".format(
@@ -111,8 +114,10 @@ async def aget_history(server, token, metric, list_metrics, list_metadata):
 @click.option("--metric", default=None)
 @click.option("--list-metrics", is_flag=True)
 @click.option("--list-metadata", is_flag=True)
-@click_log.simple_verbosity_option(logger)
-def get_history(server, token, metric, list_metrics, list_metadata):
+@click_log.simple_verbosity_option(logger)  # type: ignore
+def get_history(
+    server: str, token: str, metric: str, list_metrics: bool, list_metadata: bool
+) -> None:
     if not (list_metrics or list_metadata) and metric is None:
         metric = "dummy"
     asyncio.run(aget_history(server, token, metric, list_metrics, list_metadata))

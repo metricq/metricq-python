@@ -1,3 +1,4 @@
+import asyncio
 from asyncio import CancelledError, Event, Task, TimeoutError, wait_for
 from typing import Callable, Optional, Union
 
@@ -37,9 +38,9 @@ class ConnectionWatchdog:
         # Events take the loop, which we don't have here so we can't initialize them here
         self._closed_event: Optional[Event] = None
         self._established_event: Optional[Event] = None
-        self._watchdog_task: Optional[Task] = None
+        self._watchdog_task: Optional[Task[None]] = None
 
-    def start(self, loop):
+    def start(self, loop: asyncio.AbstractEventLoop) -> None:
         """Start the connection watchdog task.
 
         A call to this method will have no effect if the task is already
@@ -54,12 +55,13 @@ class ConnectionWatchdog:
         self._closed_event = Event(loop=loop)
         self._established_event = Event(loop=loop)
 
-        async def watchdog():
+        async def watchdog() -> None:
             logger.debug("Started {} watchdog", self.connection_name)
             try:
                 cap_connection_name = self.connection_name.capitalize()
                 while True:
                     try:
+                        assert self._established_event is not None
                         await wait_for(
                             self._established_event.wait(), timeout=self.timeout
                         )
@@ -73,6 +75,7 @@ class ConnectionWatchdog:
                         self._callback(self)
                         break
 
+                    assert self._closed_event is not None
                     await self._closed_event.wait()
                     logger.debug("{} was closed", cap_connection_name)
 
@@ -82,7 +85,7 @@ class ConnectionWatchdog:
 
         self._watchdog_task = loop.create_task(watchdog())
 
-    def set_established(self):
+    def set_established(self) -> None:
         """Signal that the connection has been established."""
         assert (
             self._closed_event is not None
@@ -92,24 +95,28 @@ class ConnectionWatchdog:
         self._closed_event.clear()
         self._established_event.set()
 
-    def set_closed(self):
+    def set_closed(self) -> None:
         """Signal that the connection has been closed."""
 
         # Might be called when the watchdog is already stopped, so we need to check here.
         if self._closed_event is None:
             return
+        assert self._established_event is not None
+
         self._established_event.clear()
         self._closed_event.set()
 
-    async def closed(self):
+    async def closed(self) -> None:
         """Asynchronously wait for the connection to be closed."""
+        assert self._closed_event is not None
         await self._closed_event.wait()
 
-    async def established(self):
+    async def established(self) -> None:
         """Asynchronously wait for the connection to be established."""
+        assert self._established_event is not None
         await self._established_event.wait()
 
-    async def stop(self):
+    async def stop(self) -> None:
         """Stop the connection watchdog task if it is running."""
         if self._watchdog_task:
             if self._watchdog_task.done():

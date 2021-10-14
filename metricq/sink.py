@@ -28,7 +28,7 @@
 
 from abc import abstractmethod
 from asyncio import CancelledError, Task
-from typing import Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set, Union
 
 import aio_pika
 from aio_pika.queue import Queue
@@ -36,7 +36,7 @@ from aio_pika.queue import Queue
 from .data_client import DataClient
 from .datachunk_pb2 import DataChunk
 from .logging import get_logger
-from .types import Timestamp
+from .types import JsonDict, Metric, Timestamp
 
 logger = get_logger(__name__)
 
@@ -52,28 +52,33 @@ class Sink(DataClient):
             This is useful to distinguish different instances of the same Sink.
     """
 
-    def __init__(self, *args, add_uuid=True, **kwargs):
+    def __init__(self, *args: Any, add_uuid: bool = True, **kwargs: Any):
         super().__init__(*args, add_uuid=add_uuid, **kwargs)
 
         self._data_queue: Optional[Queue] = None
         self._data_consumer_tag: Optional[str] = None
         self._subscribed_metrics: Set[str] = set()
-        self._subscribe_args: dict = dict()
-        self._resubscribe_task: Optional[Task] = None
+        self._subscribe_args: Dict[str, Any] = dict()
+        self._resubscribe_task: Optional[Task[None]] = None
 
-    async def _declare_data_queue(self, name: str):
+    async def _declare_data_queue(self, name: str) -> None:
+        assert self.data_channel is not None
         self._data_queue = await self.data_channel.declare_queue(
             name=name, robust=False, passive=True
         )
 
-    async def sink_config(self, dataQueue, **kwargs):
+    async def sink_config(self, dataQueue: str, **kwargs: Any) -> None:
         await self.data_config(**kwargs)
         await self._declare_data_queue(dataQueue)
+
+        assert self._data_queue is not None
 
         logger.info("starting sink consume")
         self._data_consumer_tag = await self._data_queue.consume(self._on_data_message)
 
-    def _on_data_connection_reconnect(self, sender, connection):
+    def _on_data_connection_reconnect(
+        self, sender: Any, connection: aio_pika.Connection
+    ) -> None:
         logger.info("Sink data connection ({}) reestablished!", connection)
 
         if self._resubscribe_task is not None and not self._resubscribe_task.done():
@@ -86,7 +91,7 @@ class Sink(DataClient):
             self._resubscribe(connection)
         )
 
-        def resubscribe_done(task: Task):
+        def resubscribe_done(task: Task[None]) -> None:
             try:
                 exception = task.exception()
                 if exception is None:
@@ -101,7 +106,8 @@ class Sink(DataClient):
 
         self._resubscribe_task.add_done_callback(resubscribe_done)
 
-    async def _resubscribe(self, connection):
+    async def _resubscribe(self, connection: aio_pika.Connection) -> None:
+        assert self._data_queue is not None
         # Reuse manager-assigned data queue name for resubscription.
         self._subscribe_args.update(dataQueue=self._data_queue.name)
 
@@ -114,6 +120,7 @@ class Sink(DataClient):
         response = await self.rpc(
             "sink.subscribe", metrics=metrics, **self._subscribe_args
         )
+        assert response is not None
         await self._declare_data_queue(response["dataQueue"])
 
         logger.debug("Restarting consume...")
@@ -123,11 +130,11 @@ class Sink(DataClient):
 
     async def subscribe(
         self,
-        metrics,
+        metrics: List[Metric],
         expires: Union[None, int, float] = None,
         metadata: Optional[bool] = None,
-        **kwargs,
-    ):
+        **kwargs: Any,
+    ) -> JsonDict:
         """Subscribe to a list of metrics.
 
         Args:
@@ -149,6 +156,7 @@ class Sink(DataClient):
             kwargs.update(metadata=metadata)
 
         response = await self.rpc("sink.subscribe", metrics=metrics, **kwargs)
+        assert response is not None
 
         self._subscribed_metrics.update(metrics)
         # Save the subscription RPC args in case we need to resubscribe (after a reconnect).
@@ -158,7 +166,7 @@ class Sink(DataClient):
             await self.sink_config(**response)
         return response
 
-    async def unsubscribe(self, metrics):
+    async def unsubscribe(self, metrics: List[Metric]) -> None:
         assert self._data_queue
         await self.rpc(
             "sink.unsubscribe", dataQueue=self._data_queue.name, metrics=metrics
@@ -171,7 +179,7 @@ class Sink(DataClient):
         if not self._subscribed_metrics:
             self._subscribe_args = dict()
 
-    async def _on_data_message(self, message: aio_pika.IncomingMessage):
+    async def _on_data_message(self, message: aio_pika.IncomingMessage) -> None:
         async with message.process(requeue=True):
             body = message.body
             from_token = message.app_id
@@ -183,7 +191,7 @@ class Sink(DataClient):
 
             await self._on_data_chunk(metric, data_response)
 
-    async def _on_data_chunk(self, metric, data_chunk: DataChunk):
+    async def _on_data_chunk(self, metric: Metric, data_chunk: DataChunk) -> None:
         """ Only override this if absolutely necessary for performance """
         last_timed = 0
         zipped_tv = zip(data_chunk.time_delta, data_chunk.value)
@@ -192,7 +200,7 @@ class Sink(DataClient):
             await self.on_data(metric, Timestamp(last_timed), value)
 
     @abstractmethod
-    async def on_data(self, metric: str, timestamp: Timestamp, value: float) -> None:
+    async def on_data(self, metric: Metric, timestamp: Timestamp, value: float) -> None:
         """A Callback that is invoked for every data point received for any of the metrics this client is subscribed to.
 
         User-defined :term:`Sinks<Sink>` need to override this method to handle incoming data points.
@@ -205,10 +213,10 @@ class Sink(DataClient):
 
 
 class DurableSink(Sink):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, add_uuid=False, **kwargs)
 
-    async def connect(self):
+    async def connect(self) -> None:
         await super().connect()
 
         response = await self.rpc("sink.register")

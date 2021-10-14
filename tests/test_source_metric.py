@@ -1,5 +1,5 @@
 from math import isnan
-from typing import Generator, Tuple, Type
+from typing import Any, Generator, Optional, Tuple, Type, cast
 from unittest.mock import AsyncMock, create_autospec
 
 import pytest
@@ -17,7 +17,7 @@ _Metric = Generator[Tuple[Timestamp, float], None, None]
 
 @pytest.fixture(scope="module")
 def metric() -> _Metric:
-    def _metric():
+    def _metric() -> _Metric:
         timestamp = Timestamp(0)
         delta = Timedelta.from_s(1)
         value = 0.0
@@ -43,7 +43,7 @@ def chunked() -> _Chunked:
     "chunk_size",
     [1, 42, None],
 )
-def test_chunk_size_valid(chunk_size, chunked):
+def test_chunk_size_valid(chunk_size: Optional[int], chunked: SourceMetric) -> None:
     chunked.chunk_size = chunk_size
     assert chunked.chunk_size == chunk_size
 
@@ -57,28 +57,31 @@ def test_chunk_size_valid(chunk_size, chunked):
         ("2", TypeError),
     ],
 )
-def test_chunk_size_invalid(chunked: _Chunked, invalid, exc_type: Type[Exception]):
+def test_chunk_size_invalid(
+    chunked: _Chunked, invalid: Any, exc_type: Type[Exception]
+) -> None:
     with pytest.raises(exc_type):
-        chunked.chunk_size = invalid
+        # this test pushes invalid type, hence the ignore
+        chunked.chunk_size = invalid  # type: ignore
 
 
 @pytest.fixture
-def source():
+def source() -> Source:
     source = create_autospec(Source, spec_set=True)
-    return source
+    return cast(Source, source)
 
 
 @pytest.fixture
-def source_metric(source):
+def source_metric(source: Source) -> SourceMetric:
     return SourceMetric(id="test.metric", source=source)
 
 
-def test_source_metric_chunk_size_invalid(source):
+def test_source_metric_chunk_size_invalid(source: Source) -> None:
     with pytest.raises(ValueError):
         SourceMetric("test.foo", source=source, chunk_size=0)
 
 
-def test_source_metric_empty_after_init(source):
+def test_source_metric_empty_after_init(source: Source) -> None:
     source_metric = SourceMetric(id="test.metric", source=source)
 
     assert source_metric.empty
@@ -86,41 +89,50 @@ def test_source_metric_empty_after_init(source):
 
 async def test_source_metric_default_send_immediately(
     source_metric: SourceMetric, metric: _Metric
-):
+) -> None:
     await source_metric.send(*next(metric))
 
-    source_metric.source._send.assert_called_once()
+    # the actual source is a mocked object, hence mypy sad.
+    source_metric.source._send.assert_called_once()  # type: ignore
 
 
-async def test_source_metric_no_send_if_empty(source_metric: SourceMetric):
+async def test_source_metric_no_send_if_empty(source_metric: SourceMetric) -> None:
     assert source_metric.empty
 
     await source_metric.flush()
 
-    assert not source_metric.source._send.called
+    # the actual source is a mocked object, hence mypy sad.
+    assert not source_metric.source._send.called  # type: ignore
 
 
-async def test_source_metric_send_chunked(source_metric: SourceMetric, metric: _Metric):
+async def test_source_metric_send_chunked(
+    source_metric: SourceMetric, metric: _Metric
+) -> None:
     source_metric.chunk_size = 2
 
     await source_metric.send(*next(metric))
-    assert not source_metric.source._send.called
+    # the actual source is a mocked object, hence mypy sad.
+    assert not source_metric.source._send.called  # type: ignore
 
     await source_metric.send(*next(metric))
-    assert source_metric.source._send.called
+    # the actual source is a mocked object, hence mypy sad.
+    assert source_metric.source._send.called  # type: ignore
     assert source_metric.empty
 
     await source_metric.send(*next(metric))
-    assert len(source_metric.source._send.mock_calls) == 1
+    # the actual source is a mocked object, hence mypy sad.
+    assert len(source_metric.source._send.mock_calls) == 1  # type: ignore
 
 
-async def test_source_send_no_chunking(source_metric: SourceMetric, metric: _Metric):
+async def test_source_send_no_chunking(
+    source_metric: SourceMetric, metric: _Metric
+) -> None:
     source_metric.chunk_size = None
 
     for _ in range(50):
         await source_metric.send(*next(metric))
 
-    assert not source_metric.source._send.called
+    assert not source_metric.source._send.called  # type: ignore
 
     chunk = source_metric.chunk
     assert len(chunk.time_delta) == 50
@@ -129,16 +141,16 @@ async def test_source_send_no_chunking(source_metric: SourceMetric, metric: _Met
     await source_metric.flush()
 
     assert source_metric.empty
-    source_metric.source._send.assert_called_once_with(source_metric.id, chunk)
+    source_metric.source._send.assert_called_once_with(source_metric.id, chunk)  # type: ignore
 
 
-async def test_source_send_error_value_is_none(source_metric: SourceMetric):
-    async def send(metric, chunk: DataChunk):
+async def test_source_send_error_value_is_none(source_metric: SourceMetric) -> None:
+    async def send(metric: SourceMetric, chunk: DataChunk) -> None:
         assert len(chunk.value) == 1 and isnan(chunk.value[0])
 
     # Replace the send call by a mock and inspect it there.  We cannot inspect
     # the chunk from mock_calls after the call to error since the chunk will
     # have been reset already, so it would always be empty.
-    source_metric.source.attach_mock(AsyncMock(side_effect=send), "_send")
+    source_metric.source.attach_mock(AsyncMock(side_effect=send), "_send")  # type: ignore
 
     await source_metric.error(Timestamp(0))

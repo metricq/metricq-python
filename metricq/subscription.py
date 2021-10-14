@@ -26,7 +26,8 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from typing import List, Optional, Union
+from inspect import Traceback
+from typing import Any, List, Optional, Union
 
 from .client import Client
 from .drain import Drain
@@ -39,10 +40,10 @@ logger = get_logger(__name__)
 class Subscriber(Client):
     def __init__(
         self,
-        *args,
+        *args: Any,
         expires: Union[Timedelta, int, float],
         metrics: List[str],
-        **kwargs,
+        **kwargs: Any,
     ):
         """Subscribes to a list of metrics
 
@@ -73,7 +74,7 @@ class Subscriber(Client):
         This is only set after :meth:`.connect()` has finished.
         """
 
-    async def connect(self, **kwargs) -> None:
+    async def connect(self, **kwargs: Any) -> None:
         """Connects to the MetricQ network, sends the subscribe request, and disconnects again.
 
         After it has successfully finished, the :attr:`.queue` name is set.
@@ -90,10 +91,11 @@ class Subscriber(Client):
             "sink.subscribe", metrics=self._metrics, expires=self.expires, **kwargs
         )
 
+        assert response is not None
         self.queue = response["dataQueue"]
         await self.stop()
 
-    def drain(self, **kwargs) -> Drain:
+    def drain(self, **kwargs: Any) -> Drain:
         """Returns a fully configured instance of a Drain, by using the given settings used for the subscription.
 
         As the Drain is a context manager, you should use the result of this in a `with`-statement::
@@ -113,7 +115,7 @@ class Subscriber(Client):
         new_kwargs.update(kwargs)
         return Drain(*self._args, **new_kwargs, queue=self.queue, metrics=self._metrics)
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "Subscriber":
         """Allows to use the Subscriber as a context manager.
 
         The connection to MetricQ will automatically established and closed.
@@ -128,5 +130,10 @@ class Subscriber(Client):
         await self.connect()
         return self
 
-    async def __aexit__(self, exc_type, exc_value, exc_traceback):
+    async def __aexit__(
+        self,
+        exc_type: Optional[type],
+        exc_value: Optional[BaseException],
+        exc_traceback: Optional[Traceback],
+    ) -> None:
         pass

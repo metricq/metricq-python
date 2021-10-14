@@ -28,11 +28,11 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import logging
-from typing import List
+from typing import Any, List
 
 import click
-import click_completion
-import click_log
+import click_completion  # type: ignore
+import click_log  # type: ignore
 
 import metricq
 from metricq.logging import get_logger
@@ -52,14 +52,14 @@ click_completion.init()
 class DummySink(metricq.Sink):
     """A simple :term:`Sink` which, given a list of Metrics, will print their values as they arrive from the MetricQ network."""
 
-    def __init__(self, metrics: List[str], *args, **kwargs):
+    def __init__(self, metrics: List[str], *args: Any, **kwargs: Any):
         logger.info("initializing DummySink")
         # `metrics` contains the names of Metrics for which this Sink should print values
         self._metrics = metrics
         super().__init__(*args, **kwargs)
 
     # Override connect() to subscribe to the Metrics of interest after a connection has been established.
-    async def connect(self):
+    async def connect(self) -> None:
         # First, let the base class connect to the MetricQ network.
         await super().connect()
 
@@ -69,7 +69,9 @@ class DummySink(metricq.Sink):
         await self.subscribe(self._metrics)
 
     # The data handler, this method is called for every data point we receive
-    async def on_data(self, metric: str, timestamp: metricq.Timestamp, value: float):
+    async def on_data(
+        self, metric: str, timestamp: metricq.Timestamp, value: float
+    ) -> None:
         # For this example, we just print the datapoints to standard output
         click.echo(
             click.style("{}: {}, {}".format(metric, timestamp, value), fg="bright_blue")
@@ -80,8 +82,8 @@ class DummySink(metricq.Sink):
 @click.option("--server", default="amqp://localhost/")
 @click.option("--token", default="sink-py-dummy")
 @click.option("-m", "--metrics", multiple=True, required=True)
-@click_log.simple_verbosity_option(logger)
-def source(server, token, metrics):
+@click_log.simple_verbosity_option(logger)  # type: ignore
+def source(server: str, token: str, metrics: List[str]) -> None:
     # Initialize the DummySink class with a list of metrics given on the
     # command line.
     sink = DummySink(metrics=metrics, token=token, management_url=server)

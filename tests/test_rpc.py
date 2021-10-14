@@ -28,6 +28,7 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import logging
+from typing import Any, Dict, Tuple
 
 import pytest
 
@@ -35,21 +36,21 @@ from metricq.rpc import RPCDispatcher, rpc_handler
 
 
 class SimpleDispatcher(RPCDispatcher):
-    def __init__(self, number):
+    def __init__(self, number: int) -> None:
         self.number = number
 
     @rpc_handler("number")
-    async def handle_number(self):
+    async def handle_number(self) -> int:
         return self.number
 
     @rpc_handler("repeat")
-    async def handle_repeat(self, name):
+    async def handle_repeat(self, name: str) -> str:
         return self.number * name
 
 
 class SubDispatcher(SimpleDispatcher):
     @rpc_handler("sub_double_number")
-    async def handle_sub_double_number(self):
+    async def handle_sub_double_number(self) -> float:
         return self.number * 2
 
 
@@ -63,7 +64,9 @@ class SubDispatcher(SimpleDispatcher):
         (2, "repeat", {"name": "foo"}, "foofoo"),
     ],
 )
-async def test_dispatch_simple(number: int, function: str, kwargs: dict, result):
+async def test_dispatch_simple(
+    number: int, function: str, kwargs: Dict[Any, Any], result: str
+) -> None:
     assert await SimpleDispatcher(number).rpc_dispatch(function, **kwargs) == result
 
 
@@ -76,7 +79,7 @@ async def test_dispatch_simple(number: int, function: str, kwargs: dict, result)
         ("sub_double_number", {}, 6),
     ],
 )
-async def test_dispatch_sub(function: str, kwargs: dict, result):
+async def test_dispatch_sub(function: str, kwargs: Dict[Any, Any], result: str) -> None:
     assert await SubDispatcher(3).rpc_dispatch(function, **kwargs) == result
 
 
@@ -85,19 +88,19 @@ class UnknownFunctionDispatcher(RPCDispatcher):
 
 
 @pytest.mark.asyncio
-async def test_dispatch_unknown_function():
+async def test_dispatch_unknown_function() -> None:
     with pytest.raises(KeyError):
         await UnknownFunctionDispatcher().rpc_dispatch("unknown")
 
 
 class InvalidDispatcher:
     @rpc_handler("not_async")
-    def not_async(self):
+    def not_async(self) -> Tuple[()]:
         return ()
 
 
 class DuplicateHandlersDispatcher(RPCDispatcher):
-    def __init__(self):
+    def __init__(self) -> None:
         self.logger = logging.getLogger(__name__)
 
     @rpc_handler("duplicate_no_conflict")
@@ -111,23 +114,24 @@ class DuplicateHandlersDispatcher(RPCDispatcher):
         return None
 
     @rpc_handler("duplicate_conflict")
-    async def conflict1(self):
+    async def conflict1(self) -> int:
         return 1
 
     @rpc_handler("duplicate_conflict")
-    async def conflict2(self):
+    async def conflict2(self) -> int:
         return 2
 
 
 @pytest.fixture
-def duplicate_handlers_dispatcher():
+def duplicate_handlers_dispatcher() -> DuplicateHandlersDispatcher:
     return DuplicateHandlersDispatcher()
 
 
 @pytest.mark.asyncio
 async def test_dispatch_multiple_handlers_no_return_value(
-    caplog, duplicate_handlers_dispatcher
-):
+    caplog: pytest.LogCaptureFixture,
+    duplicate_handlers_dispatcher: DuplicateHandlersDispatcher,
+) -> None:
     """An RPCDispatcher is allowed to register multiple handlers for the same
     function, as long as they all return None."""
     caplog.set_level(logging.INFO)
@@ -143,8 +147,8 @@ async def test_dispatch_multiple_handlers_no_return_value(
 
 @pytest.mark.asyncio
 async def test_dispatch_no_multiple_handlers_with_return_values(
-    duplicate_handlers_dispatcher,
-):
+    duplicate_handlers_dispatcher: DuplicateHandlersDispatcher,
+) -> None:
     """Test the negative of :func:`test_dispatch_multiple_handlers_no_return_value`.
 
     An RPCDispatcher may not register multiple handlers for the same function if
