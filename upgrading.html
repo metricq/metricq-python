@@ -87,12 +87,17 @@
 <li class="toctree-l1"><a class="reference internal" href="metadata.html">Metric Metadata</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Upgrading <code class="docutils literal notranslate"><span class="pre">metricq</span></code></a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#x-2-0"><cite>1.x</cite> → <cite>2.0</cite></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#changed-required-python-version-to-3-8">Changed required Python version to 3.8</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#location-of-exception-classes">Location of exception classes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#removed-exceptions">Removed exceptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#validation-of-source-chunk-sizes">Validation of <code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code> chunk sizes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#removal-of-previously-deprecated-methods">Removal of previously deprecated methods</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#type-changes-to-reduce-ambiguity">Type changes to reduce ambiguity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#deprecation-of-timeaggregate-integral">Deprecation of <code class="code docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#x-3-0"><cite>2.x</cite> → <cite>3.0</cite></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#removal-of-timeaggregate-integral">Removal of <code class="code docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -170,6 +175,12 @@ These are listed below, together with suggested steps to
 take when upgrading.</p>
 <div class="section" id="x-2-0">
 <h2><cite>1.x</cite> → <cite>2.0</cite><a class="headerlink" href="#x-2-0" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="changed-required-python-version-to-3-8">
+<h3>Changed required Python version to 3.8<a class="headerlink" href="#changed-required-python-version-to-3-8" title="Permalink to this headline">¶</a></h3>
+<p>Python 3.7 has had issues with TLS/SSL encrypted connections,
+therefore the minimum required version was changed to <em>3.8</em>.
+Make sure, a matching Python version is available on the system.</p>
+</div>
 <div class="section" id="location-of-exception-classes">
 <h3>Location of exception classes<a class="headerlink" href="#location-of-exception-classes" title="Permalink to this headline">¶</a></h3>
 <p>All exception classes have moved into the module <a class="reference internal" href="api/exceptions.html#module-metricq.exceptions" title="metricq.exceptions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metricq.exceptions</span></code></a>,
@@ -214,8 +225,8 @@ and <em>positive</em> integers are accepted.</p>
 <li><p>Support for tuple-unpacking instances of <a class="reference internal" href="api/misc.html#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a> has been removed.</p></li>
 <li><p>The methods <code class="code docutils literal notranslate"><span class="pre">history_metric_list</span></code> and <code class="code docutils literal notranslate"><span class="pre">history_metric_metadata</span></code>
 on <a class="reference internal" href="api/history-client.html#metricq.HistoryClient" title="metricq.HistoryClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryClient</span></code></a> have been removed.
-They are superseeded by the more general <a class="reference internal" href="api/history-client.html#metricq.HistoryClient.get_metrics" title="metricq.HistoryClient.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.get_metrics()</span></code></a>;
-to upgrade make the following changes:</p>
+They are superseded by the more general <a class="reference internal" href="api/history-client.html#metricq.HistoryClient.get_metrics" title="metricq.HistoryClient.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.get_metrics()</span></code></a>;
+to upgrade, make the following changes:</p>
 <blockquote>
 <div><div class="highlight-diff notranslate"><div class="highlight"><pre><span></span>client = HistoryClient(...)
 
@@ -251,6 +262,16 @@ we gave them appropriate wrapper types that make it harder to accidentally misus
 spanned by a <a class="reference internal" href="api/misc.html#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a>.
 To reduce confusion over which time unit is used to integrate,
 we deprecated it and added <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.integral_s" title="metricq.TimeAggregate.integral_s"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.integral_s</span></code></a> and <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.integral_ns" title="metricq.TimeAggregate.integral_ns"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.integral_ns</span></code></a>
+for seconds- and nanoseconds-based integrals, respectively.</p>
+</div>
+</div>
+<div class="section" id="x-3-0">
+<h2><cite>2.x</cite> → <cite>3.0</cite><a class="headerlink" href="#x-3-0" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="removal-of-timeaggregate-integral">
+<h3>Removal of <code class="code docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code><a class="headerlink" href="#removal-of-timeaggregate-integral" title="Permalink to this headline">¶</a></h3>
+<p>The property <code class="code docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code> returned the integral of values over the time
+spanned by a <a class="reference internal" href="api/misc.html#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a>.
+This property was broken and thus removed, instead, use <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.integral_s" title="metricq.TimeAggregate.integral_s"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.integral_s</span></code></a> and <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.integral_ns" title="metricq.TimeAggregate.integral_ns"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.integral_ns</span></code></a>
 for seconds- and nanoseconds-based integrals, respectively.</p>
 </div>
 </div>

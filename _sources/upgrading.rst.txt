@@ -11,6 +11,14 @@ take when upgrading.
 `1.x` → `2.0`
 -------------
 
+Changed required Python version to 3.8
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Python 3.7 has had issues with TLS/SSL encrypted connections,
+therefore the minimum required version was changed to *3.8*.
+Make sure, a matching Python version is available on the system.
+
+
 Location of exception classes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -61,8 +69,8 @@ Removal of previously deprecated methods
 * Support for tuple-unpacking instances of :class:`TimeAggregate` has been removed.
 * The methods :code:`history_metric_list` and :code:`history_metric_metadata`
   on :class:`HistoryClient` have been removed.
-  They are superseeded by the more general :meth:`HistoryClient.get_metrics`;
-  to upgrade make the following changes:
+  They are superseded by the more general :meth:`HistoryClient.get_metrics`;
+  to upgrade, make the following changes:
 
     .. code-block:: diff
 
@@ -97,4 +105,14 @@ The property :code:`TimeAggregate.integral` returned the integral of values over
 spanned by a :class:`TimeAggregate`.
 To reduce confusion over which time unit is used to integrate,
 we deprecated it and added :attr:`TimeAggregate.integral_s` and :attr:`TimeAggregate.integral_ns`
+for seconds- and nanoseconds-based integrals, respectively.
+
+`2.x` → `3.0`
+-------------
+
+Removal of :code:`TimeAggregate.integral`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The property :code:`TimeAggregate.integral` returned the integral of values over the time
+spanned by a :class:`TimeAggregate`.
+This property was broken and thus removed, instead, use :attr:`TimeAggregate.integral_s` and :attr:`TimeAggregate.integral_ns`
 for seconds- and nanoseconds-based integrals, respectively.
