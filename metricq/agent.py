@@ -142,20 +142,9 @@ class Agent(RPCDispatcher):
 
     @property
     def event_loop(self) -> asyncio.AbstractEventLoop:
-        # TODO maybe we should instead **TRY** to get the loop of the current context
         if self._event_loop is None:
-            logger.debug("Getting current or new")
-            try:
-                self._event_loop = asyncio.get_event_loop()
-            except RuntimeError:
-                # Until python 3.6, it may raise instead of creating a new one
-                self._event_loop = asyncio.new_event_loop()
+            self._event_loop = asyncio.get_event_loop()
         return self._event_loop
-
-    @event_loop.setter
-    def event_loop(self, loop: asyncio.AbstractEventLoop) -> None:
-        assert self._event_loop is None
-        self._event_loop = loop
 
     async def make_connection(
         self, url: str, connection_name: Optional[str] = None
@@ -177,7 +166,6 @@ class Agent(RPCDispatcher):
 
         connection: aio_pika.RobustConnection = await aio_pika.connect_robust(
             url,
-            loop=self.event_loop,
             reconnect_interval=30,
             ssl_options=cast(Dict[Any, Any], ssl_options),
             client_properties=cast(Dict[Any, Any], client_properties),
@@ -215,7 +203,7 @@ class Agent(RPCDispatcher):
             "{}-rpc".format(self.token), exclusive=True
         )
 
-        self._management_connection_watchdog.start(loop=self.event_loop)
+        self._management_connection_watchdog.start()
         self._management_connection_watchdog.set_established()
 
     def run(
@@ -383,7 +371,7 @@ class Agent(RPCDispatcher):
         request_future = None
 
         if response_callback is None:
-            request_future = self.event_loop.create_future()
+            request_future = asyncio.Future()
 
             if not cleanup_on_response:
                 # We must cleanup when we use the future otherwise we get errors
@@ -431,7 +419,7 @@ class Agent(RPCDispatcher):
                 cleanup()
                 raise te
         elif timeout:
-            self.event_loop.call_later(timeout, cleanup)
+            asyncio.get_running_loop().call_later(timeout, cleanup)
 
         return None
 
@@ -449,8 +437,7 @@ class Agent(RPCDispatcher):
         assert self.management_rpc_queue is not None
         queues = [self.management_rpc_queue] + extra_queues
         await asyncio.gather(
-            *[queue.consume(self._on_management_message) for queue in queues],
-            loop=self.event_loop,
+            *[queue.consume(self._on_management_message) for queue in queues]
         )
 
     def on_signal(self, signal: str) -> None:
@@ -548,7 +535,7 @@ class Agent(RPCDispatcher):
                 The Agent encountered any other unhandled exception.
         """
         if self._stop_future is None:
-            self._stop_future = self.event_loop.create_future()
+            self._stop_future = asyncio.Future()
         await self._stop_future
 
     async def _close(self) -> None:
