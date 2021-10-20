@@ -1,5 +1,17 @@
 # Changelog
 
+## [v3.1.1](https://github.com/metricq/metricq-python/tree/v3.1.1) (2021-10-20)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v3.1.0...v3.1.1)
+
+**Fixed bugs:**
+
+- RPC messages send without `function` [\#118](https://github.com/metricq/metricq-python/issues/118)
+
+**Closed issues:**
+
+- Fix changelog in Github release [\#103](https://github.com/metricq/metricq-python/issues/103)
+
 ## [v3.1.0](https://github.com/metricq/metricq-python/tree/v3.1.0) (2021-10-19)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v3.0.0...v3.1.0)
@@ -8,24 +20,23 @@
 
 - Consider declaring queues as "auto-delete" for transient sinks [\#67](https://github.com/metricq/metricq-python/issues/67)
 - Implement drain [\#12](https://github.com/metricq/metricq-python/issues/12)
-- Feature strict typing [\#117](https://github.com/metricq/metricq-python/pull/117) ([bmario](https://github.com/bmario))
 - feat: support new hidden parameter for get\_metrics RPC [\#114](https://github.com/metricq/metricq-python/pull/114) ([kinnarr](https://github.com/kinnarr))
 - feat: add a connection name for better identification in the management UI [\#110](https://github.com/metricq/metricq-python/pull/110) ([kinnarr](https://github.com/kinnarr))
 - feat: add required py.typed file to support typing when used as library [\#105](https://github.com/metricq/metricq-python/pull/105) ([kinnarr](https://github.com/kinnarr))
+- Feature strict typing [\#117](https://github.com/metricq/metricq-python/pull/117) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
 
 - Timedelta properties missing in documentation [\#115](https://github.com/metricq/metricq-python/issues/115)
-- Handle channel errors in `HistoryClient` [\#108](https://github.com/metricq/metricq-python/issues/108)
-- history client reconnect issues [\#75](https://github.com/metricq/metricq-python/issues/75)
 - HistoryClient reconnects [\#58](https://github.com/metricq/metricq-python/issues/58)
 - Protobuf dependency pip thingy? [\#26](https://github.com/metricq/metricq-python/issues/26)
+- Handle channel errors in `HistoryClient` [\#108](https://github.com/metricq/metricq-python/issues/108)
+- history client reconnect issues [\#75](https://github.com/metricq/metricq-python/issues/75)
 
 **Closed issues:**
 
 - Skip mypy check in workflow for external PRs [\#109](https://github.com/metricq/metricq-python/issues/109)
 - Add a how-to for new projects [\#106](https://github.com/metricq/metricq-python/issues/106)
-- Fix changelog in Github release [\#103](https://github.com/metricq/metricq-python/issues/103)
 - Unify docstring style [\#71](https://github.com/metricq/metricq-python/issues/71)
 
 **Merged pull requests:**
