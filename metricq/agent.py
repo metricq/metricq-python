@@ -300,10 +300,10 @@ class Agent(RPCDispatcher):
         self,
         exchange: aio_pika.Exchange,
         routing_key: str,
+        function: str,
         response_callback: Optional[Callable[..., None]] = None,
         timeout: float = 60,
         cleanup_on_response: bool = True,
-        function: Optional[str] = None,
         **kwargs: Any,
     ) -> Optional[JsonDict]:
         """Invoke an RPC over the network.
@@ -362,6 +362,7 @@ class Agent(RPCDispatcher):
         time_begin = timer()
 
         correlation_id = self._make_correlation_id()
+        kwargs["function"] = function
         body = json.dumps(kwargs)
         logger.debug(
             "sending RPC {}, ex: {}, rk: {}, ci: {}, args: {}",
