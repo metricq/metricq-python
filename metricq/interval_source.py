@@ -170,4 +170,8 @@ class IntervalSource(Source):
         """A user-provided method called at intervals given by :attr:`period`.
 
         Override this method to produce data points at a constant rate.
+
+        Note:
+            The task periodically calling this method is not restarted if there is an exception thrown.
+            You are responsible for handling all relevant exceptions in this method.
         """
