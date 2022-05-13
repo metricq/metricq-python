@@ -116,3 +116,13 @@ The property :code:`TimeAggregate.integral` returned the integral of values over
 spanned by a :class:`TimeAggregate`.
 This property was broken and thus removed, instead, use :attr:`TimeAggregate.integral_s` and :attr:`TimeAggregate.integral_ns`
 for seconds- and nanoseconds-based integrals, respectively.
+
+`3.x` → `4.0`
+-------------
+
+Removal of Asyncio Loop
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Python 3.10 removed the loop parameter from the asyncio interface. In particual, the
+constructor parameter `event_loop` of :class:`Agent` got removed, as well as,
+the property :attr:`Agent.event_loop`. 
