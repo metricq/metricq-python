@@ -82,7 +82,7 @@ class ConnectionWatchdog:
                 logger.debug("Cancelled {} watchdog", self.connection_name)
                 raise
 
-        self._watchdog_task = asyncio.get_event_loop().create_task(watchdog())
+        self._watchdog_task = asyncio.get_running_loop().create_task(watchdog())
 
     def set_established(self) -> None:
         """Signal that the connection has been established."""

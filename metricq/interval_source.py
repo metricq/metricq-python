@@ -126,7 +126,7 @@ class IntervalSource(Source):
             self._period = Timedelta.from_s(duration)
 
     async def task(self) -> None:
-        self._interval_task_stop_future = self.event_loop.create_future()
+        self._interval_task_stop_future = self._event_loop.create_future()
         deadline = Timestamp.now()
         while True:
             try:

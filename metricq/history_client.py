@@ -468,7 +468,7 @@ class HistoryClient(Client):
             reply_to=self.history_response_queue.name,
         )
 
-        self._request_futures[correlation_id] = asyncio.Future(loop=self.event_loop)
+        self._request_futures[correlation_id] = self._event_loop.create_future()
         assert self.history_exchange is not None
         await self._history_connection_watchdog.established()
 
@@ -736,7 +736,7 @@ class HistoryClient(Client):
             )
             self._reregister_task.cancel()
 
-        self._reregister_task = self.event_loop.create_task(
+        self._reregister_task = self._event_loop.create_task(
             self._reregister(connection)
         )
 

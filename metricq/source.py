@@ -125,7 +125,7 @@ class Source(DataClient):
         if "config" in response:
             await self.rpc_dispatch("config", **response["config"])
 
-        self.event_loop.create_task(self.task())
+        self._event_loop.create_task(self.task())
 
     @abstractmethod
     async def task(self) -> None:
