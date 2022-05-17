@@ -426,7 +426,7 @@ class Agent(RPCDispatcher):
                 cleanup()
                 raise te
         elif timeout:
-            asyncio.get_running_loop().call_later(timeout, cleanup)
+            self._event_loop.call_later(timeout, cleanup)
 
         return None
 

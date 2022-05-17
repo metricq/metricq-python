@@ -52,9 +52,7 @@ click_completion.init()
 
 
 async def aget_history(server: str, token: str, metric: str) -> None:
-    client = metricq.HistoryClient(
-        token=token, management_url=server, event_loop=asyncio.get_running_loop()
-    )
+    client = metricq.HistoryClient(token=token, management_url=server)
     await client.connect()
 
     click.echo("connected")
