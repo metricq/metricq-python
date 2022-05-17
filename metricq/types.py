@@ -597,7 +597,7 @@ class TimeValue:
     value: float
 
     def __iter__(self) -> Iterator[Union["Timestamp", float]]:
-        return iter((self.timestamp, self.value))
+        return iter([self.timestamp, self.value])
 
 
 @dataclass(frozen=True)

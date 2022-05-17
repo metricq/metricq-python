@@ -111,7 +111,7 @@ class SynchronousSource:
         timeout: float = 60,
     ) -> None:
         f = asyncio.run_coroutine_threadsafe(
-            self._source.send(metric, time, value), self._source.event_loop
+            self._source.send(metric, time, value), self._source._event_loop
         )
         if block:
             exception = f.exception(timeout)
@@ -125,7 +125,7 @@ class SynchronousSource:
         self, metrics: Dict[str, MetadataDict], block: bool = True, timeout: float = 60
     ) -> None:
         f = asyncio.run_coroutine_threadsafe(
-            self._source.declare_metrics(metrics), self._source.event_loop
+            self._source.declare_metrics(metrics), self._source._event_loop
         )
         if block:
             exception = f.exception(timeout)
@@ -135,7 +135,7 @@ class SynchronousSource:
     def stop(self, timeout: float = 60) -> None:
         logger.info("[SynchronousSource] stopping")
         f = asyncio.run_coroutine_threadsafe(
-            self._source.stop(), self._source.event_loop
+            self._source.stop(), self._source._event_loop
         )
         exception = f.exception(timeout=timeout)
         if exception:
