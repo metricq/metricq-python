@@ -238,58 +238,51 @@ class Agent(RPCDispatcher):
             Exception: Any exception passed to :meth:`stop`.
         """
         self._cancel_on_exception = cancel_on_exception
+
+        logger.debug("Starting event loop ...")
+        asyncio.run(self._wait_for_stop(catch_signals))
+        logger.debug("Event loop completed, exiting...")
+
+    async def _wait_for_stop(self, catch_signals: Iterable[str]) -> None:
         self._event_loop.set_exception_handler(self.on_exception)
         for signame in catch_signals:
             try:
                 self._event_loop.add_signal_handler(
-                    getattr(signal, signame), functools.partial(self.on_signal, signame)
+                    getattr(signal, signame),
+                    functools.partial(self.on_signal, signame),
                 )
             except RuntimeError as error:
                 logger.warning(
                     "failed to setup signal handler for {}: {}", signame, error
                 )
 
-        async def wait_for_stop() -> None:
-            connect_task = self._event_loop.create_task(self.connect())
-            stopped_task = self._event_loop.create_task(self.stopped())
+        connect_task = self._event_loop.create_task(self.connect())
+        stopped_task = self._event_loop.create_task(self.stopped())
 
-            pending = {stopped_task, connect_task}
-            while pending:
-                done, pending = await asyncio.wait(
-                    pending, return_when=asyncio.FIRST_COMPLETED
-                )
+        pending = {stopped_task, connect_task}
+        while pending:
+            done, pending = await asyncio.wait(
+                pending, return_when=asyncio.FIRST_COMPLETED
+            )
 
-                # Check for successful connection, if connect() failed with
-                # an unhandled exception, raise ConnectFailed and attach
-                # the unhandled exception as its cause.
-                if connect_task in done:
-                    exc = connect_task.exception()
-                    if exc is not None:
-                        logger.error(
-                            "Failed to connect {}: {} ({})",
-                            type(self).__qualname__,
-                            exc,
-                            type(exc).__qualname__,
-                        )
-                        raise ConnectFailed("Failed to connect Agent") from exc
+            # Check for successful connection, if connect() failed with
+            # an unhandled exception, raise ConnectFailed and attach
+            # the unhandled exception as its cause.
+            if connect_task in done:
+                exc = connect_task.exception()
+                if exc is not None:
+                    logger.error(
+                        "Failed to connect {}: {} ({})",
+                        type(self).__qualname__,
+                        exc,
+                        type(exc).__qualname__,
+                    )
+                    raise ConnectFailed("Failed to connect Agent") from exc
 
-                # If the Agent was stopped explicitly, return `None`.  If it was
-                # stopped because of an exception, reraise it.
-                if stopped_task in done:
-                    return stopped_task.result()
-
-        try:
-            logger.debug("Running event loop {}...", self._event_loop)
-            self._event_loop.run_until_complete(wait_for_stop())
-        finally:
-            self._event_loop.stop()
-            self._event_loop.run_until_complete(self._event_loop.shutdown_asyncgens())
-
-            with suppress(AttributeError):
-                all_tasks = asyncio.all_tasks(self._event_loop)
-                logger.debug("Tasks remaining when stopping Agent: {}", len(all_tasks))
-
-            logger.debug("Event loop completed, exiting...")
+            # If the Agent was stopped explicitly, return `None`.  If it was
+            # stopped because of an exception, reraise it.
+            if stopped_task in done:
+                return stopped_task.result()
 
     async def rpc(
         self,
