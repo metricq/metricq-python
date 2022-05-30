@@ -1,4 +1,4 @@
-FROM python:3.9-slim AS builder
+FROM python:3.10-slim AS builder
 LABEL maintainer="mario.bielert@tu-dresden.de"
 
 RUN useradd -m metricq
@@ -14,7 +14,7 @@ RUN virtualenv venv
 WORKDIR /home/metricq/metricq
 RUN . /home/metricq/venv/bin/activate && pip install .
 
-FROM python:3.9-slim
+FROM python:3.10-slim
 RUN useradd -m metricq
 USER metricq
 COPY --from=builder --chown=metricq:metricq /home/metricq/venv /home/metricq/venv
