@@ -1,67 +1,35 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Creating a new project for MetricQ &mdash; MetricQ  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="API Reference" href="../api/index.html" />
     <link rel="prev" title="Metric lookup" href="metric-lookup.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> MetricQ
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -69,18 +37,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">How to use this library</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="sink.html">Building a MetricQ Sink</a></li>
@@ -113,72 +71,33 @@
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">MetricQ</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content style-external-links">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html">How to use this library</a> &raquo;</li>
-        
       <li>Creating a new project for MetricQ</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-            
             <a href="../_sources/howto/project-structure.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="creating-a-new-project-for-metricq">
-<h1>Creating a new project for MetricQ<a class="headerlink" href="#creating-a-new-project-for-metricq" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="creating-a-new-project-for-metricq">
+<h1>Creating a new project for MetricQ<a class="headerlink" href="#creating-a-new-project-for-metricq" title="Permalink to this headline"></a></h1>
 <p>In this section, we explain some of the conventions that we (the <code class="docutils literal notranslate"><span class="pre">metricq</span></code>
 authors) use when setting up a new project using the library.
 Python packaging has many (at times confusing) options;  these conventions help
@@ -188,42 +107,42 @@ maintenance overhead.</p>
 filesystem paths are relative to the project root directory (<code class="file docutils literal notranslate"><span class="pre">/path/to/metricq-example/</span></code>).
 The Python package built from this project is called <code class="docutils literal notranslate"><span class="pre">metricq-example</span></code>,
 and its source code lives in the subdirectory <code class="file docutils literal notranslate"><span class="pre">metricq_example</span></code> of the project root.</p>
-<div class="section" id="dependencies-building-and-installation">
-<h2>Dependencies, building and installation<a class="headerlink" href="#dependencies-building-and-installation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="build-system">
-<h3>Build system<a class="headerlink" href="#build-system" title="Permalink to this headline">¶</a></h3>
-<p>Any new projects should use a <span class="target" id="index-0"></span><a class="pep reference external" href="https://www.python.org/dev/peps/pep-0517"><strong>PEP 517</strong></a>-compliant build system.
+<section id="dependencies-building-and-installation">
+<h2>Dependencies, building and installation<a class="headerlink" href="#dependencies-building-and-installation" title="Permalink to this headline"></a></h2>
+<section id="build-system">
+<h3>Build system<a class="headerlink" href="#build-system" title="Permalink to this headline"></a></h3>
+<p>Any new projects should use a <span class="target" id="index-0"></span><a class="pep reference external" href="https://peps.python.org/pep-0517/"><strong>PEP 517</strong></a>-compliant build system.
 Use <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> for this.
 The directory <code class="file docutils literal notranslate"><span class="pre">metricq_example</span></code> contains the Python source code of the
 project, create a new file <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> in the project root,
 and declare the necessary build dependencies:</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
-<span class="n">requires</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;setuptools&gt;=40.6.0&quot;</span><span class="p">,</span> <span class="s">&quot;wheel&quot;</span><span class="p">]</span>
-<span class="n">build-backend</span> <span class="o">=</span> <span class="s">&#39;setuptools.build_meta&#39;</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span><span class="w"></span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;setuptools&gt;=40.6.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wheel&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;setuptools.build_meta&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>This enables tools like <code class="docutils literal notranslate"><span class="pre">pip</span></code> to create packages from the project.</p>
-</div>
-<div class="section" id="runtime-dependencies">
-<h3>Runtime dependencies<a class="headerlink" href="#runtime-dependencies" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="runtime-dependencies">
+<h3>Runtime dependencies<a class="headerlink" href="#runtime-dependencies" title="Permalink to this headline"></a></h3>
 <p>In <code class="file docutils literal notranslate"><span class="pre">setup.cfg</span></code>, declare the project runtime dependencies.
 Under section <code class="docutils literal notranslate"><span class="pre">[options]</span></code>, point <code class="docutils literal notranslate"><span class="pre">packages</span></code> to the project source directory (i.e. <code class="docutils literal notranslate"><span class="pre">metricq_example</span></code>).
 Remember to set a minimum required Python version to prevent issues at runtime.
 Under <code class="docutils literal notranslate"><span class="pre">install_requires</span></code> give a list of all runtime dependencies:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span><span class="w"></span>
 
-<span class="k">[options]</span>
-<span class="na">packages</span> <span class="o">=</span>
-    <span class="na">metricq_example</span>
-<span class="na">python_requires</span> <span class="o">=</span> <span class="s">&gt;=3.8</span>
-<span class="na">install_requires</span> <span class="o">=</span>
-    <span class="na">metricq ~</span><span class="o">=</span> <span class="s">3.0</span>
-    <span class="c1"># Your dependencies here</span>
+<span class="k">[options]</span><span class="w"></span>
+<span class="na">packages</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">metricq_example</span><span class="w"></span>
+<span class="na">python_requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&gt;=3.8</span><span class="w"></span>
+<span class="na">install_requires</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">metricq ~</span><span class="o">=</span><span class="w"> </span><span class="s">3.0</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Your dependencies here</span><span class="w"></span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Use <em>compatible release</em> version specifiers (<code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">~=</span> <span class="pre">x.y</span></code>, <span class="target" id="index-1"></span><a class="pep reference external" href="https://www.python.org/dev/peps/pep-0440#compatible-release"><strong>PEP 440#compatible-release</strong></a>)
+<p>Use <em>compatible release</em> version specifiers (<code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">~=</span> <span class="pre">x.y</span></code>, <span class="target" id="index-1"></span><a class="pep reference external" href="https://peps.python.org/pep-0440/#compatible-release"><strong>PEP 440#compatible-release</strong></a>)
 to prevent breakage caused by incompatibilities introduced in future releases of dependencies.</p>
 </div>
 <p>For compatibility with older release of <code class="docutils literal notranslate"><span class="pre">pip</span></code> and to enable <cite>editable installs</cite> for development,
@@ -242,20 +161,20 @@ For example, <code class="docutils literal notranslate"><span class="pre">metric
 it must install a <cite>PyPI</cite>-provided version of <code class="docutils literal notranslate"><span class="pre">protobuf</span></code>
 that is compatible with the host-installed version of the <code class="docutils literal notranslate"><span class="pre">protobuf</span></code>-compiler, <code class="docutils literal notranslate"><span class="pre">protoc</span></code>.</p>
 </div>
-</div>
-<div class="section" id="optional-dependencies">
-<h3>Optional dependencies<a class="headerlink" href="#optional-dependencies" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="optional-dependencies">
+<h3>Optional dependencies<a class="headerlink" href="#optional-dependencies" title="Permalink to this headline"></a></h3>
 <p>If your project has <em>optional</em> features that requires additional dependencies,
 include them in section <code class="code docutils literal notranslate"><span class="pre">options.extras_require</span></code> of <code class="file docutils literal notranslate"><span class="pre">setup.cfg</span></code>.
 For each feature <code class="code docutils literal notranslate"><span class="pre">my_feature</span></code>, define a new <em>extra</em> that lists all
 additional dependencies:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span><span class="w"></span>
 
-<span class="k">[options.extras_require]</span>
-<span class="na">my_feature</span> <span class="o">=</span>
-    <span class="na">foo ~</span><span class="o">=</span> <span class="s">1.0</span>
-    <span class="na">bar ~</span><span class="o">=</span> <span class="s">2.0</span>
-    <span class="c1"># ... more optional dependencies here</span>
+<span class="k">[options.extras_require]</span><span class="w"></span>
+<span class="na">my_feature</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">foo ~</span><span class="o">=</span><span class="w"> </span><span class="s">1.0</span><span class="w"></span>
+<span class="w">    </span><span class="na">bar ~</span><span class="o">=</span><span class="w"> </span><span class="s">2.0</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># ... more optional dependencies here</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The package can then be installed with the feature enabled like so:</p>
@@ -265,24 +184,24 @@ $ <span class="c1"># Installation from PyPI</span>
 $ pip install <span class="s1">&#39;metricq-example[my_feature]&#39;</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="package-metadata">
-<h3>Package metadata<a class="headerlink" href="#package-metadata" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="package-metadata">
+<h3>Package metadata<a class="headerlink" href="#package-metadata" title="Permalink to this headline"></a></h3>
 <p>Also in <code class="file docutils literal notranslate"><span class="pre">setup.cfg</span></code>, include relevant package metadata:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span><span class="w"></span>
 
-<span class="k">[metadata]</span>
-<span class="na">name</span> <span class="o">=</span> <span class="s">metricq-example</span>
-<span class="na">author</span> <span class="o">=</span> <span class="s">TU Dresden</span>
-<span class="na">description</span> <span class="o">=</span> <span class="s">A metricq example project</span>
-<span class="na">long_description</span> <span class="o">=</span> <span class="s">file: README.rst</span>
-<span class="na">long_description_content_type</span> <span class="o">=</span> <span class="s">text/rst</span>
-<span class="na">url</span> <span class="o">=</span> <span class="s">https://example.com/metricq-example</span>
-<span class="na">license</span> <span class="o">=</span> <span class="s">BSD 3-clause &quot;New&quot; or &quot;Revised License&quot;</span>
-<span class="na">license_file</span> <span class="o">=</span> <span class="s">LICENSE</span>
-<span class="na">classifiers</span> <span class="o">=</span>
-    <span class="na">License :: OSI Approved :: BSD License</span>
-    <span class="na">Programming Language :: Python :: 3</span>
+<span class="k">[metadata]</span><span class="w"></span>
+<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">metricq-example</span><span class="w"></span>
+<span class="na">author</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">TU Dresden</span><span class="w"></span>
+<span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">A metricq example project</span><span class="w"></span>
+<span class="na">long_description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file: README.rst</span><span class="w"></span>
+<span class="na">long_description_content_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">text/rst</span><span class="w"></span>
+<span class="na">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">https://example.com/metricq-example</span><span class="w"></span>
+<span class="na">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">BSD 3-clause &quot;New&quot; or &quot;Revised License&quot;</span><span class="w"></span>
+<span class="na">license_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">LICENSE</span><span class="w"></span>
+<span class="na">classifiers</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">License :: OSI Approved :: BSD License</span><span class="w"></span>
+<span class="w">    </span><span class="na">Programming Language :: Python :: 3</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The entry <code class="docutils literal notranslate"><span class="pre">long_description</span></code> points to a <cite>README</cite> file;
@@ -290,18 +209,18 @@ use either <cite>Markdown</cite> (<code class="file docutils literal notranslate
 The content type is inferred from the file extension, but it does not hurt to set it explicitly.
 Choose a license appropriate to your project and enter it; <code class="docutils literal notranslate"><span class="pre">metricq</span></code>
 itself is licensed under the terms of the <cite>BSD 3-clause “New” or “Revised License”</cite>.</p>
-</div>
-</div>
-<div class="section" id="command-line-interfaces">
-<h2>Command line interfaces<a class="headerlink" href="#command-line-interfaces" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="command-line-interfaces">
+<h2>Command line interfaces<a class="headerlink" href="#command-line-interfaces" title="Permalink to this headline"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">setuptools</span></code> allows declaration of <a class="reference external" href="https://docs.python.org/3/library/importlib.metadata.html#entry-points" title="(in Python v3.10)"><span>Entry points</span></a>.
 An entry point of type <code class="docutils literal notranslate"><span class="pre">console_script</span></code> makes a python function the
 entry point of a script that is added to the <code class="code docutils literal notranslate"><span class="pre">$PATH</span></code> of your Python environment:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span><span class="w"></span>
 
-<span class="k">[options.entry_points]</span>
-<span class="na">console_scripts</span> <span class="o">=</span>
-    <span class="na">metricq-example</span> <span class="o">=</span> <span class="s">metricq_example.cli:main</span>
+<span class="k">[options.entry_points]</span><span class="w"></span>
+<span class="na">console_scripts</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">metricq-example</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">metricq_example.cli:main</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The above makes the function <code class="code docutils literal notranslate"><span class="pre">main()</span></code> in module <code class="file docutils literal notranslate"><span class="pre">metricq_example/cli.py</span></code>
@@ -335,40 +254,40 @@ include <cite>at least</cite> options to configure the MetricQ network URL and a
     <span class="o">...</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="project-versioning">
-<h2>Project versioning<a class="headerlink" href="#project-versioning" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="project-versioning">
+<h2>Project versioning<a class="headerlink" href="#project-versioning" title="Permalink to this headline"></a></h2>
 <p>In order to be a good network citizen, any MetricQ client should provide a version string when asked.
 The single source of truth of a project’s version should be its <code class="code docutils literal notranslate"><span class="pre">git</span></code> tags.
 Where possible, use a <cite>semver</cite>-compatible version scheme.
 Use <code class="code docutils literal notranslate"><span class="pre">setuptools_scm</span></code> as a <strong>build dependency</strong> to create a version string
 that will automatically be added to the package metadata and is accessible to
 code at runtime:</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="c1"># in pythonproject.toml</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="c1"># in pythonproject.toml</span><span class="w"></span>
 
-<span class="k">[build-system]</span>
-<span class="n">requires</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">...,</span> <span class="c1"># other build dependencies here</span>
-    <span class="s">&quot;setuptools_scm[toml]~=6.0&quot;</span><span class="p">,</span>
-<span class="p">]</span>
+<span class="k">[build-system]</span><span class="w"></span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="p">...,</span><span class="w"> </span><span class="c1"># other build dependencies here</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;setuptools_scm[toml]~=6.0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
 
-<span class="c1"># ...</span>
+<span class="c1"># ...</span><span class="w"></span>
 
-<span class="k">[tool.setuptools_scm]</span>
-<span class="n">write_to</span> <span class="o">=</span> <span class="s">&quot;metricq_example/version.py&quot;</span>
+<span class="k">[tool.setuptools_scm]</span><span class="w"></span>
+<span class="n">write_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;metricq_example/version.py&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>On installation, this creates a file <code class="file docutils literal notranslate"><span class="pre">metricq_example/version.py</span></code> that
 includes variables <code class="code docutils literal notranslate"><span class="pre">version</span></code> (a <code class="code docutils literal notranslate"><span class="pre">str</span></code>) and <code class="code docutils literal notranslate"><span class="pre">version_tuple</span></code>
 with the parsed version information.
 Exclude this file from being tracked by <code class="code docutils literal notranslate"><span class="pre">git</span></code>:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># in .gitignore</span>
-<span class="na">metricq_example/version.py</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># in .gitignore</span><span class="w"></span>
+<span class="na">metricq_example/version.py</span><span class="w"></span>
 </pre></div>
 </div>
 <p>This file <em>must</em> be included in the final package, so add it to the package manifest:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># in MANIFEST.in</span>
-<span class="na">metricq_example/version.py</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># in MANIFEST.in</span><span class="w"></span>
+<span class="na">metricq_example/version.py</span><span class="w"></span>
 </pre></div>
 </div>
 <hr class="docutils" />
@@ -419,22 +338,22 @@ base class constructor:</p>
     <span class="o">...</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="developement-setup">
-<h2>Developement setup<a class="headerlink" href="#developement-setup" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="developement-setup">
+<h2>Developement setup<a class="headerlink" href="#developement-setup" title="Permalink to this headline"></a></h2>
 <p>To enable an easy development setup, define an extra <code class="docutils literal notranslate"><span class="pre">dev</span></code>,
 that transitively includes all optional dependencies needed for a local development setup:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span><span class="w"></span>
 
-<span class="k">[options.extras_require]</span>
-<span class="na">test</span> <span class="o">=</span>
-    <span class="na">... # Dependencies needed for running tests</span>
-<span class="na">lint</span> <span class="o">=</span>
-    <span class="na">... # Dependencies needed to run linters</span>
-<span class="na">dev</span> <span class="o">=</span>
-    <span class="na">%(test)s</span>
-    <span class="na">%(lint)s</span>
-    <span class="na">...</span>
+<span class="k">[options.extras_require]</span><span class="w"></span>
+<span class="na">test</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">... # Dependencies needed for running tests</span><span class="w"></span>
+<span class="na">lint</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">... # Dependencies needed to run linters</span><span class="w"></span>
+<span class="na">dev</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">%(test)s</span><span class="w"></span>
+<span class="w">    </span><span class="na">%(lint)s</span><span class="w"></span>
+<span class="w">    </span><span class="na">...</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The string <code class="docutils literal notranslate"><span class="pre">%(foo)</span></code> includes all dependencies of extra <code class="docutils literal notranslate"><span class="pre">foo</span></code> in another extra.
@@ -444,20 +363,20 @@ and then (with this environment activated) set up a local development environmen
 </pre></div>
 </div>
 <p>in the project directory.</p>
-<div class="section" id="tests">
-<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h3>
+<section id="tests">
+<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this headline"></a></h3>
 <p>We use <a class="reference external" href="pytest.org">pytest</a> to define project tests.
 Create an extra <code class="docutils literal notranslate"><span class="pre">test</span></code> that pulls <code class="docutils literal notranslate"><span class="pre">pytest</span></code>,
 and <code class="docutils literal notranslate"><span class="pre">pytest-asyncio</span></code> when testing <code class="code docutils literal notranslate"><span class="pre">async</span></code> code:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span><span class="w"></span>
 
-<span class="k">[options.extras_require]</span>
-<span class="na">test</span> <span class="o">=</span>
-    <span class="na">pytest</span>
-    <span class="na">pytest-asyncio</span>
-<span class="na">dev</span> <span class="o">=</span>
-    <span class="na">%(test)s</span>
-    <span class="na">...</span>
+<span class="k">[options.extras_require]</span><span class="w"></span>
+<span class="na">test</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">pytest</span><span class="w"></span>
+<span class="w">    </span><span class="na">pytest-asyncio</span><span class="w"></span>
+<span class="na">dev</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">%(test)s</span><span class="w"></span>
+<span class="w">    </span><span class="na">...</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Tests are usually placed <a class="reference external" href="https://docs.pytest.org/en/latest/explanation/goodpractices.html#tests-outside-application-code">outside of application code</a>,
@@ -486,23 +405,23 @@ For example, to test the function in module <code class="code docutils literal n
 <p>Use <em>absolute imports</em> when importing from your project,
 see the notes <a class="reference external" href="https://docs.pytest.org/en/latest/explanation/goodpractices.html#tests-outside-application-code">here</a>.</p>
 </div>
-</div>
-<div class="section" id="linting">
-<h3>Linting<a class="headerlink" href="#linting" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="linting">
+<h3>Linting<a class="headerlink" href="#linting" title="Permalink to this headline"></a></h3>
 <p>We recommend a basic set of linters that (hopefully) help producing better code:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span><span class="w"></span>
 
-<span class="k">[options.extras_require]</span>
-<span class="na">lint</span> <span class="o">=</span>
-    <span class="na">black</span>
-    <span class="na">check-manifest</span>
-    <span class="na">flake8 ~</span><span class="o">=</span> <span class="s">3.8</span>
-    <span class="na">flake8-bugbear</span>
-    <span class="na">isort ~</span><span class="o">=</span> <span class="s">5.0</span>
-    <span class="na">pre-commit</span>
-<span class="na">dev</span> <span class="o">=</span>
-    <span class="na">%(lint)s</span>
-    <span class="na">...</span>
+<span class="k">[options.extras_require]</span><span class="w"></span>
+<span class="na">lint</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">black</span><span class="w"></span>
+<span class="w">    </span><span class="na">check-manifest</span><span class="w"></span>
+<span class="w">    </span><span class="na">flake8 ~</span><span class="o">=</span><span class="w"> </span><span class="s">3.8</span><span class="w"></span>
+<span class="w">    </span><span class="na">flake8-bugbear</span><span class="w"></span>
+<span class="w">    </span><span class="na">isort ~</span><span class="o">=</span><span class="w"> </span><span class="s">5.0</span><span class="w"></span>
+<span class="w">    </span><span class="na">pre-commit</span><span class="w"></span>
+<span class="na">dev</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">%(lint)s</span><span class="w"></span>
+<span class="w">    </span><span class="na">...</span><span class="w"></span>
 </pre></div>
 </div>
 <p>This includes:</p>
@@ -518,33 +437,33 @@ Prevents you from accidentally forgetting files when packaging.
 <dt><a class="reference external" href="https://flake8.pycqa.org/en/latest/">flake8</a>:</dt><dd><p>Helps you enforce some useful code styles.
 <code class="code docutils literal notranslate"><span class="pre">flake8</span></code> has plugin support; <code class="code docutils literal notranslate"><span class="pre">flake8-bugbear</span></code> adds some helpful rules.
 A sensible default configuration includes the following:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg</span><span class="w"></span>
 
-<span class="k">[flake8]</span>
-<span class="c1"># Tell flake8 which packages are part of your application:</span>
-<span class="na">application-import-names</span> <span class="o">=</span> <span class="s">metricq_example, tests</span>
-<span class="c1"># This is the black default:</span>
-<span class="na">max-line-length</span> <span class="o">=</span> <span class="s">88</span>
-<span class="na">extend-exclude</span> <span class="o">=</span>
-    <span class="na">.pytest_cache,</span>
-    <span class="c1"># Add additional directories here to exclude from checking</span>
-    <span class="na">...</span>
-<span class="c1"># Rules to check for</span>
-<span class="na">select</span> <span class="o">=</span>
-    <span class="c1"># Regular flake8 rules</span>
-    <span class="na">C, E, F, W</span>
-    <span class="c1"># flake8-bugbear rules</span>
-    <span class="na">B</span>
-    <span class="c1"># pep8-naming rules</span>
-    <span class="na">N</span>
-<span class="c1"># Rules to ignore.  Add a reason why.</span>
-<span class="na">ignore</span> <span class="o">=</span>
-    <span class="c1"># E203: whitespace before &#39;:&#39; (not PEP8 compliant)</span>
-    <span class="na">E203</span>
-    <span class="c1"># E501: line too long (replaced by B950)</span>
-    <span class="na">E501</span>
-    <span class="c1"># W503: line break before binary operator (not PEP8 compliant)</span>
-    <span class="na">W503</span>
+<span class="k">[flake8]</span><span class="w"></span>
+<span class="c1"># Tell flake8 which packages are part of your application:</span><span class="w"></span>
+<span class="na">application-import-names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">metricq_example, tests</span><span class="w"></span>
+<span class="c1"># This is the black default:</span><span class="w"></span>
+<span class="na">max-line-length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">88</span><span class="w"></span>
+<span class="na">extend-exclude</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">.pytest_cache,</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Add additional directories here to exclude from checking</span><span class="w"></span>
+<span class="w">    </span><span class="na">...</span><span class="w"></span>
+<span class="c1"># Rules to check for</span><span class="w"></span>
+<span class="na">select</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Regular flake8 rules</span><span class="w"></span>
+<span class="w">    </span><span class="na">C, E, F, W</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># flake8-bugbear rules</span><span class="w"></span>
+<span class="w">    </span><span class="na">B</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># pep8-naming rules</span><span class="w"></span>
+<span class="w">    </span><span class="na">N</span><span class="w"></span>
+<span class="c1"># Rules to ignore.  Add a reason why.</span><span class="w"></span>
+<span class="na">ignore</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># E203: whitespace before &#39;:&#39; (not PEP8 compliant)</span><span class="w"></span>
+<span class="w">    </span><span class="na">E203</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># E501: line too long (replaced by B950)</span><span class="w"></span>
+<span class="w">    </span><span class="na">E501</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># W503: line break before binary operator (not PEP8 compliant)</span><span class="w"></span>
+<span class="w">    </span><span class="na">W503</span><span class="w"></span>
 </pre></div>
 </div>
 </dd>
@@ -553,83 +472,65 @@ Keeps merge conflicts in import statements to a minimum.</p>
 </dd>
 <dt><a class="reference external" href="https://pre-commit.com/">pre-commit</a>:</dt><dd><p>Adds <code class="docutils literal notranslate"><span class="pre">git</span></code> hooks, that automatically run other linters.
 Configure it in <code class="file docutils literal notranslate"><span class="pre">.pre-commit-config.yaml</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">default_language_version</span><span class="p">:</span>
-  <span class="nt">python</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">python3.9</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">default_language_version</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">python</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python3.9</span><span class="w"></span>
 
-<span class="nt">repos</span><span class="p">:</span>
-<span class="p p-Indicator">-</span> <span class="nt">repo</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://gitlab.com/pycqa/flake8</span>
-  <span class="nt">rev</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3.9.2</span>
-  <span class="nt">hooks</span><span class="p">:</span>
-  <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">flake8</span>
-<span class="p p-Indicator">-</span> <span class="nt">repo</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://github.com/timothycrosley/isort</span>
-  <span class="nt">rev</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5.8.0</span>
-  <span class="nt">hooks</span><span class="p">:</span>
-  <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">isort</span>
-    <span class="nt">args</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;--check&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;--diff&quot;</span><span class="p p-Indicator">]</span>
-<span class="p p-Indicator">-</span> <span class="nt">repo</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://github.com/psf/black</span>
-  <span class="nt">rev</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">21.5b1</span>
-  <span class="nt">hooks</span><span class="p">:</span>
-  <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">black</span>
-    <span class="nt">args</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="s">&quot;--check&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;--diff&quot;</span><span class="p p-Indicator">]</span>
-<span class="p p-Indicator">-</span> <span class="nt">repo</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">https://github.com/mgedmin/check-manifest</span>
-  <span class="nt">rev</span><span class="p">:</span> <span class="s">&quot;0.46&quot;</span>
-  <span class="nt">hooks</span><span class="p">:</span>
-  <span class="p p-Indicator">-</span> <span class="nt">id</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">check-manifest</span>
+<span class="nt">repos</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://gitlab.com/pycqa/flake8</span><span class="w"></span>
+<span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.9.2</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hooks</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">flake8</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/timothycrosley/isort</span><span class="w"></span>
+<span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.8.0</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hooks</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">isort</span><span class="w"></span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;--check&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--diff&quot;</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/psf/black</span><span class="w"></span>
+<span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">21.5b1</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hooks</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">black</span><span class="w"></span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;--check&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--diff&quot;</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/mgedmin/check-manifest</span><span class="w"></span>
+<span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0.46&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hooks</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-manifest</span><span class="w"></span>
 </pre></div>
 </div>
 </dd>
 </dl>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../api/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="metric-lookup.html" class="btn btn-neutral float-left" title="Metric lookup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="metric-lookup.html" class="btn btn-neutral float-left" title="Metric lookup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2021, TU Dresden
-
-    </p>
+    <p>&#169; Copyright 2021, TU Dresden.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

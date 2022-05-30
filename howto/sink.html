@@ -1,67 +1,35 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Building a MetricQ Sink &mdash; MetricQ  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Building a MetricQ Source" href="source.html" />
     <link rel="prev" title="How to use this library" href="index.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> MetricQ
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -69,18 +37,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">How to use this library</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Building a MetricQ Sink</a><ul>
@@ -102,72 +60,33 @@
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">MetricQ</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content style-external-links">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html">How to use this library</a> &raquo;</li>
-        
       <li>Building a MetricQ Sink</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-            
             <a href="../_sources/howto/sink.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="building-a-metricq-sink">
-<span id="sink-how-to"></span><h1>Building a MetricQ Sink<a class="headerlink" href="#building-a-metricq-sink" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="building-a-metricq-sink">
+<span id="sink-how-to"></span><h1>Building a MetricQ Sink<a class="headerlink" href="#building-a-metricq-sink" title="Permalink to this headline"></a></h1>
 <p><a class="reference internal" href="../glossary.html#term-Sink"><span class="xref std std-term">Sinks</span></a> allow you to receive and process data points for <a class="reference internal" href="../glossary.html#term-Metric"><span class="xref std std-term">Metrics</span></a> provided by others on the MetricQ network.
 Examples of Sinks are:</p>
 <ul class="simple">
@@ -178,8 +97,8 @@ Examples of Sinks are:</p>
 </ul>
 <p>Here, we will build a simple Sink that prints data points for a given list of metrics as they arrive.
 You can find the complete example at <a class="reference internal" href="#the-end-of-this-page">the end of this page</a> or <a class="reference external" href="https://github.com/metricq/metricq-python/blob/master/examples/metricq_sink.py">here</a>.</p>
-<div class="section" id="defining-a-new-sink-using-metricq-sink">
-<h2>Defining a new Sink: using <a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a><a class="headerlink" href="#defining-a-new-sink-using-metricq-sink" title="Permalink to this headline">¶</a></h2>
+<section id="defining-a-new-sink-using-metricq-sink">
+<h2>Defining a new Sink: using <a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a><a class="headerlink" href="#defining-a-new-sink-using-metricq-sink" title="Permalink to this headline"></a></h2>
 <p>New Sinks are defined by subclassing <a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
 
@@ -231,9 +150,9 @@ We provide <a class="reference internal" href="../api/sink.html#metricq.Sink.on_
 </pre></div>
 </div>
 <p>Here, <code class="docutils literal notranslate"><span class="pre">metric</span></code> is the name of the metric for which a new data point arrived; <code class="docutils literal notranslate"><span class="pre">value</span></code> holds the numeric value this metric had at time indicated by <code class="docutils literal notranslate"><span class="pre">timestamp</span></code>.</p>
-</div>
-<div class="section" id="running-a-sink">
-<span id="sink-how-to-run"></span><h2>Running a Sink<a class="headerlink" href="#running-a-sink" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="running-a-sink">
+<span id="sink-how-to-run"></span><h2>Running a Sink<a class="headerlink" href="#running-a-sink" title="Permalink to this headline"></a></h2>
 <p><a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a> is designed as an asynchronous callback-based interface, so we won’t be calling the above methods directly.
 Instead, it provides <a class="reference internal" href="../api/client-common.html#metricq.Client.run" title="metricq.Client.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Client.run()</span></code></a>, which handles establishing a connection, keeps track track of all the details of the MetricQ protocol and calls <a class="reference internal" href="../api/sink.html#metricq.Sink.on_data" title="metricq.Sink.on_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Sink.on_data()</span></code></a> once new data points arrive.</p>
 <p>Our Sink is identified on the network by a <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">Token</span></a>.
@@ -268,9 +187,9 @@ Running this script, you should now see something like this appearing on standar
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="source.html#source-how-to"><span class="std std-ref">Building a MetricQ Source</span></a> on how to set up such a source.</p>
-</div>
-<div class="section" id="complete-example">
-<span id="the-end-of-this-page"></span><h2>Complete example<a class="headerlink" href="#complete-example" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="complete-example">
+<span id="the-end-of-this-page"></span><h2>Complete example<a class="headerlink" href="#complete-example" title="Permalink to this headline"></a></h2>
 <p>To obtain the dependencies required for this example, install the <code class="docutils literal notranslate"><span class="pre">examples</span></code>-extra from the <a class="reference external" href="metricq-python">git repo</a>:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install <span class="s1">&#39;.[examples]&#39;</span>
 </pre></div>
@@ -378,56 +297,38 @@ Running this script, you should now see something like this appearing on standar
     <span class="n">source</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="source.html" class="btn btn-neutral float-right" title="Building a MetricQ Source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="index.html" class="btn btn-neutral float-left" title="How to use this library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="How to use this library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="source.html" class="btn btn-neutral float-right" title="Building a MetricQ Source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2021, TU Dresden
-
-    </p>
+    <p>&#169; Copyright 2021, TU Dresden.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

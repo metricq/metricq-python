@@ -1,67 +1,35 @@
-
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fetching historical metric data &mdash; MetricQ  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
-
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Building a MetricQ Drain" href="drain.html" />
     <link rel="prev" title="Building a MetricQ Source" href="source.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> MetricQ
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -69,18 +37,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">How to use this library</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="sink.html">Building a MetricQ Sink</a></li>
@@ -105,72 +63,33 @@
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 
-            
-          
         </div>
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">MetricQ</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content style-external-links">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html">How to use this library</a> &raquo;</li>
-        
       <li>Fetching historical metric data</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-            
             <a href="../_sources/howto/history-client.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
-  <div class="section" id="fetching-historical-metric-data">
-<h1>Fetching historical metric data<a class="headerlink" href="#fetching-historical-metric-data" title="Permalink to this headline">¶</a></h1>
+             
+  <section id="fetching-historical-metric-data">
+<h1>Fetching historical metric data<a class="headerlink" href="#fetching-historical-metric-data" title="Permalink to this headline"></a></h1>
 <p>Databases connected to the MetricQ network provide historical metric data.
 We can use a <a class="reference internal" href="../api/history-client.html#metricq.HistoryClient" title="metricq.HistoryClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryClient</span></code></a> to retrieve this data.
 Compared to <a class="reference internal" href="sink.html#sink-how-to"><span class="std std-ref">Building a MetricQ Sink</span></a> and <a class="reference internal" href="source.html#source-how-to"><span class="std std-ref">Building a MetricQ Source</span></a>,
@@ -188,8 +107,8 @@ we won’t need to define our own client, we can use <a class="reference interna
 </pre></div>
 </div>
 </div>
-<div class="section" id="connecting-to-the-network">
-<h2>Connecting to the network<a class="headerlink" href="#connecting-to-the-network" title="Permalink to this headline">¶</a></h2>
+<section id="connecting-to-the-network">
+<h2>Connecting to the network<a class="headerlink" href="#connecting-to-the-network" title="Permalink to this headline"></a></h2>
 <p>Provide the MetricQ URL to connect to and a <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">Token</span></a> to identify the client:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;history-example&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">server</span> <span class="o">=</span> <span class="s2">&quot;amqps://user:pass@metricq.example.org/&quot;</span>
@@ -201,9 +120,9 @@ we won’t need to define our own client, we can use <a class="reference interna
 </pre></div>
 </div>
 <p>If all went well, we are ready to retrieve our data.</p>
-</div>
-<div class="section" id="fetching-metric-metadata">
-<h2>Fetching metric metadata<a class="headerlink" href="#fetching-metric-metadata" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="fetching-metric-metadata">
+<h2>Fetching metric metadata<a class="headerlink" href="#fetching-metric-metadata" title="Permalink to this headline"></a></h2>
 <p>All metrics passing through the MetricQ network have <a class="reference internal" href="../glossary.html#term-Metadata"><span class="xref std std-term">Metadata</span></a> associated with them.
 Using <a class="reference internal" href="../api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_metrics()</span></code></a>, we can explore for which metrics there is historical data:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.s0.dram.power&quot;</span>
@@ -225,9 +144,9 @@ Using <a class="reference internal" href="../api/client-common.html#metricq.Clie
 </div>
 <p>By passing <code class="code docutils literal notranslate"><span class="pre">historic=True</span></code>, we limit the results to metrics with historical data only.
 More complicated queries are supported by <a class="reference internal" href="../api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_metrics()</span></code></a>, see <a class="reference internal" href="metric-lookup.html#metric-lookup"><span class="std std-ref">Metric lookup</span></a> for examples.</p>
-</div>
-<div class="section" id="getting-the-last-value-of-a-metric">
-<h2>Getting the last value of a metric<a class="headerlink" href="#getting-the-last-value-of-a-metric" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="getting-the-last-value-of-a-metric">
+<h2>Getting the last value of a metric<a class="headerlink" href="#getting-the-last-value-of-a-metric" title="Permalink to this headline"></a></h2>
 <p>To retrieve only the last value of a metric saved to a database base, use</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.s0.dram.power&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
@@ -237,9 +156,9 @@ More complicated queries are supported by <a class="reference internal" href="..
 <span class="go">Last entry: [1607604944653649318] 2020-12-10 13:55:44.653649+01:00 (0.624169682s ago) value: 5.2123122215271</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="aggregates-summarizing-a-metric">
-<h2>Aggregates – summarizing a metric<a class="headerlink" href="#aggregates-summarizing-a-metric" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="aggregates-summarizing-a-metric">
+<h2>Aggregates – summarizing a metric<a class="headerlink" href="#aggregates-summarizing-a-metric" title="Permalink to this headline"></a></h2>
 <p><em class="dfn">Aggregates</em> contain information for a metric over a specific span of time,
 for example minimum/maximum/average value, sum, integral, number of data points (<em>count</em>) etc.
 Use <a class="reference internal" href="../api/history-client.html#metricq.HistoryClient.history_aggregate" title="metricq.HistoryClient.history_aggregate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.history_aggregate()</span></code></a> to summarize a metric in this way.</p>
@@ -259,9 +178,9 @@ over the last 10 minutes.</p>
 </div>
 <p>Here, <code class="code docutils literal notranslate"><span class="pre">start_time</span></code> and <code class="code docutils literal notranslate"><span class="pre">end_time</span></code> delimit the range of values to aggregate.
 Omit either of them or both to aggregate all historical values since/until some point in time.</p>
-</div>
-<div class="section" id="multiple-aggregates">
-<h2>Multiple aggregates<a class="headerlink" href="#multiple-aggregates" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="multiple-aggregates">
+<h2>Multiple aggregates<a class="headerlink" href="#multiple-aggregates" title="Permalink to this headline"></a></h2>
 <p>If you want to retrieve multiple successive aggregates, use <a class="reference internal" href="../api/history-client.html#metricq.HistoryClient.history_aggregate_timeline" title="metricq.HistoryClient.history_aggregate_timeline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.history_aggregate_timeline()</span></code></a>.
 It returns an iterator of aggregates where each aggregate spans at most a duration of <code class="code docutils literal notranslate"><span class="pre">interval_max</span></code>.</p>
 <p>This is useful if you want to obtain a rough overview for a metric over a longer period of time.
@@ -315,9 +234,9 @@ In the example below we get an overview of a metric over the last 365 days, with
 </div>
 <p>Note that some of the <a class="reference internal" href="../api/misc.html#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a> instances returned summarize almost 100 million data points (see <code class="code docutils literal notranslate"><span class="pre">count=...</span></code>)!
 Still, we get a rough idea of how this metric behaved over the past year without expensive calculations.</p>
-</div>
-<div class="section" id="fetching-raw-values">
-<h2>Fetching raw values<a class="headerlink" href="#fetching-raw-values" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="fetching-raw-values">
+<h2>Fetching raw values<a class="headerlink" href="#fetching-raw-values" title="Permalink to this headline"></a></h2>
 <p>If you are interested in raw values instead of a aggregates, use <a class="reference internal" href="../api/history-client.html#metricq.HistoryClient.history_raw_timeline" title="metricq.HistoryClient.history_raw_timeline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.history_raw_timeline()</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.s0.dram.power&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p">(</span><span class="s2">&quot;2020-01-01T00:00:00.0Z&quot;</span><span class="p">)</span>
@@ -342,56 +261,38 @@ Still, we get a rough idea of how this metric behaved over the past year without
 <span class="go">TimeValue(timestamp=Timestamp(1577836800098251298), value=5.0495328431393665)</span>
 </pre></div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="drain.html" class="btn btn-neutral float-right" title="Building a MetricQ Drain" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="source.html" class="btn btn-neutral float-left" title="Building a MetricQ Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="source.html" class="btn btn-neutral float-left" title="Building a MetricQ Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="drain.html" class="btn btn-neutral float-right" title="Building a MetricQ Drain" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &copy; Copyright 2021, TU Dresden
-
-    </p>
+    <p>&#169; Copyright 2021, TU Dresden.</p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
-
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

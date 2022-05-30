@@ -116,3 +116,19 @@ The property :code:`TimeAggregate.integral` returned the integral of values over
 spanned by a :class:`TimeAggregate`.
 This property was broken and thus removed, instead, use :attr:`TimeAggregate.integral_s` and :attr:`TimeAggregate.integral_ns`
 for seconds- and nanoseconds-based integrals, respectively.
+
+`3.x` → `4.0`
+-------------
+
+Dropping support for older Python versions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+With version 4.0, MetricQ-Python only supports Python **3.10 (and newer)**. You need to upgrade to
+this Python version.
+
+Removal of Asyncio Loop
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Python 3.10 removed the loop parameter from the asyncio interface. In particual, the
+constructor parameter `event_loop` of :class:`Agent` got removed, as well as,
+the property :attr:`Agent.event_loop`.
