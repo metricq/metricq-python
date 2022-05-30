@@ -1,5 +1,21 @@
 # Changelog
 
+## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v3.1.1...HEAD)
+
+**Breaking changes:**
+
+- Feature: Python 3.10 support [\#119](https://github.com/metricq/metricq-python/pull/119) ([bmario](https://github.com/bmario))
+
+**Fixed bugs:**
+
+- Refactor `loop` parameter usage [\#51](https://github.com/metricq/metricq-python/issues/51)
+
+**Closed issues:**
+
+- Fix changelog in Github release [\#103](https://github.com/metricq/metricq-python/issues/103)
+
 ## [v3.1.1](https://github.com/metricq/metricq-python/tree/v3.1.1) (2021-10-20)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v3.1.0...v3.1.1)
@@ -7,10 +23,6 @@
 **Fixed bugs:**
 
 - RPC messages send without `function` [\#118](https://github.com/metricq/metricq-python/issues/118)
-
-**Closed issues:**
-
-- Fix changelog in Github release [\#103](https://github.com/metricq/metricq-python/issues/103)
 
 ## [v3.1.0](https://github.com/metricq/metricq-python/tree/v3.1.0) (2021-10-19)
 
@@ -54,10 +66,6 @@
 
 - fix: remove broken TimeAggregate.integral [\#102](https://github.com/metricq/metricq-python/pull/102) ([kinnarr](https://github.com/kinnarr))
 
-**Implemented enhancements:**
-
-- Improve the availability of the tools [\#91](https://github.com/metricq/metricq-python/issues/91)
-
 **Closed issues:**
 
 - RPC errors / timeouts should lead to FAILURE terminationEnsure that RPC timeouts [\#11](https://github.com/metricq/metricq-python/issues/11)
@@ -74,6 +82,7 @@
 
 **Implemented enhancements:**
 
+- Improve the availability of the tools [\#91](https://github.com/metricq/metricq-python/issues/91)
 - Feature: New tool metricq-inspect [\#96](https://github.com/metricq/metricq-python/pull/96) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
