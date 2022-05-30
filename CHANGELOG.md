@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+## [v4.0.0](https://github.com/metricq/metricq-python/tree/v4.0.0) (2022-05-30)
 
-[Full Changelog](https://github.com/metricq/metricq-python/compare/v3.1.1...HEAD)
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v3.1.1...v4.0.0)
 
 **Breaking changes:**
 
@@ -66,6 +66,10 @@
 
 - fix: remove broken TimeAggregate.integral [\#102](https://github.com/metricq/metricq-python/pull/102) ([kinnarr](https://github.com/kinnarr))
 
+**Implemented enhancements:**
+
+- Improve the availability of the tools [\#91](https://github.com/metricq/metricq-python/issues/91)
+
 **Closed issues:**
 
 - RPC errors / timeouts should lead to FAILURE terminationEnsure that RPC timeouts [\#11](https://github.com/metricq/metricq-python/issues/11)
@@ -82,7 +86,6 @@
 
 **Implemented enhancements:**
 
-- Improve the availability of the tools [\#91](https://github.com/metricq/metricq-python/issues/91)
 - Feature: New tool metricq-inspect [\#96](https://github.com/metricq/metricq-python/pull/96) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
