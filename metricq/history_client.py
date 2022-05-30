@@ -376,7 +376,7 @@ class HistoryClient(Client):
         if "config" in response:
             await self.rpc_dispatch("config", **response["config"])
 
-        self._history_connection_watchdog.start(loop=self.event_loop)
+        self._history_connection_watchdog.start()
         self._history_connection_watchdog.set_established()
 
         await self._history_consume()
@@ -468,7 +468,7 @@ class HistoryClient(Client):
             reply_to=self.history_response_queue.name,
         )
 
-        self._request_futures[correlation_id] = asyncio.Future(loop=self.event_loop)
+        self._request_futures[correlation_id] = self._event_loop.create_future()
         assert self.history_exchange is not None
         await self._history_connection_watchdog.established()
 
@@ -668,7 +668,6 @@ class HistoryClient(Client):
         queues = [self.history_response_queue] + extra_queues
         await asyncio.gather(
             *[queue.consume(self._on_history_response) for queue in queues],
-            loop=self.event_loop,
         )
 
     async def _on_history_response(self, message: aio_pika.IncomingMessage) -> None:
@@ -737,7 +736,7 @@ class HistoryClient(Client):
             )
             self._reregister_task.cancel()
 
-        self._reregister_task = self.event_loop.create_task(
+        self._reregister_task = self._event_loop.create_task(
             self._reregister(connection)
         )
 

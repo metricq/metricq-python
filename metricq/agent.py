@@ -34,6 +34,7 @@ import json
 import signal
 import ssl
 import textwrap
+import threading
 import time
 import traceback
 import uuid
@@ -74,6 +75,8 @@ timer = time.monotonic
 
 T = TypeVar("T")
 
+_global_thread_lock = threading.Lock()
+
 
 class Agent(RPCDispatcher):
     LOG_MAX_WIDTH = 200
@@ -84,12 +87,11 @@ class Agent(RPCDispatcher):
         management_url: str,
         *,
         connection_timeout: Union[int, float] = 600,
-        event_loop: Optional[asyncio.AbstractEventLoop] = None,
         add_uuid: bool = False,
     ):
         self.token = f"{token}.{uuid.uuid4().hex}" if add_uuid else token
 
-        self._event_loop = event_loop
+        self._loop: Optional[asyncio.AbstractEventLoop] = None
         self._stop_in_progress = False
         self._stop_future: Optional[asyncio.Future[None]] = None
         self._cancel_on_exception = False
@@ -141,21 +143,15 @@ class Agent(RPCDispatcher):
         return str(derived_obj)
 
     @property
-    def event_loop(self) -> asyncio.AbstractEventLoop:
-        # TODO maybe we should instead **TRY** to get the loop of the current context
-        if self._event_loop is None:
-            logger.debug("Getting current or new")
-            try:
-                self._event_loop = asyncio.get_event_loop()
-            except RuntimeError:
-                # Until python 3.6, it may raise instead of creating a new one
-                self._event_loop = asyncio.new_event_loop()
-        return self._event_loop
-
-    @event_loop.setter
-    def event_loop(self, loop: asyncio.AbstractEventLoop) -> None:
-        assert self._event_loop is None
-        self._event_loop = loop
+    def _event_loop(self) -> asyncio.AbstractEventLoop:
+        loop = asyncio.get_running_loop()
+        if self._loop is None:
+            with _global_thread_lock:
+                if self._loop is None:
+                    self._loop = loop
+        if loop is not self._loop:
+            raise RuntimeError(f"{self!r} is bound to a different event loop")
+        return loop
 
     async def make_connection(
         self, url: str, connection_name: Optional[str] = None
@@ -177,7 +173,6 @@ class Agent(RPCDispatcher):
 
         connection: aio_pika.RobustConnection = await aio_pika.connect_robust(
             url,
-            loop=self.event_loop,
             reconnect_interval=30,
             ssl_options=cast(Dict[Any, Any], ssl_options),
             client_properties=cast(Dict[Any, Any], client_properties),
@@ -215,7 +210,7 @@ class Agent(RPCDispatcher):
             "{}-rpc".format(self.token), exclusive=True
         )
 
-        self._management_connection_watchdog.start(loop=self.event_loop)
+        self._management_connection_watchdog.start()
         self._management_connection_watchdog.set_established()
 
     def run(
@@ -243,58 +238,51 @@ class Agent(RPCDispatcher):
             Exception: Any exception passed to :meth:`stop`.
         """
         self._cancel_on_exception = cancel_on_exception
-        self.event_loop.set_exception_handler(self.on_exception)
+
+        logger.debug("Starting event loop ...")
+        asyncio.run(self._wait_for_stop(catch_signals))
+        logger.debug("Event loop completed, exiting...")
+
+    async def _wait_for_stop(self, catch_signals: Iterable[str]) -> None:
+        self._event_loop.set_exception_handler(self.on_exception)
         for signame in catch_signals:
             try:
-                self.event_loop.add_signal_handler(
-                    getattr(signal, signame), functools.partial(self.on_signal, signame)
+                self._event_loop.add_signal_handler(
+                    getattr(signal, signame),
+                    functools.partial(self.on_signal, signame),
                 )
             except RuntimeError as error:
                 logger.warning(
                     "failed to setup signal handler for {}: {}", signame, error
                 )
 
-        async def wait_for_stop() -> None:
-            connect_task = self.event_loop.create_task(self.connect())
-            stopped_task = self.event_loop.create_task(self.stopped())
+        connect_task = self._event_loop.create_task(self.connect())
+        stopped_task = self._event_loop.create_task(self.stopped())
 
-            pending = {stopped_task, connect_task}
-            while pending:
-                done, pending = await asyncio.wait(
-                    pending, return_when=asyncio.FIRST_COMPLETED
-                )
+        pending = {stopped_task, connect_task}
+        while pending:
+            done, pending = await asyncio.wait(
+                pending, return_when=asyncio.FIRST_COMPLETED
+            )
 
-                # Check for successful connection, if connect() failed with
-                # an unhandled exception, raise ConnectFailed and attach
-                # the unhandled exception as its cause.
-                if connect_task in done:
-                    exc = connect_task.exception()
-                    if exc is not None:
-                        logger.error(
-                            "Failed to connect {}: {} ({})",
-                            type(self).__qualname__,
-                            exc,
-                            type(exc).__qualname__,
-                        )
-                        raise ConnectFailed("Failed to connect Agent") from exc
+            # Check for successful connection, if connect() failed with
+            # an unhandled exception, raise ConnectFailed and attach
+            # the unhandled exception as its cause.
+            if connect_task in done:
+                exc = connect_task.exception()
+                if exc is not None:
+                    logger.error(
+                        "Failed to connect {}: {} ({})",
+                        type(self).__qualname__,
+                        exc,
+                        type(exc).__qualname__,
+                    )
+                    raise ConnectFailed("Failed to connect Agent") from exc
 
-                # If the Agent was stopped explicitly, return `None`.  If it was
-                # stopped because of an exception, reraise it.
-                if stopped_task in done:
-                    return stopped_task.result()
-
-        try:
-            logger.debug("Running event loop {}...", self.event_loop)
-            self.event_loop.run_until_complete(wait_for_stop())
-        finally:
-            self.event_loop.stop()
-            self.event_loop.run_until_complete(self.event_loop.shutdown_asyncgens())
-
-            with suppress(AttributeError):  # needs python 3.7
-                all_tasks = asyncio.all_tasks(self.event_loop)
-                logger.debug("Tasks remaining when stopping Agent: {}", len(all_tasks))
-
-            logger.debug("Event loop completed, exiting...")
+            # If the Agent was stopped explicitly, return `None`.  If it was
+            # stopped because of an exception, reraise it.
+            if stopped_task in done:
+                return stopped_task.result()
 
     async def rpc(
         self,
@@ -383,7 +371,7 @@ class Agent(RPCDispatcher):
         request_future = None
 
         if response_callback is None:
-            request_future = self.event_loop.create_future()
+            request_future = self._event_loop.create_future()
 
             if not cleanup_on_response:
                 # We must cleanup when we use the future otherwise we get errors
@@ -431,7 +419,7 @@ class Agent(RPCDispatcher):
                 cleanup()
                 raise te
         elif timeout:
-            self.event_loop.call_later(timeout, cleanup)
+            self._event_loop.call_later(timeout, cleanup)
 
         return None
 
@@ -449,8 +437,7 @@ class Agent(RPCDispatcher):
         assert self.management_rpc_queue is not None
         queues = [self.management_rpc_queue] + extra_queues
         await asyncio.gather(
-            *[queue.consume(self._on_management_message) for queue in queues],
-            loop=self.event_loop,
+            *[queue.consume(self._on_management_message) for queue in queues]
         )
 
     def on_signal(self, signal: str) -> None:
@@ -499,7 +486,7 @@ class Agent(RPCDispatcher):
         exception: Optional[Exception] = None,
         loop: Optional[asyncio.AbstractEventLoop] = None,
     ) -> None:
-        loop = self.event_loop if loop is None else loop
+        loop = self._event_loop if loop is None else loop
         loop.create_task(self.stop(exception=exception))
 
     async def stop(self, exception: Optional[Exception] = None) -> None:
@@ -548,7 +535,7 @@ class Agent(RPCDispatcher):
                 The Agent encountered any other unhandled exception.
         """
         if self._stop_future is None:
-            self._stop_future = self.event_loop.create_future()
+            self._stop_future = self._event_loop.create_future()
         await self._stop_future
 
     async def _close(self) -> None:

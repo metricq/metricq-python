@@ -87,7 +87,7 @@ class Sink(DataClient):
             )
             self._resubscribe_task.cancel()
 
-        self._resubscribe_task = self.event_loop.create_task(
+        self._resubscribe_task = self._event_loop.create_task(
             self._resubscribe(connection)
         )
 
@@ -192,7 +192,7 @@ class Sink(DataClient):
             await self._on_data_chunk(metric, data_response)
 
     async def _on_data_chunk(self, metric: Metric, data_chunk: DataChunk) -> None:
-        """ Only override this if absolutely necessary for performance """
+        """Only override this if absolutely necessary for performance"""
         last_timed = 0
         zipped_tv = zip(data_chunk.time_delta, data_chunk.value)
         for time_delta, value in zipped_tv:

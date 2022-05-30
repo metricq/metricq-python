@@ -98,7 +98,7 @@ def timedelta_random_list() -> Generator[Timedelta, None, None]:
     for num_digits in range(1, 17):
         for num_leading_digits in range(1, num_digits):
             random = rng.randrange(
-                10 ** num_leading_digits, 10 ** (num_leading_digits + 1)
+                10**num_leading_digits, 10 ** (num_leading_digits + 1)
             )
             ts = random * (10 ** (num_digits - num_leading_digits))
 
@@ -113,7 +113,7 @@ def timedelta_random_list() -> Generator[Timedelta, None, None]:
 
 def powers_of_ten() -> Generator[Timedelta, None, None]:
     for i in range(17):
-        yield Timedelta(10 ** i)
+        yield Timedelta(10**i)
 
 
 @pytest.mark.parametrize(

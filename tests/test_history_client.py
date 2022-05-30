@@ -56,7 +56,7 @@ async def test_history_aggregate(
     history_client: HistoryClient, mocker: MockerFixture
 ) -> None:
     TIME = Timestamp(0)
-    AGGREGATE = create_autospec(history_pb2.HistoryResponse.Aggregate, set_spec=True)
+    AGGREGATE = create_autospec(history_pb2.HistoryResponse.Aggregate, spec_set=True)
 
     response = mock_history_response(
         time_delta=[TIME.posix_ns],

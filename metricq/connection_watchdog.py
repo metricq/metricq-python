@@ -35,12 +35,11 @@ class ConnectionWatchdog:
 
         self._callback = on_timeout_callback
 
-        # Events take the loop, which we don't have here so we can't initialize them here
         self._closed_event: Optional[Event] = None
         self._established_event: Optional[Event] = None
         self._watchdog_task: Optional[Task[None]] = None
 
-    def start(self, loop: asyncio.AbstractEventLoop) -> None:
+    def start(self) -> None:
         """Start the connection watchdog task.
 
         A call to this method will have no effect if the task is already
@@ -52,8 +51,8 @@ class ConnectionWatchdog:
             )
             return
 
-        self._closed_event = Event(loop=loop)
-        self._established_event = Event(loop=loop)
+        self._closed_event = Event()
+        self._established_event = Event()
 
         async def watchdog() -> None:
             logger.debug("Started {} watchdog", self.connection_name)
@@ -83,7 +82,7 @@ class ConnectionWatchdog:
                 logger.debug("Cancelled {} watchdog", self.connection_name)
                 raise
 
-        self._watchdog_task = loop.create_task(watchdog())
+        self._watchdog_task = asyncio.get_running_loop().create_task(watchdog())
 
     def set_established(self) -> None:
         """Signal that the connection has been established."""
