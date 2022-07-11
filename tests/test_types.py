@@ -6,7 +6,7 @@ from typing import Generator, List, Union
 import pytest
 
 from metricq.exceptions import NonMonotonicTimestamps
-from metricq.types import TimeAggregate, Timedelta, Timestamp
+from metricq.types import TimeAggregate, Timedelta, Timestamp, TimeValue
 
 logger = getLogger(__name__)
 
@@ -240,6 +240,31 @@ def test_timeaggregate_from_value_pair(
     assert isclose(agg.mean, VALUE)
     assert isclose(agg.mean_integral, VALUE)
     assert isclose(agg.mean_sum, VALUE)
+
+
+def test_dict_from_aggregate(timestamp: Timestamp, time_delta_10s: Timedelta) -> None:
+    VALUE = 42.0
+    later = timestamp + time_delta_10s
+    agg = TimeAggregate.from_value_pair(
+        timestamp_before=timestamp, timestamp=later, value=VALUE
+    ).dict()
+
+    assert agg["timestamp"] == timestamp.posix_ns
+    assert agg["count"] == 1
+
+    assert agg["minimum"] == VALUE
+    assert agg["maximum"] == VALUE
+
+    assert isclose(agg["mean"], VALUE)
+
+
+def test_dict_from_value(timestamp: Timestamp) -> None:
+    VALUE = 42.0
+
+    val = TimeValue(timestamp, VALUE).dict()
+
+    assert val["timestamp"] == timestamp.posix_ns
+    assert val["value"] == VALUE
 
 
 def test_timeaggregate_from_value_pair_non_monotonic(
