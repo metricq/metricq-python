@@ -4,9 +4,17 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v4.0.0...HEAD)
 
+**Implemented enhancements:**
+
+- Add `dict\(\)` method to `TimeValue` and `TimeAggregate` [\#121](https://github.com/metricq/metricq-python/issues/121)
+
 **Fixed bugs:**
 
 - Sphix extension sphinx-autodoc-typehints 1.12.0 seems to be broken [\#98](https://github.com/metricq/metricq-python/issues/98)
+
+**Merged pull requests:**
+
+- feat: add `dict\(\)` to value and aggrate types [\#122](https://github.com/metricq/metricq-python/pull/122) ([bmario](https://github.com/bmario))
 
 ## [v4.0.0](https://github.com/metricq/metricq-python/tree/v4.0.0) (2022-05-30)
 
