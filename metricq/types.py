@@ -599,6 +599,16 @@ class TimeValue:
     def __iter__(self) -> Iterator[Union["Timestamp", float]]:
         return iter([self.timestamp, self.value])
 
+    def dict(self) -> dict[str, Any]:
+        """
+        returns a dict representing the TimeValue instance.
+        Keys are `timestamp` and `value`
+        """
+        return {
+            "timestamp": self.timestamp.posix_ns,
+            "value": self.value,
+        }
+
 
 @dataclass(frozen=True)
 class TimeAggregate:
@@ -702,6 +712,19 @@ class TimeAggregate:
     @property
     def mean_sum(self) -> float:
         return self.sum / self.count
+
+    def dict(self) -> dict[str, Any]:
+        """
+        returns a dict representing the TimeAggregate instance.
+        Keys are `timestamp`, `minimum`, `mean`, `maximum`, and `count`.
+        """
+        return {
+            "minimum": self.minimum,
+            "mean": self.mean,
+            "maximum": self.maximum,
+            "count": self.count,
+            "timestamp": self.timestamp.posix_ns,
+        }
 
 
 Metric = str
