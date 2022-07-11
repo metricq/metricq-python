@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v4.0.0...HEAD)
+
+**Fixed bugs:**
+
+- Sphix extension sphinx-autodoc-typehints 1.12.0 seems to be broken [\#98](https://github.com/metricq/metricq-python/issues/98)
+
 ## [v4.0.0](https://github.com/metricq/metricq-python/tree/v4.0.0) (2022-05-30)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v3.1.1...v4.0.0)
