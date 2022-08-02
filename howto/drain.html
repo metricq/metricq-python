@@ -106,8 +106,10 @@ reduce perturbation as much as possible.</p>
 <p>The easiest way to implement this approach is to use the classes <a class="reference internal" href="../api/subscriber.html#metricq.Subscriber" title="metricq.Subscriber"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscriber</span></code></a>
 and <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> provided by MetricQ.</p>
 <p>In particular, the first connection is handled by the <a class="reference internal" href="../api/subscriber.html#metricq.Subscriber" title="metricq.Subscriber"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscriber</span></code></a>.</p>
-<p>Given a server and a list of metrics, we want to subscribe to:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">server</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;amqps://user:pass@metricq.example.org/&quot;</span>
+<p>Provide the MetricQ URL to connect to, a <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">Token</span></a> to identify the client and
+a list of metrics, we want to subscribe to:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;drain-example&quot;</span>
+<span class="n">server</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;amqps://user:pass@metricq.example.org/&quot;</span>
 <span class="n">metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
     <span class="c1"># ...</span>
 <span class="p">]</span>
@@ -115,7 +117,7 @@ and <a class="reference internal" href="../api/drain.html#metricq.Drain" title="
 </div>
 <p>We can use the subscriber to perform the initial connect and post the subscription.
 For that, we use the <a class="reference internal" href="../api/subscriber.html#metricq.Subscriber" title="metricq.Subscriber"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscriber</span></code></a> as a context manager:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">Subscriber</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">server</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">expires</span><span class="o">=....</span><span class="p">)</span> <span class="k">as</span> <span class="n">subscriber</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">Subscriber</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">expires</span><span class="o">=....</span><span class="p">)</span> <span class="k">as</span> <span class="n">subscriber</span><span class="p">:</span>
     <span class="c1"># ... run task</span>
 </pre></div>
 </div>

@@ -31,10 +31,12 @@ and :class:`Drain` provided by MetricQ.
 
 In particular, the first connection is handled by the :class:`Subscriber`.
 
-Given a server and a list of metrics, we want to subscribe to:
+Provide the MetricQ URL to connect to, a :term:`Token` to identify the client and
+a list of metrics, we want to subscribe to:
 
 .. code-block::
 
+    token: str = "drain-example"
     server: str = "amqps://user:pass@metricq.example.org/"
     metrics: List[str] = [
         # ... 
@@ -45,7 +47,7 @@ For that, we use the :class:`Subscriber` as a context manager:
 
 .. code-block::
 
-    async with Subscriber(server=server, metrics=metrics, expires=....) as subscriber:
+    async with Subscriber(token, server, metrics=metrics, expires=....) as subscriber:
         # ... run task
 
 The most important parameter here is the `expires`. As the connection is closed to 
