@@ -38,7 +38,7 @@ Then define the :class:`HistoryClient` and connect it to the network:
 
 .. code-block::
 
-    >>> client = metricq.HistoryClient(token=token, server=server)
+    >>> client = metricq.HistoryClient(token, server)
     >>> await client.connect()
 
 If all went well, we are ready to retrieve our data.

@@ -32,10 +32,10 @@ import asyncio
 from metricq.subscription import Subscriber
 
 
-async def source() -> None:
+async def client() -> None:
     async with Subscriber(
-        "example",
-        "amqp://admin:admin@localhost",
+        token="example-drain",
+        management_url="amqp://admin:admin@localhost",
         metrics=["dummy.source"],
         expires=3600,
     ) as subscription:
@@ -52,4 +52,4 @@ async def source() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(source())
+    asyncio.run(client())
