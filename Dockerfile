@@ -1,21 +1,22 @@
-FROM python:3.10-slim AS builder
+FROM python:3.10-slim-bullseye AS BUILDER
 LABEL maintainer="mario.bielert@tu-dresden.de"
 
 RUN useradd -m metricq
-RUN pip install virtualenv
 RUN apt-get update && apt-get install -y protobuf-compiler build-essential
 
-USER metricq
 COPY --chown=metricq:metricq . /home/metricq/metricq
 
-WORKDIR /home/metricq
-RUN virtualenv venv
-
 WORKDIR /home/metricq/metricq
-RUN . /home/metricq/venv/bin/activate && pip install .
+RUN pip install . 
 
-FROM python:3.10-slim
-RUN useradd -m metricq
+
+FROM python:3.10-slim-bullseye
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    libprotobuf23 \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd -m metricq 
+
+COPY --from=BUILDER /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+
 USER metricq
-COPY --from=builder --chown=metricq:metricq /home/metricq/venv /home/metricq/venv
-CMD [ "/home/metricq/venv/bin/python" ]

@@ -1,0 +1,14 @@
+.tox
+.mypy_cache
+.git
+.vscode
+build
+*.egg_ino
+**/__pycache__
+venv
+
+metricq/history_pb2.py
+metricq/datachunk_pb2.py
+metricq/history_pb2.pyi
+metricq/datachunk_pb2.pyi
+metricq/_protobuf_version.py
