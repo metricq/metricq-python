@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v4.1.0...HEAD)
+
+**Implemented enhancements:**
+
+- Remove virtualenv from the docker image [\#133](https://github.com/metricq/metricq-python/issues/133)
+
+**Fixed bugs:**
+
+- Documentation for HistoryClient and Subscriber contains errors [\#129](https://github.com/metricq/metricq-python/issues/129)
+
 ## [v4.1.0](https://github.com/metricq/metricq-python/tree/v4.1.0) (2022-07-11)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v4.0.0...v4.1.0)
