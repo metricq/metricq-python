@@ -26,8 +26,8 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from inspect import Traceback
-from typing import Any, List, Optional, Union
+from types import TracebackType
+from typing import Any, List, Optional, Type, Union
 
 from .client import Client
 from .drain import Drain
@@ -115,25 +115,11 @@ class Subscriber(Client):
         new_kwargs.update(kwargs)
         return Drain(*self._args, **new_kwargs, queue=self.queue, metrics=self._metrics)
 
-    async def __aenter__(self) -> "Subscriber":
-        """Allows to use the Subscriber as a context manager.
-
-        The connection to MetricQ will automatically established and closed.
-
-        Use it like this::
-
-            async with Subscriber(...) as subscriber:
-                pass
-
-        """
-
-        await self.connect()
-        return self
-
     async def __aexit__(
         self,
-        exc_type: Optional[type],
+        exc_type: Optional[Type[BaseException]],
         exc_value: Optional[BaseException],
-        exc_traceback: Optional[Traceback],
+        exc_traceback: Optional[TracebackType],
     ) -> None:
+        # We don't need to `await self.stop()` here, as this is already done in `Subscriber.connect()`
         pass
