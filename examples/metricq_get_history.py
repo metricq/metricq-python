@@ -54,58 +54,53 @@ click_completion.init()
 async def aget_history(
     server: str, token: str, metric: str, list_metrics: bool, list_metadata: bool
 ) -> None:
-    client = metricq.HistoryClient(
+    async with metricq.HistoryClient(
         token=token, management_url=server, event_loop=asyncio.get_running_loop()
-    )
-    await client.connect()
-    if list_metrics:
-        metrics = await client.get_metrics(metric, metadata=False)
-        click.echo(
-            click.style(
-                "metrics matching {}:\n{}".format(metric, metrics), fg="bright_blue"
+    ) as client:
+        if list_metrics:
+            metrics = await client.get_metrics(metric, metadata=False)
+            click.echo(
+                click.style(
+                    "metrics matching {}:\n{}".format(metric, metrics), fg="bright_blue"
+                )
             )
-        )
-        await client.stop()
-        return
+            return
 
-    if list_metadata:
-        metadata = await client.get_metrics(metric)
-        pp = pprint.PrettyPrinter(indent=4)
+        if list_metadata:
+            metadata = await client.get_metrics(metric)
+            pp = pprint.PrettyPrinter(indent=4)
+            click.echo(
+                click.style(
+                    "metrics matching {}:\n{}".format(metric, pp.pformat(metadata)),
+                    fg="bright_blue",
+                )
+            )
+            return
+
+        now = metricq.Timestamp.now()
+        last_timevalue = await client.history_last_value(metric)
+        assert last_timevalue is not None
         click.echo(
             click.style(
-                "metrics matching {}:\n{}".format(metric, pp.pformat(metadata)),
+                "Last entry: {} ({} ago) value: {}".format(
+                    last_timevalue.timestamp,
+                    now - last_timevalue.timestamp,
+                    last_timevalue.value,
+                ),
                 fg="bright_blue",
             )
         )
-        await client.stop()
-        return
 
-    now = metricq.Timestamp.now()
-    last_timevalue = await client.history_last_value(metric)
-    assert last_timevalue is not None
-    click.echo(
-        click.style(
-            "Last entry: {} ({} ago) value: {}".format(
-                last_timevalue.timestamp,
-                now - last_timevalue.timestamp,
-                last_timevalue.value,
-            ),
-            fg="bright_blue",
+        delta = metricq.Timedelta.from_timedelta(timedelta(seconds=600))
+        start_time = now - delta
+        interval_max = metricq.Timedelta.from_timedelta(timedelta(seconds=10))
+        result = await client.history_data_request(
+            metric, start_time=start_time, end_time=now, interval_max=interval_max
         )
-    )
 
-    delta = metricq.Timedelta.from_timedelta(timedelta(seconds=600))
-    start_time = now - delta
-    interval_max = metricq.Timedelta.from_timedelta(timedelta(seconds=10))
-    result = await client.history_data_request(
-        metric, start_time=start_time, end_time=now, interval_max=interval_max
-    )
-
-    click.echo("Values in the last {}".format(delta))
-    for aggregate in result.aggregates():
-        click.echo(aggregate)
-
-    await client.stop()
+        click.echo("Values in the last {}".format(delta))
+        for aggregate in result.aggregates():
+            click.echo(aggregate)
 
 
 @click.command()

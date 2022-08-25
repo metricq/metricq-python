@@ -27,8 +27,8 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import asyncio
-from inspect import Traceback
-from typing import Any, List, Optional, Tuple, cast
+from types import TracebackType
+from typing import Any, List, Optional, Tuple, Type, cast
 
 import aio_pika
 
@@ -84,27 +84,14 @@ class Drain(Sink):
     async def on_data(self, metric: str, time: Timestamp, value: float) -> None:
         await self._data.put((metric, time, value))
 
-    async def __aenter__(self) -> "Drain":
-        """Allows to use the Drain as a context manager.
-
-        The connection to MetricQ will automatically established and closed.
-
-        Use it like this::
-
-            async with Drain(...) as drain:
-                pass
-
-        """
-
-        await self.connect()
-        return self
-
     async def __aexit__(
         self,
-        exc_type: Optional[type],
+        exc_type: Optional[Type[BaseException]],
         exc_value: Optional[BaseException],
-        exc_traceback: Optional[Traceback],
+        exc_traceback: Optional[TracebackType],
     ) -> None:
+        # We don't need to `await self.stop()` here, but it already got scheduled in
+        # `Drain._on_data_message()`. But we need to wait for the stop task to finish.
         await self.stopped()
 
     def __aiter__(self) -> "Drain":

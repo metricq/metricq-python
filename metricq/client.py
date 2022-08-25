@@ -30,7 +30,8 @@
 
 from socket import gethostname
 from sys import version_info as sys_version
-from typing import Any, Dict, Optional, Sequence, Union, cast
+from types import TracebackType
+from typing import Any, Dict, Optional, Sequence, Type, TypeVar, Union, cast
 
 from .agent import Agent
 from .logging import get_logger
@@ -42,6 +43,9 @@ logger = get_logger(__name__)
 
 
 _GetMetricsResult = Union[Sequence[str], Sequence[Dict[str, Any]]]
+
+# With Python 3.11 use typing.Self instead
+Self = TypeVar("Self", bound="Client")
 
 
 class Client(Agent):
@@ -222,3 +226,26 @@ class Client(Agent):
         result = await self.rpc("get_metrics", **arguments)
         assert result is not None
         return cast(_GetMetricsResult, result["metrics"])
+
+    async def __aenter__(self: Self) -> Self:
+        """Allows to use the Client as a context manager.
+
+        The connection to MetricQ will automatically established and closed.
+
+        Use it like this::
+
+            async with MyClient(...) as client:
+                pass
+
+        """
+        await self.connect()
+
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_value: Optional[BaseException],
+        traceback: Optional[TracebackType],
+    ) -> None:
+        await self.stop()
