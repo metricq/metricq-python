@@ -115,23 +115,6 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="metricq.Drain.__aenter__">
-<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">__aenter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Drain.__aenter__" title="Permalink to this definition"></a></dt>
-<dd><p>Allows to use the Drain as a context manager.</p>
-<p>The connection to MetricQ will automatically established and closed.</p>
-<p>Use it like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">Drain</span><span class="p">(</span><span class="o">...</span><span class="p">)</span> <span class="k">as</span> <span class="n">drain</span><span class="p">:</span>
-    <span class="k">pass</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="metricq.Drain.__aiter__">
 <span class="sig-name descname"><span class="pre">__aiter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Drain.__aiter__" title="Permalink to this definition"></a></dt>
 <dd><p>Allows to asynchronously iterate over all metric data as it gets received.</p>
@@ -143,6 +126,23 @@
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.Drain.__aenter__">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">__aenter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Drain.__aenter__" title="Permalink to this definition"></a></dt>
+<dd><p>Allows to use the Client as a context manager.</p>
+<p>The connection to MetricQ will automatically established and closed.</p>
+<p>Use it like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">MyClient</span><span class="p">(</span><span class="o">...</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">Self</span></code>, bound= <a class="reference internal" href="client-common.html#metricq.Client" title="metricq.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>)</p>
 </dd>
 </dl>
 </dd></dl>
