@@ -1,21 +1,18 @@
 # Changelog
 
-## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+## [v4.2.0](https://github.com/metricq/metricq-python/tree/v4.2.0) (2022-08-25)
 
-[Full Changelog](https://github.com/metricq/metricq-python/compare/v4.1.0...HEAD)
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v4.1.0...v4.2.0)
 
 **Implemented enhancements:**
 
 - Remove virtualenv from the docker image [\#133](https://github.com/metricq/metricq-python/issues/133)
+- feat: Context manager support for metricq.Client [\#132](https://github.com/metricq/metricq-python/pull/132) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
 
 - Documentation for HistoryClient and Subscriber contains errors [\#129](https://github.com/metricq/metricq-python/issues/129)
 - Add ContextManager for metricq.Client [\#127](https://github.com/metricq/metricq-python/issues/127)
-
-**Merged pull requests:**
-
-- feat: Context manager support for metricq.Client [\#132](https://github.com/metricq/metricq-python/pull/132) ([bmario](https://github.com/bmario))
 
 ## [v4.1.0](https://github.com/metricq/metricq-python/tree/v4.1.0) (2022-07-11)
 
@@ -24,14 +21,11 @@
 **Implemented enhancements:**
 
 - Add `dict\(\)` method to `TimeValue` and `TimeAggregate` [\#121](https://github.com/metricq/metricq-python/issues/121)
+- feat: add `dict\(\)` to value and aggrate types [\#122](https://github.com/metricq/metricq-python/pull/122) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
 
 - Sphix extension sphinx-autodoc-typehints 1.12.0 seems to be broken [\#98](https://github.com/metricq/metricq-python/issues/98)
-
-**Merged pull requests:**
-
-- feat: add `dict\(\)` to value and aggrate types [\#122](https://github.com/metricq/metricq-python/pull/122) ([bmario](https://github.com/bmario))
 
 ## [v4.0.0](https://github.com/metricq/metricq-python/tree/v4.0.0) (2022-05-30)
 
@@ -68,7 +62,6 @@
 - feat: support new hidden parameter for get\_metrics RPC [\#114](https://github.com/metricq/metricq-python/pull/114) ([kinnarr](https://github.com/kinnarr))
 - feat: add a connection name for better identification in the management UI [\#110](https://github.com/metricq/metricq-python/pull/110) ([kinnarr](https://github.com/kinnarr))
 - feat: add required py.typed file to support typing when used as library [\#105](https://github.com/metricq/metricq-python/pull/105) ([kinnarr](https://github.com/kinnarr))
-- Feature: New tool metricq-inspect [\#96](https://github.com/metricq/metricq-python/pull/96) ([bmario](https://github.com/bmario))
 - Feature strict typing [\#117](https://github.com/metricq/metricq-python/pull/117) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
@@ -91,6 +84,7 @@
 - Unify docstrings to use Google style [\#113](https://github.com/metricq/metricq-python/pull/113) ([phijor](https://github.com/phijor))
 - Add project setup how-to [\#112](https://github.com/metricq/metricq-python/pull/112) ([phijor](https://github.com/phijor))
 - Feature Drain and Subscription [\#111](https://github.com/metricq/metricq-python/pull/111) ([Daddelhai](https://github.com/Daddelhai))
+- Move tools to their own repository [\#101](https://github.com/metricq/metricq-python/pull/101) ([phijor](https://github.com/phijor))
 
 ## [v3.0.0](https://github.com/metricq/metricq-python/tree/v3.0.0) (2021-05-06)
 
@@ -111,12 +105,15 @@
 
 **Merged pull requests:**
 
-- Move tools to their own repository [\#101](https://github.com/metricq/metricq-python/pull/101) ([phijor](https://github.com/phijor))
 - Trigger docker workflow on release [\#100](https://github.com/metricq/metricq-python/pull/100) ([kinnarr](https://github.com/kinnarr))
 
 ## [v2.0.1](https://github.com/metricq/metricq-python/tree/v2.0.1) (2021-04-21)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.0...v2.0.1)
+
+**Implemented enhancements:**
+
+- Feature: New tool metricq-inspect [\#96](https://github.com/metricq/metricq-python/pull/96) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
 
