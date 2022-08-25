@@ -11,6 +11,11 @@
 **Fixed bugs:**
 
 - Documentation for HistoryClient and Subscriber contains errors [\#129](https://github.com/metricq/metricq-python/issues/129)
+- Add ContextManager for metricq.Client [\#127](https://github.com/metricq/metricq-python/issues/127)
+
+**Merged pull requests:**
+
+- feat: Context manager support for metricq.Client [\#132](https://github.com/metricq/metricq-python/pull/132) ([bmario](https://github.com/bmario))
 
 ## [v4.1.0](https://github.com/metricq/metricq-python/tree/v4.1.0) (2022-07-11)
 
@@ -63,6 +68,7 @@
 - feat: support new hidden parameter for get\_metrics RPC [\#114](https://github.com/metricq/metricq-python/pull/114) ([kinnarr](https://github.com/kinnarr))
 - feat: add a connection name for better identification in the management UI [\#110](https://github.com/metricq/metricq-python/pull/110) ([kinnarr](https://github.com/kinnarr))
 - feat: add required py.typed file to support typing when used as library [\#105](https://github.com/metricq/metricq-python/pull/105) ([kinnarr](https://github.com/kinnarr))
+- Feature: New tool metricq-inspect [\#96](https://github.com/metricq/metricq-python/pull/96) ([bmario](https://github.com/bmario))
 - Feature strict typing [\#117](https://github.com/metricq/metricq-python/pull/117) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
@@ -111,10 +117,6 @@
 ## [v2.0.1](https://github.com/metricq/metricq-python/tree/v2.0.1) (2021-04-21)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v2.0.0...v2.0.1)
-
-**Implemented enhancements:**
-
-- Feature: New tool metricq-inspect [\#96](https://github.com/metricq/metricq-python/pull/96) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
 
