@@ -3,6 +3,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
+from metricq.exceptions import AgentStopped
 from metricq.interval_source import IntervalSource
 from metricq.types import Timedelta
 
@@ -68,3 +69,21 @@ def test_period_no_explicit_init() -> None:
 
         with pytest.raises(TypeError, match=r"Setting .* to None is not supported"):
             _FaultySource()
+
+
+async def test_update_method_exception() -> None:
+    class TestException(Exception):
+        pass
+
+    class TestIntervalSource(IntervalSource):
+        async def update(self) -> None:
+            raise TestException()
+
+    source = TestIntervalSource(
+        period=10.0,
+        token="test_source",
+        management_url="amqp://localhost",
+    )
+
+    with pytest.raises(AgentStopped):
+        await source.task()

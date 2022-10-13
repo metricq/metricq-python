@@ -44,3 +44,6 @@ ignore = [
 
 [tool.mypy]
 exclude = 'setup.py|\.?.*env|conf.py|build'
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

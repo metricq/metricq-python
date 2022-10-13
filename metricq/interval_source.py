@@ -136,6 +136,12 @@ class IntervalSource(Source):
                 # During the reconnection phase, we need to save the task from
                 # being cancelled.
                 logger.debug("Failed to send metric value: {}", e)
+            except Exception as e:
+                # Some exception escaped from the client, we want to stop the
+                # zombie apocalypse, so we request a stop here. If agents don't
+                # handle their exceptions, we will. Again, we need to save the
+                # task from being cancelled.
+                await self.stop(e)
 
             try:
                 if self._period is None:
