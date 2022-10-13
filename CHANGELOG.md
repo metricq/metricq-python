@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v4.2.0...HEAD)
+
+**Fixed bugs:**
+
+- Agents using the `IntervalSource` might enter a zombie state [\#134](https://github.com/metricq/metricq-python/issues/134)
+
+**Merged pull requests:**
+
+- fix: exception in update zombifies IntervalSource [\#135](https://github.com/metricq/metricq-python/pull/135) ([bmario](https://github.com/bmario))
+
 ## [v4.2.0](https://github.com/metricq/metricq-python/tree/v4.2.0) (2022-08-25)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v4.1.0...v4.2.0)
