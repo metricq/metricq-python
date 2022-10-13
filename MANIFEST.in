@@ -5,6 +5,7 @@ recursive-include tools *.py
 recursive-include docs *.py
 recursive-include docs *.rst
 recursive-include docs *.json
+include docs/_static/custom.css
 include docs/.nojekyll
 include docs/Makefile
 include docs/make.bat
@@ -26,3 +27,4 @@ exclude .git-blame-ignore-revs
 exclude .gitmodules
 exclude .pre-commit-config.yaml
 exclude .github_changelog_generator
+exclude .dockerignore
