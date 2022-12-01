@@ -392,6 +392,9 @@ class Agent(RPCDispatcher):
 
             response_callback = default_response_callback
 
+        # May VTTI be with you ༼ つ ╹ ╹ ༽つ
+        assert callable(response_callback)
+
         self._rpc_response_handlers[correlation_id] = (
             response_callback,
             cleanup_on_response,
@@ -639,8 +642,11 @@ class Agent(RPCDispatcher):
                 if cleanup:
                     del self._rpc_response_handlers[correlation_id]
 
-                if not handler:
-                    return
+                # I'd agree here with Mypy that handler is always truthy here. There should
+                # not be an entry in _rpc_response_handler with a handler of None.
+                # Either there is no entry in the first place, or the entry is valid.
+                # May VTTI be with you. \(^-^)/
+                assert handler is not None
 
                 # Allow simple handlers that are not coroutines
                 # But only None to not get any confusion
