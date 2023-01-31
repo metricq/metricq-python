@@ -17,8 +17,11 @@ from distutils.errors import DistutilsFileError
 from distutils.log import ERROR, INFO
 from distutils.spawn import find_executable
 from typing import Optional, Tuple
+from importlib import metadata
 
 import mypy_protobuf
+
+from google import protobuf
 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logger = logging.getLogger()
@@ -59,15 +62,37 @@ def protoc_version(protoc: str) -> Tuple[int, int, int]:
 
 
 def make_protobuf_requirement(major: int, minor: int, patch: int) -> str:
-    """Sometimes the versions of libprotoc and the python package `protobuf` are out of sync.
+    """Get Requirement for protoc-compatible python version 
 
-    For example, while there was protoc version 3.12.3, the latest release of
-    `protobuf` was 3.12.2.  So we'll just depend on `x.y.0` and hope that
-    there's no breaking changes between patches.
+    There is no obvious way to determine if protobuf and libprotoc versions 
+    are compatible.
+
+    Between protobuf packages for different languages/libprotoc major versions
+    may diverge for the same release, while minor and patch versions align.
+    However, different releases may or may not be compatible:
+    We can not predict which python protobuf versions will be compatible.
+
+    Hence, for compatibility this uses the following approach:
+    1. Ensure minor and patch versions of python protobuf and libprotoc match
+    2. Pin the python protobuf version requirement to the current version
+       (Note that python version comparisons in PEP 440 do not support matching 
+       only minor and patch, but not major version.)
+
+    This approach only works if users are able to easily retrieve the python 
+    protobuf version used during the build, e.g. from pypi.
+
+    see: https://protobuf.dev/news/2022-05-06/
     """
 
-    del patch
-    return f"protobuf~={major}.{minor}.{0}"
+    protobuf_python_version = metadata.version("protobuf")
+    # minor and patch versions match
+    assert [str(minor), str(patch)] == protobuf_python_version.split(".")[1:3], \
+        f"protobuf and protoc must have compatible versions " \
+        "(minor and patch match; protobuf: {protobuf_python_version}, " \
+        "protoc: {major}.{minor}.{patch})"
+
+    # pin required protobuf-python version
+    return f"protobuf=={protobuf_python_version}"
 
 
 def get_protobuf_requirement() -> str:
