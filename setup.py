@@ -87,9 +87,9 @@ def make_protobuf_requirement(major: int, minor: int, patch: int) -> str:
     protobuf_python_version = metadata.version("protobuf")
     # minor and patch versions match
     assert [str(minor), str(patch)] == protobuf_python_version.split(".")[1:3], \
-        f"protobuf and protoc must have compatible versions " \
-        "(minor and patch match; protobuf: {protobuf_python_version}, " \
-        "protoc: {major}.{minor}.{patch})"
+        "protobuf and protoc must have compatible versions " \
+        f"(minor and patch match; protobuf: {protobuf_python_version}, " \
+        f"protoc: {major}.{minor}.{patch})"
 
     # pin required protobuf-python version
     return f"protobuf=={protobuf_python_version}"
