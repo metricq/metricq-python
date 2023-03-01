@@ -191,11 +191,11 @@ Running this script, you should now see something like this appearing on standar
 <section id="complete-example">
 <span id="the-end-of-this-page"></span><h2>Complete example<a class="headerlink" href="#complete-example" title="Permalink to this headline"></a></h2>
 <p>To obtain the dependencies required for this example, install the <code class="docutils literal notranslate"><span class="pre">examples</span></code>-extra from the <a class="reference external" href="metricq-python">git repo</a>:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pip install <span class="s1">&#39;.[examples]&#39;</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;.[examples]&#39;</span>
 </pre></div>
 </div>
 <p>and run it like so:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ ./metricq_sink.py -m test.py.dummy
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>./metricq_sink.py<span class="w"> </span>-m<span class="w"> </span>test.py.dummy
 </pre></div>
 </div>
 <hr class="docutils" />
@@ -251,7 +251,7 @@ Running this script, you should now see something like this appearing on standar
 
 <span class="c1"># To implement a MetricQ Sink, subclass metricq.Sink</span>
 <span class="k">class</span> <span class="nc">DummySink</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Sink</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A simple :term:`Sink` which, given a list of Metrics, will print their values as they arrive from the MetricQ network.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple :term:`Sink` which, given a list of Metrics, will print their values as they arrive from the MetricQ network.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;initializing DummySink&quot;</span><span class="p">)</span>

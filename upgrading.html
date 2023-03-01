@@ -155,11 +155,11 @@ to upgrade, make the following changes:</p>
 <blockquote>
 <div><div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w">client = HistoryClient(...)</span>
 
-<span class="gd">-await client.history_metric_list(...)</span><span class="w"></span>
-<span class="gi">+await client.get_metrics(...)</span><span class="w"></span>
+<span class="gd">-await client.history_metric_list(...)</span>
+<span class="gi">+await client.get_metrics(...)</span>
 
-<span class="gd">-await client.history_metric_metadata(...)</span><span class="w"></span>
-<span class="gi">+await client.get_metrics(..., metadata=True)</span><span class="w"></span>
+<span class="gd">-await client.history_metric_metadata(...)</span>
+<span class="gi">+await client.get_metrics(..., metadata=True)</span>
 </pre></div>
 </div>
 </div></blockquote>
