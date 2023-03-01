@@ -8,8 +8,14 @@
 
 - Agents using the `IntervalSource` might enter a zombie state [\#134](https://github.com/metricq/metricq-python/issues/134)
 
+**Closed issues:**
+
+- black/ci is broken [\#145](https://github.com/metricq/metricq-python/issues/145)
+- Incorrect iso8601 timestamp string parsing [\#141](https://github.com/metricq/metricq-python/issues/141)
+
 **Merged pull requests:**
 
+- fix: pin black version and apply reformat [\#146](https://github.com/metricq/metricq-python/pull/146) ([tilsche](https://github.com/tilsche))
 - fix: exception in update zombifies IntervalSource [\#135](https://github.com/metricq/metricq-python/pull/135) ([bmario](https://github.com/bmario))
 
 ## [v4.2.0](https://github.com/metricq/metricq-python/tree/v4.2.0) (2022-08-25)
