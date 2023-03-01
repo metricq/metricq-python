@@ -4,10 +4,12 @@
 # since the former packages its own version of the latter.
 #
 # See https://setuptools.readthedocs.io/en/latest/deprecated/distutils-legacy.html
+# isort: off
 from setuptools import Command, setup
 from setuptools.command.build_py import build_py
 from setuptools.command.develop import develop
 
+# isort: on
 import logging
 import os
 import re
