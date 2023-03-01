@@ -17,7 +17,6 @@ class _TestSource(Source):
 
 @pytest.fixture
 def source() -> Generator[Source, None, None]:
-
     with patch("metricq.source.Source.rpc"):
         source = _TestSource(token="source-test", management_url="amqps://test.invalid")
         yield source

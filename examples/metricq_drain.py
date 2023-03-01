@@ -39,7 +39,6 @@ async def client() -> None:
         metrics=["dummy.source"],
         expires=3600,
     ) as subscription:
-
         await asyncio.sleep(10)
 
         counter = 0

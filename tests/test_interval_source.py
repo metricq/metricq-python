@@ -19,7 +19,6 @@ class _TestIntervalSource(IntervalSource):
 
 @pytest.fixture
 def interval_source() -> Generator[IntervalSource, None, None]:
-
     with patch("metricq.interval_source.IntervalSource.rpc"):
         source = _TestIntervalSource(
             token="source-interval-test", management_url="amqps://test.invalid"
