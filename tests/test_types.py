@@ -66,7 +66,6 @@ def test_timedelta_to_string(
     time_delta_1h: Timedelta,
     time_delta_1d: Timedelta,
 ) -> None:
-
     assert time_delta_random.precise_string == "8295638928ns"
     assert time_delta_1us.precise_string == "1μs"
     assert time_delta_1ms.precise_string == "1ms"
