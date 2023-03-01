@@ -4,18 +4,22 @@
 # since the former packages its own version of the latter.
 #
 # See https://setuptools.readthedocs.io/en/latest/deprecated/distutils-legacy.html
+# isort: off
 from setuptools import Command, setup
 from setuptools.command.build_py import build_py
 from setuptools.command.develop import develop
 
+# isort: on
 import logging
 import os
 import re
 import subprocess
 import sys
+from bisect import bisect_right
 from distutils.errors import DistutilsFileError
 from distutils.log import ERROR, INFO
 from distutils.spawn import find_executable
+from operator import itemgetter
 from typing import Optional, Tuple
 
 import mypy_protobuf
@@ -58,16 +62,45 @@ def protoc_version(protoc: str) -> Tuple[int, int, int]:
     return tuple(int(version_search.group(g)) for g in ("major", "minor", "patch"))
 
 
+# This encodes on which minor protobuf version the major python protobuf
+# version was bumped
+protobuf_version_mapping = (
+    (3, 0),
+    (4, 21),
+)
+
+
 def make_protobuf_requirement(major: int, minor: int, patch: int) -> str:
-    """Sometimes the versions of libprotoc and the python package `protobuf` are out of sync.
-
-    For example, while there was protoc version 3.12.3, the latest release of
-    `protobuf` was 3.12.2.  So we'll just depend on `x.y.0` and hope that
-    there's no breaking changes between patches.
     """
+    We need to figure out a compatible version range of the python protobuf
+    package based on the version of the installed `protoc`. However, there is
+    no clean way to determine if those versions are compatible.
+    Between protobuf packages for different languages/libprotoc major versions
+    may diverge for the same release, while minor and patch versions align.
+    Different releases may or may not be compatible...
+    We can not predict which python protobuf versions will be compatible.
+    Hence, for compatibility this uses the following approach:
+    We hardcode a minor->major map, so the build works sort of like this
+    1) get m(major).n(minor).p(patch) from protoc
+    2) m' = 3 if n < 21 else 4 (as encoded in protobuf_version_mapping)
+    2) depend on protobuf>=m'.n,<m'.n+1
+    See also:
+    - https://github.com/protocolbuffers/protobuf/issues/11123
+    - https://protobuf.dev/news/2022-05-06/#python-updates
+    """
+    del patch  # We don't even care
 
-    del patch
-    return f"protobuf~={major}.{minor}.{0}"
+    if major < 3:
+        raise RuntimeError(
+            "The installed protoc major version {major} is too old, "
+            "at least version 3 is required."
+        )
+
+    # We must subtract one because bisect gives the insertion point after...
+    py_major = protobuf_version_mapping[
+        bisect_right(protobuf_version_mapping, minor, key=itemgetter(1)) - 1
+    ][0]
+    return f"protobuf>={py_major}.{minor}, <{py_major}.{minor+1}"
 
 
 def get_protobuf_requirement() -> str:
