@@ -88,6 +88,12 @@ def make_protobuf_requirement(major: int, minor: int, patch: int) -> str:
     """
     del patch  # We don't even care
 
+    if major < 3:
+        raise RuntimeError(
+            "The installed protoc major version {major} is too old, "
+            "at least version 3 is required."
+        )
+
     # We must subtract one because bisect gives the insertion point after...
     py_major = protobuf_version_mapping[
         bisect_right(protobuf_version_mapping, minor, key=itemgetter(1)) - 1
