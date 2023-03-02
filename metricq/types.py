@@ -396,11 +396,13 @@ class Timestamp:
         """Create a Timestamp from an aware datetime object
 
         Args:
-            dt: an aware datetime object
+            dt: an aware :class:`datetime` object
 
         Returns:
             :class:`Timestamp`
         """
+        if dt.tzinfo is None:
+            raise TypeError("cannot to parse naive datetime with `from_datetime`")
         delta = dt - Timestamp._EPOCH
         seconds = (delta.days * 24 * 3600) + delta.seconds
         microseconds = seconds * 1000000 + delta.microseconds
