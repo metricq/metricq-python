@@ -10,6 +10,7 @@
 
 **Fixed bugs:**
 
+- Tests fail with recent protobuf versions [\#151](https://github.com/metricq/metricq-python/issues/151)
 - protobuf version requirement is broken [\#143](https://github.com/metricq/metricq-python/issues/143)
 - Agents using the `IntervalSource` might enter a zombie state [\#134](https://github.com/metricq/metricq-python/issues/134)
 
@@ -17,12 +18,15 @@
 
 - black/ci is broken [\#145](https://github.com/metricq/metricq-python/issues/145)
 - Incorrect iso8601 timestamp string parsing [\#141](https://github.com/metricq/metricq-python/issues/141)
+- Update documentation [\#136](https://github.com/metricq/metricq-python/issues/136)
 
 **Merged pull requests:**
 
+- fix: protobuf 4 tests [\#152](https://github.com/metricq/metricq-python/pull/152) ([tilsche](https://github.com/tilsche))
 - ci: replace protoc action with plain old apt-get [\#150](https://github.com/metricq/metricq-python/pull/150) ([bmario](https://github.com/bmario))
 - Naive datetime handling [\#149](https://github.com/metricq/metricq-python/pull/149) ([tilsche](https://github.com/tilsche))
 - Refactor loop parameter inconsistencies [\#148](https://github.com/metricq/metricq-python/pull/148) ([tilsche](https://github.com/tilsche))
+- Remaining loop parameter fixes [\#147](https://github.com/metricq/metricq-python/pull/147) ([tilsche](https://github.com/tilsche))
 - fix: pin black version and apply reformat [\#146](https://github.com/metricq/metricq-python/pull/146) ([tilsche](https://github.com/tilsche))
 - Protobuf version guessing v2 [\#144](https://github.com/metricq/metricq-python/pull/144) ([tilsche](https://github.com/tilsche))
 - fix: exception in update zombifies IntervalSource [\#135](https://github.com/metricq/metricq-python/pull/135) ([bmario](https://github.com/bmario))
