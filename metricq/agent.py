@@ -461,6 +461,12 @@ class Agent(RPCDispatcher):
         self, loop: asyncio.AbstractEventLoop, context: Dict[str, Any]
     ) -> None:
         logger.error("Exception in event loop: {}".format(context["message"]))
+        if loop != self._event_loop:
+            logger.error(
+                f"Exception happened in a loop {loop} "
+                f"other than the internal loop {self._event_loop}. "
+                "This should never happen."
+            )
 
         with suppress(KeyError):
             logger.error("Future: {}", context["future"])
@@ -477,7 +483,7 @@ class Agent(RPCDispatcher):
                         "Stopping Agent on unhandled exception ({})",
                         type(ex).__qualname__,
                     )
-                self._schedule_stop(exception=ex, loop=loop)
+                self._schedule_stop(exception=ex)
             else:
                 logger.error(
                     f"Agent {type(self).__qualname__} encountered an unhandled exception",
@@ -487,10 +493,8 @@ class Agent(RPCDispatcher):
     def _schedule_stop(
         self,
         exception: Optional[Exception] = None,
-        loop: Optional[asyncio.AbstractEventLoop] = None,
     ) -> None:
-        loop = self._event_loop if loop is None else loop
-        loop.create_task(self.stop(exception=exception))
+        self._event_loop.create_task(self.stop(exception=exception))
 
     async def stop(self, exception: Optional[Exception] = None) -> None:
         """Stop a running Agent.
