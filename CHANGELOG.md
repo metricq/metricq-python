@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v4.2.0...HEAD)
 
+**Implemented enhancements:**
+
+- Dealing with naive datetime objects [\#138](https://github.com/metricq/metricq-python/issues/138)
+
 **Fixed bugs:**
 
 - protobuf version requirement is broken [\#143](https://github.com/metricq/metricq-python/issues/143)
@@ -17,6 +21,7 @@
 **Merged pull requests:**
 
 - ci: replace protoc action with plain old apt-get [\#150](https://github.com/metricq/metricq-python/pull/150) ([bmario](https://github.com/bmario))
+- Naive datetime handling [\#149](https://github.com/metricq/metricq-python/pull/149) ([tilsche](https://github.com/tilsche))
 - Refactor loop parameter inconsistencies [\#148](https://github.com/metricq/metricq-python/pull/148) ([tilsche](https://github.com/tilsche))
 - fix: pin black version and apply reformat [\#146](https://github.com/metricq/metricq-python/pull/146) ([tilsche](https://github.com/tilsche))
 - Protobuf version guessing v2 [\#144](https://github.com/metricq/metricq-python/pull/144) ([tilsche](https://github.com/tilsche))
