@@ -1,5 +1,4 @@
 from typing import Any
-from unittest.mock import create_autospec
 
 import pytest
 from pytest_mock import MockerFixture
@@ -21,10 +20,9 @@ DEFAULT_METRIC = "test.foo"
 
 def mock_history_response(**response_fields: Any) -> HistoryResponse:
     response_fields.setdefault("error", "")
-    proto = create_autospec(
-        history_pb2.HistoryResponse, spec_set=True, **response_fields
+    return HistoryResponse(
+        proto=history_pb2.HistoryResponse(**response_fields),
     )
-    return HistoryResponse(proto=proto)
 
 
 @pytest.fixture
@@ -55,19 +53,19 @@ def test_iterate_empty_history_response(
 async def test_history_aggregate(
     history_client: HistoryClient, mocker: MockerFixture
 ) -> None:
-    TIME = Timestamp(0)
-    AGGREGATE = create_autospec(history_pb2.HistoryResponse.Aggregate, spec_set=True)
+    time = Timestamp(0)
+    aggregate = history_pb2.HistoryResponse.Aggregate()
 
     response = mock_history_response(
-        time_delta=[TIME.posix_ns],
-        aggregate=[AGGREGATE],
+        time_delta=[time.posix_ns],
+        aggregate=[aggregate],
     )
 
     patch_history_data_request(mocker, response)
 
     assert await history_client.history_aggregate(
         DEFAULT_METRIC
-    ) == TimeAggregate.from_proto(timestamp=TIME, proto=AGGREGATE)
+    ) == TimeAggregate.from_proto(timestamp=time, proto=aggregate)
 
 
 async def test_history_no_aggregate(
@@ -95,18 +93,18 @@ async def test_history_error(
 async def test_history_last_value(
     history_client: HistoryClient, mocker: MockerFixture
 ) -> None:
-    TIME = Timestamp(0)
-    VALUE = mocker.sentinel.VALUE
+    time = Timestamp(0)
+    value = 42.23
 
     response = mock_history_response(
-        time_delta=[TIME.posix_ns],
-        value=[VALUE],
+        time_delta=[time.posix_ns],
+        value=[value],
     )
 
     patch_history_data_request(mocker, response)
 
     assert await history_client.history_last_value(DEFAULT_METRIC) == TimeValue(
-        timestamp=TIME, value=VALUE
+        timestamp=time, value=value
     )
 
 
@@ -138,17 +136,17 @@ async def test_get_metrics_historic_only(
     like :meth:`metricq.Client.get_metrics` by default, except that
     :code:`historic=True` is passed.
     """
-    RESULT = mocker.sentinel.RESULT
+    result = mocker.sentinel.RESULT
 
     async def assert_historic_true(
         self: HistoryClient, *args: Any, historic: bool, **kwargs: Any
     ) -> Any:
         assert historic
-        return RESULT
+        return result
 
     mocker.patch("metricq.Client.get_metrics", assert_historic_true)
 
-    assert await history_client.get_metrics(selector=DEFAULT_METRIC) is RESULT
+    assert await history_client.get_metrics(selector=DEFAULT_METRIC) is result
 
 
 @pytest.mark.parametrize(("historic_override"), [True, False])
