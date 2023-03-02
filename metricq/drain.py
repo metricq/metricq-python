@@ -74,7 +74,7 @@ class Drain(Sink):
             async with message.process():
                 logger.debug("received end message")
                 await self.rpc("sink.release", dataQueue=self._queue)
-                asyncio.create_task(self.stop())
+                self._event_loop.create_task(self.stop())
                 await self._data.put(cast(Tuple[str, Timestamp, float], ()))
 
                 return
