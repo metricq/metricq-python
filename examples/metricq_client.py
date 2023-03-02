@@ -28,6 +28,17 @@
 # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+"""
+This is an extremely advanced example for deep-dive development and debugging.
+This is not used to show how MetricQ is usually used. As normal user of MetricQ
+you use the derived classes of :class:`metricq.Client`, e.g.,
+:class:`metricq.Source`, :class:`metricq.Sink`:, :class:`metricq.Subscriber`,
+or, :class:`metricq.HistoryClient`.
+
+This example shows how to set up a pure `metricq.Client` that can  controlled
+with an aiomonitor. After this setup, you can connect to the monitor using
+`telnet localhost 50101` (or `netcat`), inspect tasks and run code in a REPL.
+"""
 import asyncio
 import logging
 
@@ -35,10 +46,20 @@ import aiomonitor  # type: ignore
 
 import metricq
 
+logger = metricq.get_logger()
+
+
+async def run() -> None:
+    async with metricq.Client("pytest", "amqp://admin:admin@localhost") as client:
+        logger.info("Client connected")
+        with aiomonitor.start_monitor(
+            asyncio.get_running_loop(), locals={"client": client}
+        ):
+            logger.debug("Monitor started")
+            await client.stopped()
+            logger.info("Client stopped")
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-
-    loop = asyncio.get_event_loop()
-    c = metricq.Client("pytest", "amqps://localhost", event_loop=loop)
-    with aiomonitor.start_monitor(loop, locals={"connection": c}):
-        c.run()
+    asyncio.run(run())
