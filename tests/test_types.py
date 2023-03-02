@@ -64,10 +64,22 @@ datetime_aware_examples = [
     datetime(year=2021, month=3, day=3, hour=22, tzinfo=tz.tzoffset("-3", -3)),
 ]
 
-
-@pytest.fixture
-def datetime_naive() -> datetime:
-    return datetime(year=2021, month=3, day=3, hour=22, tzinfo=None)
+datetime_naive_examples = [
+    datetime(year=2021, month=3, day=3, hour=22, tzinfo=None),
+    # around DST switches (in Europe...)
+    datetime(year=2023, month=3, day=26, hour=1, minute=23, tzinfo=None),
+    # Well that time actually doesn't exist and that produces... wrong results
+    # datetime(year=2023, month=3, day=26, hour=2, minute=0, tzinfo=None),
+    # datetime(year=2023, month=3, day=26, hour=2, minute=23, tzinfo=None),
+    datetime(year=2023, month=3, day=26, hour=3, minute=0, tzinfo=None),
+    datetime(year=2023, month=3, day=26, hour=3, minute=23, tzinfo=None),
+    # And now for the winter in europe
+    datetime(year=2023, month=10, day=29, hour=1, minute=23, tzinfo=None),
+    datetime(year=2023, month=10, day=29, hour=2, minute=0, tzinfo=None),
+    datetime(year=2023, month=10, day=29, hour=2, minute=23, tzinfo=None),
+    datetime(year=2023, month=10, day=29, hour=3, minute=0, tzinfo=None),
+    datetime(year=2023, month=10, day=29, hour=3, minute=23, tzinfo=None),
+]
 
 
 def test_timedelta_to_string(
@@ -295,13 +307,28 @@ def test_timeaggregate_from_value_pair_non_monotonic(
 def test_timestamp_from_datetime_aware(datetime_aware: datetime) -> None:
     assert datetime_aware.tzinfo is not None
     timestamp = Timestamp.from_datetime(datetime_aware)
-    assert timestamp.posix_ns / 1e9 == pytest.approx(datetime_aware.timestamp())
+    assert timestamp.posix_ns / 1e9 == pytest.approx(datetime_aware.timestamp(), rel=0)
 
 
+@pytest.mark.parametrize("datetime_naive", datetime_naive_examples)
 def test_timestamp_from_datetime_naive(datetime_naive: datetime) -> None:
     assert datetime_naive.tzinfo is None
     with pytest.raises(TypeError):
         Timestamp.from_datetime(datetime_naive)
+
+
+@pytest.mark.parametrize("datetime_aware", datetime_aware_examples)
+def test_timestamp_from_local_datetime_aware(datetime_aware: datetime) -> None:
+    assert datetime_aware.tzinfo is not None
+    with pytest.raises(TypeError):
+        Timestamp.from_local_datetime(datetime_aware)
+
+
+@pytest.mark.parametrize("datetime_naive", datetime_naive_examples)
+def test_timestamp_from_local_datetime_naive(datetime_naive: datetime) -> None:
+    assert datetime_naive.tzinfo is None
+    timestamp = Timestamp.from_local_datetime(datetime_naive)
+    assert timestamp.posix_ns / 1e9 == pytest.approx(datetime_naive.timestamp(), rel=0)
 
 
 @pytest.mark.parametrize(
