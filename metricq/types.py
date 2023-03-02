@@ -34,6 +34,7 @@ from dataclasses import dataclass
 from functools import total_ordering
 from typing import Any, Dict, Iterator, Union, overload
 
+from dateutil import tz
 from dateutil.parser import isoparse as dateutil_isoparse
 
 from . import history_pb2
@@ -393,20 +394,38 @@ class Timestamp:
 
     @classmethod
     def from_datetime(cls, dt: datetime.datetime) -> "Timestamp":
-        """Create a Timestamp from an aware datetime object
-
-        Args:
-            dt: an aware :class:`datetime` object
-
-        Returns:
-            :class:`Timestamp`
+        """
+        Create a Timestamp from an aware datetime object. If you have a naive
+        datetime object, consider using :meth:`from_local_datetime` instead.
         """
         if dt.tzinfo is None:
-            raise TypeError("cannot to parse naive datetime with `from_datetime`")
+            raise TypeError(
+                "cannot to parse naive datetime with `from_datetime`, "
+                "consider using `from_local_datetime` if applicable"
+            )
         delta = dt - Timestamp._EPOCH
         seconds = (delta.days * 24 * 3600) + delta.seconds
         microseconds = seconds * 1000000 + delta.microseconds
         return Timestamp(microseconds * 1000)
+
+    @classmethod
+    def from_local_datetime(cls, dt: datetime.datetime) -> "Timestamp":
+        """
+        Create a timestamp from a naive :class:`datetime` object that uses the
+        local timezone.
+        If you have a proper aware object, use :meth:`from_datetime` instead.
+
+        This function uses `dateutil.tz.gettz()` which uses `/etc/localtime`.
+        Using naive datetime object can be errorprone. Naive local times are
+        ambiguous during daylight savings time adjustments.
+        If you have to use this function, your workflow is probably broken.
+        """
+        if dt.tzinfo is not None:
+            raise TypeError(
+                "refusing to parse aware datetime with `from_local_datetime`, "
+                "use `from_datetime` instead."
+            )
+        return cls.from_datetime(dt.replace(tzinfo=tz.gettz()))
 
     @classmethod
     def from_iso8601(cls, iso_string: str) -> "Timestamp":
