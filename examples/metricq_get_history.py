@@ -54,9 +54,7 @@ click_completion.init()
 async def aget_history(
     server: str, token: str, metric: str, list_metrics: bool, list_metadata: bool
 ) -> None:
-    async with metricq.HistoryClient(
-        token=token, management_url=server, event_loop=asyncio.get_running_loop()
-    ) as client:
+    async with metricq.HistoryClient(token=token, management_url=server) as client:
         if list_metrics:
             metrics = await client.get_metrics(metric, metadata=False)
             click.echo(
@@ -114,7 +112,7 @@ def get_history(
     server: str, token: str, metric: str, list_metrics: bool, list_metadata: bool
 ) -> None:
     if not (list_metrics or list_metadata) and metric is None:
-        metric = "dummy"
+        metric = "example.quantity"
     asyncio.run(aget_history(server, token, metric, list_metrics, list_metadata))
 
 
