@@ -22,7 +22,7 @@ we won't need to define our own client, we can use :class:`HistoryClient` direct
             // Example code here
             ...
 
-        asyncio.run_until_complete(run_history_client())
+        asyncio.run(run_history_client())
 
 Connecting to the network
 -------------------------
