@@ -230,18 +230,10 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timestamp.from_datetime">
 <em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_datetime" title="Permalink to this definition"></a></dt>
-<dd><p>Create a Timestamp from an aware datetime object</p>
+<dd><p>Create a Timestamp from an aware datetime object. If you have a naive
+datetime object, consider using <a class="reference internal" href="#metricq.Timestamp.from_local_datetime" title="metricq.Timestamp.from_local_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_local_datetime()</span></code></a> instead.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>dt</strong> : <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a></dt><dd><p>an aware datetime object</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
-</dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </dd>
 </dl>
@@ -275,6 +267,23 @@ you need to convert the string to nanoseconds yourself.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.Timestamp.from_local_datetime">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_local_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_local_datetime" title="Permalink to this definition"></a></dt>
+<dd><p>Create a timestamp from a naive <a class="reference internal" href="#metricq.Timestamp.datetime" title="metricq.Timestamp.datetime"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> object that uses the
+local timezone.
+If you have a proper aware object, use <a class="reference internal" href="#metricq.Timestamp.from_datetime" title="metricq.Timestamp.from_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_datetime()</span></code></a> instead.</p>
+<p>This function uses <cite>dateutil.tz.gettz()</cite> which uses <cite>/etc/localtime</cite>.
+Using naive datetime object can be errorprone. Naive local times are
+ambiguous during daylight savings time adjustments.
+If you have to use this function, your workflow is probably broken.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
