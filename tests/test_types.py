@@ -1,9 +1,11 @@
+from datetime import datetime
 from logging import getLogger
 from math import isclose
 from random import Random
 from typing import Generator, List, Union
 
 import pytest
+from dateutil import tz
 
 from metricq.exceptions import NonMonotonicTimestamps
 from metricq.types import TimeAggregate, Timedelta, Timestamp, TimeValue
@@ -54,6 +56,18 @@ def time_delta_1h() -> Timedelta:
 @pytest.fixture
 def time_delta_1d() -> Timedelta:
     return Timedelta(1_000_000_000 * 3600 * 24)
+
+
+datetime_aware_examples = [
+    datetime(year=2021, month=3, day=3, hour=22, tzinfo=tz.tzutc()),
+    datetime(year=2021, month=3, day=3, hour=22, tzinfo=tz.tzoffset("+3", 3)),
+    datetime(year=2021, month=3, day=3, hour=22, tzinfo=tz.tzoffset("-3", -3)),
+]
+
+
+@pytest.fixture
+def datetime_naive() -> datetime:
+    return datetime(year=2021, month=3, day=3, hour=22, tzinfo=None)
 
 
 def test_timedelta_to_string(
@@ -275,6 +289,19 @@ def test_timeaggregate_from_value_pair_non_monotonic(
         TimeAggregate.from_value_pair(
             timestamp_before=later, timestamp=timestamp, value=42.0
         )
+
+
+@pytest.mark.parametrize("datetime_aware", datetime_aware_examples)
+def test_timestamp_from_datetime_aware(datetime_aware: datetime) -> None:
+    assert datetime_aware.tzinfo is not None
+    timestamp = Timestamp.from_datetime(datetime_aware)
+    assert timestamp.posix_ns / 1e9 == pytest.approx(datetime_aware.timestamp())
+
+
+def test_timestamp_from_datetime_naive(datetime_naive: datetime) -> None:
+    assert datetime_naive.tzinfo is None
+    with pytest.raises(TypeError):
+        Timestamp.from_datetime(datetime_naive)
 
 
 @pytest.mark.parametrize(
