@@ -148,6 +148,7 @@
 
 **Fixed bugs:**
 
+- Docker action seems to be broken on linux/arm64 [\#69](https://github.com/metricq/metricq-python/issues/69)
 - Setting period to None in IntervalSource [\#92](https://github.com/metricq/metricq-python/issues/92)
 
 **Closed issues:**
@@ -180,7 +181,6 @@
 
 **Fixed bugs:**
 
-- Docker action seems to be broken on linux/arm64 [\#69](https://github.com/metricq/metricq-python/issues/69)
 - Timestamp.from\_iso8601 fails to parse JSON timestamp [\#9](https://github.com/metricq/metricq-python/issues/9)
 
 **Closed issues:**
