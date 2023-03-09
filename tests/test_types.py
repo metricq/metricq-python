@@ -7,8 +7,8 @@ from typing import Generator, List, Union
 import pytest
 from dateutil import tz
 
+from metricq import TimeAggregate, Timedelta, Timestamp, TimeValue
 from metricq.exceptions import NonMonotonicTimestamps
-from metricq.types import TimeAggregate, Timedelta, Timestamp, TimeValue
 
 logger = getLogger(__name__)
 
