@@ -28,8 +28,9 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import asyncio
+from collections.abc import Mapping
 from threading import Event, Lock, Thread
-from typing import Any, Dict
+from typing import Any
 
 from .logging import get_logger
 from .source import MetadataDict, Source
@@ -53,7 +54,7 @@ class _SynchronousSource(Source):
         self._ready_event.set()
 
     def on_exception(
-        self, loop: asyncio.AbstractEventLoop, context: Dict[str, Any]
+        self, loop: asyncio.AbstractEventLoop, context: Mapping[str, Any]
     ) -> None:
         super().on_exception(loop, context)
 
@@ -122,7 +123,10 @@ class SynchronousSource:
                 # raise exception
 
     def declare_metrics(
-        self, metrics: Dict[str, MetadataDict], block: bool = True, timeout: float = 60
+        self,
+        metrics: Mapping[str, MetadataDict],
+        block: bool = True,
+        timeout: float = 60,
     ) -> None:
         f = asyncio.run_coroutine_threadsafe(
             self._source.declare_metrics(metrics), self._source._event_loop

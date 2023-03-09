@@ -30,6 +30,7 @@
 
 import asyncio
 from abc import abstractmethod
+from collections.abc import Mapping
 from typing import Any, Dict, Optional, cast
 
 import aio_pika
@@ -144,19 +145,19 @@ class Source(DataClient):
         return self.metrics[id]
 
     def _augment_metadata(
-        self, metrics: Dict[Metric, MetadataDict]
+        self, metrics: Mapping[Metric, MetadataDict]
     ) -> Dict[Metric, MetadataDict]:
         # Do not modify the user-supplied metadata.  The user expects this to
         # be a read-only parameter, modifying it without their consent could
         # lead to surprises.
-        augmented = metrics.copy()
+        augmented = dict(metrics)
         for metric, metadata in augmented.items():
             # If a SourceMetric has a chunk_size of 0, chunking is disable.
             metadata.setdefault("chunkSize", self[metric].chunk_size)
 
         return augmented
 
-    async def declare_metrics(self, metrics: Dict[str, MetadataDict]) -> None:
+    async def declare_metrics(self, metrics: Mapping[str, MetadataDict]) -> None:
         """Declare a set of :term:`metrics<Metric>` this Source produces values for.
 
         Before producing :term:`data points<Data Point>` for some metric, a Source must have declared that Metric.
