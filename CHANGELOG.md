@@ -4,10 +4,15 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v4.2.0...HEAD)
 
+**Breaking changes:**
+
+- Split types [\#155](https://github.com/metricq/metricq-python/pull/155) ([tilsche](https://github.com/tilsche))
+
 **Implemented enhancements:**
 
 - Dealing with naive datetime objects [\#138](https://github.com/metricq/metricq-python/issues/138)
 - Improve datatime parsing of Timestamp [\#125](https://github.com/metricq/metricq-python/issues/125)
+- feat: Context manager support for metricq.Client [\#132](https://github.com/metricq/metricq-python/pull/132) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
 
@@ -17,6 +22,7 @@
 
 **Closed issues:**
 
+- top level module "types" clashes with mypy [\#154](https://github.com/metricq/metricq-python/issues/154)
 - black/ci is broken [\#145](https://github.com/metricq/metricq-python/issues/145)
 - Incorrect iso8601 timestamp string parsing [\#141](https://github.com/metricq/metricq-python/issues/141)
 - Update documentation [\#136](https://github.com/metricq/metricq-python/issues/136)
@@ -40,7 +46,6 @@
 **Implemented enhancements:**
 
 - Remove virtualenv from the docker image [\#133](https://github.com/metricq/metricq-python/issues/133)
-- feat: Context manager support for metricq.Client [\#132](https://github.com/metricq/metricq-python/pull/132) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
 
