@@ -28,7 +28,7 @@
 
 import asyncio
 from types import TracebackType
-from typing import Any, List, Optional, Tuple, Type, cast
+from typing import Any, Iterable, Optional, Tuple, Type, cast
 
 import aio_pika
 
@@ -40,20 +40,20 @@ logger = get_logger(__name__)
 
 
 class Drain(Sink):
-    def __init__(self, *args: Any, queue: str, metrics: List[str], **kwargs: Any):
+    def __init__(self, *args: Any, queue: str, metrics: Iterable[str], **kwargs: Any):
         """Drain the given queue of all buffered metric data
 
         Args:
             queue: The name of the queue that contains the subscribed data.
-            metrics: List of metrics that you want to subscribe to.
+            metrics: Metrics that you want to subscribe to.
         """
         super().__init__(*args, add_uuid=True, **kwargs)
-        if not metrics:
-            raise ValueError("Metrics list must not be empty")
         if not queue:
             raise ValueError("Queue must not be empty")
         self._queue = queue
-        self._metrics = metrics
+        self._metrics = list(metrics)
+        if not self._metrics:
+            raise ValueError("Metrics must not be empty")
 
         self._data: asyncio.Queue[Tuple[str, Timestamp, float]] = asyncio.Queue()
 

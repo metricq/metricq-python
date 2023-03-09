@@ -31,7 +31,8 @@ import uuid
 from asyncio import CancelledError, Task
 from asyncio.futures import Future
 from enum import Enum, auto
-from typing import Any, Dict, Iterator, List, Optional
+from itertools import chain
+from typing import Any, Dict, Iterable, Iterator, Optional
 
 import aio_pika
 from aiormq import ChannelInvalidStateError
@@ -662,10 +663,12 @@ class HistoryClient(Client):
     async def _history_config(self, **kwargs: Any) -> None:
         logger.info("received config {}", kwargs)
 
-    async def _history_consume(self, extra_queues: List[aio_pika.Queue] = []) -> None:
+    async def _history_consume(
+        self, extra_queues: Iterable[aio_pika.Queue] = []
+    ) -> None:
         logger.info("starting history consume")
         assert self.history_response_queue is not None
-        queues = [self.history_response_queue] + extra_queues
+        queues = chain([self.history_response_queue], extra_queues)
         await asyncio.gather(
             *[queue.consume(self._on_history_response) for queue in queues],
         )

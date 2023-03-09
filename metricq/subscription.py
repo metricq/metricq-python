@@ -27,7 +27,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from types import TracebackType
-from typing import Any, List, Optional, Type, Union
+from typing import Any, Iterable, Optional, Type, Union
 
 from .client import Client
 from .drain import Drain
@@ -42,7 +42,7 @@ class Subscriber(Client):
         self,
         *args: Any,
         expires: Union[Timedelta, int, float],
-        metrics: List[str],
+        metrics: Iterable[str],
         **kwargs: Any,
     ):
         """Subscribes to a list of metrics
@@ -51,11 +51,11 @@ class Subscriber(Client):
             metrics (List[str], optional): List of metrics that you want to subscribe to.
             expires (Union[Timedelta, int, float]): The lifetime of the subscription queue in seconds.
         """
-        if not metrics:
-            raise ValueError("Metrics list must not be empty")
 
         super().__init__(*args, **kwargs)
-        self._metrics = metrics
+        self._metrics = list(metrics)
+        if not self._metrics:
+            raise ValueError("Metrics must not be empty")
 
         if isinstance(expires, Timedelta):
             self.expires = expires
