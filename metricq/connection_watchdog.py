@@ -1,6 +1,7 @@
 import asyncio
 from asyncio import CancelledError, Event, Task, TimeoutError, wait_for
-from typing import Callable, Optional, Union
+from collections.abc import Callable
+from typing import Optional, Union
 
 from .logging import get_logger
 

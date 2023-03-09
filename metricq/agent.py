@@ -38,10 +38,10 @@ import threading
 import time
 import traceback
 import uuid
-from collections.abc import Mapping
+from collections.abc import Callable, Iterable, Mapping
 from contextlib import suppress
 from itertools import chain
-from typing import Any, Callable, Iterable, Optional, TypeVar, Union, cast
+from typing import Any, Optional, TypeVar, Union, cast
 
 import aio_pika
 from aio_pika.exceptions import ChannelInvalidStateError

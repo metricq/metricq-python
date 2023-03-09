@@ -27,8 +27,9 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import asyncio
+from collections.abc import Iterable
 from types import TracebackType
-from typing import Any, Iterable, Optional, cast
+from typing import Any, Optional, cast
 
 import aio_pika
 

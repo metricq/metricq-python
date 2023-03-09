@@ -30,9 +30,10 @@ import asyncio
 import uuid
 from asyncio import CancelledError, Task
 from asyncio.futures import Future
+from collections.abc import Iterable, Iterator
 from enum import Enum, auto
 from itertools import chain
-from typing import Any, Iterable, Iterator, Optional
+from typing import Any, Optional
 
 import aio_pika
 from aiormq import ChannelInvalidStateError

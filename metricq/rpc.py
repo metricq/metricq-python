@@ -30,8 +30,8 @@
 
 from abc import ABCMeta
 from collections import defaultdict
-from collections.abc import Awaitable
-from typing import Any, Callable, Optional
+from collections.abc import Awaitable, Callable
+from typing import Any, Optional
 
 RPCHandlerType = Callable[..., Optional[Any]]
 

@@ -28,10 +28,11 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from collections.abc import Sequence
 from socket import gethostname
 from sys import version_info as sys_version
 from types import TracebackType
-from typing import Any, Optional, Sequence, TypeVar, Union, cast
+from typing import Any, Optional, TypeVar, Union, cast
 
 from .agent import Agent
 from .logging import get_logger

@@ -1,4 +1,5 @@
-from typing import Generator, Optional
+from collections.abc import Generator
+from typing import Optional
 from unittest.mock import AsyncMock, call, patch
 
 import pytest

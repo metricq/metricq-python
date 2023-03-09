@@ -28,7 +28,8 @@
 
 from abc import abstractmethod
 from asyncio import CancelledError, Task
-from typing import Any, Iterable, Optional, Union
+from collections.abc import Iterable
+from typing import Any, Optional, Union
 
 import aio_pika
 from aio_pika.queue import Queue
