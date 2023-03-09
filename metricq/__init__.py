@@ -41,7 +41,7 @@ from .sink import DurableSink, Sink
 from .source import Source
 from .subscription import Subscriber
 from .synchronous_source import SynchronousSource
-from .types import TimeAggregate, Timedelta, Timestamp, TimeValue
+from .timeseries import TimeAggregate, Timedelta, Timestamp, TimeValue
 from .version import __version__
 
 __all__ = [

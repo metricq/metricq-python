@@ -34,7 +34,7 @@ import aio_pika
 
 from .logging import get_logger
 from .sink import Sink
-from .types import Timestamp
+from .timeseries import Timestamp
 
 logger = get_logger(__name__)
 

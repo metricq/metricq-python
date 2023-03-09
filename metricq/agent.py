@@ -67,7 +67,7 @@ from .exceptions import (
 )
 from .logging import get_logger
 from .rpc import RPCDispatcher
-from .types import JsonDict
+from .timeseries import JsonDict
 from .version import __version__
 
 logger = get_logger(__name__)

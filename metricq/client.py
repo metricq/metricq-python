@@ -36,7 +36,7 @@ from typing import Any, Dict, Optional, Sequence, Type, TypeVar, Union, cast
 from .agent import Agent
 from .logging import get_logger
 from .rpc import rpc_handler
-from .types import JsonDict, Timestamp
+from .timeseries import JsonDict, Timestamp
 from .version import __version__
 
 logger = get_logger(__name__)

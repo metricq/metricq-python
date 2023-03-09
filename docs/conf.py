@@ -54,10 +54,10 @@ qualname_overrides = {
     "metricq.history_client.HistoryClient": "metricq.HistoryClient",
     "metricq.drain.Drain": "metricq.Drain",
     "metricq.subscription.Subscriber": "metricq.Subscriber",
-    "metricq.types.Timedelta": "metricq.Timedelta",
-    "metricq.types.Timestamp": "metricq.Timestamp",
-    "metricq.types.TimeValue": "metricq.TimeValue",
-    "metricq.types.TimeAggregate": "metricq.TimeAggregate",
+    "metricq.timeseries.timedelta.Timedelta": "metricq.Timedelta",
+    "metricq.timeseries.timestamp.Timestamp": "metricq.Timestamp",
+    "metricq.timeseries.time_value.TimeValue": "metricq.TimeValue",
+    "metricq.timeseries.time_aggregate.TimeAggregate": "metricq.TimeAggregate",
     "aio_pika.exchange.Exchange": "aio_pika.Exchange",
 }
 

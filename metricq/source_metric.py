@@ -33,7 +33,7 @@ from typing import Any, Optional, cast
 
 from . import source
 from .datachunk_pb2 import DataChunk
-from .types import Metric, Timestamp
+from .timeseries import Metric, Timestamp
 
 
 class ChunkSize:
