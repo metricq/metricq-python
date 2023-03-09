@@ -7,6 +7,7 @@
 **Implemented enhancements:**
 
 - Dealing with naive datetime objects [\#138](https://github.com/metricq/metricq-python/issues/138)
+- Improve datatime parsing of Timestamp [\#125](https://github.com/metricq/metricq-python/issues/125)
 
 **Fixed bugs:**
 
@@ -22,6 +23,7 @@
 
 **Merged pull requests:**
 
+- refactor: improve error message when parsing ISO 8601 [\#153](https://github.com/metricq/metricq-python/pull/153) ([tilsche](https://github.com/tilsche))
 - fix: protobuf 4 tests [\#152](https://github.com/metricq/metricq-python/pull/152) ([tilsche](https://github.com/tilsche))
 - ci: replace protoc action with plain old apt-get [\#150](https://github.com/metricq/metricq-python/pull/150) ([bmario](https://github.com/bmario))
 - Naive datetime handling [\#149](https://github.com/metricq/metricq-python/pull/149) ([tilsche](https://github.com/tilsche))
@@ -148,7 +150,6 @@
 
 **Fixed bugs:**
 
-- Docker action seems to be broken on linux/arm64 [\#69](https://github.com/metricq/metricq-python/issues/69)
 - Setting period to None in IntervalSource [\#92](https://github.com/metricq/metricq-python/issues/92)
 
 **Closed issues:**
@@ -181,6 +182,7 @@
 
 **Fixed bugs:**
 
+- Docker action seems to be broken on linux/arm64 [\#69](https://github.com/metricq/metricq-python/issues/69)
 - Timestamp.from\_iso8601 fails to parse JSON timestamp [\#9](https://github.com/metricq/metricq-python/issues/9)
 
 **Closed issues:**
