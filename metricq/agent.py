@@ -39,18 +39,8 @@ import time
 import traceback
 import uuid
 from contextlib import suppress
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    Iterable,
-    List,
-    Optional,
-    Tuple,
-    TypeVar,
-    Union,
-    cast,
-)
+from itertools import chain
+from typing import Any, Callable, Dict, Iterable, Optional, Tuple, TypeVar, Union, cast
 
 import aio_pika
 from aio_pika.exceptions import ChannelInvalidStateError
@@ -426,7 +416,7 @@ class Agent(RPCDispatcher):
 
         return None
 
-    async def rpc_consume(self, extra_queues: List[aio_pika.Queue] = []) -> None:
+    async def rpc_consume(self, extra_queues: Iterable[aio_pika.Queue] = []) -> None:
         """Start consuming RPCs
 
         :meta private:
@@ -438,7 +428,7 @@ class Agent(RPCDispatcher):
         """
         logger.info("starting RPC consume")
         assert self.management_rpc_queue is not None
-        queues = [self.management_rpc_queue] + extra_queues
+        queues = chain([self.management_rpc_queue], extra_queues)
         await asyncio.gather(
             *[queue.consume(self._on_management_message) for queue in queues]
         )

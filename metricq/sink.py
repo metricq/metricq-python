@@ -28,7 +28,7 @@
 
 from abc import abstractmethod
 from asyncio import CancelledError, Task
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, Iterable, Optional, Set, Union
 
 import aio_pika
 from aio_pika.queue import Queue
@@ -130,7 +130,7 @@ class Sink(DataClient):
 
     async def subscribe(
         self,
-        metrics: List[Metric],
+        metrics: Iterable[Metric],
         expires: Union[None, int, float] = None,
         metadata: Optional[bool] = None,
         **kwargs: Any,
@@ -145,6 +145,7 @@ class Sink(DataClient):
         Returns:
             rpc response
         """
+        metrics_list = list(metrics)
 
         if self._data_queue is not None:
             kwargs.update(dataQueue=self._data_queue.name)
@@ -155,10 +156,10 @@ class Sink(DataClient):
         if metadata is not None:
             kwargs.update(metadata=metadata)
 
-        response = await self.rpc("sink.subscribe", metrics=metrics, **kwargs)
+        response = await self.rpc("sink.subscribe", metrics=metrics_list, **kwargs)
         assert response is not None
 
-        self._subscribed_metrics.update(metrics)
+        self._subscribed_metrics.update(metrics_list)
         # Save the subscription RPC args in case we need to resubscribe (after a reconnect).
         self._subscribe_args = kwargs
 
@@ -166,13 +167,14 @@ class Sink(DataClient):
             await self.sink_config(**response)
         return response
 
-    async def unsubscribe(self, metrics: List[Metric]) -> None:
+    async def unsubscribe(self, metrics: Iterable[Metric]) -> None:
         assert self._data_queue
+        metrics_list = list(metrics)
         await self.rpc(
-            "sink.unsubscribe", dataQueue=self._data_queue.name, metrics=metrics
+            "sink.unsubscribe", dataQueue=self._data_queue.name, metrics=metrics_list
         )
 
-        self._subscribed_metrics.difference_update(metrics)
+        self._subscribed_metrics.difference_update(metrics_list)
 
         # If we just unsubscribed from all metrics, reset the subscription args
         # to their defaults.
