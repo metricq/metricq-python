@@ -38,6 +38,7 @@ import threading
 import time
 import traceback
 import uuid
+from collections.abc import Mapping
 from contextlib import suppress
 from itertools import chain
 from typing import Any, Callable, Dict, Iterable, Optional, Tuple, TypeVar, Union, cast
@@ -448,7 +449,7 @@ class Agent(RPCDispatcher):
         )
 
     def on_exception(
-        self, loop: asyncio.AbstractEventLoop, context: Dict[str, Any]
+        self, loop: asyncio.AbstractEventLoop, context: Mapping[str, Any]
     ) -> None:
         logger.error("Exception in event loop: {}".format(context["message"]))
         if loop != self._event_loop:
