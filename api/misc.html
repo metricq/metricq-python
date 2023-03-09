@@ -251,6 +251,10 @@ datetime object, consider using <a class="reference internal" href="#metricq.Tim
 <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a> using
 <a class="reference external" href="https://dateutil.readthedocs.io/en/stable/parser.html#dateutil.parser.isoparse" title="(in dateutil v2.8.2)"><code class="docutils literal notranslate"><span class="pre">dateutil.parser.isoparse()</span></code></a>,
 and then calls <a class="reference internal" href="#metricq.Timestamp.from_datetime" title="metricq.Timestamp.from_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_datetime()</span></code></a> to create a <a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a> from that.</p>
+<p>The provided <cite>iso_string</cite> must include timezone information. To parse
+local time strings, you must convert them yourself and use
+<a class="reference internal" href="#metricq.Timestamp.from_local_datetime" title="metricq.Timestamp.from_local_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_local_datetime()</span></code></a>. Or better yet, somehow create an aware
+<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a> and use <a class="reference internal" href="#metricq.Timestamp.from_datetime" title="metricq.Timestamp.from_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_datetime()</span></code></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The parser only supports up to <em>6 sub-second digits</em>,
@@ -261,7 +265,8 @@ you need to convert the string to nanoseconds yourself.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>iso_string</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>a date-time string in <cite>ISO 8601</cite> format.</p>
+<dt><strong>iso_string</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>a date-time string in <cite>ISO 8601</cite> format including a
+timezone specifier.</p>
 </dd>
 </dl>
 </dd>
