@@ -439,6 +439,11 @@ class Timestamp:
         :meth:`dateutil:dateutil.parser.isoparse`,
         and then calls :meth:`from_datetime` to create a :class:`Timestamp` from that.
 
+        The provided `iso_string` must include timezone information. To parse
+        local time strings, you must convert them yourself and use
+        :meth:`from_local_datetime`. Or better yet, somehow create an aware
+        :class:`python:datetime.datetime` and use :meth:`from_datetime`.
+
         Note:
             The parser only supports up to *6 sub-second digits*,
             further digits are simply dropped.
@@ -446,9 +451,12 @@ class Timestamp:
             you need to convert the string to nanoseconds yourself.
 
         Args:
-            iso_string: a date-time string in `ISO 8601` format.
+            iso_string: a date-time string in `ISO 8601` format including a
+                        timezone specifier.
         """
         dt = dateutil_isoparse(iso_string)
+        if dt.tzinfo is None:
+            raise TypeError("provided timestamp does not include timezone info")
         return cls.from_datetime(dt)
 
     @classmethod
