@@ -3,9 +3,9 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
+from metricq import Timedelta
 from metricq.exceptions import AgentStopped
 from metricq.interval_source import IntervalSource
-from metricq.types import Timedelta
 
 pytestmark = pytest.mark.asyncio
 

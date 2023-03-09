@@ -36,7 +36,7 @@ from aio_pika.queue import Queue
 from .data_client import DataClient
 from .datachunk_pb2 import DataChunk
 from .logging import get_logger
-from .types import JsonDict, Metric, Timestamp
+from .timeseries import JsonDict, Metric, Timestamp
 
 logger = get_logger(__name__)
 

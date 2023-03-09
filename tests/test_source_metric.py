@@ -4,10 +4,10 @@ from unittest.mock import AsyncMock, create_autospec
 
 import pytest
 
+from metricq import Timedelta, Timestamp
 from metricq.datachunk_pb2 import DataChunk
 from metricq.source import Source
 from metricq.source_metric import ChunkSize, SourceMetric
-from metricq.types import Timedelta, Timestamp
 
 pytestmark = pytest.mark.asyncio
 

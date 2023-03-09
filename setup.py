@@ -5,7 +5,7 @@
 #
 # See https://setuptools.readthedocs.io/en/latest/deprecated/distutils-legacy.html
 # isort: off
-from setuptools import Command, setup
+from setuptools import Command, setup, find_packages
 from setuptools.command.build_py import build_py
 from setuptools.command.develop import develop
 
@@ -281,4 +281,6 @@ setup(
         "develop": ProtoDevelop,
     },
     include_package_data=True,
+    packages=find_packages(include=["metricq", "metricq.*", "metricq_proto"]),
+    package_dir={"metricq_proto": "lib/metricq-protobuf"},
 )

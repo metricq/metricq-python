@@ -32,7 +32,7 @@ from typing import Any, List, Optional, Type, Union
 from .client import Client
 from .drain import Drain
 from .logging import get_logger
-from .types import Timedelta
+from .timeseries import Timedelta
 
 logger = get_logger(__name__)
 

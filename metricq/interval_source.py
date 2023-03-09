@@ -33,7 +33,7 @@ from typing import Any, Optional, Union
 from .exceptions import PublishFailed
 from .logging import get_logger
 from .source import Source
-from .types import Timedelta, Timestamp
+from .timeseries import Timedelta, Timestamp
 
 logger = get_logger(__name__)
 

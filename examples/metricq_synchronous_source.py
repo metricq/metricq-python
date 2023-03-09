@@ -37,8 +37,7 @@ import click
 import click_completion  # type: ignore
 import click_log  # type: ignore
 
-from metricq import SynchronousSource, get_logger
-from metricq.types import Timestamp
+from metricq import SynchronousSource, Timestamp, get_logger
 
 logger = get_logger()
 
