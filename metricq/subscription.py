@@ -25,9 +25,9 @@
 # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+from collections.abc import Iterable
 from types import TracebackType
-from typing import Any, Iterable, Optional, Union
+from typing import Any, Optional, Union
 
 from .client import Client
 from .drain import Drain

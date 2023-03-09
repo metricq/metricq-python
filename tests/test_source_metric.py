@@ -1,5 +1,6 @@
+from collections.abc import Generator
 from math import isnan
-from typing import Any, Generator, Optional, cast
+from typing import Any, Optional, cast
 from unittest.mock import AsyncMock, create_autospec
 
 import pytest
