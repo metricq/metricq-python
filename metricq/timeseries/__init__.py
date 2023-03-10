@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any
 
 from .time_aggregate import TimeAggregate
 from .time_value import TimeValue
@@ -9,7 +9,7 @@ Metric = str
 """Type alias for strings that represent metric names
 """
 
-JsonDict = Dict[str, Any]
+JsonDict = dict[str, Any]
 """Type alias for dicts that represent JSON data
 """
 

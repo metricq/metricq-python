@@ -31,7 +31,7 @@
 import asyncio
 from abc import abstractmethod
 from collections.abc import Mapping
-from typing import Any, Dict, Optional, cast
+from typing import Any, Optional, cast
 
 import aio_pika
 from aiormq import ChannelInvalidStateError
@@ -46,7 +46,7 @@ from .timeseries import Metric, Timestamp
 
 logger = get_logger(__name__)
 
-MetadataDict = Dict[str, Any]
+MetadataDict = dict[str, Any]
 
 
 class Source(DataClient):
@@ -107,7 +107,7 @@ class Source(DataClient):
 
     def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
-        self.metrics: Dict[str, SourceMetric] = dict()
+        self.metrics: dict[str, SourceMetric] = dict()
         self.chunk_size = 1
 
     async def connect(self) -> None:
@@ -146,7 +146,7 @@ class Source(DataClient):
 
     def _augment_metadata(
         self, metrics: Mapping[Metric, MetadataDict]
-    ) -> Dict[Metric, MetadataDict]:
+    ) -> dict[Metric, MetadataDict]:
         # Do not modify the user-supplied metadata.  The user expects this to
         # be a read-only parameter, modifying it without their consent could
         # lead to surprises.

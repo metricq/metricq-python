@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Iterator, Union
+from typing import Any, Iterator
 
 from .timestamp import Timestamp
 
@@ -20,7 +20,7 @@ class TimeValue:
     timestamp: Timestamp
     value: float
 
-    def __iter__(self) -> Iterator[Union["Timestamp", float]]:
+    def __iter__(self) -> Iterator[Timestamp | float]:
         return iter([self.timestamp, self.value])
 
     def dict(self) -> dict[str, Any]:

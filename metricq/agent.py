@@ -41,7 +41,7 @@ import uuid
 from collections.abc import Mapping
 from contextlib import suppress
 from itertools import chain
-from typing import Any, Callable, Dict, Iterable, Optional, Tuple, TypeVar, Union, cast
+from typing import Any, Callable, Iterable, Optional, TypeVar, Union, cast
 
 import aio_pika
 from aio_pika.exceptions import ChannelInvalidStateError
@@ -108,8 +108,8 @@ class Agent(RPCDispatcher):
         self._management_broadcast_exchange: Optional[aio_pika.Exchange] = None
         self._management_exchange: Optional[aio_pika.Exchange] = None
 
-        self._rpc_response_handlers: Dict[
-            str, Tuple[Callable[..., None], bool]
+        self._rpc_response_handlers: dict[
+            str, tuple[Callable[..., None], bool]
         ] = dict()
         logger.info(
             "Initialized Agent `{}` (running version `metricq=={}`)",
@@ -165,8 +165,8 @@ class Agent(RPCDispatcher):
         connection: aio_pika.RobustConnection = await aio_pika.connect_robust(
             url,
             reconnect_interval=30,
-            ssl_options=cast(Dict[Any, Any], ssl_options),
-            client_properties=cast(Dict[Any, Any], client_properties),
+            ssl_options=cast(dict[Any, Any], ssl_options),
+            client_properties=cast(dict[Any, Any], client_properties),
         )
 
         # How stupid that we can't easily add the handlers *before* actually connecting.

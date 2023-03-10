@@ -35,12 +35,10 @@ All other arguments will be forwarded to the superclass:
 
 .. code-block:: python
 
-    from typing import List
-
     import metricq
 
     class DummySink(metricq.Sink):
-        def __init__(self, metrics: List[str], *args, **kwargs):
+        def __init__(self, metrics: list[str], *args, **kwargs):
             self._metrics = metrics
             super().__init__(*args, **kwargs)
 

@@ -1,5 +1,5 @@
 from math import isnan
-from typing import Any, Generator, Optional, Tuple, Type, cast
+from typing import Any, Generator, Optional, cast
 from unittest.mock import AsyncMock, create_autospec
 
 import pytest
@@ -12,7 +12,7 @@ from metricq.source_metric import ChunkSize, SourceMetric
 pytestmark = pytest.mark.asyncio
 
 
-_Metric = Generator[Tuple[Timestamp, float], None, None]
+_Metric = Generator[tuple[Timestamp, float], None, None]
 
 
 @pytest.fixture(scope="module")
@@ -58,7 +58,7 @@ def test_chunk_size_valid(chunk_size: Optional[int], chunked: SourceMetric) -> N
     ],
 )
 def test_chunk_size_invalid(
-    chunked: _Chunked, invalid: Any, exc_type: Type[Exception]
+    chunked: _Chunked, invalid: Any, exc_type: type[Exception]
 ) -> None:
     with pytest.raises(exc_type):
         # this test pushes invalid type, hence the ignore

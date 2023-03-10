@@ -20,7 +20,7 @@ from distutils.errors import DistutilsFileError
 from distutils.log import ERROR, INFO
 from distutils.spawn import find_executable
 from operator import itemgetter
-from typing import Optional, Tuple
+from typing import Optional
 
 import mypy_protobuf
 
@@ -52,7 +52,7 @@ def find_protoc() -> str:
     return protoc
 
 
-def protoc_version(protoc: str) -> Tuple[int, int, int]:
+def protoc_version(protoc: str) -> tuple[int, int, int]:
     protoc_version_string = str(subprocess.check_output([protoc, "--version"]))
     version_search = re.search(
         r"((?P<major>(0|[1-9]\d*))\.(?P<minor>(0|[1-9]\d*))\.(?P<patch>(0|[1-9]\d*)))",
@@ -139,7 +139,7 @@ class BuildProtobuf(Command):
 
     def initialize_options(self):
         self._protoc: Optional[str] = None
-        self._protoc_version: Optional[Tuple[int, int, int]] = None
+        self._protoc_version: Optional[tuple[int, int, int]] = None
 
         self.force: Optional[bool] = None
         self.out_dir: Optional[str] = None
@@ -163,7 +163,7 @@ class BuildProtobuf(Command):
         return self._protoc
 
     @property
-    def protoc_version(self) -> Tuple[int, int, int]:
+    def protoc_version(self) -> tuple[int, int, int]:
         if self._protoc_version is None:
             self._protoc_version = protoc_version(self.protoc)
 

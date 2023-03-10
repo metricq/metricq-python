@@ -28,7 +28,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import logging
-from typing import Any, List
+from typing import Any
 
 import click
 import click_completion  # type: ignore
@@ -52,7 +52,7 @@ click_completion.init()
 class DummySink(metricq.Sink):
     """A simple :term:`Sink` which, given a list of Metrics, will print their values as they arrive from the MetricQ network."""
 
-    def __init__(self, metrics: List[str], *args: Any, **kwargs: Any):
+    def __init__(self, metrics: list[str], *args: Any, **kwargs: Any):
         logger.info("initializing DummySink")
         # `metrics` contains the names of Metrics for which this Sink should print values
         self._metrics = metrics
@@ -83,7 +83,7 @@ class DummySink(metricq.Sink):
 @click.option("--token", default="sink-py-dummy")
 @click.option("-m", "--metrics", multiple=True, required=True)
 @click_log.simple_verbosity_option(logger)  # type: ignore
-def source(server: str, token: str, metrics: List[str]) -> None:
+def source(server: str, token: str, metrics: list[str]) -> None:
     # Initialize the DummySink class with a list of metrics given on the
     # command line.
     sink = DummySink(metrics=metrics, token=token, management_url=server)
