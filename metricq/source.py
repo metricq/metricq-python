@@ -152,7 +152,7 @@ class Source(DataClient):
         # lead to surprises.
         augmented = dict(metrics)
         for metric, metadata in augmented.items():
-            # If a SourceMetric has a chunk_size of 0, chunking is disable.
+            # If a SourceMetric has a chunk_size of 0, chunking is disabled.
             metadata.setdefault("chunkSize", self[metric].chunk_size)
 
         return augmented
@@ -216,9 +216,9 @@ class Source(DataClient):
             An attempt at sending them is made once :meth:`flush` is triggered,
             either manually or on the next call to :meth:`send`.
 
-            In particular you should not call this method again with the same data point,
+            In particular, you should not call this method again with the same data point,
             even if the first call failed.
-            Otherwise duplicate data points will be sent, which results in an invalid :term:`metric<Metric>`.
+            Otherwise, duplicate data points will be sent, which results in an invalid :term:`metric<Metric>`.
         """
         logger.debug("send({},{},{})", metric, time, value)
         metric_object = self[metric]

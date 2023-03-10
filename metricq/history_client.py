@@ -177,10 +177,10 @@ class HistoryResponse:
         This determines the behavior of :meth:`aggregates` and :meth:`values`:
 
         :attr:`mode` is :attr:`~HistoryResponseType.VALUES`:
-            :meth:`values` will return a iterator of :class:`~metricq.TimeValue`.
+            :meth:`values` will return an iterator of :class:`~metricq.TimeValue`.
             :meth:`aggregates` will fail with :exc:`ValueError`, except if called with :code:`convert=True`.
         :attr:`mode` is :attr:`~HistoryResponseType.AGGREGATES`:
-            :meth:`aggregates` will return a iterator of :class:`~metricq.TimeAggregate`.
+            :meth:`aggregates` will return an iterator of :class:`~metricq.TimeAggregate`.
             :meth:`values` will fail with :exc:`ValueError`, except if called with :code:`convert=True`.
         :attr:`mode` is :attr:`~HistoryResponseType.EMPTY`:
             Both :meth:`values` and :meth:`aggregates` return an empty iterator.
@@ -197,7 +197,6 @@ class HistoryResponse:
                     ...
                 else:
                     # catch-all case, handle it cleanly
-
         """
         return self._mode
 
@@ -210,7 +209,7 @@ class HistoryResponse:
                 If the response contains aggregates, this will yield the mean value of each aggregate.
 
         Raises:
-            :class:`ValueError`:
+            ValueError:
                 if :code:`convert=False` and the response does not contain raw values.
         """
         time_ns = 0
@@ -782,11 +781,11 @@ class HistoryClient(Client):
         await self._history_consume()
 
     async def _declare_history_queue(self, name: str) -> None:
-        # The manager declares the queue and we only connect to that queue with passive=True
+        # The manager declares the queue, and we only connect to that queue with `passive=True`
         # But when a disconnect happens, the queue gets deleted. Therefore, there is no
         # way, how a robust connection could reconnect to that queue. Hence, we set
-        # robust=False and handle the reconnect ourselfs.
-        # (See self._on_history_connection_reconnect())
+        # robust=False and handle the reconnect ourselves.
+        # (See :meth:`_on_history_connection_reconnect`)
         assert self.history_channel is not None
         self.history_response_queue = await self.history_channel.declare_queue(
             name=name, passive=True, robust=False
