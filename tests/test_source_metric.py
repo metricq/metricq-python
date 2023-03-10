@@ -1,4 +1,4 @@
-from collections.abc import Generator
+from collections.abc import Iterator
 from math import isnan
 from typing import Any, Optional, cast
 from unittest.mock import AsyncMock, create_autospec
@@ -13,7 +13,7 @@ from metricq.source_metric import ChunkSize, SourceMetric
 pytestmark = pytest.mark.asyncio
 
 
-_Metric = Generator[tuple[Timestamp, float], None, None]
+_Metric = Iterator[tuple[Timestamp, float]]
 
 
 @pytest.fixture(scope="module")
