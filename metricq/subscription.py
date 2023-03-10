@@ -27,7 +27,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from types import TracebackType
-from typing import Any, Iterable, Optional, Type, Union
+from typing import Any, Iterable, Optional, Union
 
 from .client import Client
 from .drain import Drain
@@ -117,7 +117,7 @@ class Subscriber(Client):
 
     async def __aexit__(
         self,
-        exc_type: Optional[Type[BaseException]],
+        exc_type: Optional[type[BaseException]],
         exc_value: Optional[BaseException],
         exc_traceback: Optional[TracebackType],
     ) -> None:

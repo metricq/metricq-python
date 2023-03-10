@@ -28,7 +28,7 @@
 
 import asyncio
 from types import TracebackType
-from typing import Any, Iterable, Optional, Tuple, Type, cast
+from typing import Any, Iterable, Optional, cast
 
 import aio_pika
 
@@ -55,7 +55,7 @@ class Drain(Sink):
         if not self._metrics:
             raise ValueError("Metrics must not be empty")
 
-        self._data: asyncio.Queue[Tuple[str, Timestamp, float]] = asyncio.Queue()
+        self._data: asyncio.Queue[tuple[str, Timestamp, float]] = asyncio.Queue()
 
     async def connect(self) -> None:
         await super().connect()
@@ -75,7 +75,7 @@ class Drain(Sink):
                 logger.debug("received end message")
                 await self.rpc("sink.release", dataQueue=self._queue)
                 self._event_loop.create_task(self.stop())
-                await self._data.put(cast(Tuple[str, Timestamp, float], ()))
+                await self._data.put(cast(tuple[str, Timestamp, float], ()))
 
                 return
 
@@ -86,7 +86,7 @@ class Drain(Sink):
 
     async def __aexit__(
         self,
-        exc_type: Optional[Type[BaseException]],
+        exc_type: Optional[type[BaseException]],
         exc_value: Optional[BaseException],
         exc_traceback: Optional[TracebackType],
     ) -> None:
@@ -105,7 +105,7 @@ class Drain(Sink):
         """
         return self
 
-    async def __anext__(self) -> Tuple[str, Timestamp, float]:
+    async def __anext__(self) -> tuple[str, Timestamp, float]:
         try:
             metric, time, value = await self._data.get()
         except ValueError:

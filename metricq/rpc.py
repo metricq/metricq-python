@@ -31,7 +31,7 @@
 from abc import ABCMeta
 from collections import defaultdict
 from collections.abc import Awaitable
-from typing import Any, Callable, DefaultDict, Dict, List, Optional, Tuple
+from typing import Any, Callable, Optional
 
 RPCHandlerType = Callable[..., Optional[Any]]
 
@@ -46,11 +46,11 @@ class RPCMeta(ABCMeta):
     def __new__(
         mcs: type,
         name: str,
-        bases: Tuple[type, ...],
-        attrs: Dict[Any, Any],
+        bases: tuple[type, ...],
+        attrs: dict[Any, Any],
         **kwargs: Any,
     ) -> "RPCMeta":
-        rpc_handlers: DefaultDict[str, List[RPCHandlerType]] = defaultdict(list)
+        rpc_handlers: defaultdict[str, list[RPCHandlerType]] = defaultdict(list)
         for base in bases:
             try:
                 for function_tag, handlers in base._rpc_handlers.items():  # type: ignore
@@ -74,7 +74,7 @@ class RPCMeta(ABCMeta):
 
 
 class RPCDispatcher(metaclass=RPCMeta):
-    _rpc_handlers: DefaultDict[str, List[RPCHandlerType]] = defaultdict(list)
+    _rpc_handlers: defaultdict[str, list[RPCHandlerType]] = defaultdict(list)
 
     async def rpc_dispatch(self, function: str, **kwargs: Any) -> Any:
         """Dispatch an incoming (or fake) RPC to all handlers, beginning with the base class handlers

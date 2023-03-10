@@ -32,7 +32,7 @@ from asyncio import CancelledError, Task
 from asyncio.futures import Future
 from enum import Enum, auto
 from itertools import chain
-from typing import Any, Dict, Iterable, Iterator, Optional
+from typing import Any, Iterable, Iterator, Optional
 
 import aio_pika
 from aiormq import ChannelInvalidStateError
@@ -346,7 +346,7 @@ class HistoryClient(Client):
             connection_name="history connection",
         )
 
-        self._request_futures: Dict[str, Future[HistoryResponse]] = dict()
+        self._request_futures: dict[str, Future[HistoryResponse]] = dict()
         self._reregister_task: Optional[Task[None]] = None
 
     async def connect(self) -> None:

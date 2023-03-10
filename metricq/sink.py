@@ -28,7 +28,7 @@
 
 from abc import abstractmethod
 from asyncio import CancelledError, Task
-from typing import Any, Dict, Iterable, Optional, Set, Union
+from typing import Any, Iterable, Optional, Union
 
 import aio_pika
 from aio_pika.queue import Queue
@@ -57,8 +57,8 @@ class Sink(DataClient):
 
         self._data_queue: Optional[Queue] = None
         self._data_consumer_tag: Optional[str] = None
-        self._subscribed_metrics: Set[str] = set()
-        self._subscribe_args: Dict[str, Any] = dict()
+        self._subscribed_metrics: set[str] = set()
+        self._subscribe_args: dict[str, Any] = dict()
         self._resubscribe_task: Optional[Task[None]] = None
 
     async def _declare_data_queue(self, name: str) -> None:

@@ -2,7 +2,7 @@ from datetime import datetime
 from logging import getLogger
 from math import isclose
 from random import Random
-from typing import Generator, List, Union
+from typing import Generator
 
 import pytest
 from dateutil import tz
@@ -149,7 +149,7 @@ def powers_of_ten() -> Generator[Timedelta, None, None]:
         timedelta_random_list(),
     ],
 )
-def test_timedelta_precise_string_roundtrip(values: List[Timedelta]) -> None:
+def test_timedelta_precise_string_roundtrip(values: list[Timedelta]) -> None:
     for t in values:
         assert Timedelta.from_string(t.precise_string) == t
 
@@ -193,9 +193,7 @@ def test_timedelta_sub_timestamp_raises_type_error(
         (89384152596986340, 1, 89384152596986336),
     ],
 )
-def test_timedelta_truediv(
-    ns: int, factor: Union[int, float], expected_ns: int
-) -> None:
+def test_timedelta_truediv(ns: int, factor: int | float, expected_ns: int) -> None:
     timedelta = Timedelta(ns)
 
     assert (timedelta / factor) == Timedelta(expected_ns)

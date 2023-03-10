@@ -1,4 +1,4 @@
-from typing import Dict, Generator, Optional
+from typing import Generator, Optional
 from unittest.mock import AsyncMock, call, patch
 
 import pytest
@@ -23,7 +23,7 @@ def source() -> Generator[Source, None, None]:
 
 
 def assert_declare_metrics(
-    source: _TestSource, metrics: Dict[str, Dict[str, Optional[int]]]
+    source: _TestSource, metrics: dict[str, dict[str, Optional[int]]]
 ) -> None:
     assert source.rpc.call_args_list == [
         call("source.declare_metrics", metrics=metrics)

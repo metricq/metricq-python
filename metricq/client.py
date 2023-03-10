@@ -31,7 +31,7 @@
 from socket import gethostname
 from sys import version_info as sys_version
 from types import TracebackType
-from typing import Any, Dict, Optional, Sequence, Type, TypeVar, Union, cast
+from typing import Any, Optional, Sequence, TypeVar, Union, cast
 
 from .agent import Agent
 from .logging import get_logger
@@ -42,7 +42,7 @@ from .version import __version__
 logger = get_logger(__name__)
 
 
-_GetMetricsResult = Union[Sequence[str], Sequence[Dict[str, Any]]]
+_GetMetricsResult = Union[Sequence[str], Sequence[dict[str, Any]]]
 
 # With Python 3.11 use typing.Self instead
 Self = TypeVar("Self", bound="Client")
@@ -205,7 +205,7 @@ class Client(Agent):
                 :ref:`metadata<metric-metadata>` (if :code:`metadata=True`)
             * otherwise, a sequence of matching metric names
         """
-        arguments: Dict[str, Any] = {"format": "object" if metadata else "array"}
+        arguments: dict[str, Any] = {"format": "object" if metadata else "array"}
         if selector is not None:
             arguments["selector"] = selector
         if timeout is not None:
@@ -244,7 +244,7 @@ class Client(Agent):
 
     async def __aexit__(
         self,
-        exc_type: Optional[Type[BaseException]],
+        exc_type: Optional[type[BaseException]],
         exc_value: Optional[BaseException],
         traceback: Optional[TracebackType],
     ) -> None:

@@ -28,7 +28,7 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import logging
-from typing import Any, Dict, Tuple
+from typing import Any
 
 import pytest
 
@@ -65,7 +65,7 @@ class SubDispatcher(SimpleDispatcher):
     ],
 )
 async def test_dispatch_simple(
-    number: int, function: str, kwargs: Dict[Any, Any], result: str
+    number: int, function: str, kwargs: dict[Any, Any], result: str
 ) -> None:
     assert await SimpleDispatcher(number).rpc_dispatch(function, **kwargs) == result
 
@@ -79,7 +79,7 @@ async def test_dispatch_simple(
         ("sub_double_number", {}, 6),
     ],
 )
-async def test_dispatch_sub(function: str, kwargs: Dict[Any, Any], result: str) -> None:
+async def test_dispatch_sub(function: str, kwargs: dict[Any, Any], result: str) -> None:
     assert await SubDispatcher(3).rpc_dispatch(function, **kwargs) == result
 
 
@@ -95,7 +95,7 @@ async def test_dispatch_unknown_function() -> None:
 
 class InvalidDispatcher:
     @rpc_handler("not_async")
-    def not_async(self) -> Tuple[()]:
+    def not_async(self) -> tuple[()]:
         return ()
 
 
