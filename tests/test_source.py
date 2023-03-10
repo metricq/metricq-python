@@ -1,4 +1,4 @@
-from collections.abc import Generator
+from collections.abc import Iterator
 from unittest.mock import AsyncMock, call, patch
 
 import pytest
@@ -16,7 +16,7 @@ class _TestSource(Source):
 
 
 @pytest.fixture
-def source() -> Generator[Source, None, None]:
+def source() -> Iterator[Source]:
     with patch("metricq.source.Source.rpc"):
         source = _TestSource(token="source-test", management_url="amqps://test.invalid")
         yield source

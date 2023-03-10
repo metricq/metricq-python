@@ -1,4 +1,4 @@
-from collections.abc import Generator
+from collections.abc import Iterator
 from datetime import datetime
 from logging import getLogger
 from math import isclose
@@ -102,7 +102,7 @@ def test_timedelta_to_string(
     assert time_delta_1d.precise_string == "1d"
 
 
-def timedelta_random_list() -> Generator[Timedelta, None, None]:
+def timedelta_random_list() -> Iterator[Timedelta]:
     """Generate a stream of random Timedeltas of different magnitudes, with
     varying amounts of trailing zeroes.  The durations (in nanoseconds) look
     like this::
@@ -136,7 +136,7 @@ def timedelta_random_list() -> Generator[Timedelta, None, None]:
             yield Timedelta(ts)
 
 
-def powers_of_ten() -> Generator[Timedelta, None, None]:
+def powers_of_ten() -> Iterator[Timedelta]:
     for i in range(17):
         yield Timedelta(10**i)
 
