@@ -110,7 +110,7 @@ class Client(Agent):
 
         await self.rpc_consume()
 
-    # The superclass has extra parameters, which we fill in in the overloads of the subclasses.
+    # The superclass has extra parameters, which we fill in the overloads of the subclasses.
     # So this is fine! But mypy complains and we carefully considered the feedback.
     async def rpc(  # type: ignore
         self, function: str, *args: Any, **kwargs: Any
@@ -201,9 +201,8 @@ class Client(Agent):
                 matching metrics.
 
         Returns:
-            *
-                a dictionary mapping matching metric names to their
-                :ref:`metadata<metric-metadata>` (if :code:`metadata=True`)
+            * a dictionary mapping matching metric names to their
+              :ref:`metadata<metric-metadata>` ( :code:`if metadata==True`)
             * otherwise, a sequence of matching metric names
         """
         arguments: dict[str, Any] = {"format": "object" if metadata else "array"}
@@ -231,7 +230,7 @@ class Client(Agent):
     async def __aenter__(self: Self) -> Self:
         """Allows to use the Client as a context manager.
 
-        The connection to MetricQ will automatically established and closed.
+        The connection to MetricQ will be automatically established and closed.
 
         Use it like this::
 

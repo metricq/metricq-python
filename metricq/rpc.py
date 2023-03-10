@@ -93,7 +93,7 @@ class RPCDispatcher(metaclass=RPCMeta):
 
         Raises:
             KeyError: if no corresponding handler is defined.
-            TypeError: if a handler is not an class:`Awaitable`.
+            TypeError: if a handler is not an :class:`Awaitable`.
             TypeError: if multiple handlers are defined that return a :literal:`not None` value.
         """
         if function not in self._rpc_handlers:

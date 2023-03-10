@@ -37,7 +37,7 @@ will then receive and print with the latter.
 
 Assuming a MetricQ instance is reachable at `localhost`, configure a
 client<sup>(consult the documentation of your favourite config provider on how
-to do that)</sup> named `source-py-dummy` to produce values with a frequence of
+to do that)</sup> named `source-py-dummy` to produce values with a frequency of
 0.5Hz (i.e. every 2 seconds) :
 
 ```json
@@ -61,7 +61,7 @@ On the other side, run
 $ ./examples/metricq_sink.py --server 'amqp://localhost/' --metrics 'test.py.dummy'
 ```
 
-and you should see new values for the metric `test.py.dummy` appear ever 2 seconds.
+and you should see new values for the metric `test.py.dummy` appear every 2 seconds.
 
 ## Tools and utility scripts
 

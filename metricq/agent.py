@@ -217,7 +217,7 @@ class Agent(RPCDispatcher):
 
         Args:
             catch_signals:
-                Call :meth:`on_signal` if any of theses signals were raised.
+                Call :meth:`on_signal` if any of these signals were raised.
             cancel_on_exception:
                 Stop the running Agent when an unhandled exception occurs.
                 The exception is reraised from this method.
@@ -365,7 +365,7 @@ class Agent(RPCDispatcher):
             request_future = self._event_loop.create_future()
 
             if not cleanup_on_response:
-                # We must cleanup when we use the future otherwise we get errors
+                # We must clean up when we use the future otherwise we get errors
                 # trying to set the future result multiple times ... after the future was
                 # already evaluated
                 raise TypeError(
@@ -422,7 +422,8 @@ class Agent(RPCDispatcher):
 
         :meta private:
 
-        Typically this is called at the end of :meth:`Client.connect` once the Agent is prepared to handle RPCs.
+        Typically, this is called at the end of :meth:`Client.connect` once the
+        Agent is prepared to handle RPCs.
 
         Args:
             extra_queues: additional queues on which to receive RPCs
@@ -438,10 +439,11 @@ class Agent(RPCDispatcher):
         """Callback invoked when a signal is received.
 
         Override this method for custom signal handling.
-        By default it schedules the Client to stop by calling :meth:`stop`.
+        By default, it schedules the Client to stop by calling :meth:`stop`.
 
         Args:
-            signal: Name of the signal that occurred, e.g. :code:`"SIGTERM"`, :code:`"SIGINT"`, etc.
+            signal: Name of the signal that occurred, e.g. :code:`"SIGTERM"`,
+                    :code:`"SIGINT"`, etc.
         """
         logger.info("Received signal {}, stopping...", signal)
         self._schedule_stop(

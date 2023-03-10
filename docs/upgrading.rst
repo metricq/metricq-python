@@ -129,6 +129,6 @@ this Python version.
 Removal of Asyncio Loop
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Python 3.10 removed the loop parameter from the asyncio interface. In particual, the
+Python 3.10 removed the loop parameter from the asyncio interface. In particular, the
 constructor parameter `event_loop` of :class:`Agent` got removed, as well as,
 the property :attr:`Agent.event_loop`.

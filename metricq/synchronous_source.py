@@ -43,9 +43,9 @@ class _SynchronousSource(Source):
     def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
         # Remember this is a threading.Event, which is threadsafe
-        # not a asyncio.Event which is not threadsafe
+        # not an :class:`asyncio.Event` which is not threadsafe
         # Because we use threads anyway
-        # There is no threading.Future
+        # There is no :class:`threading.Future`
         self.exception = None
         self._ready_event = Event()
 

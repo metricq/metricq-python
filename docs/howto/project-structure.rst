@@ -283,8 +283,8 @@ When creating a new command line tool, also add a :code:`--version` option:
         ...
 
 
-Developement setup
-^^^^^^^^^^^^^^^^^^
+Development setup
+^^^^^^^^^^^^^^^^^
 
 To enable an easy development setup, define an extra :literal:`dev`,
 that transitively includes all optional dependencies needed for a local development setup:

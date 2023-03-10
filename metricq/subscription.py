@@ -48,8 +48,8 @@ class Subscriber(Client):
         """Subscribes to a list of metrics
 
         Args:
-            metrics (List[str], optional): List of metrics that you want to subscribe to.
-            expires (Union[Timedelta, int, float]): The lifetime of the subscription queue in seconds.
+            metrics: List of metrics that you want to subscribe to.
+            expires: The lifetime of the subscription queue in seconds.
         """
 
         super().__init__(*args, **kwargs)
@@ -81,7 +81,7 @@ class Subscriber(Client):
 
         .. note::
 
-            This performes the RPC and closes the connection before the return.
+            This performs the RPC and closes the connection before the return.
 
         """
 

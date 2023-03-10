@@ -51,10 +51,12 @@ def test_period_no_reset(interval_source: _TestIntervalSource) -> None:
 
 
 def test_period_no_explicit_init() -> None:
-    """Some clients were explicitly initializing the update period to None.
+    """
+    Some clients were explicitly initializing the update period to `None`.
+
     *Don't do that.*
 
-    Make sure that ignoring this advise raises a TypeError.
+    Make sure that ignoring this advice raises a :class:`TypeError`.
     """
     with patch("metricq.interval_source.IntervalSource.rpc"):
 

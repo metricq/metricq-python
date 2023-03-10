@@ -61,7 +61,7 @@ class Timestamp:
         If you have a proper aware object, use :meth:`from_datetime` instead.
 
         This function uses `dateutil.tz.gettz()` which uses `/etc/localtime`.
-        Using naive datetime object can be errorprone. Naive local times are
+        Using naive datetime object can be error-prone. Naive local times are
         ambiguous during daylight savings time adjustments.
         If you have to use this function, your workflow is probably broken.
         """

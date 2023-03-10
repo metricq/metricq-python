@@ -62,7 +62,7 @@ def test_chunk_size_invalid(
     chunked: _Chunked, invalid: Any, exc_type: type[Exception]
 ) -> None:
     with pytest.raises(exc_type):
-        # this test pushes invalid type, hence the ignore
+        # this test pushes invalid type, hence the "ignore"
         chunked.chunk_size = invalid  # type: ignore
 
 
@@ -149,7 +149,7 @@ async def test_source_send_error_value_is_none(source_metric: SourceMetric) -> N
     async def send(metric: SourceMetric, chunk: DataChunk) -> None:
         assert len(chunk.value) == 1 and isnan(chunk.value[0])
 
-    # Replace the send call by a mock and inspect it there.  We cannot inspect
+    # Replace the send call by a mock and inspect it there. We cannot inspect
     # the chunk from mock_calls after the call to error since the chunk will
     # have been reset already, so it would always be empty.
     source_metric.source.attach_mock(AsyncMock(side_effect=send), "_send")  # type: ignore

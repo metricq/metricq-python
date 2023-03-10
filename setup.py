@@ -133,7 +133,7 @@ class BuildProtobuf(Command):
 
     user_options = [
         ("force", "f", "force compilation of protobuf files"),
-        ("out-dir=", "o", "directory to put genenerated python files in"),
+        ("out-dir=", "o", "directory to put generated python files in"),
         ("proto-dir=", "i", "directory where input .proto files are located"),
     ]
 
@@ -245,7 +245,7 @@ class BuildProtobuf(Command):
 
 class ProtoBuildPy(build_py):
     def run(self):
-        # God almigthy is python packaging a clusterfuck.  Set "--force" for
+        # God almighty is python packaging a clusterfuck.  Set "--force" for
         # the build_protobuf command if "--force" was passed to build_py.
         #
         # https://stackoverflow.com/a/57274908
