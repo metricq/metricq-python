@@ -1,10 +1,9 @@
 from collections.abc import Generator
-from typing import Optional
 from unittest.mock import AsyncMock, call, patch
 
 import pytest
 
-from metricq.source import Source
+from metricq import MetadataDict, Source
 
 pytestmark = pytest.mark.asyncio
 
@@ -24,7 +23,7 @@ def source() -> Generator[Source, None, None]:
 
 
 def assert_declare_metrics(
-    source: _TestSource, metrics: dict[str, dict[str, Optional[int]]]
+    source: _TestSource, metrics: dict[str, MetadataDict]
 ) -> None:
     assert source.rpc.call_args_list == [
         call("source.declare_metrics", metrics=metrics)

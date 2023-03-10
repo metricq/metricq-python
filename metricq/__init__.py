@@ -38,10 +38,10 @@ from .interval_source import IntervalSource
 from .logging import get_logger
 from .rpc import rpc_handler
 from .sink import DurableSink, Sink
-from .source import Source
+from .source import MetadataDict, Source
 from .subscription import Subscriber
 from .synchronous_source import SynchronousSource
-from .timeseries import TimeAggregate, Timedelta, Timestamp, TimeValue
+from .timeseries import Metric, TimeAggregate, Timedelta, Timestamp, TimeValue
 from .version import __version__
 
 __all__ = [
@@ -61,6 +61,8 @@ __all__ = [
     "Timestamp",
     "TimeValue",
     "TimeAggregate",
+    "Metric",
+    "MetadataDict",
     "get_logger",
     "rpc_handler",
     "__version__",
