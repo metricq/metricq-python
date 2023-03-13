@@ -28,7 +28,7 @@
 
 import asyncio
 from abc import abstractmethod
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
 from .exceptions import PublishFailed
 from .logging import get_logger
@@ -75,7 +75,7 @@ class IntervalSource(Source):
     """
 
     def __init__(
-        self, *args: Any, period: Union[float, Timedelta, None] = None, **kwargs: Any
+        self, *args: Any, period: float | Timedelta | None = None, **kwargs: Any
     ):
         super().__init__(*args, **kwargs)
         self._period: Optional[Timedelta]
@@ -114,7 +114,7 @@ class IntervalSource(Source):
         return self._period
 
     @period.setter
-    def period(self, duration: Union[float, Timedelta]) -> None:
+    def period(self, duration: float | Timedelta) -> None:
         if isinstance(duration, Timedelta):
             self._period = duration
         elif duration is None:

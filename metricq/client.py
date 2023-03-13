@@ -32,7 +32,7 @@ from collections.abc import Sequence
 from socket import gethostname
 from sys import version_info as sys_version
 from types import TracebackType
-from typing import Any, Optional, TypeVar, Union, cast
+from typing import Any, Optional, TypeVar, cast
 
 from .agent import Agent
 from .logging import get_logger
@@ -43,7 +43,7 @@ from .version import __version__
 logger = get_logger(__name__)
 
 
-_GetMetricsResult = Union[Sequence[str], Sequence[dict[str, Any]]]
+_GetMetricsResult = Sequence[str] | Sequence[dict[str, Any]]
 
 # With Python 3.11 use typing.Self instead
 Self = TypeVar("Self", bound="Client")
@@ -167,7 +167,7 @@ class Client(Agent):
 
     async def get_metrics(
         self,
-        selector: Union[str, Sequence[str], None] = None,
+        selector: str | Sequence[str] | None = None,
         metadata: bool = True,
         historic: Optional[bool] = None,
         timeout: Optional[float] = None,

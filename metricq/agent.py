@@ -41,7 +41,7 @@ import uuid
 from collections.abc import Callable, Iterable, Mapping
 from contextlib import suppress
 from itertools import chain
-from typing import Any, Optional, TypeVar, Union, cast
+from typing import Any, Optional, TypeVar, cast
 
 import aio_pika
 from aio_pika.exceptions import ChannelInvalidStateError
@@ -77,7 +77,7 @@ class Agent(RPCDispatcher):
         token: str,
         management_url: str,
         *,
-        connection_timeout: Union[int, float] = 600,
+        connection_timeout: int | float = 600,
         add_uuid: bool = False,
     ):
         self.token = f"{token}.{uuid.uuid4().hex}" if add_uuid else token
