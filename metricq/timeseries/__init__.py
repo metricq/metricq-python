@@ -6,12 +6,20 @@ from .timedelta import Timedelta
 from .timestamp import Timestamp
 
 Metric = str
-"""Type alias for strings that represent metric names
-"""
+"""Type alias for strings that represent metric names"""
 
 JsonDict = dict[str, Any]
-"""Type alias for dicts that represent JSON data
-"""
+"""Type alias for dicts that represent JSON data"""
 
+MetadataDict = JsonDict
+"""Type alias for a dict containing metric metadata"""
 
-__all__ = ["TimeAggregate", "TimeValue", "Timedelta", "Timestamp", "Metric", "JsonDict"]
+__all__ = [
+    "TimeAggregate",
+    "TimeValue",
+    "Timedelta",
+    "Timestamp",
+    "Metric",
+    "JsonDict",
+    "MetadataDict",
+]

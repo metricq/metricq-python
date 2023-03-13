@@ -33,8 +33,8 @@ from threading import Event, Lock, Thread
 from typing import Any
 
 from .logging import get_logger
-from .source import MetadataDict, Source
-from .timeseries import Timestamp
+from .source import Source
+from .timeseries import MetadataDict, Timestamp
 
 logger = get_logger(__name__)
 
