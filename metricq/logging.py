@@ -27,8 +27,7 @@ def _handle_wrap(fcn: Callable[..., T]) -> Callable[..., T]:
 
     @functools.wraps(fcn)
     def handle(record: logging.LogRecord) -> T:
-        # Mypy don't like method assign: https://github.com/python/mypy/issues/2427
-        record.getMessage = types.MethodType(_get_message, record)  # type: ignore
+        record.getMessage = types.MethodType(_get_message, record)  # type: ignore[method-assign]
         return fcn(record)
 
     return handle
