@@ -42,11 +42,9 @@ from .exceptions import PublishFailed
 from .logging import get_logger
 from .rpc import rpc_handler
 from .source_metric import ChunkSize, SourceMetric
-from .timeseries import JsonDict, Metric, Timestamp
+from .timeseries import MetadataDict, Metric, Timestamp
 
 logger = get_logger(__name__)
-
-MetadataDict = JsonDict
 
 
 class Source(DataClient):
