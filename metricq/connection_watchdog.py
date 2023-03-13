@@ -1,7 +1,7 @@
 import asyncio
 from asyncio import CancelledError, Event, Task, TimeoutError, wait_for
 from collections.abc import Callable
-from typing import Optional, Union
+from typing import Optional
 
 from .logging import get_logger
 
@@ -12,7 +12,7 @@ class ConnectionWatchdog:
     def __init__(
         self,
         on_timeout_callback: Callable[["ConnectionWatchdog"], None],
-        timeout: Union[int, float],
+        timeout: int | float,
         connection_name: str = "connection",
     ):
         """Watch a connection, fire a callback if it failed to reconnect before

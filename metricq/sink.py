@@ -29,7 +29,7 @@
 from abc import abstractmethod
 from asyncio import CancelledError, Task
 from collections.abc import Iterable
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
 import aio_pika
 from aio_pika.queue import Queue
@@ -132,7 +132,7 @@ class Sink(DataClient):
     async def subscribe(
         self,
         metrics: Iterable[Metric],
-        expires: Union[None, int, float] = None,
+        expires: int | float | None = None,
         metadata: Optional[bool] = None,
         **kwargs: Any,
     ) -> JsonDict:

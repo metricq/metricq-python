@@ -27,7 +27,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from collections.abc import Iterable
 from types import TracebackType
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
 from .client import Client
 from .drain import Drain
@@ -41,7 +41,7 @@ class Subscriber(Client):
     def __init__(
         self,
         *args: Any,
-        expires: Union[Timedelta, int, float],
+        expires: Timedelta | int | float,
         metrics: Iterable[str],
         **kwargs: Any,
     ):
