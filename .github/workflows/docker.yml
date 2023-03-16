@@ -20,7 +20,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=metricq/metricq-python
+          DOCKER_IMAGE=ghcr.io/metricq/metricq-python
           VERSION=noop
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}
