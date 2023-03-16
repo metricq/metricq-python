@@ -12,7 +12,6 @@
 
 - Dealing with naive datetime objects [\#138](https://github.com/metricq/metricq-python/issues/138)
 - Improve datatime parsing of Timestamp [\#125](https://github.com/metricq/metricq-python/issues/125)
-- feat: Context manager support for metricq.Client [\#132](https://github.com/metricq/metricq-python/pull/132) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
 
@@ -46,6 +45,7 @@
 **Implemented enhancements:**
 
 - Remove virtualenv from the docker image [\#133](https://github.com/metricq/metricq-python/issues/133)
+- feat: Context manager support for metricq.Client [\#132](https://github.com/metricq/metricq-python/pull/132) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
 
