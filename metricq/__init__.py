@@ -42,6 +42,7 @@ from .source import Source
 from .subscription import Subscriber
 from .synchronous_source import SynchronousSource
 from .timeseries import (
+    JsonDict,
     MetadataDict,
     Metric,
     TimeAggregate,
@@ -51,26 +52,28 @@ from .timeseries import (
 )
 from .version import __version__
 
+# Please keep sorted alphabetically to avoid merge conflicts
 __all__ = [
-    "exceptions",
     "Agent",
     "Client",
     "DataClient",
+    "Drain",
     "DurableSink",
+    "exceptions",
+    "get_logger",
     "HistoryClient",
     "IntervalSource",
+    "JsonDict",
+    "MetadataDict",
+    "Metric",
+    "rpc_handler",
     "Sink",
     "Source",
     "Subscriber",
-    "Drain",
     "SynchronousSource",
+    "TimeAggregate",
     "Timedelta",
     "Timestamp",
     "TimeValue",
-    "TimeAggregate",
-    "Metric",
-    "MetadataDict",
-    "get_logger",
-    "rpc_handler",
     "__version__",
 ]
