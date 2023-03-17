@@ -132,3 +132,19 @@ Removal of Asyncio Loop
 Python 3.10 removed the loop parameter from the asyncio interface. In particular, the
 constructor parameter `event_loop` of :class:`Agent` got removed, as well as,
 the property :attr:`Agent.event_loop`.
+
+`4.x` → `5.0`
+-------------
+
+Removing internal types module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The module `metricq.types` has been removed.
+If you have imported types from it directly you should change to import directly from the primary `metricq` package.
+
+* :class:`Timestamp`
+* :class:`Timedelta`
+* :class:`TimeValue`
+* :class:`TimeAggregate`
+* :class:`Metric` (available in `metricq` since `5.0`)
+* :class:`JsonDict` (available in `metricq` since `5.0`)
