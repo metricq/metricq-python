@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Building a MetricQ Drain &mdash; MetricQ  documentation</title>
@@ -12,10 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -28,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> MetricQ
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MetricQ
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -73,9 +78,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">How to use this library</a> &raquo;</li>
-      <li>Building a MetricQ Drain</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">How to use this library</a></li>
+      <li class="breadcrumb-item active">Building a MetricQ Drain</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/howto/drain.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -86,23 +91,23 @@
            <div itemprop="articleBody">
              
   <section id="building-a-metricq-drain">
-<h1>Building a MetricQ Drain<a class="headerlink" href="#building-a-metricq-drain" title="Permalink to this headline"></a></h1>
+<h1>Building a MetricQ Drain<a class="headerlink" href="#building-a-metricq-drain" title="Permalink to this heading"></a></h1>
 <section id="what-is-a-drain">
-<h2>What is a Drain?<a class="headerlink" href="#what-is-a-drain" title="Permalink to this headline"></a></h2>
+<h2>What is a Drain?<a class="headerlink" href="#what-is-a-drain" title="Permalink to this heading"></a></h2>
 <p>A <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> is a special case of a MetricQ <a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>. Both are used to
 collect the live metric data stream from MetricQ. In contrast to a <a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>,
-which is continously connected to MetricQ, a <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> is only shartly
-connected to MetricQ. In particular, after the inital connection, all wanted
+which is continuously connected to MetricQ, a <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> is only shortly
+connected to MetricQ. In particular, after the initial connection, all wanted
 metrics are subscribed and the connection is closed. While the connection is
 closed, MetricQ buffers the subscribed metric data and the client can perform other
 task without any perturbation caused by the connection. Once the metric is required,
 a new connection gets established and the buffered data can be received and
 processed like in a normal sink.</p>
-<p>This bahavior is particular useful for measurements, where it is important to
+<p>This behavior is particular useful for measurements, where it is important to
 reduce perturbation as much as possible.</p>
 </section>
 <section id="subscribe-to-metrics">
-<h2>Subscribe to metrics<a class="headerlink" href="#subscribe-to-metrics" title="Permalink to this headline"></a></h2>
+<h2>Subscribe to metrics<a class="headerlink" href="#subscribe-to-metrics" title="Permalink to this heading"></a></h2>
 <p>The easiest way to implement this approach is to use the classes <a class="reference internal" href="../api/subscriber.html#metricq.Subscriber" title="metricq.Subscriber"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscriber</span></code></a>
 and <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> provided by MetricQ.</p>
 <p>In particular, the first connection is handled by the <a class="reference internal" href="../api/subscriber.html#metricq.Subscriber" title="metricq.Subscriber"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscriber</span></code></a>.</p>
@@ -129,14 +134,14 @@ or a <a class="reference internal" href="../api/misc.html#metricq.Timedelta" tit
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Per design, the <a class="reference internal" href="../api/subscriber.html#metricq.Subscriber" title="metricq.Subscriber"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscriber</span></code></a> closes the connection right after the
-subscribe request. In particluar, in the above context, the <cite>subscriber</cite>
+subscribe request. In particular, in the above context, the <cite>subscriber</cite>
 object does not have an open connection even within the <cite>with</cite>-statement.</p>
 </div>
 <p>Within this <cite>with</cite>-context, you can now perform any task, for instance start
 the measured program with <code class="xref py py-meth docutils literal notranslate"><span class="pre">asyncio.create_subprocess_exec()</span></code>.</p>
 </section>
 <section id="receive-the-buffered-metric-data">
-<h2>Receive the buffered metric data<a class="headerlink" href="#receive-the-buffered-metric-data" title="Permalink to this headline"></a></h2>
+<h2>Receive the buffered metric data<a class="headerlink" href="#receive-the-buffered-metric-data" title="Permalink to this heading"></a></h2>
 <p>Once the collection of data shall stop and we want to receive the buffered data,
 we use a <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> instance. Again, the <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> can be used as context
 manager as well as it is an iterable over the data. In particular, we can use the

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Upgrading metricq &mdash; MetricQ  documentation</title>
@@ -12,10 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -28,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> MetricQ
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MetricQ
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -81,8 +86,8 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Upgrading <code class="docutils literal notranslate"><span class="pre">metricq</span></code></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Upgrading <code class="docutils literal notranslate"><span class="pre">metricq</span></code></li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/upgrading.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -93,21 +98,21 @@
            <div itemprop="articleBody">
              
   <section id="upgrading-metricq">
-<span id="upgrading"></span><h1>Upgrading <code class="docutils literal notranslate"><span class="pre">metricq</span></code><a class="headerlink" href="#upgrading-metricq" title="Permalink to this headline"></a></h1>
+<span id="upgrading"></span><h1>Upgrading <code class="docutils literal notranslate"><span class="pre">metricq</span></code><a class="headerlink" href="#upgrading-metricq" title="Permalink to this heading"></a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">metricq</span></code> follows the <cite>semver</cite> versioning scheme,
 so releases of new major versions contain breaking changes.
 These are listed below, together with suggested steps to
 take when upgrading.</p>
 <section id="x-2-0">
-<h2><cite>1.x</cite> → <cite>2.0</cite><a class="headerlink" href="#x-2-0" title="Permalink to this headline"></a></h2>
+<h2><cite>1.x</cite> → <cite>2.0</cite><a class="headerlink" href="#x-2-0" title="Permalink to this heading"></a></h2>
 <section id="changed-required-python-version-to-3-8">
-<h3>Changed required Python version to 3.8<a class="headerlink" href="#changed-required-python-version-to-3-8" title="Permalink to this headline"></a></h3>
+<h3>Changed required Python version to 3.8<a class="headerlink" href="#changed-required-python-version-to-3-8" title="Permalink to this heading"></a></h3>
 <p>Python 3.7 has had issues with TLS/SSL encrypted connections,
 therefore the minimum required version was changed to <em>3.8</em>.
 Make sure, a matching Python version is available on the system.</p>
 </section>
 <section id="location-of-exception-classes">
-<h3>Location of exception classes<a class="headerlink" href="#location-of-exception-classes" title="Permalink to this headline"></a></h3>
+<h3>Location of exception classes<a class="headerlink" href="#location-of-exception-classes" title="Permalink to this heading"></a></h3>
 <p>All exception classes have moved into the module <a class="reference internal" href="api/exceptions.html#module-metricq.exceptions" title="metricq.exceptions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metricq.exceptions</span></code></a>,
 documented <a class="reference internal" href="api/exceptions.html#exceptions"><span class="std std-ref">here</span></a>.
 If you are importing exceptions from other submodules directly, your code might
@@ -130,7 +135,7 @@ now fail with an <a class="reference external" href="https://docs.python.org/3/l
 </dl>
 </section>
 <section id="removed-exceptions">
-<h3>Removed exceptions<a class="headerlink" href="#removed-exceptions" title="Permalink to this headline"></a></h3>
+<h3>Removed exceptions<a class="headerlink" href="#removed-exceptions" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt><code class="code docutils literal notranslate"><span class="pre">metricq.source.MetricSendError</span></code>, <code class="code docutils literal notranslate"><span class="pre">metricq.agent.RPCReplyError</span></code>, <code class="code docutils literal notranslate"><span class="pre">metricq.client.ManagementRpcPublishError</span></code>:</dt><dd><p>Handle <a class="reference internal" href="api/exceptions.html#metricq.exceptions.PublishFailed" title="metricq.exceptions.PublishFailed"><code class="xref py py-exc docutils literal notranslate"><span class="pre">PublishFailed</span></code></a> instead.</p>
 </dd>
@@ -139,13 +144,13 @@ now fail with an <a class="reference external" href="https://docs.python.org/3/l
 </dl>
 </section>
 <section id="validation-of-source-chunk-sizes">
-<h3>Validation of <a class="reference internal" href="api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> chunk sizes<a class="headerlink" href="#validation-of-source-chunk-sizes" title="Permalink to this headline"></a></h3>
+<h3>Validation of <a class="reference internal" href="api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> chunk sizes<a class="headerlink" href="#validation-of-source-chunk-sizes" title="Permalink to this heading"></a></h3>
 <p>Previously, anything could be assigned to <a class="reference internal" href="api/source.html#metricq.Source.chunk_size" title="metricq.Source.chunk_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Source.chunk_size</span></code></a>,
 now only <code class="docutils literal notranslate"><span class="pre">None</span></code> (to disable automatic chunking)
 and <em>positive</em> integers are accepted.</p>
 </section>
 <section id="removal-of-previously-deprecated-methods">
-<h3>Removal of previously deprecated methods<a class="headerlink" href="#removal-of-previously-deprecated-methods" title="Permalink to this headline"></a></h3>
+<h3>Removal of previously deprecated methods<a class="headerlink" href="#removal-of-previously-deprecated-methods" title="Permalink to this heading"></a></h3>
 <ul>
 <li><p>Support for tuple-unpacking instances of <a class="reference internal" href="api/misc.html#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a> has been removed.</p></li>
 <li><p>The methods <code class="code docutils literal notranslate"><span class="pre">history_metric_list</span></code> and <code class="code docutils literal notranslate"><span class="pre">history_metric_metadata</span></code>
@@ -153,7 +158,7 @@ on <a class="reference internal" href="api/history-client.html#metricq.HistoryCl
 They are superseded by the more general <a class="reference internal" href="api/history-client.html#metricq.HistoryClient.get_metrics" title="metricq.HistoryClient.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.get_metrics()</span></code></a>;
 to upgrade, make the following changes:</p>
 <blockquote>
-<div><div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w">client = HistoryClient(...)</span>
+<div><div class="highlight-diff notranslate"><div class="highlight"><pre><span></span>client = HistoryClient(...)
 
 <span class="gd">-await client.history_metric_list(...)</span>
 <span class="gi">+await client.get_metrics(...)</span>
@@ -167,7 +172,7 @@ to upgrade, make the following changes:</p>
 </ul>
 </section>
 <section id="type-changes-to-reduce-ambiguity">
-<h3>Type changes to reduce ambiguity<a class="headerlink" href="#type-changes-to-reduce-ambiguity" title="Permalink to this headline"></a></h3>
+<h3>Type changes to reduce ambiguity<a class="headerlink" href="#type-changes-to-reduce-ambiguity" title="Permalink to this heading"></a></h3>
 <p>Some class attributes were raw numbers;
 we gave them appropriate wrapper types that make it harder to accidentally misuse them.</p>
 <dl>
@@ -182,7 +187,7 @@ we gave them appropriate wrapper types that make it harder to accidentally misus
 </dl>
 </section>
 <section id="deprecation-of-timeaggregate-integral">
-<h3>Deprecation of <code class="code docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code><a class="headerlink" href="#deprecation-of-timeaggregate-integral" title="Permalink to this headline"></a></h3>
+<h3>Deprecation of <code class="code docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code><a class="headerlink" href="#deprecation-of-timeaggregate-integral" title="Permalink to this heading"></a></h3>
 <p>The property <code class="code docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code> returned the integral of values over the time
 spanned by a <a class="reference internal" href="api/misc.html#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a>.
 To reduce confusion over which time unit is used to integrate,
@@ -191,9 +196,9 @@ for seconds- and nanoseconds-based integrals, respectively.</p>
 </section>
 </section>
 <section id="x-3-0">
-<h2><cite>2.x</cite> → <cite>3.0</cite><a class="headerlink" href="#x-3-0" title="Permalink to this headline"></a></h2>
+<h2><cite>2.x</cite> → <cite>3.0</cite><a class="headerlink" href="#x-3-0" title="Permalink to this heading"></a></h2>
 <section id="removal-of-timeaggregate-integral">
-<h3>Removal of <code class="code docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code><a class="headerlink" href="#removal-of-timeaggregate-integral" title="Permalink to this headline"></a></h3>
+<h3>Removal of <code class="code docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code><a class="headerlink" href="#removal-of-timeaggregate-integral" title="Permalink to this heading"></a></h3>
 <p>The property <code class="code docutils literal notranslate"><span class="pre">TimeAggregate.integral</span></code> returned the integral of values over the time
 spanned by a <a class="reference internal" href="api/misc.html#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a>.
 This property was broken and thus removed, instead, use <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.integral_s" title="metricq.TimeAggregate.integral_s"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.integral_s</span></code></a> and <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.integral_ns" title="metricq.TimeAggregate.integral_ns"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.integral_ns</span></code></a>
@@ -201,15 +206,15 @@ for seconds- and nanoseconds-based integrals, respectively.</p>
 </section>
 </section>
 <section id="x-4-0">
-<h2><cite>3.x</cite> → <cite>4.0</cite><a class="headerlink" href="#x-4-0" title="Permalink to this headline"></a></h2>
+<h2><cite>3.x</cite> → <cite>4.0</cite><a class="headerlink" href="#x-4-0" title="Permalink to this heading"></a></h2>
 <section id="dropping-support-for-older-python-versions">
-<h3>Dropping support for older Python versions<a class="headerlink" href="#dropping-support-for-older-python-versions" title="Permalink to this headline"></a></h3>
+<h3>Dropping support for older Python versions<a class="headerlink" href="#dropping-support-for-older-python-versions" title="Permalink to this heading"></a></h3>
 <p>With version 4.0, MetricQ-Python only supports Python <strong>3.10 (and newer)</strong>. You need to upgrade to
 this Python version.</p>
 </section>
 <section id="removal-of-asyncio-loop">
-<h3>Removal of Asyncio Loop<a class="headerlink" href="#removal-of-asyncio-loop" title="Permalink to this headline"></a></h3>
-<p>Python 3.10 removed the loop parameter from the asyncio interface. In particual, the
+<h3>Removal of Asyncio Loop<a class="headerlink" href="#removal-of-asyncio-loop" title="Permalink to this heading"></a></h3>
+<p>Python 3.10 removed the loop parameter from the asyncio interface. In particular, the
 constructor parameter <cite>event_loop</cite> of <code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code> got removed, as well as,
 the property <code class="xref py py-attr docutils literal notranslate"><span class="pre">Agent.event_loop</span></code>.</p>
 </section>

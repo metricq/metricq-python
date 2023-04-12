@@ -11,15 +11,15 @@ What is a Drain?
 
 A :class:`Drain` is a special case of a MetricQ :class:`Sink`. Both are used to 
 collect the live metric data stream from MetricQ. In contrast to a :class:`Sink`,
-which is continously connected to MetricQ, a :class:`Drain` is only shartly
-connected to MetricQ. In particular, after the inital connection, all wanted
+which is continuously connected to MetricQ, a :class:`Drain` is only shortly
+connected to MetricQ. In particular, after the initial connection, all wanted
 metrics are subscribed and the connection is closed. While the connection is 
 closed, MetricQ buffers the subscribed metric data and the client can perform other 
 task without any perturbation caused by the connection. Once the metric is required,
 a new connection gets established and the buffered data can be received and 
 processed like in a normal sink.
 
-This bahavior is particular useful for measurements, where it is important to
+This behavior is particular useful for measurements, where it is important to
 reduce perturbation as much as possible.
 
 
@@ -59,7 +59,7 @@ or a :class:`Timedelta`.
 .. note::
 
     Per design, the :class:`Subscriber` closes the connection right after the 
-    subscribe request. In particluar, in the above context, the `subscriber`
+    subscribe request. In particular, in the above context, the `subscriber`
     object does not have an open connection even within the `with`-statement.
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Creating a new project for MetricQ &mdash; MetricQ  documentation</title>
@@ -12,10 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -28,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> MetricQ
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MetricQ
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -56,7 +61,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#command-line-interfaces">Command line interfaces</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#project-versioning">Project versioning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#developement-setup">Developement setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#development-setup">Development setup</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#tests">Tests</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#linting">Linting</a></li>
 </ul>
@@ -84,9 +89,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">How to use this library</a> &raquo;</li>
-      <li>Creating a new project for MetricQ</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">How to use this library</a></li>
+      <li class="breadcrumb-item active">Creating a new project for MetricQ</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/howto/project-structure.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -97,7 +102,7 @@
            <div itemprop="articleBody">
              
   <section id="creating-a-new-project-for-metricq">
-<h1>Creating a new project for MetricQ<a class="headerlink" href="#creating-a-new-project-for-metricq" title="Permalink to this headline"></a></h1>
+<h1>Creating a new project for MetricQ<a class="headerlink" href="#creating-a-new-project-for-metricq" title="Permalink to this heading"></a></h1>
 <p>In this section, we explain some of the conventions that we (the <code class="docutils literal notranslate"><span class="pre">metricq</span></code>
 authors) use when setting up a new project using the library.
 Python packaging has many (at times confusing) options;  these conventions help
@@ -108,9 +113,9 @@ filesystem paths are relative to the project root directory (<code class="file d
 The Python package built from this project is called <code class="docutils literal notranslate"><span class="pre">metricq-example</span></code>,
 and its source code lives in the subdirectory <code class="file docutils literal notranslate"><span class="pre">metricq_example</span></code> of the project root.</p>
 <section id="dependencies-building-and-installation">
-<h2>Dependencies, building and installation<a class="headerlink" href="#dependencies-building-and-installation" title="Permalink to this headline"></a></h2>
+<h2>Dependencies, building and installation<a class="headerlink" href="#dependencies-building-and-installation" title="Permalink to this heading"></a></h2>
 <section id="build-system">
-<h3>Build system<a class="headerlink" href="#build-system" title="Permalink to this headline"></a></h3>
+<h3>Build system<a class="headerlink" href="#build-system" title="Permalink to this heading"></a></h3>
 <p>Any new projects should use a <span class="target" id="index-0"></span><a class="pep reference external" href="https://peps.python.org/pep-0517/"><strong>PEP 517</strong></a>-compliant build system.
 Use <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> for this.
 The directory <code class="file docutils literal notranslate"><span class="pre">metricq_example</span></code> contains the Python source code of the
@@ -124,7 +129,7 @@ and declare the necessary build dependencies:</p>
 <p>This enables tools like <code class="docutils literal notranslate"><span class="pre">pip</span></code> to create packages from the project.</p>
 </section>
 <section id="runtime-dependencies">
-<h3>Runtime dependencies<a class="headerlink" href="#runtime-dependencies" title="Permalink to this headline"></a></h3>
+<h3>Runtime dependencies<a class="headerlink" href="#runtime-dependencies" title="Permalink to this heading"></a></h3>
 <p>In <code class="file docutils literal notranslate"><span class="pre">setup.cfg</span></code>, declare the project runtime dependencies.
 Under section <code class="docutils literal notranslate"><span class="pre">[options]</span></code>, point <code class="docutils literal notranslate"><span class="pre">packages</span></code> to the project source directory (i.e. <code class="docutils literal notranslate"><span class="pre">metricq_example</span></code>).
 Remember to set a minimum required Python version to prevent issues at runtime.
@@ -163,7 +168,7 @@ that is compatible with the host-installed version of the <code class="docutils 
 </div>
 </section>
 <section id="optional-dependencies">
-<h3>Optional dependencies<a class="headerlink" href="#optional-dependencies" title="Permalink to this headline"></a></h3>
+<h3>Optional dependencies<a class="headerlink" href="#optional-dependencies" title="Permalink to this heading"></a></h3>
 <p>If your project has <em>optional</em> features that requires additional dependencies,
 include them in section <code class="code docutils literal notranslate"><span class="pre">options.extras_require</span></code> of <code class="file docutils literal notranslate"><span class="pre">setup.cfg</span></code>.
 For each feature <code class="code docutils literal notranslate"><span class="pre">my_feature</span></code>, define a new <em>extra</em> that lists all
@@ -186,7 +191,7 @@ $<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </sp
 </div>
 </section>
 <section id="package-metadata">
-<h3>Package metadata<a class="headerlink" href="#package-metadata" title="Permalink to this headline"></a></h3>
+<h3>Package metadata<a class="headerlink" href="#package-metadata" title="Permalink to this heading"></a></h3>
 <p>Also in <code class="file docutils literal notranslate"><span class="pre">setup.cfg</span></code>, include relevant package metadata:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
 
@@ -212,7 +217,7 @@ itself is licensed under the terms of the <cite>BSD 3-clause “New” or “Rev
 </section>
 </section>
 <section id="command-line-interfaces">
-<h2>Command line interfaces<a class="headerlink" href="#command-line-interfaces" title="Permalink to this headline"></a></h2>
+<h2>Command line interfaces<a class="headerlink" href="#command-line-interfaces" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">setuptools</span></code> allows declaration of <a class="reference external" href="https://docs.python.org/3/library/importlib.metadata.html#entry-points" title="(in Python v3.11)"><span>Entry points</span></a>.
 An entry point of type <code class="docutils literal notranslate"><span class="pre">console_script</span></code> makes a python function the
 entry point of a script that is added to the <code class="code docutils literal notranslate"><span class="pre">$PATH</span></code> of your Python environment:</p>
@@ -256,7 +261,7 @@ include <cite>at least</cite> options to configure the MetricQ network URL and a
 </div>
 </section>
 <section id="project-versioning">
-<h2>Project versioning<a class="headerlink" href="#project-versioning" title="Permalink to this headline"></a></h2>
+<h2>Project versioning<a class="headerlink" href="#project-versioning" title="Permalink to this heading"></a></h2>
 <p>In order to be a good network citizen, any MetricQ client should provide a version string when asked.
 The single source of truth of a project’s version should be its <code class="code docutils literal notranslate"><span class="pre">git</span></code> tags.
 Where possible, use a <cite>semver</cite>-compatible version scheme.
@@ -339,8 +344,8 @@ base class constructor:</p>
 </pre></div>
 </div>
 </section>
-<section id="developement-setup">
-<h2>Developement setup<a class="headerlink" href="#developement-setup" title="Permalink to this headline"></a></h2>
+<section id="development-setup">
+<h2>Development setup<a class="headerlink" href="#development-setup" title="Permalink to this heading"></a></h2>
 <p>To enable an easy development setup, define an extra <code class="docutils literal notranslate"><span class="pre">dev</span></code>,
 that transitively includes all optional dependencies needed for a local development setup:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
@@ -364,7 +369,7 @@ and then (with this environment activated) set up a local development environmen
 </div>
 <p>in the project directory.</p>
 <section id="tests">
-<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this headline"></a></h3>
+<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this heading"></a></h3>
 <p>We use <a class="reference external" href="pytest.org">pytest</a> to define project tests.
 Create an extra <code class="docutils literal notranslate"><span class="pre">test</span></code> that pulls <code class="docutils literal notranslate"><span class="pre">pytest</span></code>,
 and <code class="docutils literal notranslate"><span class="pre">pytest-asyncio</span></code> when testing <code class="code docutils literal notranslate"><span class="pre">async</span></code> code:</p>
@@ -407,7 +412,7 @@ see the notes <a class="reference external" href="https://docs.pytest.org/en/lat
 </div>
 </section>
 <section id="linting">
-<h3>Linting<a class="headerlink" href="#linting" title="Permalink to this headline"></a></h3>
+<h3>Linting<a class="headerlink" href="#linting" title="Permalink to this heading"></a></h3>
 <p>We recommend a basic set of linters that (hopefully) help producing better code:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
 

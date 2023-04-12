@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Building a MetricQ Source &mdash; MetricQ  documentation</title>
@@ -12,10 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -28,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> MetricQ
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MetricQ
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -74,9 +79,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">How to use this library</a> &raquo;</li>
-      <li>Building a MetricQ Source</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">How to use this library</a></li>
+      <li class="breadcrumb-item active">Building a MetricQ Source</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/howto/source.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -87,7 +92,7 @@
            <div itemprop="articleBody">
              
   <section id="building-a-metricq-source">
-<span id="source-how-to"></span><h1>Building a MetricQ Source<a class="headerlink" href="#building-a-metricq-source" title="Permalink to this headline"></a></h1>
+<span id="source-how-to"></span><h1>Building a MetricQ Source<a class="headerlink" href="#building-a-metricq-source" title="Permalink to this heading"></a></h1>
 <p><a class="reference internal" href="../glossary.html#term-Source"><span class="xref std std-term">Sources</span></a> provide data points for a set of <a class="reference internal" href="../glossary.html#term-Metric"><span class="xref std std-term">Metrics</span></a> to the MetricQ network.
 Usually, they are programs that continually measure some kind of quantity, for example:</p>
 <ul class="simple">
@@ -97,7 +102,7 @@ Usually, they are programs that continually measure some kind of quantity, for e
 </ul>
 <p>Here, we will build a simple Source that sends a random value between 0 and 1 at a configurable interval.</p>
 <section id="defining-a-new-source-using-metricq-source">
-<h2>Defining a new Source: using <a class="reference internal" href="../api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Source</span></code></a><a class="headerlink" href="#defining-a-new-source-using-metricq-source" title="Permalink to this headline"></a></h2>
+<h2>Defining a new Source: using <a class="reference internal" href="../api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Source</span></code></a><a class="headerlink" href="#defining-a-new-source-using-metricq-source" title="Permalink to this heading"></a></h2>
 <p>Similarly to Sinks, we create a new Source by subclassing <a class="reference internal" href="../api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Source</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
 
@@ -183,7 +188,7 @@ Make sure to handle errors appropriately, such as <a class="reference internal" 
 </div>
 </section>
 <section id="improving-constant-rate-sources-using-intervalsource">
-<h2>Improving constant-rate sources: using <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a><a class="headerlink" href="#improving-constant-rate-sources-using-intervalsource" title="Permalink to this headline"></a></h2>
+<h2>Improving constant-rate sources: using <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a><a class="headerlink" href="#improving-constant-rate-sources-using-intervalsource" title="Permalink to this heading"></a></h2>
 <p>The above situation where we send values at a fixed rate is so common
 that we can use the convenience class <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a>, which
 does all the heavy lifting for us.</p>
@@ -223,7 +228,7 @@ which gets called at a constant rate:</p>
 </div>
 </section>
 <section id="running-a-source">
-<h2>Running a Source<a class="headerlink" href="#running-a-source" title="Permalink to this headline"></a></h2>
+<h2>Running a Source<a class="headerlink" href="#running-a-source" title="Permalink to this heading"></a></h2>
 <p><a class="reference internal" href="sink.html#sink-how-to-run"><span class="std std-ref">Similarly to Sinks</span></a>, a Source is started by calling <a class="reference internal" href="../api/client-common.html#metricq.Client.run" title="metricq.Client.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run</span></code></a>.
 On construction, we need to supply a unique <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">Token</span></a> for identification and a URL of the network.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
@@ -240,7 +245,7 @@ On construction, we need to supply a unique <a class="reference internal" href="
 </div>
 </section>
 <section id="complete-example">
-<h2>Complete Example<a class="headerlink" href="#complete-example" title="Permalink to this headline"></a></h2>
+<h2>Complete Example<a class="headerlink" href="#complete-example" title="Permalink to this heading"></a></h2>
 <p>To obtain the dependencies required for this example, install the <code class="docutils literal notranslate"><span class="pre">examples</span></code>-extra from the <a class="reference external" href="metricq-python">git repo</a>:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;.[examples]&#39;</span>
 </pre></div>

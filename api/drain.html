@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Drain &mdash; MetricQ  documentation</title>
@@ -12,10 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -28,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> MetricQ
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MetricQ
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,7 +50,16 @@
 <li class="toctree-l2"><a class="reference internal" href="sink.html">Sink</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source.html">Source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="history-client.html">History Client</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Drain</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Drain</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#metricq.Drain"><code class="docutils literal notranslate"><span class="pre">Drain</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Drain.__init__"><code class="docutils literal notranslate"><span class="pre">Drain.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Drain.connect"><code class="docutils literal notranslate"><span class="pre">Drain.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Drain.__aiter__"><code class="docutils literal notranslate"><span class="pre">Drain.__aiter__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Drain.__aenter__"><code class="docutils literal notranslate"><span class="pre">Drain.__aenter__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="subscriber.html">Subscriber</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-common.html">Common client operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
@@ -70,9 +84,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">API Reference</a> &raquo;</li>
-      <li>Drain</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Drain</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/api/drain.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -83,7 +97,7 @@
            <div itemprop="articleBody">
              
   <section id="drain">
-<h1>Drain<a class="headerlink" href="#drain" title="Permalink to this headline"></a></h1>
+<h1>Drain<a class="headerlink" href="#drain" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="metricq.Drain">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">Drain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Drain" title="Permalink to this definition"></a></dt>
@@ -92,11 +106,11 @@
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Drain.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Drain the given queue of all buffered metric data</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>queue</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>The name of the queue that contains the subscribed data.</p>
 </dd>
-<dt><strong>metrics</strong> : <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</dt><dd><p>List of metrics that you want to subscribe to.</p>
+<dt><strong>metrics</strong> : <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</dt><dd><p>Metrics that you want to subscribe to.</p>
 </dd>
 </dl>
 </dd>
@@ -108,7 +122,7 @@
 <em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Drain.connect" title="Permalink to this definition"></a></dt>
 <dd><p>Connect to the MetricQ network</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
 </dd>
 </dl>
@@ -124,7 +138,7 @@
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a></p>
 </dd>
 </dl>
@@ -134,15 +148,15 @@
 <dt class="sig sig-object py" id="metricq.Drain.__aenter__">
 <em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">__aenter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Drain.__aenter__" title="Permalink to this definition"></a></dt>
 <dd><p>Allows to use the Client as a context manager.</p>
-<p>The connection to MetricQ will automatically established and closed.</p>
+<p>The connection to MetricQ will be automatically established and closed.</p>
 <p>Use it like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">MyClient</span><span class="p">(</span><span class="o">...</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
     <span class="k">pass</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">Self</span></code>, bound= <a class="reference internal" href="client-common.html#metricq.Client" title="metricq.client.Client"><code class="xref py py-class docutils literal notranslate"><span class="pre">Client</span></code></a>)</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.TypeVar" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TypeVar</span></code></a>(<code class="docutils literal notranslate"><span class="pre">Self</span></code>, bound= Client)</p>
 </dd>
 </dl>
 </dd></dl>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Metric Metadata &mdash; MetricQ  documentation</title>
@@ -12,10 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -28,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> MetricQ
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MetricQ
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -64,8 +69,8 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Metric Metadata</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Metric Metadata</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/metadata.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -76,14 +81,14 @@
            <div itemprop="articleBody">
              
   <section id="metric-metadata">
-<span id="id1"></span><h1>Metric Metadata<a class="headerlink" href="#metric-metadata" title="Permalink to this headline"></a></h1>
+<span id="id1"></span><h1>Metric Metadata<a class="headerlink" href="#metric-metadata" title="Permalink to this heading"></a></h1>
 <p>Each <a class="reference internal" href="glossary.html#term-Metric"><span class="xref std std-term">metric</span></a> known to the MetricQ network includes metadata in the form of arbitrary
 <cite>field</cite>-<cite>value</cite> pairs, where <cite>fields</cite> are strings and <cite>values</cite> are <cite>JSON</cite> values.
 Metadata keys are free-form and can be used to store any information useful and related to a metric.
 Though, some restrictions apply in the form of <a class="reference internal" href="#metric-metadata-reserved"><span class="std std-ref">reserved fields</span></a>
 and <a class="reference internal" href="#metricq-metadata-standardized"><span class="std std-ref">standardized fields</span></a>.</p>
 <section id="reserved-fields">
-<span id="metric-metadata-reserved"></span><h2>Reserved Fields<a class="headerlink" href="#reserved-fields" title="Permalink to this headline"></a></h2>
+<span id="metric-metadata-reserved"></span><h2>Reserved Fields<a class="headerlink" href="#reserved-fields" title="Permalink to this heading"></a></h2>
 <p>Reserved fields may not be used when declaring metadata for a metric.
 Tools consuming metadata are free to make use of these fields, though.</p>
 <dl class="simple">
@@ -103,7 +108,7 @@ Set by the manager.</p>
 </dl>
 </section>
 <section id="standardized-fields">
-<span id="metricq-metadata-standardized"></span><h2>Standardized Fields<a class="headerlink" href="#standardized-fields" title="Permalink to this headline"></a></h2>
+<span id="metricq-metadata-standardized"></span><h2>Standardized Fields<a class="headerlink" href="#standardized-fields" title="Permalink to this heading"></a></h2>
 <p>Some <cite>fields</cite> have a defined meaning that should be respected.
 Consuming tools might handle and display these fields in a special way.</p>
 <dl>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fetching historical metric data &mdash; MetricQ  documentation</title>
@@ -12,10 +12,11 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -28,11 +29,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> MetricQ
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MetricQ
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -76,9 +81,9 @@
         <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">How to use this library</a> &raquo;</li>
-      <li>Fetching historical metric data</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">How to use this library</a></li>
+      <li class="breadcrumb-item active">Fetching historical metric data</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/howto/history-client.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -89,7 +94,7 @@
            <div itemprop="articleBody">
              
   <section id="fetching-historical-metric-data">
-<h1>Fetching historical metric data<a class="headerlink" href="#fetching-historical-metric-data" title="Permalink to this headline"></a></h1>
+<h1>Fetching historical metric data<a class="headerlink" href="#fetching-historical-metric-data" title="Permalink to this heading"></a></h1>
 <p>Databases connected to the MetricQ network provide historical metric data.
 We can use a <a class="reference internal" href="../api/history-client.html#metricq.HistoryClient" title="metricq.HistoryClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryClient</span></code></a> to retrieve this data.
 Compared to <a class="reference internal" href="sink.html#sink-how-to"><span class="std std-ref">Building a MetricQ Sink</span></a> and <a class="reference internal" href="source.html#source-how-to"><span class="std std-ref">Building a MetricQ Source</span></a>,
@@ -108,7 +113,7 @@ we won’t need to define our own client, we can use <a class="reference interna
 </div>
 </div>
 <section id="connecting-to-the-network">
-<h2>Connecting to the network<a class="headerlink" href="#connecting-to-the-network" title="Permalink to this headline"></a></h2>
+<h2>Connecting to the network<a class="headerlink" href="#connecting-to-the-network" title="Permalink to this heading"></a></h2>
 <p>Provide the MetricQ URL to connect to and a <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">Token</span></a> to identify the client:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;history-example&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">server</span> <span class="o">=</span> <span class="s2">&quot;amqps://user:pass@metricq.example.org/&quot;</span>
@@ -122,7 +127,7 @@ we won’t need to define our own client, we can use <a class="reference interna
 <p>If all went well, we are ready to retrieve our data.</p>
 </section>
 <section id="fetching-metric-metadata">
-<h2>Fetching metric metadata<a class="headerlink" href="#fetching-metric-metadata" title="Permalink to this headline"></a></h2>
+<h2>Fetching metric metadata<a class="headerlink" href="#fetching-metric-metadata" title="Permalink to this heading"></a></h2>
 <p>All metrics passing through the MetricQ network have <a class="reference internal" href="../glossary.html#term-Metadata"><span class="xref std std-term">Metadata</span></a> associated with them.
 Using <a class="reference internal" href="../api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_metrics()</span></code></a>, we can explore for which metrics there is historical data:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.s0.dram.power&quot;</span>
@@ -146,7 +151,7 @@ Using <a class="reference internal" href="../api/client-common.html#metricq.Clie
 More complicated queries are supported by <a class="reference internal" href="../api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_metrics()</span></code></a>, see <a class="reference internal" href="metric-lookup.html#metric-lookup"><span class="std std-ref">Metric lookup</span></a> for examples.</p>
 </section>
 <section id="getting-the-last-value-of-a-metric">
-<h2>Getting the last value of a metric<a class="headerlink" href="#getting-the-last-value-of-a-metric" title="Permalink to this headline"></a></h2>
+<h2>Getting the last value of a metric<a class="headerlink" href="#getting-the-last-value-of-a-metric" title="Permalink to this heading"></a></h2>
 <p>To retrieve only the last value of a metric saved to a database base, use</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.s0.dram.power&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
@@ -158,7 +163,7 @@ More complicated queries are supported by <a class="reference internal" href="..
 </div>
 </section>
 <section id="aggregates-summarizing-a-metric">
-<h2>Aggregates – summarizing a metric<a class="headerlink" href="#aggregates-summarizing-a-metric" title="Permalink to this headline"></a></h2>
+<h2>Aggregates – summarizing a metric<a class="headerlink" href="#aggregates-summarizing-a-metric" title="Permalink to this heading"></a></h2>
 <p><em class="dfn">Aggregates</em> contain information for a metric over a specific span of time,
 for example minimum/maximum/average value, sum, integral, number of data points (<em>count</em>) etc.
 Use <a class="reference internal" href="../api/history-client.html#metricq.HistoryClient.history_aggregate" title="metricq.HistoryClient.history_aggregate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.history_aggregate()</span></code></a> to summarize a metric in this way.</p>
@@ -180,7 +185,7 @@ over the last 10 minutes.</p>
 Omit either of them or both to aggregate all historical values since/until some point in time.</p>
 </section>
 <section id="multiple-aggregates">
-<h2>Multiple aggregates<a class="headerlink" href="#multiple-aggregates" title="Permalink to this headline"></a></h2>
+<h2>Multiple aggregates<a class="headerlink" href="#multiple-aggregates" title="Permalink to this heading"></a></h2>
 <p>If you want to retrieve multiple successive aggregates, use <a class="reference internal" href="../api/history-client.html#metricq.HistoryClient.history_aggregate_timeline" title="metricq.HistoryClient.history_aggregate_timeline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.history_aggregate_timeline()</span></code></a>.
 It returns an iterator of aggregates where each aggregate spans at most a duration of <code class="code docutils literal notranslate"><span class="pre">interval_max</span></code>.</p>
 <p>This is useful if you want to obtain a rough overview for a metric over a longer period of time.
@@ -236,7 +241,7 @@ In the example below we get an overview of a metric over the last 365 days, with
 Still, we get a rough idea of how this metric behaved over the past year without expensive calculations.</p>
 </section>
 <section id="fetching-raw-values">
-<h2>Fetching raw values<a class="headerlink" href="#fetching-raw-values" title="Permalink to this headline"></a></h2>
+<h2>Fetching raw values<a class="headerlink" href="#fetching-raw-values" title="Permalink to this heading"></a></h2>
 <p>If you are interested in raw values instead of a aggregates, use <a class="reference internal" href="../api/history-client.html#metricq.HistoryClient.history_raw_timeline" title="metricq.HistoryClient.history_raw_timeline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.history_raw_timeline()</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.s0.dram.power&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p">(</span><span class="s2">&quot;2020-01-01T00:00:00.0Z&quot;</span><span class="p">)</span>
