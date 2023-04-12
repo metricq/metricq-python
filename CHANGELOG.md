@@ -21,6 +21,7 @@
 
 **Closed issues:**
 
+- Migrate to GitHub container registry [\#158](https://github.com/metricq/metricq-python/issues/158)
 - top level module "types" clashes with mypy [\#154](https://github.com/metricq/metricq-python/issues/154)
 - black/ci is broken [\#145](https://github.com/metricq/metricq-python/issues/145)
 - Incorrect iso8601 timestamp string parsing [\#141](https://github.com/metricq/metricq-python/issues/141)
@@ -29,6 +30,7 @@
 **Merged pull requests:**
 
 - Migrate docker workflow to ghcr.io [\#159](https://github.com/metricq/metricq-python/pull/159) ([kinnarr](https://github.com/kinnarr))
+- Typing cleanup [\#156](https://github.com/metricq/metricq-python/pull/156) ([tilsche](https://github.com/tilsche))
 - refactor: improve error message when parsing ISO 8601 [\#153](https://github.com/metricq/metricq-python/pull/153) ([tilsche](https://github.com/tilsche))
 - fix: protobuf 4 tests [\#152](https://github.com/metricq/metricq-python/pull/152) ([tilsche](https://github.com/tilsche))
 - ci: replace protoc action with plain old apt-get [\#150](https://github.com/metricq/metricq-python/pull/150) ([bmario](https://github.com/bmario))
@@ -70,6 +72,10 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v3.1.1...v4.0.0)
 
+**Breaking changes:**
+
+- Feature: Python 3.10 support [\#119](https://github.com/metricq/metricq-python/pull/119) ([bmario](https://github.com/bmario))
+
 **Fixed bugs:**
 
 - Refactor `loop` parameter usage [\#51](https://github.com/metricq/metricq-python/issues/51)
@@ -89,10 +95,6 @@
 ## [v3.1.0](https://github.com/metricq/metricq-python/tree/v3.1.0) (2021-10-19)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v3.0.0...v3.1.0)
-
-**Breaking changes:**
-
-- Feature: Python 3.10 support [\#119](https://github.com/metricq/metricq-python/pull/119) ([bmario](https://github.com/bmario))
 
 **Implemented enhancements:**
 
