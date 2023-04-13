@@ -103,6 +103,9 @@ class DataClient(Client):
             self._data_connection_watchdog.set_established()
 
     async def stop(self, exception: Optional[Exception] = None) -> None:
+        """
+        Stops the data connection and uses the underlying :meth:`Agent.stop`.
+        """
         logger.info("closing data channel and connection.")
         await self._data_connection_watchdog.stop()
         if self.data_channel:

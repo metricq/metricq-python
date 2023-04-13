@@ -11,8 +11,14 @@ Source
         flush,
     :member-order: groupwise
 
+----
+
 .. autoclass:: metricq.IntervalSource
     :members:
         update,
         period,
 
+----
+
+.. autoclass:: metricq.SynchronousSource
+    :members:
