@@ -1,6 +1,8 @@
 from collections.abc import Iterator
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Dict
+
+from deprecated.sphinx import deprecated
 
 from .timestamp import Timestamp
 
@@ -24,7 +26,15 @@ class TimeValue:
     def __iter__(self) -> Iterator[Timestamp | float]:
         return iter([self.timestamp, self.value])
 
-    def dict(self) -> dict[str, Any]:
+    @deprecated(
+        version="5.0.0",
+        reason=(
+            "Use the individual properties instead and select an appropriate "
+            "timestamp type."
+        ),
+    )
+    # using Dict as return type to work around https://github.com/python/mypy/issues/15047
+    def dict(self) -> Dict[str, Any]:
         """
         returns a dict representing the TimeValue instance.
         Keys are `timestamp` and `value`

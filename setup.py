@@ -271,6 +271,7 @@ setup(
         #  be available with the next aio-pika release
         "aio-pika~=6.7, >=6.7.1",
         get_protobuf_requirement(),
+        "Deprecated~=1.2.13",
         "python-dateutil ~= 2.8, >=2.8.1",
         "yarl",
         "setuptools",

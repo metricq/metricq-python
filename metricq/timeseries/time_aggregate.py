@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Dict
+
+from deprecated.sphinx import deprecated
 
 from .. import history_pb2
 from ..exceptions import NonMonotonicTimestamps
@@ -97,6 +99,14 @@ class TimeAggregate:
 
     @property
     def mean(self) -> float:
+        """
+        Mean value of this aggregate.
+        This is the general way to access the mean value if nothing specific
+        is known about the underlying raw data.
+
+        It may involve a heuristic to decide between :attr:`mean_integral` and
+        :attr:`mean_sum`. Currently, it defaults to :attr:`mean_integral`.
+        """
         if self.active_time.ns > 0:
             return self.mean_integral
         else:
@@ -104,13 +114,37 @@ class TimeAggregate:
 
     @property
     def mean_integral(self) -> float:
+        """
+        Mean value of this aggregate, calculated from the integral.
+        Use this if you want to explicitly force this property.
+
+        This should only be `NaN` if the aggregate interval is outside the
+        measured time.
+        """
         return self.integral_ns / self.active_time.ns
 
     @property
     def mean_sum(self) -> float:
+        """
+        Mean value of this aggregate, calculated from the sum.
+        This can be useful when the underlying metric should be at regular
+        intervals, but there are gaps in the data. Otherwise,
+        :attr:`mean_integral` or just :attr:`mean` are more appropriate.
+
+        This value will be `NaN` if there are no raw data points in the
+        aggregate interval.
+        """
         return self.sum / self.count
 
-    def dict(self) -> dict[str, Any]:
+    @deprecated(
+        version="5.0.0",
+        reason=(
+            "Use the individual properties instead and chose between "
+            "`mean_integral` and `mean_sum` based on your use-case"
+        ),
+    )
+    # using Dict as return type to work around https://github.com/python/mypy/issues/15047
+    def dict(self) -> Dict[str, Any]:
         """
         returns a dict representing the TimeAggregate instance.
         Keys are `timestamp`, `minimum`, `mean`, `maximum`, and `count`.
