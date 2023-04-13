@@ -141,7 +141,7 @@ class Sink(DataClient):
         Args:
             metrics: names of the metrics to subscribe to
             expires: queue expiration time in seconds
-            metadata: whether to return metric metadata in the response, defaults to ``True``
+            metadata: whether to return metric metadata in the response, defaults to ``True`` as per the RPC spec
 
         Returns:
             rpc response
@@ -216,6 +216,19 @@ class Sink(DataClient):
 
 
 class DurableSink(Sink):
+    """
+    A base class for user-defined :term:`Sinks<Sink>` that uses a configuration.
+    General :class:`Sink` implementations are transient and therefore do not register as
+    unique agents with a configuration. This implementation does call the
+    `sink.register` RPC and receives a configuration in response that is passed
+    to the `config` rpc handler.
+
+    See :class:`Sink` for the general API.
+
+    Constructor arguments are passed to :class:`Sink`.
+    However, ``add_uuid`` is not supported and always ``False``.
+    """
+
     def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, add_uuid=False, **kwargs)
 

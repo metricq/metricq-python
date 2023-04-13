@@ -131,7 +131,7 @@ Removal of Asyncio Loop
 
 Python 3.10 removed the loop parameter from the asyncio interface. In particular, the
 constructor parameter `event_loop` of :class:`Agent` got removed, as well as,
-the property :attr:`Agent.event_loop`.
+the property `Agent.event_loop`.
 
 `4.x` → `5.0`
 -------------
@@ -156,4 +156,4 @@ Deprecation of `dict` methods
 The methods :meth:`TimeAggregate.dict` and :meth:`TimeValue.dict` have been deprecated.
 Use the individual fields instead.
 The using code has more context and should know better which fields to include.
-In particular, whether to use :attr:`TimeAggregate.mean_sum` or :attr:`TimeAggregate.mean_integral` and which :attr:`TimeValue.timestamp` type to use.
+In particular, whether to use :attr:`TimeAggregate.mean_sum` or :meth:`TimeAggregate.mean_integral` and which :attr:`TimeValue.timestamp` type to use.

@@ -64,7 +64,7 @@ or a :class:`Timedelta`.
 
 
 Within this `with`-context, you can now perform any task, for instance start
-the measured program with :meth:`asyncio.create_subprocess_exec`.
+the measured program with :func:`asyncio.create_subprocess_exec`.
 
 
 Receive the buffered metric data

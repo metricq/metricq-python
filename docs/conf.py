@@ -45,21 +45,6 @@ intersphinx_mapping = {
     "aio_pika": ("https://aio-pika.readthedocs.io/en/latest/", None),
 }
 
-# See https://icb-scanpydoc.readthedocs-hosted.com/en/latest/scanpydoc.elegant_typehints.html
-# why this is necessary.
-qualname_overrides = {
-    "metricq.sink.Sink": "metricq.Sink",
-    "metricq.source.Source": "metricq.Source",
-    "metricq.source.IntervalSource": "metricq.IntervalSource",
-    "metricq.history_client.HistoryClient": "metricq.HistoryClient",
-    "metricq.drain.Drain": "metricq.Drain",
-    "metricq.subscription.Subscriber": "metricq.Subscriber",
-    "metricq.timeseries.timedelta.Timedelta": "metricq.Timedelta",
-    "metricq.timeseries.timestamp.Timestamp": "metricq.Timestamp",
-    "metricq.timeseries.time_value.TimeValue": "metricq.TimeValue",
-    "metricq.timeseries.time_aggregate.TimeAggregate": "metricq.TimeAggregate",
-    "aio_pika.exchange.Exchange": "aio_pika.Exchange",
-}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

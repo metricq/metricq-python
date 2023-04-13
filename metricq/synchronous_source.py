@@ -34,7 +34,7 @@ from typing import Any
 
 from .logging import get_logger
 from .source import Source
-from .timeseries import MetadataDict, Timestamp
+from .timeseries import MetadataDict, Metric, Timestamp
 
 logger = get_logger(__name__)
 
@@ -80,6 +80,14 @@ class _SynchronousSource(Source):
 
 
 class SynchronousSource:
+    """
+    This is a :term:`Source` that can be used in a synchronous context.
+    It spawns a new thread and runs an asynchronous :class:`Source` in it.
+    Therefore, it this class does not actually derive from :class:`Source`.
+
+    All parameters are passed to `Source.__init__`.
+    """
+
     _lock = Lock()
     _tid = 0
 
@@ -105,12 +113,27 @@ class SynchronousSource:
 
     def send(
         self,
-        metric: str,
+        metric: Metric,
         time: Timestamp,
         value: float,
         block: bool = True,
         timeout: float = 60,
     ) -> None:
+        """
+        Send a single metric timestamp / value to MetricQ.
+        Returns immediately unless `block` is `True`.
+        Exceptions other than a timeout are not propagated to the caller, but logged instead.
+
+        Args:
+            metric: name of the metric
+            time: timestamp
+            value: value of the metric
+            block: wait for completion of the asynchronous send operation
+            timeout: in seconds, is only used in blocking mode
+
+        Raises:
+            TimeoutError: in case of timeout
+        """
         f = asyncio.run_coroutine_threadsafe(
             self._source.send(metric, time, value), self._source._event_loop
         )
@@ -128,6 +151,19 @@ class SynchronousSource:
         block: bool = True,
         timeout: float = 60,
     ) -> None:
+        """
+        Declare the metrics that are published by this source.
+        Returns immediately unless `block` is `True`.
+        Exceptions other than a timeout are not propagated to the caller, but logged instead.
+
+        Args:
+            metrics: a mapping from metric name to metadata
+            block: wait for completion of the asynchronous send operation
+            timeout: in seconds, is only used in blocking mode
+
+        Raises:
+            TimeoutError: in case of timeout
+        """
         f = asyncio.run_coroutine_threadsafe(
             self._source.declare_metrics(metrics), self._source._event_loop
         )
@@ -137,6 +173,17 @@ class SynchronousSource:
                 logger.error("[SynchronousSource] failed to send data {}", exception)
 
     def stop(self, timeout: float = 60) -> None:
+        """
+        Stop the source and wait for the thread to join.
+        Exceptions other than a timeout are not propagated to the caller, but logged instead.
+
+        Args:
+            timeout: timeout in seconds
+
+        Returns:
+            TimeoutError: in case of timeout
+        """
+
         logger.info("[SynchronousSource] stopping")
         f = asyncio.run_coroutine_threadsafe(
             self._source.stop(), self._source._event_loop

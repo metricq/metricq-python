@@ -560,7 +560,7 @@ class Agent(RPCDispatcher):
             message: Either an RPC request or an RPC response.
 
         Raises:
-            PublishError: The reply could not be published.
+            PublishFailed: The reply could not be published.
         """
         assert self._management_channel is not None
         assert self._management_channel.default_exchange is not None
