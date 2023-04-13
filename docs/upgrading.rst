@@ -149,7 +149,6 @@ If you have imported types from it directly you should change to import directly
 * :class:`Metric` (available in `metricq` since `5.0`)
 * :class:`JsonDict` (available in `metricq` since `5.0`)
 
-
 Deprecation of `dict` methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -157,3 +156,8 @@ The methods :meth:`TimeAggregate.dict` and :meth:`TimeValue.dict` have been depr
 Use the individual fields instead.
 The using code has more context and should know better which fields to include.
 In particular, whether to use :attr:`TimeAggregate.mean_sum` or :meth:`TimeAggregate.mean_integral` and which :attr:`TimeValue.timestamp` type to use.
+
+Renaming of setup.py options
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The user option ``out-dir`` has been renamed to ``package-dir``.
