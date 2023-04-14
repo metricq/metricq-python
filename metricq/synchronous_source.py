@@ -83,7 +83,7 @@ class SynchronousSource:
     """
     This is a :term:`Source` that can be used in a synchronous context.
     It spawns a new thread and runs an asynchronous :class:`Source` in it.
-    Therefore, it this class does not actually derive from :class:`Source`.
+    Therefore, this class does not actually derive from :class:`Source`.
 
     All parameters are passed to `Source.__init__`.
     """
@@ -147,7 +147,7 @@ class SynchronousSource:
 
     def declare_metrics(
         self,
-        metrics: Mapping[str, MetadataDict],
+        metrics: Mapping[Metric, MetadataDict],
         block: bool = True,
         timeout: float = 60,
     ) -> None:
@@ -180,7 +180,7 @@ class SynchronousSource:
         Args:
             timeout: timeout in seconds
 
-        Returns:
+        Raises:
             TimeoutError: in case of timeout
         """
 

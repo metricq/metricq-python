@@ -7,5 +7,6 @@ Sink
         subscribe,
         on_data,
 
+----
 
 .. autoclass:: metricq.DurableSink
