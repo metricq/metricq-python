@@ -31,7 +31,16 @@ Time-value pairs and aggregates
 
 .. autoclass:: TimeAggregate
     :members:
+    :undoc-members:
     :member-order: bysource
+
+Helper types
+------------
+
+.. autoclass:: Metric
+
+.. autoclass:: JsonDict
+
 
 RPC handling
 ------------

@@ -50,6 +50,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#defining-a-new-sink-using-metricq-sink">Defining a new Sink: using <code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#running-a-sink">Running a Sink</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#complete-example">Complete example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#durable-persistent-sinks">Durable / persistent sinks</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="source.html">Building a MetricQ Source</a></li>
@@ -299,6 +300,17 @@ Running this script, you should now see something like this appearing on standar
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">source</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="durable-persistent-sinks">
+<h2>Durable / persistent sinks<a class="headerlink" href="#durable-persistent-sinks" title="Permalink to this heading"></a></h2>
+<p>Most sinks are transient and not unique and do not have a configuration.
+To create persistent sink with a configuration, subclass <a class="reference internal" href="../api/sink.html#metricq.DurableSink" title="metricq.DurableSink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.DurableSink</span></code></a> instead of <a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a>.
+Further, you need to implement an RPC handler for <cite>config</cite>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@metricq</span><span class="o">.</span><span class="n">rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="o">...</span>
 </pre></div>
 </div>
 </section>

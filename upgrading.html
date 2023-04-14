@@ -68,6 +68,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#removal-of-asyncio-loop">Removal of Asyncio Loop</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#x-5-0"><cite>4.x</cite> → <cite>5.0</cite></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#removing-internal-types-module">Removing internal types module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deprecation-of-dict-methods">Deprecation of <cite>dict</cite> methods</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
@@ -215,8 +220,31 @@ this Python version.</p>
 <section id="removal-of-asyncio-loop">
 <h3>Removal of Asyncio Loop<a class="headerlink" href="#removal-of-asyncio-loop" title="Permalink to this heading"></a></h3>
 <p>Python 3.10 removed the loop parameter from the asyncio interface. In particular, the
-constructor parameter <cite>event_loop</cite> of <code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code> got removed, as well as,
-the property <code class="xref py py-attr docutils literal notranslate"><span class="pre">Agent.event_loop</span></code>.</p>
+constructor parameter <cite>event_loop</cite> of <a class="reference internal" href="api/client-common.html#metricq.Agent" title="metricq.Agent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code></a> got removed, as well as,
+the property <cite>Agent.event_loop</cite>.</p>
+</section>
+</section>
+<section id="x-5-0">
+<h2><cite>4.x</cite> → <cite>5.0</cite><a class="headerlink" href="#x-5-0" title="Permalink to this heading"></a></h2>
+<section id="removing-internal-types-module">
+<h3>Removing internal types module<a class="headerlink" href="#removing-internal-types-module" title="Permalink to this heading"></a></h3>
+<p>The module <cite>metricq.types</cite> has been removed.
+If you have imported types from it directly you should change to import directly from the primary <cite>metricq</cite> package.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/misc.html#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/misc.html#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/misc.html#metricq.TimeValue" title="metricq.TimeValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeValue</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/misc.html#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/misc.html#metricq.Metric" title="metricq.Metric"><code class="xref py py-class docutils literal notranslate"><span class="pre">Metric</span></code></a> (available in <cite>metricq</cite> since <cite>5.0</cite>)</p></li>
+<li><p><a class="reference internal" href="api/misc.html#metricq.JsonDict" title="metricq.JsonDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">JsonDict</span></code></a> (available in <cite>metricq</cite> since <cite>5.0</cite>)</p></li>
+</ul>
+</section>
+<section id="deprecation-of-dict-methods">
+<h3>Deprecation of <cite>dict</cite> methods<a class="headerlink" href="#deprecation-of-dict-methods" title="Permalink to this heading"></a></h3>
+<p>The methods <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.dict" title="metricq.TimeAggregate.dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TimeAggregate.dict()</span></code></a> and <a class="reference internal" href="api/misc.html#metricq.TimeValue.dict" title="metricq.TimeValue.dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TimeValue.dict()</span></code></a> have been deprecated.
+Use the individual fields instead.
+The using code has more context and should know better which fields to include.
+In particular, whether to use <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.mean_sum" title="metricq.TimeAggregate.mean_sum"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.mean_sum</span></code></a> or <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.mean_integral" title="metricq.TimeAggregate.mean_integral"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TimeAggregate.mean_integral()</span></code></a> and which <a class="reference internal" href="api/misc.html#metricq.TimeValue.timestamp" title="metricq.TimeValue.timestamp"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeValue.timestamp</span></code></a> type to use.</p>
 </section>
 </section>
 </section>

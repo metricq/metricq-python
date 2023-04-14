@@ -63,7 +63,23 @@
 <li class="toctree-l4"><a class="reference internal" href="#metricq.Client.stopped"><code class="docutils literal notranslate"><span class="pre">Client.stopped()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#metricq.Agent.rpc"><code class="docutils literal notranslate"><span class="pre">Agent.rpc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#metricq.DataClient"><code class="docutils literal notranslate"><span class="pre">DataClient</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.DataClient.data_config"><code class="docutils literal notranslate"><span class="pre">DataClient.data_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.DataClient.stop"><code class="docutils literal notranslate"><span class="pre">DataClient.stop()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#metricq.Agent"><code class="docutils literal notranslate"><span class="pre">Agent</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Agent._on_management_message"><code class="docutils literal notranslate"><span class="pre">Agent._on_management_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Agent.connect"><code class="docutils literal notranslate"><span class="pre">Agent.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Agent.derive_address"><code class="docutils literal notranslate"><span class="pre">Agent.derive_address()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Agent.on_signal"><code class="docutils literal notranslate"><span class="pre">Agent.on_signal()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Agent.rpc"><code class="docutils literal notranslate"><span class="pre">Agent.rpc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Agent.rpc_consume"><code class="docutils literal notranslate"><span class="pre">Agent.rpc_consume()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Agent.run"><code class="docutils literal notranslate"><span class="pre">Agent.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Agent.stop"><code class="docutils literal notranslate"><span class="pre">Agent.stop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Agent.stopped"><code class="docutils literal notranslate"><span class="pre">Agent.stopped()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
@@ -286,10 +302,104 @@ how to retrieve this exception.</p>
 </dd></dl>
 
 <hr class="docutils" />
-<p>The following method is not part of the public API, but is included for reference:</p>
+<p><a class="reference internal" href="sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a> and <a class="reference internal" href="source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a> implementations further inherit from <a class="reference internal" href="#metricq.DataClient" title="metricq.DataClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataClient</span></code></a>.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="metricq.DataClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">DataClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.DataClient" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="metricq.DataClient.data_config">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">data_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataServerAddress</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.DataClient.data_config" title="Permalink to this definition"></a></dt>
+<dd><p>This method is a registered RPC handler, do not call this in child classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.DataClient.stop">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.DataClient.stop" title="Permalink to this definition"></a></dt>
+<dd><p>Stops the data connection and uses the underlying <a class="reference internal" href="#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.stop()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<hr class="docutils" />
+<p>The Agent base class is not used directly, but referenced in the documentation of other classes.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="metricq.Agent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">Agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">management_url</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection_timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_uuid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Agent" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="metricq.Agent._on_management_message">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">_on_management_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Agent._on_management_message" title="Permalink to this definition"></a></dt>
+<dd><p>Callback invoked when a message is received.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>message</strong> : <a class="reference external" href="https://aio-pika.readthedocs.io/en/latest/apidoc.html#aio_pika.IncomingMessage" title="(in aio-pika v9.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IncomingMessage</span></code></a></dt><dd><p>Either an RPC request or an RPC response.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="exceptions.html#metricq.exceptions.PublishFailed" title="metricq.exceptions.PublishFailed"><strong>PublishFailed</strong></a> – The reply could not be published.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.Agent.connect">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Agent.connect" title="Permalink to this definition"></a></dt>
+<dd><p>Connect to the MetricQ network</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.Agent.derive_address">
+<span class="sig-name descname"><span class="pre">derive_address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Agent.derive_address" title="Permalink to this definition"></a></dt>
+<dd><p>Add the credentials from the management connection to the provided address</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.Agent.on_signal">
+<span class="sig-name descname"><span class="pre">on_signal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Agent.on_signal" title="Permalink to this definition"></a></dt>
+<dd><p>Callback invoked when a signal is received.</p>
+<p>Override this method for custom signal handling.
+By default, it schedules the Client to stop by calling <a class="reference internal" href="#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>signal</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>Name of the signal that occurred, e.g. <code class="code docutils literal notranslate"><span class="pre">&quot;SIGTERM&quot;</span></code>,
+<code class="code docutils literal notranslate"><span class="pre">&quot;SIGINT&quot;</span></code>, etc.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Agent.rpc">
-<em class="property"><span class="pre">await</span> </em><span class="sig-prename descclassname"><span class="pre">Agent.</span></span><span class="sig-name descname"><span class="pre">rpc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exchange</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">routing_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup_on_response</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Agent.rpc" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">rpc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exchange</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">routing_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup_on_response</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Agent.rpc" title="Permalink to this definition"></a></dt>
 <dd><p>Invoke an RPC over the network.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -341,6 +451,96 @@ otherwise a <a class="reference external" href="https://docs.python.org/3/librar
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.Agent.rpc_consume">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">rpc_consume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_queues</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Agent.rpc_consume" title="Permalink to this definition"></a></dt>
+<dd><p>Start consuming RPCs</p>
+<dl class="field-list simple">
+</dl>
+<p>Typically, this is called at the end of <a class="reference internal" href="#metricq.Client.connect" title="metricq.Client.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Client.connect()</span></code></a> once the
+Agent is prepared to handle RPCs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>extra_queues</strong> : <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://aio-pika.readthedocs.io/en/latest/apidoc.html#aio_pika.Queue" title="(in aio-pika v9.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Queue</span></code></a>] (default: <code class="docutils literal notranslate"><span class="pre">[]</span></code>)</dt><dd><p>additional queues on which to receive RPCs</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.Agent.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">catch_signals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('SIGINT',</span> <span class="pre">'SIGTERM')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cancel_on_exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Agent.run" title="Permalink to this definition"></a></dt>
+<dd><p>Run an Agent by calling <a class="reference internal" href="#metricq.Agent.connect" title="metricq.Agent.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> and waiting for it to be stopped via <a class="reference internal" href="#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>.</p>
+<p>If <a class="reference internal" href="#metricq.Agent.connect" title="metricq.Agent.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> raises an exception, <a class="reference internal" href="exceptions.html#metricq.exceptions.ConnectFailed" title="metricq.exceptions.ConnectFailed"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ConnectFailed</span></code></a> is
+raised, with the offending exception attached as a cause.  Any
+exception passed to <a class="reference internal" href="#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a> is reraised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>catch_signals</strong> : <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>] (default: <code class="docutils literal notranslate"><span class="pre">('SIGINT',</span> <span class="pre">'SIGTERM')</span></code>)</dt><dd><p>Call <a class="reference internal" href="#metricq.Agent.on_signal" title="metricq.Agent.on_signal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on_signal()</span></code></a> if any of these signals were raised.</p>
+</dd>
+<dt><strong>cancel_on_exception</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</dt><dd><p>Stop the running Agent when an unhandled exception occurs.
+The exception is reraised from this method.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="exceptions.html#metricq.exceptions.ConnectFailed" title="metricq.exceptions.ConnectFailed"><strong>ConnectFailed</strong></a> – Failed to <a class="reference internal" href="#metricq.Agent.connect" title="metricq.Agent.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> to the MetricQ network.
+    The source exception is attached as a cause.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.11)"><strong>Exception</strong></a> – Any exception passed to <a class="reference internal" href="#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.Agent.stop">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Agent.stop" title="Permalink to this definition"></a></dt>
+<dd><p>Stop a running Agent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>exception</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a>]</span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</dt><dd><p>An optional exception that will be raised by <a class="reference internal" href="#metricq.Agent.run" title="metricq.Agent.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a> if given.
+If the Agent was not started from <a class="reference internal" href="#metricq.Agent.run" title="metricq.Agent.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run()</span></code></a>, see <a class="reference internal" href="#metricq.Agent.stopped" title="metricq.Agent.stopped"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stopped()</span></code></a>
+how to retrieve this exception.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.Agent.stopped">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">stopped</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Agent.stopped" title="Permalink to this definition"></a></dt>
+<dd><p>Wait for this Agent to stop.</p>
+<p>If the agent stopped unexpectedly, this method raises an exception.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="exceptions.html#metricq.exceptions.AgentStopped" title="metricq.exceptions.AgentStopped"><strong>AgentStopped</strong></a> – The Agent was stopped via <a class="reference internal" href="#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a> and an exception was passed.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.11)"><strong>Exception</strong></a> – The Agent encountered any other unhandled exception.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>

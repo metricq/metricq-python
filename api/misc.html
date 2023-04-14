@@ -68,6 +68,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#metricq.TimeAggregate"><code class="docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#helper-types">Helper types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Metric"><code class="docutils literal notranslate"><span class="pre">Metric</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.JsonDict"><code class="docutils literal notranslate"><span class="pre">JsonDict</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#rpc-handling">RPC handling</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#metricq.rpc_handler"><code class="docutils literal notranslate"><span class="pre">rpc_handler</span></code></a></li>
 </ul>
@@ -135,12 +140,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>delta</strong> : <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></dt><dd><p>a time duration, possibly negative</p>
+<dt><strong>delta</strong> : <a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></dt><dd><p>a time duration, possibly negative</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
@@ -186,7 +191,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>other</strong> : <a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></dt><dd><p>another timestamp</p>
+<dt><strong>other</strong> : <a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></dt><dd><p>another timestamp</p>
 </dd>
 </dl>
 </dd>
@@ -221,12 +226,12 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>delta</strong> : <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></dt><dd><p>the time difference to now</p>
+<dt><strong>delta</strong> : <a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></dt><dd><p>the time difference to now</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -245,7 +250,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 datetime object, consider using <a class="reference internal" href="#metricq.Timestamp.from_local_datetime" title="metricq.Timestamp.from_local_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_local_datetime()</span></code></a> instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -282,7 +287,7 @@ timezone specifier.</p>
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -299,7 +304,7 @@ ambiguous during daylight savings time adjustments.
 If you have to use this function, your workflow is probably broken.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -315,12 +320,12 @@ If you have to use this function, your workflow is probably broken.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>delta</strong> : <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></dt><dd><p>the time difference to now</p>
+<dt><strong>delta</strong> : <a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></dt><dd><p>the time difference to now</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -337,7 +342,7 @@ If you have to use this function, your workflow is probably broken.</p>
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
@@ -351,7 +356,7 @@ If you have to use this function, your workflow is probably broken.</p>
 <dd><p>Return a Timestamp corresponding to “now”</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></p>
@@ -505,7 +510,7 @@ See <a class="reference internal" href="#metricq.Timedelta.__floordiv__" title="
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">td</span> <span class="o">=</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">td</span><span class="o">.</span><span class="n">s</span>
 <span class="go">3.333333333</span>
-<span class="go">:rtype: :py:class:`~metricq.Timedelta`</span>
+<span class="go">:rtype: :py:class:`~metricq.timeseries.timedelta.Timedelta`</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">td</span><span class="o">.</span><span class="n">precise_string</span>
@@ -532,7 +537,7 @@ Use <a class="reference internal" href="#metricq.Timedelta.__truediv__" title="m
 <dd><p>Scale a duration by a <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> factor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -558,7 +563,7 @@ Use <a class="reference internal" href="#metricq.Timedelta.__truediv__" title="m
 <dd><p>Divide a duration by a (floating point) factor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
 </dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.5</span><span class="p">)</span><span class="o">.</span><span class="n">precise_string</span>
@@ -591,7 +596,7 @@ this will prevent rounding errors.</p>
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> object</p>
@@ -611,7 +616,7 @@ this will prevent rounding errors.</p>
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> object</p>
@@ -677,7 +682,7 @@ Accepted units are:</p>
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The parsed <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> object</p>
@@ -700,7 +705,7 @@ Accepted units are:</p>
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> object</p>
@@ -720,7 +725,7 @@ Accepted units are:</p>
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> object</p>
@@ -776,17 +781,17 @@ Accepted units are:</p>
 <dt class="sig sig-object py" id="metricq.TimeValue.dict">
 <span class="sig-name descname"><span class="pre">dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeValue.dict" title="Permalink to this definition"></a></dt>
 <dd><p>returns a dict representing the TimeValue instance.
-Keys are <cite>timestamp</cite> and <cite>value</cite></p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metricq.TimeValue.dict" title="metricq.TimeValue.dict"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
-</dd>
-</dl>
+Keys are <cite>timestamp</cite> and <cite>value</cite>
+:rtype: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 5.0.0: </span>Use the individual properties instead and select an appropriate
+timestamp type.</p>
+</div>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.TimeValue.timestamp">
-<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></em><a class="headerlink" href="#metricq.TimeValue.timestamp" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></em><a class="headerlink" href="#metricq.TimeValue.timestamp" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -802,7 +807,7 @@ Keys are <cite>timestamp</cite> and <cite>value</cite></p>
 <dd><p>Summary of a metric’s values within a certain period of time.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.timestamp">
-<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></em><a class="headerlink" href="#metricq.TimeAggregate.timestamp" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></em><a class="headerlink" href="#metricq.TimeAggregate.timestamp" title="Permalink to this definition"></a></dt>
 <dd><p>starting time of this aggregate</p>
 </dd></dl>
 
@@ -838,8 +843,28 @@ Keys are <cite>timestamp</cite> and <cite>value</cite></p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.active_time">
-<span class="sig-name descname"><span class="pre">active_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></em><a class="headerlink" href="#metricq.TimeAggregate.active_time" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">active_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></em><a class="headerlink" href="#metricq.TimeAggregate.active_time" title="Permalink to this definition"></a></dt>
 <dd><p>time spanned by this aggregate</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.TimeAggregate.from_proto">
+<em class="property"><span class="pre">staticmethod</span> </em><span class="sig-name descname"><span class="pre">from_proto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate.from_proto" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#metricq.TimeAggregate" title="metricq.timeseries.time_aggregate.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.TimeAggregate.from_value">
+<em class="property"><span class="pre">staticmethod</span> </em><span class="sig-name descname"><span class="pre">from_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate.from_value" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#metricq.TimeAggregate" title="metricq.timeseries.time_aggregate.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -851,7 +876,7 @@ Keys are <cite>timestamp</cite> and <cite>value</cite></p>
 <dd class="field-odd"><p><a class="reference internal" href="exceptions.html#metricq.exceptions.NonMonotonicTimestamps" title="metricq.exceptions.NonMonotonicTimestamps"><strong>NonMonotonicTimestamps</strong></a> – if the two timestamps are not strictly monotonic</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a></p>
+<dd class="field-even"><p><a class="reference internal" href="#metricq.TimeAggregate" title="metricq.timeseries.time_aggregate.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -862,18 +887,64 @@ Keys are <cite>timestamp</cite> and <cite>value</cite></p>
 <dd><p>Integral of values in this aggregate over its active time, seconds-based</p>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="metricq.TimeAggregate.mean">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mean</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.TimeAggregate.mean" title="Permalink to this definition"></a></dt>
+<dd><p>Mean value of this aggregate.
+This is the general way to access the mean value if nothing specific
+is known about the underlying raw data.</p>
+<p>It may involve a heuristic to decide between <a class="reference internal" href="#metricq.TimeAggregate.mean_integral" title="metricq.TimeAggregate.mean_integral"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mean_integral</span></code></a> and
+<a class="reference internal" href="#metricq.TimeAggregate.mean_sum" title="metricq.TimeAggregate.mean_sum"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mean_sum</span></code></a>. Currently, it defaults to <a class="reference internal" href="#metricq.TimeAggregate.mean_integral" title="metricq.TimeAggregate.mean_integral"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mean_integral</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="metricq.TimeAggregate.mean_integral">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mean_integral</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.TimeAggregate.mean_integral" title="Permalink to this definition"></a></dt>
+<dd><p>Mean value of this aggregate, calculated from the integral.
+Use this if you want to explicitly force this property.</p>
+<p>In the HTA context, this should only be <cite>NaN</cite> if the aggregate interval
+is outside the of the interval from the earliest to the latest
+measurement point.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="metricq.TimeAggregate.mean_sum">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mean_sum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.TimeAggregate.mean_sum" title="Permalink to this definition"></a></dt>
+<dd><p>Mean value of this aggregate, calculated from the sum.
+This can be useful when the underlying metric should be at regular
+intervals, but there are gaps in the data. Otherwise,
+<a class="reference internal" href="#metricq.TimeAggregate.mean_integral" title="metricq.TimeAggregate.mean_integral"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mean_integral</span></code></a> or just <a class="reference internal" href="#metricq.TimeAggregate.mean" title="metricq.TimeAggregate.mean"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mean</span></code></a> are more appropriate.</p>
+<p>This value will be <cite>NaN</cite> if there are no raw data points in the
+aggregate interval.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.dict">
 <span class="sig-name descname"><span class="pre">dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate.dict" title="Permalink to this definition"></a></dt>
 <dd><p>returns a dict representing the TimeAggregate instance.
-Keys are <cite>timestamp</cite>, <cite>minimum</cite>, <cite>mean</cite>, <cite>maximum</cite>, and <cite>count</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metricq.TimeAggregate.dict" title="metricq.TimeAggregate.dict"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
-</dd>
-</dl>
+Keys are <cite>timestamp</cite>, <cite>minimum</cite>, <cite>mean</cite>, <cite>maximum</cite>, and <cite>count</cite>.
+:rtype: <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 5.0.0: </span>Use the individual properties instead and chose between
+<cite>mean_integral</cite> and <cite>mean_sum</cite> based on your use-case</p>
+</div>
 </dd></dl>
 
+</dd></dl>
+
+</section>
+<section id="helper-types">
+<h2>Helper types<a class="headerlink" href="#helper-types" title="Permalink to this heading"></a></h2>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metricq.Metric">
+<span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">Metric</span></span><a class="headerlink" href="#metricq.Metric" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metricq.JsonDict">
+<span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">JsonDict</span></span><a class="headerlink" href="#metricq.JsonDict" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
 </dd></dl>
 
 </section>

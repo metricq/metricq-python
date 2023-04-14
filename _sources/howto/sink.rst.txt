@@ -148,3 +148,16 @@ and run it like so:
 ----
 
 .. literalinclude:: /../examples/metricq_sink.py
+
+Durable / persistent sinks
+--------------------------
+
+Most sinks are transient and not unique and do not have a configuration.
+To create persistent sink with a configuration, subclass :class:`metricq.DurableSink` instead of :class:`metricq.Sink`.
+Further, you need to implement an RPC handler for `config`.
+
+.. code-block:: python
+
+        @metricq.rpc_handler("config")
+        async def _on_config(self, **config: Any):
+            ...

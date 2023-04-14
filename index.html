@@ -85,6 +85,7 @@
 <li class="toctree-l3"><a class="reference internal" href="howto/sink.html#defining-a-new-sink-using-metricq-sink">Defining a new Sink: using <code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="howto/sink.html#running-a-sink">Running a Sink</a></li>
 <li class="toctree-l3"><a class="reference internal" href="howto/sink.html#complete-example">Complete example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="howto/sink.html#durable-persistent-sinks">Durable / persistent sinks</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="howto/source.html">Building a MetricQ Source</a><ul>
@@ -126,11 +127,13 @@
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/sink.html">Sink</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/sink.html#metricq.Sink"><code class="docutils literal notranslate"><span class="pre">Sink</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sink.html#metricq.DurableSink"><code class="docutils literal notranslate"><span class="pre">DurableSink</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/source.html">Source</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/source.html#metricq.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/source.html#metricq.IntervalSource"><code class="docutils literal notranslate"><span class="pre">IntervalSource</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/source.html#metricq.SynchronousSource"><code class="docutils literal notranslate"><span class="pre">SynchronousSource</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/history-client.html">History Client</a><ul>
@@ -151,7 +154,8 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/client-common.html">Common client operation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/client-common.html#metricq.Client"><code class="docutils literal notranslate"><span class="pre">Client</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/client-common.html#metricq.Agent.rpc"><code class="docutils literal notranslate"><span class="pre">Agent.rpc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client-common.html#metricq.DataClient"><code class="docutils literal notranslate"><span class="pre">DataClient</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client-common.html#metricq.Agent"><code class="docutils literal notranslate"><span class="pre">Agent</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="api/exceptions.html">Exceptions</a><ul>
@@ -172,6 +176,7 @@
 <li class="toctree-l3"><a class="reference internal" href="api/misc.html#timestamps">Timestamps</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/misc.html#timedeltas-durations">Timedeltas (Durations)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/misc.html#time-value-pairs-and-aggregates">Time-value pairs and aggregates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/misc.html#helper-types">Helper types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/misc.html#rpc-handling">RPC handling</a></li>
 </ul>
 </li>
@@ -200,6 +205,11 @@
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#x-4-0"><cite>3.x</cite> → <cite>4.0</cite></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="upgrading.html#dropping-support-for-older-python-versions">Dropping support for older Python versions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="upgrading.html#removal-of-asyncio-loop">Removal of Asyncio Loop</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#x-5-0"><cite>4.x</cite> → <cite>5.0</cite></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="upgrading.html#removing-internal-types-module">Removing internal types module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="upgrading.html#deprecation-of-dict-methods">Deprecation of <cite>dict</cite> methods</a></li>
 </ul>
 </li>
 </ul>

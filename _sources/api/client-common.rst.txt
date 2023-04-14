@@ -14,6 +14,16 @@ or :meth:`connect<Client.connect>` to the MetricQ network if you derive a custom
 
 ----
 
-The following method is not part of the public API, but is included for reference:
+:class:`Sink` and :class:`Source` implementations further inherit from :class:`DataClient`.
 
-.. automethod:: metricq.Agent.rpc
+.. autoclass:: metricq.DataClient
+    :members:
+    :private-members:
+
+----
+
+The Agent base class is not used directly, but referenced in the documentation of other classes.
+
+.. autoclass:: metricq.Agent
+    :members:
+    :private-members:

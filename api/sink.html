@@ -54,6 +54,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#metricq.Sink.subscribe"><code class="docutils literal notranslate"><span class="pre">Sink.subscribe()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#metricq.DurableSink"><code class="docutils literal notranslate"><span class="pre">DurableSink</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="source.html">Source</a></li>
@@ -132,7 +133,7 @@ This is useful to distinguish different instances of the same Sink.</p>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>metric</strong> : <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></dt><dd><p>name of the metric for which a new data point arrived</p>
 </dd>
-<dt><strong>timestamp</strong> : <a class="reference internal" href="misc.html#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></dt><dd><p>timepoint at which this metric was measured</p>
+<dt><strong>timestamp</strong> : <a class="reference internal" href="misc.html#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></dt><dd><p>timepoint at which this metric was measured</p>
 </dd>
 <dt><strong>value</strong> : <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></dt><dd><p>value of the metric at time of measurement</p>
 </dd>
@@ -155,7 +156,7 @@ This is useful to distinguish different instances of the same Sink.</p>
 </dd>
 <dt><strong>expires</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</dt><dd><p>queue expiration time in seconds</p>
 </dd>
-<dt><strong>metadata</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</dt><dd><p>whether to return metric metadata in the response, defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+<dt><strong>metadata</strong> : <span class="annotation terse"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a> | <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span><span class="annotation full"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</dt><dd><p>whether to return metric metadata in the response, defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code> as per the RPC spec</p>
 </dd>
 </dl>
 </dd>
@@ -168,6 +169,20 @@ This is useful to distinguish different instances of the same Sink.</p>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py class">
+<dt class="sig sig-object py" id="metricq.DurableSink">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">DurableSink</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.DurableSink" title="Permalink to this definition"></a></dt>
+<dd><p>A base class for user-defined <a class="reference internal" href="../glossary.html#term-Sink"><span class="xref std std-term">Sinks</span></a> that uses a configuration.
+General <a class="reference internal" href="#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a> implementations are transient and therefore do not register as
+unique agents with a configuration. This implementation does call the
+<cite>sink.register</cite> RPC and receives a configuration in response that is passed
+to the <cite>config</cite> rpc handler.</p>
+<p>See <a class="reference internal" href="#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a> for the general API.</p>
+<p>Constructor arguments are passed to <a class="reference internal" href="#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sink</span></code></a>.
+However, <code class="docutils literal notranslate"><span class="pre">add_uuid</span></code> is not supported and always <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </dd></dl>
 
 </section>
