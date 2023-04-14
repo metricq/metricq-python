@@ -118,8 +118,9 @@ class TimeAggregate:
         Mean value of this aggregate, calculated from the integral.
         Use this if you want to explicitly force this property.
 
-        This should only be `NaN` if the aggregate interval is outside the
-        measured time.
+        In the HTA context, this should only be `NaN` if the aggregate interval
+        is outside the of the interval from the earliest to the latest
+        measurement point.
         """
         return self.integral_ns / self.active_time.ns
 

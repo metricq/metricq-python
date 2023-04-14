@@ -154,7 +154,7 @@ Durable / persistent sinks
 
 Most sinks are transient and not unique and do not have a configuration.
 To create persistent sink with a configuration, subclass :class:`metricq.DurableSink` instead of :class:`metricq.Sink`.
-Further, you need to implement a RPC handler for `config`.
+Further, you need to implement an RPC handler for `config`.
 
 .. code-block:: python
 
