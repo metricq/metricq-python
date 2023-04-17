@@ -15,6 +15,7 @@
 
 **Fixed bugs:**
 
+- Reading protobuf requirement from version file in setup.py doesn't actually work [\#162](https://github.com/metricq/metricq-python/issues/162)
 - Tests fail with recent protobuf versions [\#151](https://github.com/metricq/metricq-python/issues/151)
 - protobuf version requirement is broken [\#143](https://github.com/metricq/metricq-python/issues/143)
 - Agents using the `IntervalSource` might enter a zombie state [\#134](https://github.com/metricq/metricq-python/issues/134)
@@ -22,6 +23,7 @@
 **Closed issues:**
 
 - Migrate to GitHub container registry [\#158](https://github.com/metricq/metricq-python/issues/158)
+- Update the migration guide in the documentation [\#157](https://github.com/metricq/metricq-python/issues/157)
 - top level module "types" clashes with mypy [\#154](https://github.com/metricq/metricq-python/issues/154)
 - black/ci is broken [\#145](https://github.com/metricq/metricq-python/issues/145)
 - Incorrect iso8601 timestamp string parsing [\#141](https://github.com/metricq/metricq-python/issues/141)
@@ -29,6 +31,8 @@
 
 **Merged pull requests:**
 
+- Read protobuf version directly in setup.py [\#163](https://github.com/metricq/metricq-python/pull/163) ([tilsche](https://github.com/tilsche))
+- Documentation spring cleanup [\#161](https://github.com/metricq/metricq-python/pull/161) ([tilsche](https://github.com/tilsche))
 - Migrate docker workflow to ghcr.io [\#159](https://github.com/metricq/metricq-python/pull/159) ([kinnarr](https://github.com/kinnarr))
 - Typing cleanup [\#156](https://github.com/metricq/metricq-python/pull/156) ([tilsche](https://github.com/tilsche))
 - refactor: improve error message when parsing ISO 8601 [\#153](https://github.com/metricq/metricq-python/pull/153) ([tilsche](https://github.com/tilsche))
