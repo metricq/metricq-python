@@ -21,7 +21,7 @@ from distutils.errors import DistutilsFileError
 from distutils.log import ERROR, INFO
 from distutils.spawn import find_executable
 from operator import itemgetter
-from typing import Iterable, Optional
+from typing import Any, Iterable, Optional, cast
 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logger = logging.getLogger()
@@ -51,7 +51,7 @@ class ProtocWrapper:
     _executable: str | None
     _version: tuple[int, int, int] | None
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._executable = self._find_protoc()
         if self._executable:
             self._version = self._get_protoc_version(self._executable)
@@ -150,6 +150,7 @@ def get_protobuf_requirement_from_module() -> Optional[str]:
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         requirement = module._protobuf_requirement
+        assert isinstance(requirement, str)
         logger.info(f"read protobuf requirement from module: {requirement}")
         return requirement
     except Exception as e:  # who knows what could go wrong
@@ -168,7 +169,7 @@ def get_protobuf_requirement() -> str:
     return get_protobuf_requirement_from_protoc()
 
 
-def init_submodule(path: str):
+def init_submodule(path: str) -> None:
     try:
         subprocess.check_call(["git", "submodule", "update", "--init", path])
     except subprocess.CalledProcessError as e:
@@ -212,10 +213,10 @@ class BuildProtobuf(Command):
         if self.proto_dir is None:
             self.proto_dir = "lib/metricq-protobuf/"
 
-    def info(self, msg):
+    def info(self, msg: str) -> None:
         self.announce(f"info: {type(self).__name__}: {msg}", level=INFO)
 
-    def error(self, msg):
+    def error(self, msg: str) -> None:
         self.announce(f"error: {type(self).__name__}: {msg}", level=ERROR)
 
     @property
@@ -306,7 +307,8 @@ class BuildProtobuf(Command):
                 ]
             )
 
-    def run(self):
+    def run(self) -> None:
+        assert self.proto_dir is not None
         init_submodule(self.proto_dir)
 
         if not self._need_update_files:
@@ -331,9 +333,9 @@ class ProtoBuildPy(build_py):
 
 
 class ProtoDevelop(develop):
-    def run(self):
+    def run(self, *args: Any, **kwargs: Any) -> None:
         self.run_command("build_py")
-        super().run()
+        super().run(*args, **kwargs)
 
 
 # For all other setuptools options, see setup.cfg
