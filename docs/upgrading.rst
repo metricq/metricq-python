@@ -157,6 +157,13 @@ Use the individual fields instead.
 The using code has more context and should know better which fields to include.
 In particular, whether to use :attr:`TimeAggregate.mean_sum` or :meth:`TimeAggregate.mean_integral` and which :attr:`TimeValue.timestamp` type to use.
 
+Internal Agent changes
+^^^^^^^^^^^^^^^^^^^^^^
+
+Some methods in :class:`Agent` have changed to reflect new ``aio_pika`` typing.
+The parameter `connection_name` of :meth:`Agent.make_connection` is now required.
+This should not affect any user code.
+
 Renaming of setup.py options
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

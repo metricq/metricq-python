@@ -34,7 +34,6 @@ from collections.abc import Mapping
 from typing import Any, Optional, cast
 
 import aio_pika
-from aiormq import ChannelInvalidStateError
 
 from .data_client import DataClient
 from .datachunk_pb2 import DataChunk
@@ -248,7 +247,7 @@ class Source(DataClient):
             # TOC/TOU hazard: by the time we publish, the data connection might
             # be gone again, even if we waited for it to be established before.
             await self.data_exchange.publish(msg, routing_key=metric, mandatory=False)
-        except ChannelInvalidStateError as e:
+        except aio_pika.exceptions.ChannelInvalidStateError as e:
             # Trying to publish on a closed channel results in a ChannelInvalidStateError
             # from aiormq.  Let's wrap that in a more descriptive error.
             raise PublishFailed(

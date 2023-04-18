@@ -32,7 +32,6 @@ import asyncio
 import functools
 import json
 import signal
-import ssl
 import textwrap
 import threading
 import time
@@ -41,10 +40,9 @@ import uuid
 from collections.abc import Callable, Iterable, Mapping
 from contextlib import suppress
 from itertools import chain
-from typing import Any, Optional, TypeVar, cast
+from typing import Any, Optional, TypeVar
 
 import aio_pika
-from aio_pika.exceptions import ChannelInvalidStateError
 from yarl import URL
 
 from .connection_watchdog import ConnectionWatchdog
@@ -91,7 +89,9 @@ class Agent(RPCDispatcher):
         self._management_broadcast_exchange_name = "metricq.broadcast"
         self._management_exchange_name = "metricq.management"
 
-        self._management_connection: Optional[aio_pika.RobustConnection] = None
+        self._management_connection: Optional[
+            aio_pika.abc.AbstractRobustConnection
+        ] = None
         self._management_connection_watchdog = ConnectionWatchdog(
             on_timeout_callback=lambda watchdog: self._schedule_stop(
                 ReconnectTimeout(
@@ -101,12 +101,14 @@ class Agent(RPCDispatcher):
             timeout=connection_timeout,
             connection_name="management connection",
         )
-        self._management_channel: Optional[aio_pika.RobustChannel] = None
+        self._management_channel: Optional[aio_pika.abc.AbstractChannel] = None
 
-        self.management_rpc_queue: Optional[aio_pika.Queue] = None
+        self.management_rpc_queue: Optional[aio_pika.abc.AbstractQueue] = None
 
-        self._management_broadcast_exchange: Optional[aio_pika.Exchange] = None
-        self._management_exchange: Optional[aio_pika.Exchange] = None
+        self._management_broadcast_exchange: Optional[
+            aio_pika.abc.AbstractExchange
+        ] = None
+        self._management_exchange: Optional[aio_pika.abc.AbstractExchange] = None
 
         self._rpc_response_handlers: dict[
             str, tuple[Callable[..., None], bool]
@@ -145,34 +147,19 @@ class Agent(RPCDispatcher):
         return loop
 
     async def make_connection(
-        self, url: str, connection_name: Optional[str] = None
-    ) -> aio_pika.RobustConnection:
-        ssl_options = None
-
-        if url.startswith("amqps"):
-            ssl_options = {
-                "cert_reqs": ssl.CERT_REQUIRED,
-                "ssl_version": ssl.PROTOCOL_TLS | ssl.OP_NO_SSLv2 | ssl.OP_NO_SSLv3,
-            }
-
-        client_properties = None
-        if connection_name:
-            # TODO remove outer client_properties with aiormq >= 5.1.1
-            client_properties = {
-                "client_properties": {"connection_name": connection_name}
-            }
-
-        connection: aio_pika.RobustConnection = await aio_pika.connect_robust(
+        self, url: str, connection_name: str
+    ) -> aio_pika.abc.AbstractRobustConnection:
+        connection = await aio_pika.connect_robust(
             url,
             reconnect_interval=30,
-            ssl_options=cast(dict[Any, Any], ssl_options),
-            client_properties=cast(dict[Any, Any], client_properties),
+            ssl=url.startswith("amqps"),
+            client_properties={"connection_name": connection_name},
         )
 
         # How stupid that we can't easily add the handlers *before* actually connecting.
         # We could make our own RobustConnection object, but then we loose url parsing convenience
-        connection.add_reconnect_callback(self._on_reconnect)  # type: ignore
-        connection.add_close_callback(self._on_close)
+        connection.reconnect_callbacks.add(self._on_reconnect)
+        connection.close_callbacks.add(self._on_close)
 
         return connection
 
@@ -183,19 +170,15 @@ class Agent(RPCDispatcher):
             URL(self._management_url).with_password("***"),
         )
 
-        self._management_connection = await self.make_connection(
+        connection = await self.make_connection(
             self._management_url,
             connection_name="management connection {}".format(self.token),
         )
-        self._management_connection.add_close_callback(
-            self._on_management_connection_close
-        )
+        self._management_connection = connection
+        connection.close_callbacks.add(self._on_management_connection_close)
+        connection.reconnect_callbacks.add(self._on_management_connection_reconnect)
 
-        self._management_connection.add_reconnect_callback(
-            self._on_management_connection_reconnect  # type: ignore
-        )
-
-        self._management_channel = await self._management_connection.channel()
+        self._management_channel = await connection.channel()
         assert self._management_channel is not None
         self.management_rpc_queue = await self._management_channel.declare_queue(
             "{}-rpc".format(self.token), exclusive=True
@@ -277,7 +260,7 @@ class Agent(RPCDispatcher):
 
     async def rpc(
         self,
-        exchange: aio_pika.Exchange,
+        exchange: aio_pika.abc.AbstractExchange,
         routing_key: str,
         function: str,
         response_callback: Optional[Callable[..., None]] = None,
@@ -393,7 +376,7 @@ class Agent(RPCDispatcher):
 
         try:
             await exchange.publish(msg, routing_key=routing_key)
-        except ChannelInvalidStateError as e:
+        except aio_pika.exceptions.ChannelInvalidStateError as e:
             errmsg = (
                 f"Failed to issue RPC request '{function!r}' to exchange ''{exchange}'"
             )
@@ -542,10 +525,10 @@ class Agent(RPCDispatcher):
         logger.info("Closing management channel and connection...")
         await self._management_connection_watchdog.stop()
         if self._management_channel:
-            await self._management_channel.close()  # type: ignore
+            await self._management_channel.close()
             self._management_channel = None
         if self._management_connection:
-            await self._management_connection.close()  # type: ignore
+            await self._management_connection.close()
             self._management_connection = None
         self._management_broadcast_exchange = None
         self._management_exchange = None
@@ -553,7 +536,9 @@ class Agent(RPCDispatcher):
     def _make_correlation_id(self) -> str:
         return "metricq-rpc-py-{}-{}".format(self.token, uuid.uuid4().hex)
 
-    async def _on_management_message(self, message: aio_pika.IncomingMessage) -> None:
+    async def _on_management_message(
+        self, message: aio_pika.abc.AbstractIncomingMessage
+    ) -> None:
         """Callback invoked when a message is received.
 
         Args:
@@ -585,6 +570,12 @@ class Agent(RPCDispatcher):
             function = arguments.get("function")
             if function is not None:
                 logger.debug("message is an RPC")
+                if not message.reply_to:
+                    logger.warning(
+                        "RPC request from {} has no reply_to, ignoring",
+                        from_token,
+                    )
+                    return
                 try:
                     response = await self.rpc_dispatch(**arguments)
                 except Exception as e:
@@ -618,7 +609,7 @@ class Agent(RPCDispatcher):
                         ),
                         routing_key=message.reply_to,
                     )
-                except ChannelInvalidStateError as e:
+                except aio_pika.exceptions.ChannelInvalidStateError as e:
                     errmsg = (
                         "Failed to reply to '{message.reply_to}' for RPC '{function!r}'"
                     )
@@ -626,6 +617,12 @@ class Agent(RPCDispatcher):
                     raise PublishFailed(errmsg) from e
             else:
                 logger.debug("message is an RPC response")
+                if correlation_id is None:
+                    logger.error(
+                        "received RPC response from {} without correlation id, ignoring",
+                        from_token,
+                    )
+                    return
                 try:
                     handler, cleanup = self._rpc_response_handlers[correlation_id]
                 except KeyError:
@@ -651,7 +648,9 @@ class Agent(RPCDispatcher):
                 if r is not None:
                     await r
 
-    def _on_reconnect(self, sender: Any, connection: aio_pika.RobustConnection) -> None:
+    def _on_reconnect(
+        self, sender: Any, connection: aio_pika.abc.AbstractRobustConnection
+    ) -> None:
         logger.info("Reconnected to {}", connection)
 
     def _on_close(self, sender: Any, exception: Optional[BaseException]) -> None:
@@ -663,7 +662,7 @@ class Agent(RPCDispatcher):
         )
 
     def _on_management_connection_reconnect(
-        self, sender: Any, connection: aio_pika.RobustConnection
+        self, sender: Any, connection: aio_pika.abc.AbstractRobustConnection
     ) -> None:
         self._management_connection_watchdog.set_established()
 

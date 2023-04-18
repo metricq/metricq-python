@@ -36,7 +36,6 @@ from itertools import chain
 from typing import Any, Optional
 
 import aio_pika
-from aiormq import ChannelInvalidStateError
 
 from . import history_pb2
 from .client import Client, _GetMetricsResult
@@ -331,10 +330,10 @@ class HistoryClient(Client):
         super().__init__(*args, **kwargs)
 
         self.data_server_address: Optional[str] = None
-        self.history_connection: Optional[aio_pika.RobustConnection] = None
-        self.history_channel: Optional[aio_pika.RobustChannel] = None
-        self.history_exchange: Optional[aio_pika.Exchange] = None
-        self.history_response_queue: Optional[aio_pika.Queue] = None
+        self.history_connection: Optional[aio_pika.abc.AbstractRobustConnection] = None
+        self.history_channel: Optional[aio_pika.abc.AbstractRobustChannel] = None
+        self.history_exchange: Optional[aio_pika.abc.AbstractExchange] = None
+        self.history_response_queue: Optional[aio_pika.abc.AbstractQueue] = None
 
         self._history_connection_watchdog = ConnectionWatchdog(
             on_timeout_callback=lambda watchdog: self._schedule_stop(
@@ -362,14 +361,15 @@ class HistoryClient(Client):
             self.data_server_address,
             connection_name="history connection {}".format(self.token),
         )
-        self.history_connection.add_close_callback(self._on_history_connection_close)
-        self.history_connection.add_reconnect_callback(
-            self._on_history_connection_reconnect  # type: ignore
+        self.history_connection.close_callbacks.add(self._on_history_connection_close)
+        self.history_connection.reconnect_callbacks.add(
+            self._on_history_connection_reconnect
         )
 
-        self.history_channel = await self.history_connection.channel()
-        assert self.history_channel is not None
-        self.history_exchange = await self.history_channel.declare_exchange(
+        channel = await self.history_connection.channel()
+        assert isinstance(channel, aio_pika.abc.AbstractRobustChannel)
+        self.history_channel = channel
+        self.history_exchange = await channel.declare_exchange(
             name=response["historyExchange"], passive=True
         )
         await self._declare_history_queue(response["historyQueue"])
@@ -386,11 +386,11 @@ class HistoryClient(Client):
         logger.info("closing history channel and connection.")
         await self._history_connection_watchdog.stop()
         if self.history_channel:
-            await self.history_channel.close()  # type: ignore
+            await self.history_channel.close()
             self.history_channel = None
         if self.history_connection:
             # We need not pass anything as exception to this close. It will only hurt.
-            await self.history_connection.close()  # type: ignore
+            await self.history_connection.close()
             self.history_connection = None
         self.history_exchange = None
         await super().stop(exception)
@@ -477,7 +477,7 @@ class HistoryClient(Client):
             # TOC/TOU hazard: by the time we publish, the data connection might
             # be gone again, even if we waited for it to be established before.
             await self.history_exchange.publish(msg, routing_key=metric)
-        except ChannelInvalidStateError as e:
+        except aio_pika.exceptions.ChannelInvalidStateError as e:
             # Trying to publish on a closed channel results in a ChannelInvalidStateError
             # from aiormq.  Let's wrap that in a more descriptive error.
             raise PublishFailed(
@@ -664,7 +664,7 @@ class HistoryClient(Client):
         logger.info("received config {}", kwargs)
 
     async def _history_consume(
-        self, extra_queues: Iterable[aio_pika.Queue] = []
+        self, extra_queues: Iterable[aio_pika.abc.AbstractQueue] = []
     ) -> None:
         logger.info("starting history consume")
         assert self.history_response_queue is not None
@@ -673,12 +673,23 @@ class HistoryClient(Client):
             *[queue.consume(self._on_history_response) for queue in queues],
         )
 
-    async def _on_history_response(self, message: aio_pika.IncomingMessage) -> None:
+    async def _on_history_response(
+        self, message: aio_pika.abc.AbstractIncomingMessage
+    ) -> None:
         async with message.process(requeue=True):
             body = message.body
             from_token = message.app_id
             correlation_id = message.correlation_id
-            request_duration = float(message.headers.get("x-request-duration", "-1"))
+            if correlation_id is None:
+                logger.warning(
+                    "received history response with no correlation id from {}, ignoring",
+                    from_token,
+                )
+                return
+
+            request_duration_str = message.headers.get("x-request-duration", "-1")
+            assert isinstance(request_duration_str, (str, int, float))
+            request_duration = float(request_duration_str)
 
             logger.debug(
                 "received message from {}, correlation id: {}, reply_to: {}",
@@ -729,7 +740,7 @@ class HistoryClient(Client):
         self._history_connection_watchdog.set_closed()
 
     def _on_history_connection_reconnect(
-        self, sender: Any, connection: aio_pika.Connection
+        self, sender: Any, connection: aio_pika.abc.AbstractConnection
     ) -> None:
         logger.info("History connection ({}) reestablished!", connection)
 
@@ -758,7 +769,7 @@ class HistoryClient(Client):
 
         self._reregister_task.add_done_callback(reregister_done)
 
-    async def _reregister(self, connection: aio_pika.Connection) -> None:
+    async def _reregister(self, connection: aio_pika.abc.AbstractConnection) -> None:
         logger.info(
             "Reregistering as history client...",
         )
