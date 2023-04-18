@@ -42,7 +42,7 @@ jobs:
         run: python setup.py build_protobuf
       - name: Run mypy
         run: |
-          mypy --strict metricq examples tests
+          mypy --strict metricq examples tests setup.py
 
   build:
     needs: [test]
