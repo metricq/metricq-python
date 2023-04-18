@@ -32,7 +32,6 @@ from collections.abc import Iterable
 from typing import Any, Optional
 
 import aio_pika
-from aio_pika.queue import Queue
 
 from .data_client import DataClient
 from .datachunk_pb2 import DataChunk
@@ -56,7 +55,7 @@ class Sink(DataClient):
     def __init__(self, *args: Any, add_uuid: bool = True, **kwargs: Any):
         super().__init__(*args, add_uuid=add_uuid, **kwargs)
 
-        self._data_queue: Optional[Queue] = None
+        self._data_queue: Optional[aio_pika.abc.AbstractQueue] = None
         self._data_consumer_tag: Optional[str] = None
         self._subscribed_metrics: set[str] = set()
         self._subscribe_args: dict[str, Any] = dict()
@@ -78,7 +77,7 @@ class Sink(DataClient):
         self._data_consumer_tag = await self._data_queue.consume(self._on_data_message)
 
     def _on_data_connection_reconnect(
-        self, sender: Any, connection: aio_pika.Connection
+        self, sender: Any, connection: aio_pika.abc.AbstractConnection
     ) -> None:
         logger.info("Sink data connection ({}) reestablished!", connection)
 
@@ -107,7 +106,7 @@ class Sink(DataClient):
 
         self._resubscribe_task.add_done_callback(resubscribe_done)
 
-    async def _resubscribe(self, connection: aio_pika.Connection) -> None:
+    async def _resubscribe(self, connection: aio_pika.abc.AbstractConnection) -> None:
         assert self._data_queue is not None
         # Reuse manager-assigned data queue name for resubscription.
         self._subscribe_args.update(dataQueue=self._data_queue.name)
@@ -182,11 +181,18 @@ class Sink(DataClient):
         if not self._subscribed_metrics:
             self._subscribe_args = dict()
 
-    async def _on_data_message(self, message: aio_pika.IncomingMessage) -> None:
+    async def _on_data_message(
+        self, message: aio_pika.abc.AbstractIncomingMessage
+    ) -> None:
         async with message.process(requeue=True):
             body = message.body
             from_token = message.app_id
             metric = message.routing_key
+            if metric is None:
+                logger.warning(
+                    "received data message without routing key from {}", from_token
+                )
+                return
 
             logger.debug("received message from {}", from_token)
             data_response = DataChunk()

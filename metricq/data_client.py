@@ -26,9 +26,9 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from typing import Any, Optional, cast
+from typing import Any, Optional
 
-import aio_pika
+import aio_pika.abc
 from yarl import URL
 
 from .client import Client
@@ -44,9 +44,9 @@ class DataClient(Client):
         super().__init__(*args, **kwargs)
 
         self.data_server_address: Optional[str] = None
-        self.data_connection: Optional[aio_pika.RobustConnection] = None
-        self.data_channel: Optional[aio_pika.RobustChannel] = None
-        self.data_exchange: Optional[aio_pika.Exchange] = None
+        self.data_connection: Optional[aio_pika.abc.AbstractRobustConnection] = None
+        self.data_channel: Optional[aio_pika.abc.AbstractRobustChannel] = None
+        self.data_exchange: Optional[aio_pika.abc.AbstractExchange] = None
         self._data_connection_watchdog = ConnectionWatchdog(
             on_timeout_callback=lambda watchdog: self._schedule_stop(
                 ReconnectTimeout(
@@ -85,19 +85,17 @@ class DataClient(Client):
                 connection_name="data connection {}".format(self.token),
             )
 
-            self.data_connection.add_close_callback(self._on_data_connection_close)
-            self.data_connection.add_reconnect_callback(
-                self._on_data_connection_reconnect  # type: ignore
+            self.data_connection.close_callbacks.add(self._on_data_connection_close)
+            self.data_connection.reconnect_callbacks.add(
+                self._on_data_connection_reconnect
             )
 
             # publisher confirms seem to be buggy, disable for now
-            self.data_channel = cast(
-                aio_pika.RobustChannel,
-                await self.data_connection.channel(publisher_confirms=False),
-            )
-
+            channel = await self.data_connection.channel(publisher_confirms=False)
+            assert isinstance(channel, aio_pika.abc.AbstractRobustChannel)
+            self.data_channel = channel
             # TODO configurable prefetch count
-            await self.data_channel.set_qos(prefetch_count=400)
+            await channel.set_qos(prefetch_count=400)
 
             self._data_connection_watchdog.start()
             self._data_connection_watchdog.set_established()
@@ -109,11 +107,11 @@ class DataClient(Client):
         logger.info("closing data channel and connection.")
         await self._data_connection_watchdog.stop()
         if self.data_channel:
-            await self.data_channel.close()  # type: ignore
+            await self.data_channel.close()
             self.data_channel = None
         if self.data_connection:
             # We need not pass anything as exception to this close. It will only hurt.
-            await self.data_connection.close()  # type: ignore
+            await self.data_connection.close()
             self.data_connection = None
         self.data_exchange = None
         await super().stop(exception)
@@ -124,6 +122,6 @@ class DataClient(Client):
         self._data_connection_watchdog.set_closed()
 
     def _on_data_connection_reconnect(
-        self, sender: Any, connection: aio_pika.RobustConnection
+        self, sender: Any, connection: aio_pika.abc.AbstractRobustConnection
     ) -> None:
         self._data_connection_watchdog.set_established()

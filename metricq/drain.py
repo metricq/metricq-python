@@ -29,9 +29,9 @@
 import asyncio
 from collections.abc import Iterable
 from types import TracebackType
-from typing import Any, Optional, cast
+from typing import TYPE_CHECKING, Any, Optional, cast
 
-import aio_pika
+import aio_pika.abc
 
 from .logging import get_logger
 from .sink import Sink
@@ -70,7 +70,9 @@ class Drain(Sink):
         assert len(self._queue) > 0
         await self.sink_config(**response)
 
-    async def _on_data_message(self, message: aio_pika.IncomingMessage) -> None:
+    async def _on_data_message(
+        self, message: aio_pika.abc.AbstractIncomingMessage
+    ) -> None:
         if message.type == "end":
             async with message.process():
                 logger.debug("received end message")
