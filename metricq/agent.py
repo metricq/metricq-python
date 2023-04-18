@@ -149,11 +149,16 @@ class Agent(RPCDispatcher):
     async def make_connection(
         self, url: str, connection_name: str
     ) -> aio_pika.abc.AbstractRobustConnection:
+        url_obj = URL(url).with_query(
+            {"reconnect_interval": 30, "name": connection_name}
+        )
         connection = await aio_pika.connect_robust(
-            url,
-            reconnect_interval=30,
-            ssl=url.startswith("amqps"),
-            client_properties={"connection_name": connection_name},
+            url_obj,
+            # If the following bugfix released, we can MAYBE use the following code again
+            # instead of hacking the url query parameters
+            # https://github.com/mosquito/aio-pika/pull/531
+            # reconnect_interval=30,
+            # name=connection_name,
         )
 
         # How stupid that we can't easily add the handlers *before* actually connecting.
