@@ -33,12 +33,36 @@ class ConnectionWatchdog:
         """
         self.connection_name = connection_name
         self.timeout = timeout
-
         self._callback = on_timeout_callback
-
         self._closed_event: Optional[Event] = None
         self._established_event: Optional[Event] = None
         self._watchdog_task: Optional[Task[None]] = None
+
+    async def _run(self) -> None:
+        logger.debug("Started {} watchdog", self.connection_name)
+        try:
+            cap_connection_name = self.connection_name.capitalize()
+            while True:
+                try:
+                    assert self._established_event is not None
+                    await wait_for(self._established_event.wait(), timeout=self.timeout)
+                    logger.debug("{} established", cap_connection_name)
+                except TimeoutError:
+                    logger.warning(
+                        "{} failed to reconnect after {} seconds",
+                        cap_connection_name,
+                        self.timeout,
+                    )
+                    self._callback(self)
+                    break
+
+                assert self._closed_event is not None
+                await self._closed_event.wait()
+                logger.debug("{} was closed", cap_connection_name)
+
+        except CancelledError:
+            logger.debug("Cancelled {} watchdog", self.connection_name)
+            raise
 
     def start(self) -> None:
         """Start the connection watchdog task.
@@ -54,36 +78,7 @@ class ConnectionWatchdog:
 
         self._closed_event = Event()
         self._established_event = Event()
-
-        async def watchdog() -> None:
-            logger.debug("Started {} watchdog", self.connection_name)
-            try:
-                cap_connection_name = self.connection_name.capitalize()
-                while True:
-                    try:
-                        assert self._established_event is not None
-                        await wait_for(
-                            self._established_event.wait(), timeout=self.timeout
-                        )
-                        logger.debug("{} established", cap_connection_name)
-                    except TimeoutError:
-                        logger.warning(
-                            "{} failed to reconnect after {} seconds",
-                            cap_connection_name,
-                            self.timeout,
-                        )
-                        self._callback(self)
-                        break
-
-                    assert self._closed_event is not None
-                    await self._closed_event.wait()
-                    logger.debug("{} was closed", cap_connection_name)
-
-            except CancelledError:
-                logger.debug("Cancelled {} watchdog", self.connection_name)
-                raise
-
-        self._watchdog_task = asyncio.create_task(watchdog())
+        self._watchdog_task = asyncio.create_task(self._run())
 
     def set_established(self) -> None:
         """Signal that the connection has been established."""
@@ -118,27 +113,29 @@ class ConnectionWatchdog:
 
     async def stop(self) -> None:
         """Stop the connection watchdog task if it is running."""
-        if self._watchdog_task:
-            if self._watchdog_task.done():
-                try:
-                    logger.warn(
-                        "Watchdog task {} already done with result: {}",
-                        self.connection_name,
-                        self._watchdog_task.result(),
-                    )
-                except Exception as e:
-                    logger.error(
-                        "Watchdog task {} already done with exception: {}",
-                        self.connection_name,
-                        e,
-                    )
+        if not self._watchdog_task:
+            return
 
-            self._watchdog_task.cancel()
-
+        if self._watchdog_task.done():
             try:
-                await self._watchdog_task
-            except CancelledError:
-                logger.debug("Stopping {} watchdog complete", self.connection_name)
-            self._watchdog_task = None
-            self._established_event = None
-            self._closed_event = None
+                logger.warning(
+                    "Watchdog task {} already done with result: {}",
+                    self.connection_name,
+                    self._watchdog_task.result(),
+                )
+            except Exception as e:
+                logger.error(
+                    "Watchdog task {} already done with exception: {}",
+                    self.connection_name,
+                    e,
+                )
+
+        self._watchdog_task.cancel()
+
+        try:
+            await self._watchdog_task
+        except CancelledError:
+            logger.debug("Stopping {} watchdog complete", self.connection_name)
+        self._watchdog_task = None
+        self._established_event = None
+        self._closed_event = None
