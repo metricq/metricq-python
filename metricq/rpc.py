@@ -44,7 +44,7 @@ class RPCMeta(ABCMeta):
     """
 
     def __new__(
-        mcs: type,
+        mcs: type["RPCMeta"],
         name: str,
         bases: tuple[type, ...],
         attrs: dict[Any, Any],
@@ -68,9 +68,7 @@ class RPCMeta(ABCMeta):
                 pass
 
         attrs["_rpc_handlers"] = rpc_handlers
-        # Mypy complains about arguments of super(). Seems like this issue:
-        # https://github.com/python/mypy/issues/9282
-        return super().__new__(mcs, name, bases, attrs)  # type: ignore
+        return super().__new__(mcs, name, bases, attrs)
 
 
 class RPCDispatcher(metaclass=RPCMeta):
