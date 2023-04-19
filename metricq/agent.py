@@ -150,7 +150,7 @@ class Agent(RPCDispatcher):
         self, url: str, connection_name: str
     ) -> aio_pika.abc.AbstractRobustConnection:
         url_obj = URL(url).with_query(
-            {"reconnect_interval": 30, "name": connection_name}
+            {"reconnect_interval": 5, "fail_fast": 1, "name": connection_name}
         )
         connection = await aio_pika.connect_robust(
             url_obj,
@@ -158,6 +158,7 @@ class Agent(RPCDispatcher):
             # instead of hacking the url query parameters
             # https://github.com/mosquito/aio-pika/pull/531
             # reconnect_interval=30,
+            # fail_fast=True,
             # name=connection_name,
         )
 
