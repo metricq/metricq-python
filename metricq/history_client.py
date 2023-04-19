@@ -735,14 +735,16 @@ class HistoryClient(Client):
                 future.set_exception(e)
 
     def _on_history_connection_close(
-        self, sender: Any, _exception: Optional[BaseException]
+        self,
+        sender: aio_pika.abc.AbstractRobustConnection,
+        _exception: Optional[BaseException],
     ) -> None:
         self._history_connection_watchdog.set_closed()
 
     def _on_history_connection_reconnect(
-        self, sender: Any, connection: aio_pika.abc.AbstractConnection
+        self, sender: aio_pika.abc.AbstractRobustConnection
     ) -> None:
-        logger.info("History connection ({}) reestablished!", connection)
+        logger.info("History connection ({}) reestablished!", sender)
 
         if self._reregister_task is not None and not self._reregister_task.done():
             logger.warning(
@@ -750,9 +752,7 @@ class HistoryClient(Client):
             )
             self._reregister_task.cancel()
 
-        self._reregister_task = self._event_loop.create_task(
-            self._reregister(connection)
-        )
+        self._reregister_task = self._event_loop.create_task(self._reregister(sender))
 
         def reregister_done(task: Task[None]) -> None:
             try:
