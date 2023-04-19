@@ -44,8 +44,7 @@ class ConnectionWatchdog:
             cap_connection_name = self.connection_name.capitalize()
             while True:
                 try:
-                    assert self._established_event is not None
-                    await wait_for(self._established_event.wait(), timeout=self.timeout)
+                    await wait_for(self.established(), timeout=self.timeout)
                     logger.debug("{} established", cap_connection_name)
                 except TimeoutError:
                     logger.warning(
@@ -54,10 +53,9 @@ class ConnectionWatchdog:
                         self.timeout,
                     )
                     self._callback(self)
-                    break
+                    return
 
-                assert self._closed_event is not None
-                await self._closed_event.wait()
+                await self.closed()
                 logger.debug("{} was closed", cap_connection_name)
 
         except CancelledError:
