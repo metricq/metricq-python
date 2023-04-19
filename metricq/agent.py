@@ -489,27 +489,25 @@ class Agent(RPCDispatcher):
         if self._stop_in_progress:
             logger.debug("Stop in progress! ({})", exception)
             return
-        else:
-            self._stop_in_progress = True
 
-            logger.info("Stopping Agent {} ({})...", type(self).__qualname__, exception)
+        self._stop_in_progress = True
 
-            await asyncio.shield(self._close())
+        logger.info("Stopping Agent {} ({})...", type(self).__qualname__, exception)
 
-            if self._stop_future is None:
-                # No task is waiting for the Agent to stop.
-                if exception is not None:
-                    # Wrap the exception (to preserve traceback information)
-                    # and reraise it.
-                    raise AgentStopped("Agent stopped unexpectedly") from exception
-                else:
-                    return
+        await asyncio.shield(self._close())
+
+        if self._stop_future is None:
+            # No task is waiting for the Agent to stop.
+            if exception is not None:
+                raise AgentStopped("Agent stopped unexpectedly") from exception
             else:
-                assert not self._stop_future.done()
-                if exception is None:
-                    self._stop_future.set_result(None)
-                else:
-                    self._stop_future.set_exception(exception)
+                return
+
+        assert not self._stop_future.done()
+        if exception is None:
+            self._stop_future.set_result(None)
+        else:
+            self._stop_future.set_exception(exception)
 
     async def stopped(self) -> None:
         """Wait for this Agent to stop.
