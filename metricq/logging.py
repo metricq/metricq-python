@@ -37,7 +37,6 @@ def get_logger(name: Optional[str] = None) -> logging.Logger:
     """Get a logger instance that uses new-style string formatting"""
     log = logging.getLogger(name)
     if not hasattr(log, "_newstyle"):
-        # Mypy don't like method assign: https://github.com/python/mypy/issues/2427
-        log.handle = _handle_wrap(log.handle)  # type: ignore
+        log.handle = _handle_wrap(log.handle)  # type: ignore[method-assign]
     setattr(log, "_newstyle", True)
     return log
