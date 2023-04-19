@@ -77,9 +77,9 @@ class Sink(DataClient):
         self._data_consumer_tag = await self._data_queue.consume(self._on_data_message)
 
     def _on_data_connection_reconnect(
-        self, sender: Any, connection: aio_pika.abc.AbstractConnection
+        self, sender: aio_pika.abc.AbstractConnection
     ) -> None:
-        logger.info("Sink data connection ({}) reestablished!", connection)
+        logger.info("Sink data connection ({}) reestablished!", sender)
 
         if self._resubscribe_task is not None and not self._resubscribe_task.done():
             logger.warning(
@@ -87,9 +87,7 @@ class Sink(DataClient):
             )
             self._resubscribe_task.cancel()
 
-        self._resubscribe_task = self._event_loop.create_task(
-            self._resubscribe(connection)
-        )
+        self._resubscribe_task = self._event_loop.create_task(self._resubscribe(sender))
 
         def resubscribe_done(task: Task[None]) -> None:
             try:

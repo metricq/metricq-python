@@ -652,12 +652,14 @@ class Agent(RPCDispatcher):
                 if r is not None:
                     await r
 
-    def _on_reconnect(
-        self, sender: Any, connection: aio_pika.abc.AbstractRobustConnection
-    ) -> None:
-        logger.info("Reconnected to {}", connection)
+    def _on_reconnect(self, sender: aio_pika.abc.AbstractRobustConnection) -> None:
+        logger.info("Reconnected to {}", sender)
 
-    def _on_close(self, sender: Any, exception: Optional[BaseException]) -> None:
+    def _on_close(
+        self,
+        sender: aio_pika.abc.AbstractRobustConnection,
+        exception: Optional[BaseException],
+    ) -> None:
         if isinstance(exception, asyncio.CancelledError):
             logger.debug("Connection closed regularly")
             return
@@ -666,11 +668,13 @@ class Agent(RPCDispatcher):
         )
 
     def _on_management_connection_reconnect(
-        self, sender: Any, connection: aio_pika.abc.AbstractRobustConnection
+        self, sender: aio_pika.abc.AbstractRobustConnection
     ) -> None:
         self._management_connection_watchdog.set_established()
 
     def _on_management_connection_close(
-        self, sender: Any, _exception: Optional[BaseException]
+        self,
+        sender: aio_pika.abc.AbstractRobustConnection,
+        _exception: Optional[BaseException],
     ) -> None:
         self._management_connection_watchdog.set_closed()
