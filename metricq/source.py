@@ -106,6 +106,8 @@ class Source(DataClient):
         super().__init__(*args, **kwargs)
         self.metrics: dict[str, SourceMetric] = dict()
         self.chunk_size = 1
+        self._task: Optional[asyncio.Task[None]] = None
+        self.task_stop_future: Optional[asyncio.Future[None]] = None
 
     async def connect(self) -> None:
         await super().connect()
@@ -123,7 +125,8 @@ class Source(DataClient):
         if "config" in response:
             await self.rpc_dispatch("config", **response["config"])
 
-        self._event_loop.create_task(self.task())
+        self.task_stop_future = asyncio.Future()
+        self._task = self._event_loop.create_task(self.task())
 
     @abstractmethod
     async def task(self) -> None:
@@ -133,8 +136,25 @@ class Source(DataClient):
 
         Note:
             This task is not restarted if it fails.
-            You are responsible for handling all relevant exceptions.
+            You are responsible for handling all relevant exceptions and for stopping
+            the task in :meth:`Agent.stop` or :meth:`close`
         """
+
+    async def teardown(self) -> None:
+        """
+        .. Important::
+            Do not call this function, it is called indirectly by :meth:`Agent.stop`.
+
+        Triggers a stop for the source task and waits for it to complete in addition to
+        :meth:`DataClient.teardown()`.
+        """
+        logger.debug("stopping Source.task")
+        assert self._task is not None
+        assert self.task_stop_future is not None
+        self.task_stop_future.set_result(None)
+        # Wait for the task to complete before actually closing the connections etc.
+        await self._task
+        await super().teardown()
 
     def __getitem__(self, id: Metric) -> SourceMetric:
         if id not in self.metrics:

@@ -21,7 +21,7 @@ from distutils.errors import DistutilsFileError
 from distutils.log import ERROR, INFO
 from distutils.spawn import find_executable
 from operator import itemgetter
-from typing import Any, Iterable, Optional, cast
+from typing import Any, Iterable, Optional
 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logger = logging.getLogger()

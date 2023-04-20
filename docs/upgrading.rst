@@ -157,6 +157,14 @@ Use the individual fields instead.
 The using code has more context and should know better which fields to include.
 In particular, whether to use :attr:`TimeAggregate.mean_sum` or :meth:`TimeAggregate.mean_integral` and which :attr:`TimeValue.timestamp` type to use.
 
+Agent `stop` / `_close`
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The method :meth:`Agent.stop` has different parameters that must be passed when overriding it in a child class.
+The method `_close` was renamed to :meth:`Agent.teardown` and should instead be used for overriding.
+It is called by :meth:`Agent.stop` and benefits from a timeout and not having to deal with parameters.
+In any case, you must call the respective ``super()`` method.
+
 Internal Agent changes
 ^^^^^^^^^^^^^^^^^^^^^^
 

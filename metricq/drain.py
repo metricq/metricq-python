@@ -29,7 +29,7 @@
 import asyncio
 from collections.abc import Iterable
 from types import TracebackType
-from typing import TYPE_CHECKING, Any, Optional, cast
+from typing import Any, Optional, cast
 
 import aio_pika.abc
 

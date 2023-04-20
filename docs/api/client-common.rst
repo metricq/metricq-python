@@ -27,3 +27,4 @@ The Agent base class is not used directly, but referenced in the documentation o
 .. autoclass:: metricq.Agent
     :members:
     :private-members:
+    :undoc-members:

@@ -26,6 +26,7 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import asyncio
 from typing import Any, Optional
 
 import aio_pika.abc
@@ -100,21 +101,29 @@ class DataClient(Client):
             self._data_connection_watchdog.start()
             self._data_connection_watchdog.set_established()
 
-    async def stop(self, exception: Optional[Exception] = None) -> None:
-        """
-        Stops the data connection and uses the underlying :meth:`Agent.stop`.
-        """
-        logger.info("closing data channel and connection.")
+    async def __close(self) -> None:
+        logger.debug("closing data channel and connection.")
         await self._data_connection_watchdog.stop()
         if self.data_channel:
             await self.data_channel.close()
+            logger.debug("data channel closed")
             self.data_channel = None
         if self.data_connection:
             # We need not pass anything as exception to this close. It will only hurt.
             await self.data_connection.close()
+            logger.debug("data connection closed")
             self.data_connection = None
         self.data_exchange = None
-        await super().stop(exception)
+
+    async def teardown(self) -> None:
+        """
+        .. Important::
+            Do not call this function, it is called indirectly by :meth:`Agent.stop`.
+
+        Closes the data connection and the data channel in addition to
+        :meth:`Agent.teardown()`.
+        """
+        await asyncio.gather(super().teardown(), self.__close()),
 
     def _on_data_connection_close(
         self,

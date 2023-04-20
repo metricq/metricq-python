@@ -382,7 +382,7 @@ class HistoryClient(Client):
 
         await self._history_consume()
 
-    async def stop(self, exception: Optional[Exception] = None) -> None:
+    async def __close(self) -> None:
         logger.info("closing history channel and connection.")
         await self._history_connection_watchdog.stop()
         if self.history_channel:
@@ -393,7 +393,16 @@ class HistoryClient(Client):
             await self.history_connection.close()
             self.history_connection = None
         self.history_exchange = None
-        await super().stop(exception)
+
+    async def teardown(self) -> None:
+        """
+        .. Important::
+            Do not call this function, it is called indirectly by :meth:`Agent.stop`.
+
+        Closes the history connection and the channel in addition to
+        :meth:`Agent.teardown()`.
+        """
+        await asyncio.gather(super().teardown(), self.__close()),
 
     async def get_metrics(self, *args: Any, **kwargs: Any) -> _GetMetricsResult:
         """Retrieve information for **historic** metrics matching a selector pattern.
