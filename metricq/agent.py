@@ -68,6 +68,41 @@ _global_thread_lock = threading.Lock()
 
 
 class Agent(RPCDispatcher):
+    """
+    Base class for all MetricQ agents - i.e. clients that are connected to the
+    RabbitMQ MetricQ network.
+
+    The lifetime of an agent works as follows:
+
+    * create an instance
+    * ``await`` :meth:`connect`
+    * ``await`` :meth:`stop`
+
+    :meth:`stop` is automatically invoked if the connection is lost and the reconnect
+    timeout is exceeded. It may also be called manually to stop the agent.
+
+    To indefinitely wait for the agent to stop, use :meth:`stopped`.
+
+    Usually, :meth:`connect` and  :meth:`stop` are not called directly, but instead:
+
+    * The class (via its child :class:`Client`) is used as an asynchronous context
+      manager, e.g. ``async with Client(...) as agent:``. In that case,
+      :meth:`connect` and :meth:`stop` are called as part of the context.
+
+    * The synchronous :meth:`run` method is called, which:
+
+      * sets up a signal handler for ``SIGINT`` and ``SIGTERM`` that calls :meth:`stop`.
+      * sets up a loop exception handler that calls :meth:`stop`.
+      * calls :meth:`connect` and :meth:`stopped` to run indefinitely until
+        :meth:`stop` is called.
+
+    Within :meth:`stop`, the Agent will invoke :meth:`close` to allow the all child
+    classes to perform any necessary cleanup. Implementations of :meth:`teardown` should
+    call ``super().teardown()``, possibly in an ``asyncio.gather``. :meth:`stop`
+    wraps the invocation of :meth:`close` in a timeout (``_close_timeout``) and logs any
+    errors during cleanup, possibly passing it to anyone waiting for :meth:`stopped`.
+    """
+
     LOG_MAX_WIDTH = 200
 
     def __init__(
@@ -78,12 +113,23 @@ class Agent(RPCDispatcher):
         connection_timeout: int | float = 600,
         add_uuid: bool = False,
     ):
+        """
+        Args:
+            token: The token of the agent.
+            management_url:
+                The amqp(s) URL of the MetricQ management network.
+            connection_timeout:
+                The timeout (in seconds) for reconnecting.
+        """
         self.token = f"{token}.{uuid.uuid4().hex}" if add_uuid else token
 
         self._loop: Optional[asyncio.AbstractEventLoop] = None
         self._stop_in_progress = False
-        self._stop_future: Optional[asyncio.Future[None]] = None
         self._cancel_on_exception = False
+        self._close_timeout = connection_timeout
+
+        # Cannot create it here because creating a future requires a running event loop
+        self.__stop_future: Optional[asyncio.Future[None]] = None
 
         self._management_url = management_url
         self._management_broadcast_exchange_name = "metricq.broadcast"
@@ -146,6 +192,12 @@ class Agent(RPCDispatcher):
             raise RuntimeError(f"{self!r} is bound to a different event loop")
         return loop
 
+    @property
+    def _stop_future(self) -> asyncio.Future[None]:
+        if self.__stop_future is None:
+            self.__stop_future = self._event_loop.create_future()
+        return self.__stop_future
+
     async def make_connection(
         self, url: str, connection_name: str
     ) -> aio_pika.abc.AbstractRobustConnection:
@@ -173,22 +225,31 @@ class Agent(RPCDispatcher):
         """Connect to the MetricQ network"""
         logger.info(
             "establishing management connection to {}",
-            URL(self._management_url).with_password("***"),
+            URL(self._management_url).with_password("******"),
         )
 
-        connection = await self.make_connection(
-            self._management_url,
-            connection_name="management connection {}".format(self.token),
-        )
-        self._management_connection = connection
-        connection.close_callbacks.add(self._on_management_connection_close)
-        connection.reconnect_callbacks.add(self._on_management_connection_reconnect)
+        try:
+            connection = await self.make_connection(
+                self._management_url,
+                connection_name="management connection {}".format(self.token),
+            )
+            self._management_connection = connection
+            connection.close_callbacks.add(self._on_management_connection_close)
+            connection.reconnect_callbacks.add(self._on_management_connection_reconnect)
 
-        self._management_channel = await connection.channel()
-        assert self._management_channel is not None
-        self.management_rpc_queue = await self._management_channel.declare_queue(
-            "{}-rpc".format(self.token), exclusive=True
-        )
+            self._management_channel = await connection.channel()
+            assert self._management_channel is not None
+            self.management_rpc_queue = await self._management_channel.declare_queue(
+                "{}-rpc".format(self.token), exclusive=True
+            )
+        except Exception as e:
+            logger.error(
+                "Failed to connect {}: {} ({})",
+                type(self).__qualname__,
+                e,
+                type(e).__qualname__,
+            )
+            raise ConnectFailed("Failed to connect Agent") from e
 
         self._management_connection_watchdog.start()
         self._management_connection_watchdog.set_established()
@@ -443,7 +504,9 @@ class Agent(RPCDispatcher):
         self, loop: asyncio.AbstractEventLoop, context: Mapping[str, Any]
     ) -> None:
         logger.error("Exception in event loop: {}".format(context["message"]))
-        if loop != self._event_loop:
+        if loop.is_closed():
+            logger.error("Received exception in closed loop.")
+        elif loop != self._event_loop:
             logger.error(
                 f"Exception happened in a loop {loop} "
                 f"other than the internal loop {self._event_loop}. "
@@ -459,7 +522,9 @@ class Agent(RPCDispatcher):
         ex: Optional[Exception] = context.get("exception")
         if ex is not None:
             is_keyboard_interrupt = isinstance(ex, KeyboardInterrupt)
-            if self._cancel_on_exception or is_keyboard_interrupt:
+            if (
+                self._cancel_on_exception or is_keyboard_interrupt
+            ) and loop.is_running():
                 if not is_keyboard_interrupt:
                     logger.error(
                         "Stopping Agent on unhandled exception ({})",
@@ -476,39 +541,70 @@ class Agent(RPCDispatcher):
         self,
         exception: Optional[Exception] = None,
     ) -> None:
-        self._event_loop.create_task(self.stop(exception=exception))
+        self._event_loop.create_task(self.stop(exception=exception, silent=True))
 
-    async def stop(self, exception: Optional[Exception] = None) -> None:
-        """Stop a running Agent.
+    async def stop(
+        self, exception: Optional[BaseException] = None, silent: bool = False
+    ) -> None:
+        """
+        Stop a running Agent. When calling stop multiple times, all but the
+        first call will be ignored. It will inform anyone waiting for
+        :meth:`stopped` about the completion or the given exception.
 
         Args:
             exception:
                 An optional exception that will be raised by :meth:`run` if given.
                 If the Agent was not started from :meth:`run`, see :meth:`stopped`
                 how to retrieve this exception.
+            silent:
+                If set to :code:`True`, a passed exception will not be raised.
+
+        Raises:
+            AgentStopped:
+                If an ``exception`` is given or an exception occurred while closing
+                the connection(s) and ``silent==False``.
         """
         if self._stop_in_progress:
-            logger.debug("Stop in progress! ({})", exception)
+            logger.warning(
+                "Stop in progress, ignoring (exception: {}, silent: {})",
+                exception,
+                silent,
+            )
             return
 
         self._stop_in_progress = True
 
         logger.info("Stopping Agent {} ({})...", type(self).__qualname__, exception)
 
-        await asyncio.shield(self._close())
-
-        if self._stop_future is None:
-            # No task is waiting for the Agent to stop.
-            if exception is not None:
-                raise AgentStopped("Agent stopped unexpectedly") from exception
-            else:
-                return
+        try:
+            # I tried so hard to `shield` this call
+            # But in the end, it doesn't even matter
+            # The task is canceled, the loop is closed
+            # But in the end, it doesn't even matter
+            #
+            # I tried to close connections clean,
+            # A perfect end, that's what I mean,
+            # But when the network grew stale,
+            # My efforts were to no avail.
+            #
+            # The close packets, they couldn't send,
+            # A deadlock near, I can't pretend,
+            # So I added a timeout here,
+            # To break free from the chains of fear.
+            await asyncio.wait_for(self.teardown(), self._close_timeout)
+        except BaseException as close_exception:
+            logger.error("Error while closing Agent: {}", close_exception)
+            if not exception:
+                exception = close_exception
 
         assert not self._stop_future.done()
         if exception is None:
             self._stop_future.set_result(None)
         else:
             self._stop_future.set_exception(exception)
+
+        if not silent and exception is not None:
+            raise AgentStopped("Agent stopped with error") from exception
 
     async def stopped(self) -> None:
         """Wait for this Agent to stop.
@@ -521,11 +617,17 @@ class Agent(RPCDispatcher):
             Exception:
                 The Agent encountered any other unhandled exception.
         """
-        if self._stop_future is None:
-            self._stop_future = self._event_loop.create_future()
         await self._stop_future
 
-    async def _close(self) -> None:
+    async def teardown(self) -> None:
+        """
+        .. Important::
+            Do not call this function, it is called indirectly by :meth:`Agent.stop`.
+
+        Close all connections and channels. Child classes should implement this
+        method to close their own connections and channels and call
+        ``super().teardown()``.
+        """
         logger.info("Closing management channel and connection...")
         await self._management_connection_watchdog.stop()
         if self._management_channel:

@@ -143,33 +143,27 @@ class IntervalSource(Source):
                 # task from being cancelled.
                 await self.stop(e)
 
-            try:
-                if self._period is None:
-                    raise ValueError(
-                        "IntervalSource.period not set before running task"
-                    )
+            if self._period is None:
+                raise ValueError("IntervalSource.period not set before running task")
+            deadline += self._period
+            now = Timestamp.now()
+            while now >= deadline:
+                logger.warning("Missed deadline {}, it is now {}", deadline, now)
                 deadline += self._period
-                now = Timestamp.now()
-                while now >= deadline:
-                    logger.warn("Missed deadline {}, it is now {}", deadline, now)
-                    deadline += self._period
 
-                timeout = (deadline - now).s
-                await asyncio.wait_for(
-                    asyncio.shield(self._interval_task_stop_future), timeout=timeout
-                )
-                self._interval_task_stop_future.result()
-                logger.info("stopping IntervalSource task")
-                break
-            except asyncio.TimeoutError:
-                # This is the normal case, just continue with the loop
-                continue
-
-    async def stop(self, exception: Optional[Exception] = None) -> None:
-        logger.debug("stop()")
-        if self._interval_task_stop_future is not None:
-            self._interval_task_stop_future.set_result(None)
-        await super().stop(exception)
+            timeout = (deadline - now).s
+            done, _ = await asyncio.wait(
+                (
+                    asyncio.sleep(timeout),
+                    asyncio.gather(self._interval_task_stop_future),
+                ),
+                return_when=asyncio.FIRST_COMPLETED,
+            )
+            if self.task_stop_future in done:
+                logger.info("IntervalSource task reached end")
+                # potentially raise exceptions
+                self.task_stop_future.result()
+                return
 
     @abstractmethod
     async def update(self) -> None:
