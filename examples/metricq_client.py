@@ -43,23 +43,38 @@ import asyncio
 import logging
 
 import aiomonitor  # type: ignore
+import click
+import click_completion  # type: ignore
+import click_log  # type: ignore
 
 import metricq
 
 logger = metricq.get_logger()
+click_log.basic_config(logger)
+logger.setLevel("INFO")
+logger.handlers[0].formatter = logging.Formatter(
+    fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
+)
+click_completion.init()
 
 
-async def run() -> None:
-    async with metricq.Client("pytest", "amqp://admin:admin@localhost") as client:
+async def run(server: str, token: str) -> None:
+    async with metricq.Client(token, server) as client:
         logger.info("Client connected")
         with aiomonitor.start_monitor(
             asyncio.get_running_loop(), locals={"client": client}
         ):
             logger.debug("Monitor started")
             await client.stopped()
-            logger.info("Client stopped")
+
+
+@click.command()
+@click.option("--server", default="amqp://admin:admin@localhost/")
+@click.option("--token", default="client-py-example")
+@click_log.simple_verbosity_option(logger)  # type: ignore
+def main(server: str, token: str) -> None:
+    asyncio.run(run(server, token))
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-    asyncio.run(run())
+    main()
