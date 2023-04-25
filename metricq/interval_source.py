@@ -152,15 +152,18 @@ class IntervalSource(Source):
                 deadline += self._period
 
             timeout = (deadline - now).s
-            done, _ = await asyncio.wait(
+            done, pending = await asyncio.wait(
                 (
-                    asyncio.sleep(timeout),
-                    asyncio.gather(self._interval_task_stop_future),
+                    asyncio.create_task(asyncio.sleep(timeout)),
+                    self._interval_task_stop_future,
                 ),
                 return_when=asyncio.FIRST_COMPLETED,
             )
             if self.task_stop_future in done:
                 logger.info("IntervalSource task reached end")
+                # cancel pending sleep task
+                for task in pending:
+                    task.cancel()
                 # potentially raise exceptions
                 self.task_stop_future.result()
                 return
