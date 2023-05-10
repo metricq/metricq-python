@@ -54,7 +54,7 @@ click_completion.init()
 async def aget_history(
     server: str, token: str, metric: str, list_metrics: bool, list_metadata: bool
 ) -> None:
-    async with metricq.HistoryClient(token=token, management_url=server) as client:
+    async with metricq.HistoryClient(token=token, url=server) as client:
         if list_metrics:
             metrics = await client.get_metrics(metric, metadata=False)
             click.echo(

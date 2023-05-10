@@ -82,7 +82,7 @@ class DummySource(metricq.IntervalSource):
 @click.option("--token", default="source-py-dummy")
 @click_log.simple_verbosity_option(logger)  # type: ignore
 def source(server: str, token: str) -> None:
-    src = DummySource(token=token, management_url=server)
+    src = DummySource(token=token, url=server)
     src.run()
 
 

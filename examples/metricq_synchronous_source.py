@@ -55,7 +55,7 @@ click_completion.init()
 @click.option("--token", default="source-py-dummy")
 @click_log.simple_verbosity_option(logger)  # type: ignore
 def synchronous_source(server: str, token: str) -> None:
-    ssource = SynchronousSource(token=token, management_url=server)
+    ssource = SynchronousSource(token=token, url=server)
     ssource.declare_metrics(
         {
             "test.example.random": {

@@ -41,6 +41,7 @@ from collections.abc import Callable, Iterable, Mapping
 from contextlib import suppress
 from itertools import chain
 from typing import Any, Optional, TypeVar
+from warnings import warn
 
 import aio_pika
 from yarl import URL
@@ -108,20 +109,38 @@ class Agent(RPCDispatcher):
     def __init__(
         self,
         token: str,
-        management_url: str,
+        url: Optional[str] = None,
         *,
         connection_timeout: int | float = 600,
         add_uuid: bool = False,
+        management_url: Optional[str] = None,
     ):
         """
         Args:
             token: The token of the agent.
-            management_url:
+            url:
                 The amqp(s) URL of the MetricQ management network.
+            add_uuid:
+                Whether to add a UUID to the token. This is used for transient clients
+                without centralized configuration.
             connection_timeout:
                 The timeout (in seconds) for reconnecting.
         """
         self.token = f"{token}.{uuid.uuid4().hex}" if add_uuid else token
+
+        if management_url is not None:
+            warn(
+                "using deprecated 'management_url' argument, please use 'url' instead",
+                DeprecationWarning,
+            )
+            if url is not None:
+                raise TypeError(
+                    "cannot use both 'url' and 'management_url', use only 'url'"
+                )
+            url = management_url
+
+        if url is None:
+            raise TypeError("missing required positional argument 'url'")
 
         self._loop: Optional[asyncio.AbstractEventLoop] = None
         self._stop_in_progress = False
@@ -131,7 +150,7 @@ class Agent(RPCDispatcher):
         # Cannot create it here because creating a future requires a running event loop
         self.__stop_future: Optional[asyncio.Future[None]] = None
 
-        self._management_url = management_url
+        self._management_url = url
         self._management_broadcast_exchange_name = "metricq.broadcast"
         self._management_exchange_name = "metricq.management"
 

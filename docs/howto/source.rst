@@ -168,7 +168,7 @@ On construction, we need to supply a unique :term:`Token` for identification and
     if __name__ == "__main__":
         source = DummySource(
             token="sink-py-example",
-            management_url="amqp://localhost/",
+            url="amqp://localhost/",
         )
         source.run()
 

@@ -35,7 +35,7 @@ from metricq.subscription import Subscriber
 async def client() -> None:
     async with Subscriber(
         token="example-drain",
-        management_url="amqp://admin:admin@localhost",
+        url="amqp://admin:admin@localhost",
         metrics=["dummy.source"],
         expires=3600,
     ) as subscription:

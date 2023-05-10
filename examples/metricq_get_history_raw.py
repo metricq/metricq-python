@@ -52,7 +52,7 @@ click_completion.init()
 
 
 async def aget_history(server: str, token: str, metric: str) -> None:
-    client = metricq.HistoryClient(token=token, management_url=server)
+    client = metricq.HistoryClient(token=token, url=server)
     await client.connect()
 
     click.echo("connected")
