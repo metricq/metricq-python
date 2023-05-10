@@ -87,7 +87,7 @@ class DummySink(metricq.Sink):
 def source(server: str, token: str, metrics: list[Metric]) -> None:
     # Initialize the DummySink class with a list of metrics given on the
     # command line.
-    sink = DummySink(metrics=metrics, token=token, management_url=server)
+    sink = DummySink(metrics=metrics, token=token, url=server)
 
     # Run the sink.  This call will block until the connection is closed.
     sink.run()

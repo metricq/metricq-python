@@ -12,7 +12,7 @@ pytestmark = pytest.mark.asyncio
 
 @pytest.fixture
 def history_client() -> HistoryClient:
-    return HistoryClient(token="history-test", management_url="amqps://invalid./")
+    return HistoryClient(token="history-test", url="amqps://invalid./")
 
 
 DEFAULT_METRIC = "test.foo"

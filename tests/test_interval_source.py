@@ -21,7 +21,7 @@ class _TestIntervalSource(IntervalSource):
 def interval_source() -> Iterator[IntervalSource]:
     with patch("metricq.interval_source.IntervalSource.rpc"):
         source = _TestIntervalSource(
-            token="source-interval-test", management_url="amqps://test.invalid"
+            token="source-interval-test", url="amqps://test.invalid"
         )
         yield source
 
@@ -63,7 +63,7 @@ def test_period_no_explicit_init() -> None:
         class _FaultySource(_TestIntervalSource):
             def __init__(self) -> None:
                 super().__init__(
-                    token="source-interval-test", management_url="amqps://test.invalid"
+                    token="source-interval-test", url="amqps://test.invalid"
                 )
 
                 self.period = None
@@ -83,7 +83,7 @@ async def test_update_method_exception() -> None:
     source = TestIntervalSource(
         period=10.0,
         token="test_source",
-        management_url="amqp://localhost",
+        url="amqp://localhost",
     )
 
     with pytest.raises(AgentStopped):
