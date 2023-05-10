@@ -71,6 +71,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#x-5-0"><cite>4.x</cite> → <cite>5.0</cite></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#removing-internal-types-module">Removing internal types module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#deprecation-of-dict-methods">Deprecation of <cite>dict</cite> methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#agent-stop-close">Agent <cite>stop</cite> / <cite>_close</cite></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#internal-agent-changes">Internal Agent changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#renaming-of-setup-py-options">Renaming of setup.py options</a></li>
 </ul>
 </li>
@@ -246,6 +248,19 @@ If you have imported types from it directly you should change to import directly
 Use the individual fields instead.
 The using code has more context and should know better which fields to include.
 In particular, whether to use <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.mean_sum" title="metricq.TimeAggregate.mean_sum"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.mean_sum</span></code></a> or <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.mean_integral" title="metricq.TimeAggregate.mean_integral"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TimeAggregate.mean_integral()</span></code></a> and which <a class="reference internal" href="api/misc.html#metricq.TimeValue.timestamp" title="metricq.TimeValue.timestamp"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeValue.timestamp</span></code></a> type to use.</p>
+</section>
+<section id="agent-stop-close">
+<h3>Agent <cite>stop</cite> / <cite>_close</cite><a class="headerlink" href="#agent-stop-close" title="Permalink to this heading"></a></h3>
+<p>The method <a class="reference internal" href="api/client-common.html#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.stop()</span></code></a> has different parameters that must be passed when overriding it in a child class.
+The method <cite>_close</cite> was renamed to <a class="reference internal" href="api/client-common.html#metricq.Agent.teardown" title="metricq.Agent.teardown"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.teardown()</span></code></a> and should instead be used for overriding.
+It is called by <a class="reference internal" href="api/client-common.html#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.stop()</span></code></a> and benefits from a timeout and not having to deal with parameters.
+In any case, you must call the respective <code class="docutils literal notranslate"><span class="pre">super()</span></code> method.</p>
+</section>
+<section id="internal-agent-changes">
+<h3>Internal Agent changes<a class="headerlink" href="#internal-agent-changes" title="Permalink to this heading"></a></h3>
+<p>Some methods in <a class="reference internal" href="api/client-common.html#metricq.Agent" title="metricq.Agent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code></a> have changed to reflect new <code class="docutils literal notranslate"><span class="pre">aio_pika</span></code> typing.
+The parameter <cite>connection_name</cite> of <a class="reference internal" href="api/client-common.html#metricq.Agent.make_connection" title="metricq.Agent.make_connection"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.make_connection()</span></code></a> is now required.
+This should not affect any user code.</p>
 </section>
 <section id="renaming-of-setup-py-options">
 <h3>Renaming of setup.py options<a class="headerlink" href="#renaming-of-setup-py-options" title="Permalink to this heading"></a></h3>

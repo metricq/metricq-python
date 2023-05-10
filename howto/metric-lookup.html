@@ -127,7 +127,7 @@ This is useful if you know want to retrieve metadata for a metric you already kn
 <h2>Search by prefix/infix<a class="headerlink" href="#search-by-prefix-infix" title="Permalink to this heading"></a></h2>
 <p>Call <a class="reference internal" href="../api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_metrics()</span></code></a> with <code class="code docutils literal notranslate"><span class="pre">prefix=...</span></code> to search for metrics whose name starts with the given prefix:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get_metrics</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;ariel&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
 
@@ -155,7 +155,7 @@ Searching for <code class="code docutils literal notranslate"><span class="pre">
 You will always need to pass <code class="code docutils literal notranslate"><span class="pre">historic=True</span></code>!</p>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get_metrics</span><span class="p">(</span><span class="n">infix</span><span class="o">=</span><span class="s2">&quot;ariel&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">historic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
 

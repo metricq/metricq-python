@@ -256,7 +256,8 @@ Otherwise, duplicate data points will be sent, which results in an invalid <a cl
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This task is not restarted if it fails.
-You are responsible for handling all relevant exceptions.</p>
+You are responsible for handling all relevant exceptions and for stopping
+the task in <a class="reference internal" href="client-common.html#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.stop()</span></code></a> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></p>
 </div>
 </dd></dl>
 

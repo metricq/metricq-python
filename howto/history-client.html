@@ -173,7 +173,7 @@ over the last 10 minutes.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">delta</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;10min&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="n">delta</span>
-<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aggregate</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">history_aggregate</span><span class="p">(</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">metric</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">now</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
@@ -199,7 +199,7 @@ In the example below we get an overview of a metric over the last 365 days, with
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aggregates</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">history_aggregate_timeline</span><span class="p">(</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">metric</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">now</span><span class="p">,</span> <span class="n">interval_max</span><span class="o">=</span><span class="n">interval_max</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Values for the last </span><span class="si">{</span><span class="n">delta</span><span class="o">.</span><span class="n">precise_string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">aggregate</span> <span class="ow">in</span> <span class="n">aggregates</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">aggregate</span><span class="p">)</span>

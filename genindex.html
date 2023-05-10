@@ -118,8 +118,6 @@
         <li><a href="api/subscriber.html#metricq.Subscriber.__init__">(metricq.Subscriber method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/misc.html#metricq.Timestamp.__lt__">__lt__() (metricq.Timestamp method)</a>
 </li>
       <li><a href="api/misc.html#metricq.Timedelta.__mul__">__mul__() (metricq.Timedelta method)</a>
@@ -132,7 +130,31 @@
       </ul></li>
       <li><a href="api/misc.html#metricq.Timedelta.__truediv__">__truediv__() (metricq.Timedelta method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/client-common.html#metricq.Agent._abc_impl">_abc_impl (metricq.Agent attribute)</a>
+</li>
+      <li><a href="api/client-common.html#metricq.Agent._event_loop">_event_loop (metricq.Agent property)</a>
+</li>
+      <li><a href="api/client-common.html#metricq.Agent._make_correlation_id">_make_correlation_id() (metricq.Agent method)</a>
+</li>
+      <li><a href="api/client-common.html#metricq.Agent._on_close">_on_close() (metricq.Agent method)</a>
+</li>
+      <li><a href="api/client-common.html#metricq.Agent._on_management_connection_close">_on_management_connection_close() (metricq.Agent method)</a>
+</li>
+      <li><a href="api/client-common.html#metricq.Agent._on_management_connection_reconnect">_on_management_connection_reconnect() (metricq.Agent method)</a>
+</li>
       <li><a href="api/client-common.html#metricq.Agent._on_management_message">_on_management_message() (metricq.Agent method)</a>
+</li>
+      <li><a href="api/client-common.html#metricq.Agent._on_reconnect">_on_reconnect() (metricq.Agent method)</a>
+</li>
+      <li><a href="api/client-common.html#metricq.Agent._rpc_handlers">_rpc_handlers (metricq.Agent attribute)</a>
+</li>
+      <li><a href="api/client-common.html#metricq.Agent._schedule_stop">_schedule_stop() (metricq.Agent method)</a>
+</li>
+      <li><a href="api/client-common.html#metricq.Agent._stop_future">_stop_future (metricq.Agent property)</a>
+</li>
+      <li><a href="api/client-common.html#metricq.Agent._wait_for_stop">_wait_for_stop() (metricq.Agent method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -356,12 +378,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/history-client.html#metricq.history_client.HistoryResponseType.LEGACY">LEGACY (metricq.history_client.HistoryResponseType attribute)</a>
 </li>
+      <li><a href="api/client-common.html#metricq.Agent.LOG_MAX_WIDTH">LOG_MAX_WIDTH (metricq.Agent attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/client-common.html#metricq.Agent.make_connection">make_connection() (metricq.Agent method)</a>
+</li>
       <li><a href="glossary.html#term-Manager"><strong>Manager</strong></a>
 </li>
       <li><a href="api/misc.html#metricq.TimeAggregate.maximum">maximum (metricq.TimeAggregate attribute)</a>
@@ -376,14 +402,14 @@
 </li>
       <li><a href="glossary.html#term-Metadata"><strong>Metadata</strong></a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="glossary.html#term-Metric"><strong>Metric</strong></a>
 
       <ul>
         <li><a href="api/misc.html#metricq.Metric">(in module metricq)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     metricq.exceptions
 
@@ -425,6 +451,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/sink.html#metricq.Sink.on_data">on_data() (metricq.Sink method)</a>
+</li>
+      <li><a href="api/client-common.html#metricq.Agent.on_exception">on_exception() (metricq.Agent method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -543,8 +571,6 @@
       <ul>
         <li><a href="api/client-common.html#metricq.Client.stop">(metricq.Client method)</a>
 </li>
-        <li><a href="api/client-common.html#metricq.DataClient.stop">(metricq.DataClient method)</a>
-</li>
         <li><a href="api/source.html#metricq.SynchronousSource.stop">(metricq.SynchronousSource method)</a>
 </li>
       </ul></li>
@@ -572,14 +598,22 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/source.html#metricq.Source.task">task() (metricq.Source method)</a>
 </li>
+      <li><a href="api/client-common.html#metricq.Agent.teardown">teardown() (metricq.Agent method)</a>
+
+      <ul>
+        <li><a href="api/client-common.html#metricq.Client.teardown">(metricq.Client method)</a>
+</li>
+        <li><a href="api/client-common.html#metricq.DataClient.teardown">(metricq.DataClient method)</a>
+</li>
+      </ul></li>
       <li><a href="api/misc.html#metricq.TimeAggregate">TimeAggregate (class in metricq)</a>
 </li>
       <li><a href="api/misc.html#metricq.Timedelta">Timedelta (class in metricq)</a>
 </li>
-      <li><a href="api/misc.html#metricq.Timedelta.timedelta">timedelta (metricq.Timedelta property)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/misc.html#metricq.Timedelta.timedelta">timedelta (metricq.Timedelta property)</a>
+</li>
       <li><a href="api/misc.html#metricq.Timestamp">Timestamp (class in metricq)</a>
 </li>
       <li><a href="api/misc.html#metricq.TimeAggregate.timestamp">timestamp (metricq.TimeAggregate attribute)</a>
