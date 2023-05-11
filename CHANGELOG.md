@@ -11,14 +11,18 @@
 **Implemented enhancements:**
 
 - Dealing with naive datetime objects [\#138](https://github.com/metricq/metricq-python/issues/138)
+- Allow `url` instead of `management\_url` kwarg in `metricq.Client` [\#130](https://github.com/metricq/metricq-python/issues/130)
 - Improve datatime parsing of Timestamp [\#125](https://github.com/metricq/metricq-python/issues/125)
+- Update aio-pika to \>=8.0 [\#124](https://github.com/metricq/metricq-python/issues/124)
 
 **Fixed bugs:**
 
 - Reading protobuf requirement from version file in setup.py doesn't actually work [\#162](https://github.com/metricq/metricq-python/issues/162)
 - Tests fail with recent protobuf versions [\#151](https://github.com/metricq/metricq-python/issues/151)
 - protobuf version requirement is broken [\#143](https://github.com/metricq/metricq-python/issues/143)
+- Verbose messages on connection close [\#137](https://github.com/metricq/metricq-python/issues/137)
 - Agents using the `IntervalSource` might enter a zombie state [\#134](https://github.com/metricq/metricq-python/issues/134)
+- Exception on tear down of SSL connection [\#123](https://github.com/metricq/metricq-python/issues/123)
 
 **Closed issues:**
 
@@ -31,6 +35,8 @@
 
 **Merged pull requests:**
 
+- Agent url param [\#165](https://github.com/metricq/metricq-python/pull/165) ([tilsche](https://github.com/tilsche))
+- Update aio pika [\#164](https://github.com/metricq/metricq-python/pull/164) ([tilsche](https://github.com/tilsche))
 - Read protobuf version directly in setup.py [\#163](https://github.com/metricq/metricq-python/pull/163) ([tilsche](https://github.com/tilsche))
 - Documentation spring cleanup [\#161](https://github.com/metricq/metricq-python/pull/161) ([tilsche](https://github.com/tilsche))
 - Migrate docker workflow to ghcr.io [\#159](https://github.com/metricq/metricq-python/pull/159) ([kinnarr](https://github.com/kinnarr))
@@ -76,10 +82,6 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v3.1.1...v4.0.0)
 
-**Breaking changes:**
-
-- Feature: Python 3.10 support [\#119](https://github.com/metricq/metricq-python/pull/119) ([bmario](https://github.com/bmario))
-
 **Fixed bugs:**
 
 - Refactor `loop` parameter usage [\#51](https://github.com/metricq/metricq-python/issues/51)
@@ -99,6 +101,10 @@
 ## [v3.1.0](https://github.com/metricq/metricq-python/tree/v3.1.0) (2021-10-19)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v3.0.0...v3.1.0)
+
+**Breaking changes:**
+
+- Feature: Python 3.10 support [\#119](https://github.com/metricq/metricq-python/pull/119) ([bmario](https://github.com/bmario))
 
 **Implemented enhancements:**
 
