@@ -238,7 +238,7 @@ On construction, we need to supply a unique <a class="reference internal" href="
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">source</span> <span class="o">=</span> <span class="n">DummySource</span><span class="p">(</span>
         <span class="n">token</span><span class="o">=</span><span class="s2">&quot;sink-py-example&quot;</span><span class="p">,</span>
-        <span class="n">management_url</span><span class="o">=</span><span class="s2">&quot;amqp://localhost/&quot;</span><span class="p">,</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">&quot;amqp://localhost/&quot;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">source</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
@@ -339,7 +339,7 @@ On construction, we need to supply a unique <a class="reference internal" href="
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;--token&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;source-py-dummy&quot;</span><span class="p">)</span>
 <span class="nd">@click_log</span><span class="o">.</span><span class="n">simple_verbosity_option</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 <span class="k">def</span> <span class="nf">source</span><span class="p">(</span><span class="n">server</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">src</span> <span class="o">=</span> <span class="n">DummySource</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">management_url</span><span class="o">=</span><span class="n">server</span><span class="p">)</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="n">DummySource</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">server</span><span class="p">)</span>
     <span class="n">src</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 
 

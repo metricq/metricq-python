@@ -174,7 +174,7 @@ as there is code in place that generates a unique token automatically
     <span class="n">sink</span> <span class="o">=</span> <span class="n">DummySink</span><span class="p">(</span>
         <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;test.py.dummy&quot;</span><span class="p">],</span>
         <span class="n">token</span><span class="o">=</span><span class="s2">&quot;sink-py-dummy&quot;</span><span class="p">,</span>
-        <span class="n">management_url</span><span class="o">=</span><span class="s2">&quot;amqp://localhost/&quot;</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">&quot;amqp://localhost/&quot;</span>
     <span class="p">)</span>
     <span class="n">sink</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
@@ -292,7 +292,7 @@ Running this script, you should now see something like this appearing on standar
 <span class="k">def</span> <span class="nf">source</span><span class="p">(</span><span class="n">server</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Metric</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="c1"># Initialize the DummySink class with a list of metrics given on the</span>
     <span class="c1"># command line.</span>
-    <span class="n">sink</span> <span class="o">=</span> <span class="n">DummySink</span><span class="p">(</span><span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">management_url</span><span class="o">=</span><span class="n">server</span><span class="p">)</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">DummySink</span><span class="p">(</span><span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">server</span><span class="p">)</span>
 
     <span class="c1"># Run the sink.  This call will block until the connection is closed.</span>
     <span class="n">sink</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>

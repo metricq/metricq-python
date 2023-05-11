@@ -157,6 +157,13 @@ Use the individual fields instead.
 The using code has more context and should know better which fields to include.
 In particular, whether to use :attr:`TimeAggregate.mean_sum` or :meth:`TimeAggregate.mean_integral` and which :attr:`TimeValue.timestamp` type to use.
 
+Agent `management_url` renamed to `url`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The constructor parameter ``management_url`` of :class:`Agent` has been renamed to `url`.
+A graceful fallback with a ``DeprecationWarning`` is provided for now.
+It will be removed later.
+
 Agent `stop` / `_close`
 ^^^^^^^^^^^^^^^^^^^^^^^
 

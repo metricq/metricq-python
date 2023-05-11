@@ -108,7 +108,7 @@ If you are interested in the values of metric ``test.py.dummy``, construct and r
         sink = DummySink(
             metrics=["test.py.dummy"],
             token="sink-py-dummy",
-            management_url="amqp://localhost/"
+            url="amqp://localhost/"
         )
         sink.run()
 

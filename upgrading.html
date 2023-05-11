@@ -71,6 +71,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#x-5-0"><cite>4.x</cite> → <cite>5.0</cite></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#removing-internal-types-module">Removing internal types module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#deprecation-of-dict-methods">Deprecation of <cite>dict</cite> methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#agent-management-url-renamed-to-url">Agent <cite>management_url</cite> renamed to <cite>url</cite></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#agent-stop-close">Agent <cite>stop</cite> / <cite>_close</cite></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#internal-agent-changes">Internal Agent changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#renaming-of-setup-py-options">Renaming of setup.py options</a></li>
@@ -248,6 +249,12 @@ If you have imported types from it directly you should change to import directly
 Use the individual fields instead.
 The using code has more context and should know better which fields to include.
 In particular, whether to use <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.mean_sum" title="metricq.TimeAggregate.mean_sum"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.mean_sum</span></code></a> or <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.mean_integral" title="metricq.TimeAggregate.mean_integral"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TimeAggregate.mean_integral()</span></code></a> and which <a class="reference internal" href="api/misc.html#metricq.TimeValue.timestamp" title="metricq.TimeValue.timestamp"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeValue.timestamp</span></code></a> type to use.</p>
+</section>
+<section id="agent-management-url-renamed-to-url">
+<h3>Agent <cite>management_url</cite> renamed to <cite>url</cite><a class="headerlink" href="#agent-management-url-renamed-to-url" title="Permalink to this heading"></a></h3>
+<p>The constructor parameter <code class="docutils literal notranslate"><span class="pre">management_url</span></code> of <a class="reference internal" href="api/client-common.html#metricq.Agent" title="metricq.Agent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code></a> has been renamed to <cite>url</cite>.
+A graceful fallback with a <code class="docutils literal notranslate"><span class="pre">DeprecationWarning</span></code> is provided for now.
+It will be removed later.</p>
 </section>
 <section id="agent-stop-close">
 <h3>Agent <cite>stop</cite> / <cite>_close</cite><a class="headerlink" href="#agent-stop-close" title="Permalink to this heading"></a></h3>
