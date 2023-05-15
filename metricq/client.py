@@ -43,8 +43,6 @@ from .version import __version__
 logger = get_logger(__name__)
 
 
-_GetMetricsResult = Sequence[str] | dict[str, JsonDict]
-
 # With Python 3.11 use typing.Self instead
 Self = TypeVar("Self", bound="Client")
 
@@ -175,7 +173,7 @@ class Client(Agent):
         infix: Optional[str] = None,
         limit: Optional[int] = None,
         hidden: Optional[bool] = None,
-    ) -> _GetMetricsResult:
+    ) -> dict[str, JsonDict]:
         """Retrieve information for metrics matching a selector pattern.
 
         Args:
@@ -203,7 +201,7 @@ class Client(Agent):
         Returns:
             * a dictionary mapping matching metric names to their
               :ref:`metadata<metric-metadata>` ( :code:`if metadata==True`)
-            * otherwise, a sequence of matching metric names
+            * otherwise, a dictionary mapping metric names to empty dicts
         """
         arguments: dict[str, Any] = {"format": "object" if metadata else "array"}
         if selector is not None:
@@ -225,7 +223,14 @@ class Client(Agent):
 
         result = await self.rpc("get_metrics", **arguments)
         assert result is not None
-        return cast(_GetMetricsResult, result["metrics"])
+        metrics = result["metrics"]
+        if not metadata:
+            assert isinstance(metrics, list)
+            metrics = {m: {} for m in metrics}
+        assert isinstance(metrics, dict)
+        assert all(isinstance(v, dict) for v in metrics.values())
+        assert all(isinstance(k, str) for k in metrics.keys())
+        return metrics
 
     async def __aenter__(self: Self) -> Self:
         """Allows to use the Client as a context manager.

@@ -38,7 +38,7 @@ from typing import Any, Optional
 import aio_pika
 
 from . import history_pb2
-from .client import Client, _GetMetricsResult
+from .client import Client
 from .connection_watchdog import ConnectionWatchdog
 from .exceptions import (
     HistoryError,
@@ -48,7 +48,7 @@ from .exceptions import (
 )
 from .logging import get_logger
 from .rpc import rpc_handler
-from .timeseries import TimeAggregate, Timedelta, Timestamp, TimeValue
+from .timeseries import JsonDict, TimeAggregate, Timedelta, Timestamp, TimeValue
 from .version import __version__  # noqa: F401 - shut up flake8, automatic version str
 
 logger = get_logger(__name__)
@@ -404,7 +404,7 @@ class HistoryClient(Client):
         """
         await asyncio.gather(super().teardown(), self.__close()),
 
-    async def get_metrics(self, *args: Any, **kwargs: Any) -> _GetMetricsResult:
+    async def get_metrics(self, *args: Any, **kwargs: Any) -> dict[str, JsonDict]:
         """Retrieve information for **historic** metrics matching a selector pattern.
 
         This is like :meth:`Client.get_metrics`, but sets :code:`historic=True` by default.

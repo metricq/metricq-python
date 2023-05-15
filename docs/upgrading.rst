@@ -149,6 +149,13 @@ If you have imported types from it directly you should change to import directly
 * :class:`Metric` (available in `metricq` since `5.0`)
 * :class:`JsonDict` (available in `metricq` since `5.0`)
 
+Return value of ``get_metrics``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+:meth:`Client.get_metrics` now always returns a ``dict`` with metric names as keys.
+If ``metadata=True`` (default), the ``dict``-values are ``JsonDict``s with the metadata.
+For ``metadata=False``, the ``dict`` values are in turn empty ``dict``s.
+
 Deprecation of `dict` methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
