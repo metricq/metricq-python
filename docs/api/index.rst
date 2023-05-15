@@ -8,6 +8,7 @@ API Reference
     sink
     source
     history-client
+    pandas
     drain
     subscriber
     client-common
