@@ -56,6 +56,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#metricq.Source.flush"><code class="docutils literal notranslate"><span class="pre">Source.flush()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#metricq.Source.send"><code class="docutils literal notranslate"><span class="pre">Source.send()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#metricq.Source.task"><code class="docutils literal notranslate"><span class="pre">Source.task()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Source.teardown"><code class="docutils literal notranslate"><span class="pre">Source.teardown()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#metricq.Source.chunk_size"><code class="docutils literal notranslate"><span class="pre">Source.chunk_size</span></code></a></li>
 </ul>
 </li>
@@ -73,6 +74,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="history-client.html">History Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pandas.html">Pandas History Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="drain.html">Drain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="subscriber.html">Subscriber</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-common.html">Common client operation</a></li>
@@ -259,6 +261,18 @@ Otherwise, duplicate data points will be sent, which results in an invalid <a cl
 You are responsible for handling all relevant exceptions and for stopping
 the task in <a class="reference internal" href="client-common.html#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.stop()</span></code></a> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></p>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.Source.teardown">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">teardown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.teardown" title="Permalink to this definition"></a></dt>
+<dd><div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Do not call this function, it is called indirectly by <a class="reference internal" href="client-common.html#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.stop()</span></code></a>.</p>
+</div>
+<p>Triggers a stop for the source task and waits for it to complete in addition to
+<a class="reference internal" href="client-common.html#metricq.DataClient.teardown" title="metricq.DataClient.teardown"><code class="xref py py-meth docutils literal notranslate"><span class="pre">DataClient.teardown()</span></code></a>.
+:rtype: <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">

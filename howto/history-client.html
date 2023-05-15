@@ -55,6 +55,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#aggregates-summarizing-a-metric">Aggregates – summarizing a metric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#multiple-aggregates">Multiple aggregates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#fetching-raw-values">Fetching raw values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-pandas-dataframes">Getting Pandas DataFrames</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="drain.html">Building a MetricQ Drain</a></li>
@@ -120,11 +121,16 @@ we won’t need to define our own client, we can use <a class="reference interna
 </pre></div>
 </div>
 <p>Then define the <a class="reference internal" href="../api/history-client.html#metricq.HistoryClient" title="metricq.HistoryClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryClient</span></code></a> and connect it to the network:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">HistoryClient</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">server</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">HistoryClient</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">add_uuid</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>If all went well, we are ready to retrieve our data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">add_uuid</span></code> parameter is recommended for interactive usage.
+Client tokens connected to MetricQ must be unique, the parameter ensures this for transient clients.</p>
+</div>
 </section>
 <section id="fetching-metric-metadata">
 <h2>Fetching metric metadata<a class="headerlink" href="#fetching-metric-metadata" title="Permalink to this heading"></a></h2>
@@ -264,6 +270,107 @@ Still, we get a rough idea of how this metric behaved over the past year without
 <span class="go">TimeValue(timestamp=Timestamp(1577836800078240094), value=6.013008404218427)</span>
 <span class="go">TimeValue(timestamp=Timestamp(1577836800088245696), value=4.734305978764959)</span>
 <span class="go">TimeValue(timestamp=Timestamp(1577836800098251298), value=5.0495328431393665)</span>
+</pre></div>
+</div>
+</section>
+<section id="getting-pandas-dataframes">
+<h2>Getting Pandas DataFrames<a class="headerlink" href="#getting-pandas-dataframes" title="Permalink to this heading"></a></h2>
+<p>You can get historic data in the form of Pandas DataFrames using <code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.pandas.PandasHistoryClient</span></code>.
+This is useful if you want to use the data in a Jupyter notebook or similar.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.power&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;356d&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_aggregate</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">history_aggregate_timeline</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">now</span><span class="p">,</span> <span class="n">interval_max</span><span class="o">=</span><span class="n">metr</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">icq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;30d&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_aggregate</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+
+<span class="go">                  timestamp    minimum     maximum           sum  ...        mean  mean_integral    mean_sum    integral_s</span>
+<span class="go"> count                   16  16.000000   16.000000  1.600000e+01  ...   16.000000      16.000000   16.000000  1.600000e+01</span>
+<span class="go"> mean   2022-10-28 23:33:20  44.189104  529.980508  3.469185e+09  ...   86.789200      86.789200   86.787557  1.735784e+08</span>
+<span class="go"> min    2022-05-08 08:53:20  22.669203  193.229156  2.754075e+09  ...   68.908942      68.908942   68.909144  1.378179e+08</span>
+<span class="go"> 25%    2022-08-03 04:13:20  34.589550  432.339607  2.774195e+09  ...   69.429580      69.429580   69.429318  1.388592e+08</span>
+<span class="go"> 50%    2022-10-28 23:33:20  47.969501  552.633820  2.826499e+09  ...   70.667074      70.667074   70.667066  1.413341e+08</span>
+<span class="go"> 75%    2023-01-23 18:53:20  51.409111  700.263397  3.547542e+09  ...   88.953029      88.953029   88.989932  1.779061e+08</span>
+<span class="go"> max    2023-04-20 14:13:20  56.362167  765.781311  6.428447e+09  ...  160.731526     160.731526  160.725588  3.214631e+08</span>
+<span class="go"> std                    NaN   9.946549  200.044892  1.124721e+09  ...   28.126507      28.126507   28.119481  5.625301e+07</span>
+
+<span class="go"> [8 rows x 11 columns]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_aggregate</span><span class="o">.</span><span class="n">dtypes</span>
+
+<span class="go"> timestamp         datetime64[ns]</span>
+<span class="go"> minimum                  float64</span>
+<span class="go"> maximum                  float64</span>
+<span class="go"> sum                      float64</span>
+<span class="go"> count                      int64</span>
+<span class="go"> integral_ns              float64</span>
+<span class="go"> active_time      timedelta64[ns]</span>
+<span class="go"> mean                     float64</span>
+<span class="go"> mean_integral            float64</span>
+<span class="go"> mean_sum                 float64</span>
+<span class="go"> integral_s               float64</span>
+<span class="go"> dtype: object</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_aggregate</span>
+
+<span class="go">              timestamp    minimum     maximum           sum  ...        mean  mean_integral    mean_sum    integral_s</span>
+<span class="go"> 0  2022-05-08 08:53:20  47.148315  706.997009  2.754075e+09  ...   68.908942      68.908942   68.909144  1.378179e+08</span>
+<span class="go"> 1  2022-05-31 12:26:40  32.133179  765.781311  4.785220e+09  ...  119.906583     119.906583  119.833658  2.398132e+08</span>
+<span class="go"> 2  2022-06-23 16:00:00  34.732819  632.136292  6.428447e+09  ...  160.731526     160.731526  160.725588  3.214631e+08</span>
+<span class="go"> 3  2022-07-16 19:33:20  22.669203  698.018860  5.168078e+09  ...  129.202305     129.202305  129.202331  2.584046e+08</span>
+<span class="go"> 4  2022-08-08 23:06:40  34.159744  508.385712  3.222007e+09  ...   80.899874      80.899874   80.947178  1.617997e+08</span>
+<span class="go"> 5  2022-09-01 02:40:00  47.985229  204.357193  2.863051e+09  ...   71.576453      71.576453   71.576479  1.431529e+08</span>
+<span class="go"> 6  2022-09-24 06:13:20  31.242771  564.773865  3.150994e+09  ...   78.777729      78.777729   78.778133  1.575555e+08</span>
+<span class="go"> 7  2022-10-17 09:46:40  51.360985  497.920654  2.765528e+09  ...   69.215058      69.215058   69.213923  1.384301e+08</span>
+<span class="go"> 8  2022-11-09 13:20:00  47.953773  715.927673  4.524147e+09  ...  113.112492     113.112492  113.118197  2.262250e+08</span>
+<span class="go"> 9  2022-12-02 16:53:20  43.168755  469.569214  3.175613e+09  ...   79.390365      79.390365   79.390536  1.587807e+08</span>
+<span class="go"> 10 2022-12-25 20:26:40  50.379284  540.493774  2.781286e+09  ...   69.541946      69.541946   69.541976  1.390839e+08</span>
+<span class="go"> 11 2023-01-18 00:00:00  51.553490  694.038757  2.789947e+09  ...   69.757696      69.757696   69.757653  1.395154e+08</span>
+<span class="go"> 12 2023-02-10 03:33:20  52.160843  193.229156  2.779623e+09  ...   69.526586      69.526586   69.526844  1.390532e+08</span>
+<span class="go"> 13 2023-03-05 07:06:40  51.118492  219.914642  2.770629e+09  ...   69.271985      69.271985   69.271932  1.385440e+08</span>
+<span class="go"> 14 2023-03-28 10:40:00  56.362167  320.650787  2.774088e+09  ...   69.352327      69.352327   69.352377  1.387047e+08</span>
+<span class="go"> 15 2023-04-20 14:13:20  52.896618  747.493225  2.774231e+09  ...   69.455331      69.455331   69.454964  1.389107e+08</span>
+
+<span class="go"> [16 rows x 11 columns]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.power&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;60s&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_raw</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">history_raw_timeline</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">now</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_raw</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+
+<span class="go">                            timestamp        value</span>
+<span class="go"> count                           1185  1185.000000</span>
+<span class="go"> mean   2023-05-15 11:52:23.413917184    69.162772</span>
+<span class="go"> min    2023-05-15 11:51:53.813568892    65.281075</span>
+<span class="go"> 25%    2023-05-15 11:52:08.608159232    68.436317</span>
+<span class="go"> 50%    2023-05-15 11:52:23.418808064    68.911995</span>
+<span class="go"> 75%    2023-05-15 11:52:38.213456640    69.567841</span>
+<span class="go"> max    2023-05-15 11:52:53.008083283   106.411224</span>
+<span class="go"> std                              NaN     1.668199</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_raw</span><span class="o">.</span><span class="n">dtypes</span>
+
+<span class="go"> timestamp    datetime64[ns]</span>
+<span class="go"> value               float64</span>
+<span class="go"> dtype: object</span>
+
+<span class="go"> In [10]: df_raw</span>
+<span class="go"> Out[10]:</span>
+<span class="go">                          timestamp      value</span>
+<span class="go"> 0    2023-05-15 11:51:53.813568892  68.291107</span>
+<span class="go"> 1    2023-05-15 11:51:53.861333276  68.396942</span>
+<span class="go"> 2    2023-05-15 11:51:53.909105607  69.486191</span>
+<span class="go"> 3    2023-05-15 11:51:53.956836834  69.350136</span>
+<span class="go"> 4    2023-05-15 11:51:54.020551519  69.223305</span>
+<span class="go"> ...                            ...        ...</span>
+<span class="go"> 1180 2023-05-15 11:52:52.817083231  68.900238</span>
+<span class="go"> 1181 2023-05-15 11:52:52.864838029  68.732780</span>
+<span class="go"> 1182 2023-05-15 11:52:52.912546963  70.029648</span>
+<span class="go"> 1183 2023-05-15 11:52:52.960314713  69.964630</span>
+<span class="go"> 1184 2023-05-15 11:52:53.008083283  68.362373</span>
+
+<span class="go"> [1185 rows x 2 columns]</span>
 </pre></div>
 </div>
 </section>

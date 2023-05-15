@@ -9,7 +9,7 @@ Source
         send,
         chunk_size,
         flush,
-        close,
+        teardown,
     :member-order: groupwise
 
 ----

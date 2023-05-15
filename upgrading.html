@@ -70,9 +70,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#x-5-0"><cite>4.x</cite> → <cite>5.0</cite></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#removing-internal-types-module">Removing internal types module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#deprecation-of-dict-methods">Deprecation of <cite>dict</cite> methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#agent-management-url-renamed-to-url">Agent <cite>management_url</cite> renamed to <cite>url</cite></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#agent-stop-close">Agent <cite>stop</cite> / <cite>_close</cite></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#return-value-of-get-metrics">Return value of <code class="docutils literal notranslate"><span class="pre">get_metrics</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deprecation-of-dict-methods">Deprecation of <code class="docutils literal notranslate"><span class="pre">dict</span></code> methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#agent-management-url-renamed-to-url">Agent <code class="docutils literal notranslate"><span class="pre">management_url</span></code> renamed to <code class="docutils literal notranslate"><span class="pre">url</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#agent-stop-close">Agent <code class="docutils literal notranslate"><span class="pre">stop</span></code> / <code class="docutils literal notranslate"><span class="pre">_close</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#internal-agent-changes">Internal Agent changes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#renaming-of-setup-py-options">Renaming of setup.py options</a></li>
 </ul>
@@ -243,21 +244,27 @@ If you have imported types from it directly you should change to import directly
 <li><p><a class="reference internal" href="api/misc.html#metricq.JsonDict" title="metricq.JsonDict"><code class="xref py py-class docutils literal notranslate"><span class="pre">JsonDict</span></code></a> (available in <cite>metricq</cite> since <cite>5.0</cite>)</p></li>
 </ul>
 </section>
+<section id="return-value-of-get-metrics">
+<h3>Return value of <code class="docutils literal notranslate"><span class="pre">get_metrics</span></code><a class="headerlink" href="#return-value-of-get-metrics" title="Permalink to this heading"></a></h3>
+<p><a class="reference internal" href="api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Client.get_metrics()</span></code></a> now always returns a <code class="docutils literal notranslate"><span class="pre">dict</span></code> with metric names as keys.
+If <code class="docutils literal notranslate"><span class="pre">metadata=True</span></code> (default), the <code class="docutils literal notranslate"><span class="pre">dict</span></code>-values are <code class="docutils literal notranslate"><span class="pre">JsonDict</span></code> with the metadata.
+For <code class="docutils literal notranslate"><span class="pre">metadata=False</span></code>, the <code class="docutils literal notranslate"><span class="pre">dict</span></code> values are in turn empty <code class="docutils literal notranslate"><span class="pre">dict</span></code>.</p>
+</section>
 <section id="deprecation-of-dict-methods">
-<h3>Deprecation of <cite>dict</cite> methods<a class="headerlink" href="#deprecation-of-dict-methods" title="Permalink to this heading"></a></h3>
+<h3>Deprecation of <code class="docutils literal notranslate"><span class="pre">dict</span></code> methods<a class="headerlink" href="#deprecation-of-dict-methods" title="Permalink to this heading"></a></h3>
 <p>The methods <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.dict" title="metricq.TimeAggregate.dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TimeAggregate.dict()</span></code></a> and <a class="reference internal" href="api/misc.html#metricq.TimeValue.dict" title="metricq.TimeValue.dict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TimeValue.dict()</span></code></a> have been deprecated.
 Use the individual fields instead.
 The using code has more context and should know better which fields to include.
 In particular, whether to use <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.mean_sum" title="metricq.TimeAggregate.mean_sum"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeAggregate.mean_sum</span></code></a> or <a class="reference internal" href="api/misc.html#metricq.TimeAggregate.mean_integral" title="metricq.TimeAggregate.mean_integral"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TimeAggregate.mean_integral()</span></code></a> and which <a class="reference internal" href="api/misc.html#metricq.TimeValue.timestamp" title="metricq.TimeValue.timestamp"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TimeValue.timestamp</span></code></a> type to use.</p>
 </section>
 <section id="agent-management-url-renamed-to-url">
-<h3>Agent <cite>management_url</cite> renamed to <cite>url</cite><a class="headerlink" href="#agent-management-url-renamed-to-url" title="Permalink to this heading"></a></h3>
+<h3>Agent <code class="docutils literal notranslate"><span class="pre">management_url</span></code> renamed to <code class="docutils literal notranslate"><span class="pre">url</span></code><a class="headerlink" href="#agent-management-url-renamed-to-url" title="Permalink to this heading"></a></h3>
 <p>The constructor parameter <code class="docutils literal notranslate"><span class="pre">management_url</span></code> of <a class="reference internal" href="api/client-common.html#metricq.Agent" title="metricq.Agent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code></a> has been renamed to <cite>url</cite>.
 A graceful fallback with a <code class="docutils literal notranslate"><span class="pre">DeprecationWarning</span></code> is provided for now.
 It will be removed later.</p>
 </section>
 <section id="agent-stop-close">
-<h3>Agent <cite>stop</cite> / <cite>_close</cite><a class="headerlink" href="#agent-stop-close" title="Permalink to this heading"></a></h3>
+<h3>Agent <code class="docutils literal notranslate"><span class="pre">stop</span></code> / <code class="docutils literal notranslate"><span class="pre">_close</span></code><a class="headerlink" href="#agent-stop-close" title="Permalink to this heading"></a></h3>
 <p>The method <a class="reference internal" href="api/client-common.html#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.stop()</span></code></a> has different parameters that must be passed when overriding it in a child class.
 The method <cite>_close</cite> was renamed to <a class="reference internal" href="api/client-common.html#metricq.Agent.teardown" title="metricq.Agent.teardown"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.teardown()</span></code></a> and should instead be used for overriding.
 It is called by <a class="reference internal" href="api/client-common.html#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.stop()</span></code></a> and benefits from a timeout and not having to deal with parameters.
