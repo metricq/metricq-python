@@ -38,10 +38,14 @@ Then define the :class:`HistoryClient` and connect it to the network:
 
 .. code-block::
 
-    >>> client = metricq.HistoryClient(token, server)
+    >>> client = metricq.HistoryClient(token, server, add_uuid=True)
     >>> await client.connect()
 
 If all went well, we are ready to retrieve our data.
+
+.. note::
+    The ``add_uuid`` parameter is recommended for interactive usage.
+    Client tokens connected to MetricQ must be unique, the parameter ensures this for transient clients.
 
 Fetching metric metadata
 ------------------------
@@ -199,3 +203,106 @@ If you are interested in raw values instead of a aggregates, use :meth:`HistoryC
     TimeValue(timestamp=Timestamp(1577836800078240094), value=6.013008404218427)
     TimeValue(timestamp=Timestamp(1577836800088245696), value=4.734305978764959)
     TimeValue(timestamp=Timestamp(1577836800098251298), value=5.0495328431393665)
+
+Getting Pandas DataFrames
+-------------------------
+
+You can get historic data in the form of Pandas DataFrames using :class:`metricq.pandas.PandasHistoryClient`.
+This is useful if you want to use the data in a Jupyter notebook or similar.
+
+.. code-block::
+
+   >>> metric = "elab.ariel.power"
+   >>> now = metricq.Timestamp.now()
+   >>> start_time = now - metricq.Timedelta.from_string("356d")
+   >>> df_aggregate = await client.history_aggregate_timeline(metric, start_time=start_time, end_time=now, interval_max=metr
+   >>> icq.Timedelta.from_string("30d"))
+   >>> df_aggregate.describe()
+
+                     timestamp    minimum     maximum           sum  ...        mean  mean_integral    mean_sum    integral_s
+    count                   16  16.000000   16.000000  1.600000e+01  ...   16.000000      16.000000   16.000000  1.600000e+01
+    mean   2022-10-28 23:33:20  44.189104  529.980508  3.469185e+09  ...   86.789200      86.789200   86.787557  1.735784e+08
+    min    2022-05-08 08:53:20  22.669203  193.229156  2.754075e+09  ...   68.908942      68.908942   68.909144  1.378179e+08
+    25%    2022-08-03 04:13:20  34.589550  432.339607  2.774195e+09  ...   69.429580      69.429580   69.429318  1.388592e+08
+    50%    2022-10-28 23:33:20  47.969501  552.633820  2.826499e+09  ...   70.667074      70.667074   70.667066  1.413341e+08
+    75%    2023-01-23 18:53:20  51.409111  700.263397  3.547542e+09  ...   88.953029      88.953029   88.989932  1.779061e+08
+    max    2023-04-20 14:13:20  56.362167  765.781311  6.428447e+09  ...  160.731526     160.731526  160.725588  3.214631e+08
+    std                    NaN   9.946549  200.044892  1.124721e+09  ...   28.126507      28.126507   28.119481  5.625301e+07
+
+    [8 rows x 11 columns]
+
+   >>> df_aggregate.dtypes
+
+    timestamp         datetime64[ns]
+    minimum                  float64
+    maximum                  float64
+    sum                      float64
+    count                      int64
+    integral_ns              float64
+    active_time      timedelta64[ns]
+    mean                     float64
+    mean_integral            float64
+    mean_sum                 float64
+    integral_s               float64
+    dtype: object
+
+   >>> df_aggregate
+
+                 timestamp    minimum     maximum           sum  ...        mean  mean_integral    mean_sum    integral_s
+    0  2022-05-08 08:53:20  47.148315  706.997009  2.754075e+09  ...   68.908942      68.908942   68.909144  1.378179e+08
+    1  2022-05-31 12:26:40  32.133179  765.781311  4.785220e+09  ...  119.906583     119.906583  119.833658  2.398132e+08
+    2  2022-06-23 16:00:00  34.732819  632.136292  6.428447e+09  ...  160.731526     160.731526  160.725588  3.214631e+08
+    3  2022-07-16 19:33:20  22.669203  698.018860  5.168078e+09  ...  129.202305     129.202305  129.202331  2.584046e+08
+    4  2022-08-08 23:06:40  34.159744  508.385712  3.222007e+09  ...   80.899874      80.899874   80.947178  1.617997e+08
+    5  2022-09-01 02:40:00  47.985229  204.357193  2.863051e+09  ...   71.576453      71.576453   71.576479  1.431529e+08
+    6  2022-09-24 06:13:20  31.242771  564.773865  3.150994e+09  ...   78.777729      78.777729   78.778133  1.575555e+08
+    7  2022-10-17 09:46:40  51.360985  497.920654  2.765528e+09  ...   69.215058      69.215058   69.213923  1.384301e+08
+    8  2022-11-09 13:20:00  47.953773  715.927673  4.524147e+09  ...  113.112492     113.112492  113.118197  2.262250e+08
+    9  2022-12-02 16:53:20  43.168755  469.569214  3.175613e+09  ...   79.390365      79.390365   79.390536  1.587807e+08
+    10 2022-12-25 20:26:40  50.379284  540.493774  2.781286e+09  ...   69.541946      69.541946   69.541976  1.390839e+08
+    11 2023-01-18 00:00:00  51.553490  694.038757  2.789947e+09  ...   69.757696      69.757696   69.757653  1.395154e+08
+    12 2023-02-10 03:33:20  52.160843  193.229156  2.779623e+09  ...   69.526586      69.526586   69.526844  1.390532e+08
+    13 2023-03-05 07:06:40  51.118492  219.914642  2.770629e+09  ...   69.271985      69.271985   69.271932  1.385440e+08
+    14 2023-03-28 10:40:00  56.362167  320.650787  2.774088e+09  ...   69.352327      69.352327   69.352377  1.387047e+08
+    15 2023-04-20 14:13:20  52.896618  747.493225  2.774231e+09  ...   69.455331      69.455331   69.454964  1.389107e+08
+
+    [16 rows x 11 columns]
+
+   >>> metric = "elab.ariel.power"
+   >>> now = metricq.Timestamp.now()
+   >>> start_time = now - metricq.Timedelta.from_string("60s")
+   >>> df_raw = await client.history_raw_timeline(metric, start_time=start_time, end_time=now)
+   >>> df_raw.describe()
+
+                               timestamp        value
+    count                           1185  1185.000000
+    mean   2023-05-15 11:52:23.413917184    69.162772
+    min    2023-05-15 11:51:53.813568892    65.281075
+    25%    2023-05-15 11:52:08.608159232    68.436317
+    50%    2023-05-15 11:52:23.418808064    68.911995
+    75%    2023-05-15 11:52:38.213456640    69.567841
+    max    2023-05-15 11:52:53.008083283   106.411224
+    std                              NaN     1.668199
+
+   >>> df_raw.dtypes
+
+    timestamp    datetime64[ns]
+    value               float64
+    dtype: object
+
+    In [10]: df_raw
+    Out[10]:
+                             timestamp      value
+    0    2023-05-15 11:51:53.813568892  68.291107
+    1    2023-05-15 11:51:53.861333276  68.396942
+    2    2023-05-15 11:51:53.909105607  69.486191
+    3    2023-05-15 11:51:53.956836834  69.350136
+    4    2023-05-15 11:51:54.020551519  69.223305
+    ...                            ...        ...
+    1180 2023-05-15 11:52:52.817083231  68.900238
+    1181 2023-05-15 11:52:52.864838029  68.732780
+    1182 2023-05-15 11:52:52.912546963  70.029648
+    1183 2023-05-15 11:52:52.960314713  69.964630
+    1184 2023-05-15 11:52:53.008083283  68.362373
+
+    [1185 rows x 2 columns]
