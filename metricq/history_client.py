@@ -349,7 +349,10 @@ class HistoryClient(Client):
         self._reregister_task: Optional[Task[None]] = None
 
     async def connect(self) -> None:
-        """Connect to the MetricQ network and register this HistoryClient."""
+        """
+        Connect to the MetricQ network and register this HistoryClient.
+        You can either use this method, or use the class as an async context manager.
+        """
         await super().connect()
         response = await self.rpc("history.register")
         logger.debug("register response: {}", response)
