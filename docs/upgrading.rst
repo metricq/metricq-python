@@ -153,8 +153,8 @@ Return value of ``get_metrics``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 :meth:`Client.get_metrics` now always returns a ``dict`` with metric names as keys.
-If ``metadata=True`` (default), the ``dict``-values are ``JsonDict``s with the metadata.
-For ``metadata=False``, the ``dict`` values are in turn empty ``dict``s.
+If ``metadata=True`` (default), the ``dict``-values are ``JsonDict`` with the metadata.
+For ``metadata=False``, the ``dict`` values are in turn empty ``dict``.
 
 Deprecation of ``dict`` methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
