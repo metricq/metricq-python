@@ -156,23 +156,23 @@ Return value of ``get_metrics``
 If ``metadata=True`` (default), the ``dict``-values are ``JsonDict``s with the metadata.
 For ``metadata=False``, the ``dict`` values are in turn empty ``dict``s.
 
-Deprecation of `dict` methods
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Deprecation of ``dict`` methods
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The methods :meth:`TimeAggregate.dict` and :meth:`TimeValue.dict` have been deprecated.
 Use the individual fields instead.
 The using code has more context and should know better which fields to include.
 In particular, whether to use :attr:`TimeAggregate.mean_sum` or :meth:`TimeAggregate.mean_integral` and which :attr:`TimeValue.timestamp` type to use.
 
-Agent `management_url` renamed to `url`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Agent ``management_url`` renamed to ``url``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The constructor parameter ``management_url`` of :class:`Agent` has been renamed to `url`.
 A graceful fallback with a ``DeprecationWarning`` is provided for now.
 It will be removed later.
 
-Agent `stop` / `_close`
-^^^^^^^^^^^^^^^^^^^^^^^
+Agent ``stop`` / ``_close``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The method :meth:`Agent.stop` has different parameters that must be passed when overriding it in a child class.
 The method `_close` was renamed to :meth:`Agent.teardown` and should instead be used for overriding.
