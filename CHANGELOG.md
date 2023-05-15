@@ -6,6 +6,8 @@
 
 **Breaking changes:**
 
+- Get metrics typing [\#166](https://github.com/metricq/metricq-python/pull/166) ([tilsche](https://github.com/tilsche))
+- Update aio pika [\#164](https://github.com/metricq/metricq-python/pull/164) ([tilsche](https://github.com/tilsche))
 - Split types [\#155](https://github.com/metricq/metricq-python/pull/155) ([tilsche](https://github.com/tilsche))
 
 **Implemented enhancements:**
@@ -36,7 +38,6 @@
 **Merged pull requests:**
 
 - Agent url param [\#165](https://github.com/metricq/metricq-python/pull/165) ([tilsche](https://github.com/tilsche))
-- Update aio pika [\#164](https://github.com/metricq/metricq-python/pull/164) ([tilsche](https://github.com/tilsche))
 - Read protobuf version directly in setup.py [\#163](https://github.com/metricq/metricq-python/pull/163) ([tilsche](https://github.com/tilsche))
 - Documentation spring cleanup [\#161](https://github.com/metricq/metricq-python/pull/161) ([tilsche](https://github.com/tilsche))
 - Migrate docker workflow to ghcr.io [\#159](https://github.com/metricq/metricq-python/pull/159) ([kinnarr](https://github.com/kinnarr))
@@ -82,6 +83,10 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v3.1.1...v4.0.0)
 
+**Breaking changes:**
+
+- Feature: Python 3.10 support [\#119](https://github.com/metricq/metricq-python/pull/119) ([bmario](https://github.com/bmario))
+
 **Fixed bugs:**
 
 - Refactor `loop` parameter usage [\#51](https://github.com/metricq/metricq-python/issues/51)
@@ -101,10 +106,6 @@
 ## [v3.1.0](https://github.com/metricq/metricq-python/tree/v3.1.0) (2021-10-19)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v3.0.0...v3.1.0)
-
-**Breaking changes:**
-
-- Feature: Python 3.10 support [\#119](https://github.com/metricq/metricq-python/pull/119) ([bmario](https://github.com/bmario))
 
 **Implemented enhancements:**
 
