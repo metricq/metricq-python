@@ -43,7 +43,7 @@ from .version import __version__
 logger = get_logger(__name__)
 
 
-_GetMetricsResult = Sequence[str] | Sequence[dict[str, Any]]
+_GetMetricsResult = Sequence[str] | dict[str, JsonDict]
 
 # With Python 3.11 use typing.Self instead
 Self = TypeVar("Self", bound="Client")
