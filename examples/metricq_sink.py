@@ -31,7 +31,6 @@ import logging
 from typing import Any
 
 import click
-import click_completion  # type: ignore
 import click_log  # type: ignore
 
 import metricq
@@ -45,8 +44,6 @@ logger.setLevel("INFO")
 logger.handlers[0].formatter = logging.Formatter(
     fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
 )
-
-click_completion.init()
 
 
 # To implement a MetricQ Sink, subclass metricq.Sink
