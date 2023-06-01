@@ -34,7 +34,6 @@ import random
 import time
 
 import click
-import click_completion  # type: ignore
 import click_log  # type: ignore
 
 from metricq import SynchronousSource, Timestamp, get_logger
@@ -46,8 +45,6 @@ logger.setLevel("INFO")
 logger.handlers[0].formatter = logging.Formatter(
     fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
 )
-
-click_completion.init()
 
 
 @click.command()

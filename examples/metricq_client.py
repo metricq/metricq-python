@@ -44,7 +44,6 @@ import logging
 
 import aiomonitor  # type: ignore
 import click
-import click_completion  # type: ignore
 import click_log  # type: ignore
 
 import metricq
@@ -55,7 +54,6 @@ logger.setLevel("INFO")
 logger.handlers[0].formatter = logging.Formatter(
     fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
 )
-click_completion.init()
 
 
 async def run(server: str, token: str) -> None:
