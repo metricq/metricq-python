@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.0.0...HEAD)
+
+**Merged pull requests:**
+
+- Tox fixes [\#170](https://github.com/metricq/metricq-python/pull/170) ([tilsche](https://github.com/tilsche))
+
 ## [v5.0.0](https://github.com/metricq/metricq-python/tree/v5.0.0) (2023-05-17)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v4.2.0...v5.0.0)
