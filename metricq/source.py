@@ -50,32 +50,6 @@ class Source(DataClient):
     """A MetricQ :term:`Source`.
 
     See :ref:`source-how-to` on how to implement a new Source.
-
-    Example:
-        .. code-block::
-
-            from metricq import Source, Timestamp, rpc_handler
-
-            from asyncio import sleep
-            from random import randint
-
-            class SomeSensorSource(Source):
-                def __init__(self, *args, **kwargs):
-                    super().__init__(*args, **kwargs)
-
-                @rpc_handler("config")
-                async def _on_config(self, **config):
-                    await self.declare_metrics(["example.some_sensor"])
-
-                async def get_some_sensor_value(self):
-                    await sleep(randint(0, 5))
-                    return Timestamp.now(), randint(0, 10)
-
-                async def task(self):
-                    while True:
-                        time, value = await self.get_some_sensor_value()
-                        await self.send("example.some_sensor", time, value)
-
     """
 
     chunk_size: Optional[int] = cast(Optional[int], ChunkSize())
@@ -102,12 +76,17 @@ class Source(DataClient):
         ValueError: if value set not a positive, non-zero integer
     """
 
+    task_stop_future: Optional[asyncio.Future[None]] = None
+    """
+    This future indicates when the task should be stopped.
+    The result is meaningless (``None``).
+    """
+
     def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
         self.metrics: dict[str, SourceMetric] = dict()
         self.chunk_size = 1
         self._task: Optional[asyncio.Task[None]] = None
-        self.task_stop_future: Optional[asyncio.Future[None]] = None
 
     async def connect(self) -> None:
         await super().connect()
@@ -137,7 +116,7 @@ class Source(DataClient):
         Note:
             This task is not restarted if it fails.
             You are responsible for handling all relevant exceptions and for stopping
-            the task in :meth:`Agent.stop` or :meth:`close`
+            the task when :attr:`Source.task_stop_future` is set.
         """
 
     async def teardown(self) -> None:
