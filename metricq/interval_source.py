@@ -83,7 +83,6 @@ class IntervalSource(Source):
             self._period = None
         else:
             self.period = period  # type: ignore # https://github.com/python/mypy/issues/3004
-        self._interval_task_stop_future: Optional[asyncio.Future[None]] = None
 
     @property
     def period(self) -> Optional[Timedelta]:
@@ -126,7 +125,6 @@ class IntervalSource(Source):
             self._period = Timedelta.from_s(duration)
 
     async def task(self) -> None:
-        self._interval_task_stop_future = self._event_loop.create_future()
         deadline = Timestamp.now()
         while True:
             try:
@@ -152,10 +150,11 @@ class IntervalSource(Source):
                 deadline += self._period
 
             timeout = (deadline - now).s
+            assert self.task_stop_future is not None
             done, pending = await asyncio.wait(
                 (
                     asyncio.create_task(asyncio.sleep(timeout)),
-                    self._interval_task_stop_future,
+                    self.task_stop_future,
                 ),
                 return_when=asyncio.FIRST_COMPLETED,
             )
