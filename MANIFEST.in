@@ -1,4 +1,5 @@
 recursive-include examples *.py
+recursive-include examples *.ipynb
 recursive-include tests *.py
 
 recursive-include docs *.py
