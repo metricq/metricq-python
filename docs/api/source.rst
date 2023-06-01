@@ -10,6 +10,7 @@ Source
         chunk_size,
         flush,
         teardown,
+        task_stop_future,
     :member-order: groupwise
 
 ----
