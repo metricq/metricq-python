@@ -97,10 +97,10 @@ class Agent(RPCDispatcher):
       * calls :meth:`connect` and :meth:`stopped` to run indefinitely until
         :meth:`stop` is called.
 
-    Within :meth:`stop`, the Agent will invoke :meth:`close` to allow the all child
+    Within :meth:`stop`, the Agent will invoke :meth:`teardown` to allow the all child
     classes to perform any necessary cleanup. Implementations of :meth:`teardown` should
     call ``super().teardown()``, possibly in an ``asyncio.gather``. :meth:`stop`
-    wraps the invocation of :meth:`close` in a timeout (``_close_timeout``) and logs any
+    wraps the invocation of :meth:`teardown` in a timeout (``_close_timeout``) and logs any
     errors during cleanup, possibly passing it to anyone waiting for :meth:`stopped`.
     """
 
