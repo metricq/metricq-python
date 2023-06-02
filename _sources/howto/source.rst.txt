@@ -73,19 +73,21 @@ including some helpful :ref:`metadata<metric-metadata>`:
         ... # as above
 
         @metricq.rpc_handler("config")
-        async def _on_config(self, **config):
+        async def _on_config(self, **config: Any):
             print(f"Received new configuration: {config}")
-            self._rate = config["rate"]
+            self._scale = config["scale"]
 
             metadata = {
-                "rate": rate,
+                "rate": 1,
+                "scale": scale,
                 "description": "A simple dummy metric providing random values, sent from a python DummySource",
             }
 
             await self.declare_metrics({"example.py.dummy": metadata})
 
 To finally send some values, we override :meth:`Source.task`.
-This method gets called once our Source is connected and received its initial configuration:
+This method gets called once our Source is connected and received its initial configuration.
+It should be build to stop upon :attr:`Source.task_stop_future`.
 
 .. code-block:: python
 
@@ -95,20 +97,26 @@ This method gets called once our Source is connected and received its initial co
 
     class DummySource(metricq.Source):
         ... # as above
+        async def wait_for_sensor_value(self) -> float:
+            await sleep(1) # Just simulate waiting for data
+            return random.random() * self._scale
 
-        async def task(self):
-            while True:
+        async def task(self) -> None:
+            while not self.task_stop_future.done():
+                value = self.wait_for_sensor_value()
                 await self.send(
                     "example.py.dummy",
                     time=metricq.Timestamp.now(),
-                    value=random.random(),
+                    value=value,
                 )
-                # Convert from rate (in Hz) to duration between sends (in seconds)
-                await asyncio.sleep(1 / self._rate)
 
 .. note::
     The coroutine overriding :meth:`Source.task` is not restarted if it returned an exception.
     Make sure to handle errors appropriately, such as :meth:`Source.send` raising :exc:`~exceptions.PublishFailed`.
+
+.. note::
+    There are more elaborate low-latency ways to react to the :attr:`Source.task_stop_future` being set.
+    Please refer to the implementation of `task` in :class:`IntervalSource` for a more rigid example.
 
 Improving constant-rate sources: using :class:`IntervalSource`
 --------------------------------------------------------------

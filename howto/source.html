@@ -149,12 +149,13 @@ including some helpful <a class="reference internal" href="../metadata.html#metr
     <span class="o">...</span> <span class="c1"># as above</span>
 
     <span class="nd">@metricq</span><span class="o">.</span><span class="n">rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received new configuration: </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;rate&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;scale&quot;</span><span class="p">]</span>
 
         <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;rate&quot;</span><span class="p">:</span> <span class="n">rate</span><span class="p">,</span>
+            <span class="s2">&quot;rate&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="n">scale</span><span class="p">,</span>
             <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A simple dummy metric providing random values, sent from a python DummySource&quot;</span><span class="p">,</span>
         <span class="p">}</span>
 
@@ -162,29 +163,37 @@ including some helpful <a class="reference internal" href="../metadata.html#metr
 </pre></div>
 </div>
 <p>To finally send some values, we override <a class="reference internal" href="../api/source.html#metricq.Source.task" title="metricq.Source.task"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.task()</span></code></a>.
-This method gets called once our Source is connected and received its initial configuration:</p>
+This method gets called once our Source is connected and received its initial configuration.
+It should be build to stop upon <a class="reference internal" href="../api/source.html#metricq.Source.task_stop_future" title="metricq.Source.task_stop_future"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Source.task_stop_future</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">random</span>
 
 <span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
     <span class="o">...</span> <span class="c1"># as above</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">wait_for_sensor_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">await</span> <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># Just simulate waiting for data</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">task_stop_future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_sensor_value</span><span class="p">()</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
                 <span class="s2">&quot;example.py.dummy&quot;</span><span class="p">,</span>
                 <span class="n">time</span><span class="o">=</span><span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
-                <span class="n">value</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="c1"># Convert from rate (in Hz) to duration between sends (in seconds)</span>
-            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The coroutine overriding <a class="reference internal" href="../api/source.html#metricq.Source.task" title="metricq.Source.task"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.task()</span></code></a> is not restarted if it returned an exception.
 Make sure to handle errors appropriately, such as <a class="reference internal" href="../api/source.html#metricq.Source.send" title="metricq.Source.send"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.send()</span></code></a> raising <a class="reference internal" href="../api/exceptions.html#metricq.exceptions.PublishFailed" title="metricq.exceptions.PublishFailed"><code class="xref py py-exc docutils literal notranslate"><span class="pre">PublishFailed</span></code></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are more elaborate low-latency ways to react to the <a class="reference internal" href="../api/source.html#metricq.Source.task_stop_future" title="metricq.Source.task_stop_future"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Source.task_stop_future</span></code></a> being set.
+Please refer to the implementation of <cite>task</cite> in <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a> for a more rigid example.</p>
 </div>
 </section>
 <section id="improving-constant-rate-sources-using-intervalsource">

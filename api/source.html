@@ -58,6 +58,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#metricq.Source.task"><code class="docutils literal notranslate"><span class="pre">Source.task()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#metricq.Source.teardown"><code class="docutils literal notranslate"><span class="pre">Source.teardown()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#metricq.Source.chunk_size"><code class="docutils literal notranslate"><span class="pre">Source.chunk_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Source.task_stop_future"><code class="docutils literal notranslate"><span class="pre">Source.task_stop_future</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#metricq.IntervalSource"><code class="docutils literal notranslate"><span class="pre">IntervalSource</span></code></a><ul>
@@ -119,30 +120,6 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">Source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source" title="Permalink to this definition"></a></dt>
 <dd><p>A MetricQ <a class="reference internal" href="../glossary.html#term-Source"><span class="xref std std-term">Source</span></a>.</p>
 <p>See <a class="reference internal" href="../howto/source.html#source-how-to"><span class="std std-ref">Building a MetricQ Source</span></a> on how to implement a new Source.</p>
-<p class="rubric">Example</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">metricq</span> <span class="kn">import</span> <span class="n">Source</span><span class="p">,</span> <span class="n">Timestamp</span><span class="p">,</span> <span class="n">rpc_handler</span>
-
-<span class="kn">from</span> <span class="nn">asyncio</span> <span class="kn">import</span> <span class="n">sleep</span>
-<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
-
-<span class="k">class</span> <span class="nc">SomeSensorSource</span><span class="p">(</span><span class="n">Source</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="nd">@rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">declare_metrics</span><span class="p">([</span><span class="s2">&quot;example.some_sensor&quot;</span><span class="p">])</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_some_sensor_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">await</span> <span class="n">sleep</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">time</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_some_sensor_value</span><span class="p">()</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;example.some_sensor&quot;</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-</pre></div>
-</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Source.connect">
 <em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Source.connect" title="Permalink to this definition"></a></dt>
@@ -259,7 +236,7 @@ Otherwise, duplicate data points will be sent, which results in an invalid <a cl
 <p class="admonition-title">Note</p>
 <p>This task is not restarted if it fails.
 You are responsible for handling all relevant exceptions and for stopping
-the task in <a class="reference internal" href="client-common.html#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Agent.stop()</span></code></a> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></p>
+the task when <a class="reference internal" href="#metricq.Source.task_stop_future" title="metricq.Source.task_stop_future"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Source.task_stop_future</span></code></a> is set.</p>
 </div>
 </dd></dl>
 
@@ -301,6 +278,13 @@ If instead it produces <span class="math notranslate nohighlight">\(1000\)</span
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="metricq.Source.task_stop_future">
+<span class="sig-name descname"><span class="pre">task_stop_future</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a><span class="pre">[</span><code class="xref py py-class docutils literal notranslate"><span class="pre">Future</span></code><span class="pre">[</span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a><span class="pre">]]</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#metricq.Source.task_stop_future" title="Permalink to this definition"></a></dt>
+<dd><p>This future indicates when the task should be stopped.
+The result is meaningless (<code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
 </dd></dl>
 
 </dd></dl>

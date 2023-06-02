@@ -399,10 +399,10 @@ manager, e.g. <code class="docutils literal notranslate"><span class="pre">async
 </ul>
 </li>
 </ul>
-<p>Within <a class="reference internal" href="#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>, the Agent will invoke <code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code> to allow the all child
+<p>Within <a class="reference internal" href="#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>, the Agent will invoke <a class="reference internal" href="#metricq.Agent.teardown" title="metricq.Agent.teardown"><code class="xref py py-meth docutils literal notranslate"><span class="pre">teardown()</span></code></a> to allow the all child
 classes to perform any necessary cleanup. Implementations of <a class="reference internal" href="#metricq.Agent.teardown" title="metricq.Agent.teardown"><code class="xref py py-meth docutils literal notranslate"><span class="pre">teardown()</span></code></a> should
 call <code class="docutils literal notranslate"><span class="pre">super().teardown()</span></code>, possibly in an <code class="docutils literal notranslate"><span class="pre">asyncio.gather</span></code>. <a class="reference internal" href="#metricq.Agent.stop" title="metricq.Agent.stop"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stop()</span></code></a>
-wraps the invocation of <code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code> in a timeout (<code class="docutils literal notranslate"><span class="pre">_close_timeout</span></code>) and logs any
+wraps the invocation of <a class="reference internal" href="#metricq.Agent.teardown" title="metricq.Agent.teardown"><code class="xref py py-meth docutils literal notranslate"><span class="pre">teardown()</span></code></a> in a timeout (<code class="docutils literal notranslate"><span class="pre">_close_timeout</span></code>) and logs any
 errors during cleanup, possibly passing it to anyone waiting for <a class="reference internal" href="#metricq.Agent.stopped" title="metricq.Agent.stopped"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stopped()</span></code></a>.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.Agent.LOG_MAX_WIDTH">
@@ -648,7 +648,7 @@ Agent is prepared to handle RPCs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>extra_queues</strong> : <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://aio-pika.readthedocs.io/en/latest/apidoc.html#aio_pika.Queue" title="(in aio-pika v9.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Queue</span></code></a>] (default: <code class="docutils literal notranslate"><span class="pre">[]</span></code>)</dt><dd><p>additional queues on which to receive RPCs</p>
+<dt><strong>extra_queues</strong> : <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://aio-pika.readthedocs.io/en/latest/apidoc.html#aio_pika.Queue" title="(in aio-pika v9.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Queue</span></code></a>] (default: <code class="docutils literal notranslate"><span class="pre">[]</span></code>)</dt><dd><p>additional queues on which to receive RPCs</p>
 </dd>
 </dl>
 </dd>
