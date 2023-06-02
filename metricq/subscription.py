@@ -88,7 +88,7 @@ class Subscriber(Client):
         await super().connect()
 
         response = await self.rpc(
-            "sink.subscribe", metrics=self._metrics, expires=self.expires, **kwargs
+            "sink.subscribe", metrics=self._metrics, expires=self.expires.s, **kwargs
         )
 
         assert response is not None
