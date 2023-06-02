@@ -4,8 +4,13 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v5.0.0...HEAD)
 
+**Fixed bugs:**
+
+- InteralSource not stopping properly [\#171](https://github.com/metricq/metricq-python/issues/171)
+
 **Merged pull requests:**
 
+- Fix interval source [\#172](https://github.com/metricq/metricq-python/pull/172) ([tilsche](https://github.com/tilsche))
 - Tox fixes [\#170](https://github.com/metricq/metricq-python/pull/170) ([tilsche](https://github.com/tilsche))
 
 ## [v5.0.0](https://github.com/metricq/metricq-python/tree/v5.0.0) (2023-05-17)
@@ -290,6 +295,7 @@
 - Fix mypy protobuf packaging [\#43](https://github.com/metricq/metricq-python/pull/43) ([tilsche](https://github.com/tilsche))
 - Release workflow [\#42](https://github.com/metricq/metricq-python/pull/42) ([kinnarr](https://github.com/kinnarr))
 - Issue 27 - Precise and Pretty Timedelta [\#28](https://github.com/metricq/metricq-python/pull/28) ([Daddelhai](https://github.com/Daddelhai))
+- Fix protobuf compilation [\#5](https://github.com/metricq/metricq-python/pull/5) ([phijor](https://github.com/phijor))
 - Fix reconnect issues [\#44](https://github.com/metricq/metricq-python/pull/44) ([bmario](https://github.com/bmario))
 - Generate changelog for closed PRs and issues [\#40](https://github.com/metricq/metricq-python/pull/40) ([kinnarr](https://github.com/kinnarr))
 - Split release job [\#37](https://github.com/metricq/metricq-python/pull/37) ([kinnarr](https://github.com/kinnarr))
@@ -328,10 +334,6 @@
 
 - Fix protobuf building [\#2](https://github.com/metricq/metricq-python/issues/2)
 - Create repo metricq-python [\#1](https://github.com/metricq/metricq-python/issues/1)
-
-**Merged pull requests:**
-
-- Fix protobuf compilation [\#5](https://github.com/metricq/metricq-python/pull/5) ([phijor](https://github.com/phijor))
 
 ## [v1.1.3](https://github.com/metricq/metricq-python/tree/v1.1.3) (2020-03-23)
 
