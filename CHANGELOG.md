@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.0.1...HEAD)
+
+**Merged pull requests:**
+
+- fix: expires subscription type cannot be serialized [\#173](https://github.com/metricq/metricq-python/pull/173) ([tilsche](https://github.com/tilsche))
+
 ## [v5.0.1](https://github.com/metricq/metricq-python/tree/v5.0.1) (2023-06-02)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v5.0.0...v5.0.1)
