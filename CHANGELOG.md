@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+## [v5.0.2](https://github.com/metricq/metricq-python/tree/v5.0.2) (2023-06-05)
 
-[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.0.1...HEAD)
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.0.1...v5.0.2)
 
 **Merged pull requests:**
 
