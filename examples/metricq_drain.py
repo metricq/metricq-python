@@ -47,6 +47,7 @@ async def client() -> None:
             counter += 1
 
         print(f"done: {counter} data points received")
+        print(f"metadata: {subscription.metadata}")
 
 
 if __name__ == "__main__":
