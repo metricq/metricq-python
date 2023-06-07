@@ -32,7 +32,7 @@ from typing import Any, Optional
 from .client import Client
 from .drain import Drain
 from .logging import get_logger
-from .timeseries import Timedelta, Timestamp
+from .timeseries import JsonDict, Timedelta, Timestamp
 
 logger = get_logger(__name__)
 
@@ -73,6 +73,11 @@ class Subscriber(Client):
 
         This is only set after :meth:`.connect()` has finished.
         """
+        self.metadata: dict[str, JsonDict] = {}
+        """The metadata for the requested metrics
+
+        This is only filled after :meth:`.connect()` has finished.
+        """
 
     async def connect(self, **kwargs: Any) -> None:
         """Connects to the MetricQ network, sends the subscribe request, and disconnects again.
@@ -93,6 +98,8 @@ class Subscriber(Client):
 
         assert response is not None
         self.queue = response["dataQueue"]
+        assert isinstance(response["metrics"], dict)
+        self.metadata = response["metrics"]
         await self.stop()
 
     def drain(self, **kwargs: Any) -> Drain:
