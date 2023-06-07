@@ -66,18 +66,16 @@ or a :class:`Timedelta`.
 Within this `with`-context, you can now perform any task, for instance start
 the measured program with :func:`asyncio.create_subprocess_exec`.
 
+Stop the measurement and receive the buffered metric data
+---------------------------------------------------------
 
-Receive the buffered metric data
---------------------------------
-
-Once the collection of data shall stop and we want to receive the buffered data,
-we use a :class:`Drain` instance. Again, the :class:`Drain` can be used as context
-manager as well as it is an iterable over the data. In particular, we can use the
-following code, to connect to MetricQ, stop the buffering of incoming data, and 
-fetch all currently buffered data:
+Once the collection of data shall stop and we want to receive the buffered data using :meth:`Subscriber.collect_data`:
 
 .. code-block::
 
-    async with subscriber.drain() as data:
-        async for metric, time, value in data:
-            # ... consume the data point
+    async for metric, timestamp, value in subscriber.collect_data():
+        # ... consume the data point
+
+Internally, this creates a :class:`Drain` instance that is used as context manager as well as it is an iterable over the data.
+
+The connection- and RPC-latency for stopping the data collection could introduce inaccuracies so you may want to filter the data by timestamp.

@@ -42,10 +42,9 @@ async def client() -> None:
         await asyncio.sleep(10)
 
         counter = 0
-        async with subscription.drain() as drain:
-            async for metric, time, value in drain:
-                print(f"{metric} {time} {value}")
-                counter += 1
+        async for metric, time, value in subscription.collect_data():
+            print(f"{metric} {time} {value}")
+            counter += 1
 
         print(f"done: {counter} data points received")
 
