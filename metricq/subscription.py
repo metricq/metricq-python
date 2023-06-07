@@ -25,14 +25,14 @@
 # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-from collections.abc import Iterable
+from collections.abc import AsyncIterator, Iterable
 from types import TracebackType
 from typing import Any, Optional
 
 from .client import Client
 from .drain import Drain
 from .logging import get_logger
-from .timeseries import Timedelta
+from .timeseries import Timedelta, Timestamp
 
 logger = get_logger(__name__)
 
@@ -106,6 +106,9 @@ class Subscriber(Client):
 
         Must only be called after :meth:`connect()` has finished successfully.
 
+        Note:
+            For a more convenient way to retrieve the data, see :meth:`collect_data()`.
+
         Returns:
             Drain: Fully configured instance of a Drain
         """
@@ -114,6 +117,17 @@ class Subscriber(Client):
         new_kwargs = self._kwargs
         new_kwargs.update(kwargs)
         return Drain(*self._args, **new_kwargs, queue=self.queue, metrics=self._metrics)
+
+    async def collect_data(
+        self, **kwargs: Any
+    ) -> AsyncIterator[tuple[str, Timestamp, float]]:
+        """
+        Asynchronously iterate over the retrieved data.
+        Can only be called once after :meth:`connect()` has finished successfully.
+        """
+        async with self.drain(**kwargs) as drain:
+            async for data in drain:
+                yield data
 
     async def __aexit__(
         self,
