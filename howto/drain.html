@@ -52,7 +52,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Building a MetricQ Drain</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#what-is-a-drain">What is a Drain?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#subscribe-to-metrics">Subscribe to metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#receive-the-buffered-metric-data">Receive the buffered metric data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stop-the-measurement-and-receive-the-buffered-metric-data">Stop the measurement and receive the buffered metric data</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="metric-lookup.html">Metric lookup</a></li>
@@ -140,18 +140,15 @@ object does not have an open connection even within the <cite>with</cite>-statem
 <p>Within this <cite>with</cite>-context, you can now perform any task, for instance start
 the measured program with <a class="reference external" href="https://docs.python.org/3/library/asyncio-subprocess.html#asyncio.create_subprocess_exec" title="(in Python v3.11)"><code class="xref py py-func docutils literal notranslate"><span class="pre">asyncio.create_subprocess_exec()</span></code></a>.</p>
 </section>
-<section id="receive-the-buffered-metric-data">
-<h2>Receive the buffered metric data<a class="headerlink" href="#receive-the-buffered-metric-data" title="Permalink to this heading"></a></h2>
-<p>Once the collection of data shall stop and we want to receive the buffered data,
-we use a <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> instance. Again, the <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> can be used as context
-manager as well as it is an iterable over the data. In particular, we can use the
-following code, to connect to MetricQ, stop the buffering of incoming data, and
-fetch all currently buffered data:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">with</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">drain</span><span class="p">()</span> <span class="k">as</span> <span class="n">data</span><span class="p">:</span>
-    <span class="k">async</span> <span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
-        <span class="c1"># ... consume the data point</span>
+<section id="stop-the-measurement-and-receive-the-buffered-metric-data">
+<h2>Stop the measurement and receive the buffered metric data<a class="headerlink" href="#stop-the-measurement-and-receive-the-buffered-metric-data" title="Permalink to this heading"></a></h2>
+<p>Once the collection of data shall stop and we want to receive the buffered data using <a class="reference internal" href="../api/subscriber.html#metricq.Subscriber.collect_data" title="metricq.Subscriber.collect_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Subscriber.collect_data()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">subscriber</span><span class="o">.</span><span class="n">collect_data</span><span class="p">():</span>
+    <span class="c1"># ... consume the data point</span>
 </pre></div>
 </div>
+<p>Internally, this creates a <a class="reference internal" href="../api/drain.html#metricq.Drain" title="metricq.Drain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Drain</span></code></a> instance that is used as context manager as well as it is an iterable over the data.</p>
+<p>The connection- and RPC-latency for stopping the data collection could introduce inaccuracies so you may want to filter the data by timestamp.</p>
 </section>
 </section>
 

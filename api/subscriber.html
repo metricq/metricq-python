@@ -58,6 +58,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#metricq.Subscriber.queue"><code class="docutils literal notranslate"><span class="pre">Subscriber.queue</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#metricq.Subscriber.connect"><code class="docutils literal notranslate"><span class="pre">Subscriber.connect()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#metricq.Subscriber.drain"><code class="docutils literal notranslate"><span class="pre">Subscriber.drain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.Subscriber.collect_data"><code class="docutils literal notranslate"><span class="pre">Subscriber.collect_data()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -148,12 +149,28 @@
 </pre></div>
 </div>
 <p>Must only be called after <a class="reference internal" href="#metricq.Subscriber.connect" title="metricq.Subscriber.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> has finished successfully.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For a more convenient way to retrieve the data, see <a class="reference internal" href="#metricq.Subscriber.collect_data" title="metricq.Subscriber.collect_data"><code class="xref py py-meth docutils literal notranslate"><span class="pre">collect_data()</span></code></a>.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Fully configured instance of a Drain</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="drain.html#metricq.Drain" title="metricq.Drain">Drain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.Subscriber.collect_data">
+<em class="property"><span class="pre">async</span> <span class="pre">for</span> <span class="pre">...</span> <span class="pre">in</span> </em><span class="sig-name descname"><span class="pre">collect_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Subscriber.collect_data" title="Permalink to this definition"></a></dt>
+<dd><p>Asynchronously iterate over the retrieved data.
+Can only be called once after <a class="reference internal" href="#metricq.Subscriber.connect" title="metricq.Subscriber.connect"><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code></a> has finished successfully.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.AsyncIterator" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AsyncIterator</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference internal" href="misc.html#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]]</p>
 </dd>
 </dl>
 </dd></dl>
