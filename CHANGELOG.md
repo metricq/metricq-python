@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.0.2...HEAD)
+
+**Closed issues:**
+
+- Simplify retrieving data from a drain [\#175](https://github.com/metricq/metricq-python/issues/175)
+- Metadata from subscribe rpc is not passed in Subscriber [\#174](https://github.com/metricq/metricq-python/issues/174)
+
+**Merged pull requests:**
+
+- Subscriber fixes [\#176](https://github.com/metricq/metricq-python/pull/176) ([tilsche](https://github.com/tilsche))
+
 ## [v5.0.2](https://github.com/metricq/metricq-python/tree/v5.0.2) (2023-06-05)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v5.0.1...v5.0.2)
