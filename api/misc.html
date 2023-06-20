@@ -501,17 +501,18 @@ See <a class="reference internal" href="#metricq.Timedelta.__floordiv__" title="
 </tr>
 </tbody>
 </table>
-<p>In addition to <code class="code docutils literal notranslate"><span class="pre">&lt;</span></code> and <code class="code docutils literal notranslate"><span class="pre">=</span></code>, all other relational operations are supported and behave as you would expect.</p>
+<p>In addition to <code class="code docutils literal notranslate"><span class="pre">&lt;</span></code> and <code class="code docutils literal notranslate"><span class="pre">=</span></code>, all other relational operations are supported and behave as you would expect.
+The type is hashable.</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timedelta.__floordiv__">
-<span class="sig-name descname"><span class="pre">__floordiv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__floordiv__" title="Permalink to this definition"></a></dt>
-<dd><p>Divide a duration by an integer factor.</p>
+<span class="sig-name descname"><span class="pre">__floordiv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__floordiv__" title="Permalink to this definition"></a></dt>
+<dd><p>Divide a duration by an integer or another <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">td</span> <span class="o">=</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">td</span><span class="o">.</span><span class="n">s</span>
 <span class="go">3.333333333</span>
-<span class="go">:rtype: :py:class:`~metricq.timeseries.timedelta.Timedelta`</span>
+<span class="go">:rtype: :py:data:`~typing.Union`\[:py:class:`~metricq.timeseries.timedelta.Timedelta`, :py:class:`int`]</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">td</span><span class="o">.</span><span class="n">precise_string</span>
@@ -524,10 +525,14 @@ i.e. for some <code class="code docutils literal notranslate"><span class="pre">
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="p">(</span><span class="n">td</span> <span class="o">//</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">ns</span> <span class="o">==</span> <span class="n">td</span><span class="o">.</span><span class="n">ns</span> <span class="o">//</span> <span class="n">n</span>
 </pre></div>
 </div>
+<p>Division by another  <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> yields an integral result:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">//</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Floor Division produces <em>surprising</em> results for <code class="code docutils literal notranslate"><span class="pre">float</span></code> arguments
-(i.e. <code class="code docutils literal notranslate"><span class="pre">3</span> <span class="pre">//</span> <span class="pre">0.2</span> <span class="pre">==</span> <span class="pre">14.0</span></code>).
+and is therefore not supported here (i.e. <code class="code docutils literal notranslate"><span class="pre">3</span> <span class="pre">//</span> <span class="pre">0.2</span> <span class="pre">==</span> <span class="pre">14.0</span></code>).
 Use <a class="reference internal" href="#metricq.Timedelta.__truediv__" title="metricq.Timedelta.__truediv__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__truediv__()</span></code></a> if you want to scale a duration by a non-integer factor.</p>
 </div>
 </dd></dl>
@@ -560,11 +565,11 @@ Use <a class="reference internal" href="#metricq.Timedelta.__truediv__" title="m
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timedelta.__truediv__">
-<span class="sig-name descname"><span class="pre">__truediv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__truediv__" title="Permalink to this definition"></a></dt>
-<dd><p>Divide a duration by a (floating point) factor.</p>
+<span class="sig-name descname"><span class="pre">__truediv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__truediv__" title="Permalink to this definition"></a></dt>
+<dd><p>Divide a duration by a floating point or <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</p>
 </dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.5</span><span class="p">)</span><span class="o">.</span><span class="n">precise_string</span>
@@ -578,9 +583,10 @@ but truncates the result to an <code class="code docutils literal notranslate"><
 </pre></div>
 </div>
 <p>where <code class="code docutils literal notranslate"><span class="pre">td:</span> <span class="pre">Timedelta</span></code> and <code class="code docutils literal notranslate"><span class="pre">x:</span> <span class="pre">float</span></code>.</p>
+<p>Division by another <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> instead yields a <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> result.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Use <a class="reference internal" href="#metricq.Timedelta.__floordiv__" title="metricq.Timedelta.__floordiv__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__floordiv__()</span></code></a> if you know that the factor is an integer,
+<p>Use <a class="reference internal" href="#metricq.Timedelta.__floordiv__" title="metricq.Timedelta.__floordiv__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__floordiv__()</span></code></a> if you know that the divisor is an integer,
 this will prevent rounding errors.</p>
 </div>
 </dd></dl>
