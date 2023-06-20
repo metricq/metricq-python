@@ -306,6 +306,10 @@ class Timedelta:
         """Scale a duration by a :class:`float` factor."""
         return Timedelta(int(self._value * factor))
 
+    def __mod__(self, other: "Timedelta") -> "Timedelta":
+        """Return the remainder of the division of two durations."""
+        return Timedelta(self._value % other._value)
+
     def __str__(self) -> str:
         """A string containing the number of seconds of this duration
 

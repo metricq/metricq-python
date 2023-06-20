@@ -370,3 +370,19 @@ def test_timedelta_no_collision(time_delta_random: Timedelta) -> None:
 
 def test_timedelta_in_dict(time_delta_random: Timedelta) -> None:
     {time_delta_random: 42}
+
+
+def test_timestamp_modulo_timedelta(
+    timestamp: Timestamp, time_delta_10s: Timedelta
+) -> None:
+    offset = timestamp % time_delta_10s
+    assert isinstance(offset, Timedelta)
+    assert offset.ns == timestamp.posix_ns % time_delta_10s.ns
+
+
+def test_timedelta_modulo_timedelta(
+    time_delta_random: Timedelta, time_delta_1s: Timedelta
+) -> None:
+    offset = time_delta_random % time_delta_1s
+    assert isinstance(offset, Timedelta)
+    assert offset.ns == time_delta_random.ns % time_delta_1s.ns
