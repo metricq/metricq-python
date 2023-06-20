@@ -260,8 +260,16 @@ class Timedelta:
             "invalid type to subtract from Timedelta: {}".format(type(other))
         )
 
-    def __floordiv__(self, factor: int) -> "Timedelta":
-        """Divide a duration by an integer factor.
+    @overload
+    def __floordiv__(self, other: int) -> "Timedelta":
+        ...
+
+    @overload
+    def __floordiv__(self, other: "Timedelta") -> int:
+        ...
+
+    def __floordiv__(self, other: Union[int, "Timedelta"]) -> Union["Timedelta", int]:
+        """Divide a duration by an integer or another :class:`Timedelta`.
 
         >>> td = Timedelta.from_s(10) // 3
         >>> td.s
@@ -275,15 +283,31 @@ class Timedelta:
 
         >>> assert (td // n).ns == td.ns // n
 
+        Division by another  :class:`Timedelta` yields an integral result:
+
+        >>> assert Timedelta.from_s(10) // Timedelta.from_s(3) == 3
+
         Note:
             Floor Division produces *surprising* results for :code:`float` arguments
-            (i.e. :code:`3 // 0.2 == 14.0`).
+            and is therefore not supported here (i.e. :code:`3 // 0.2 == 14.0`).
             Use :meth:`__truediv__` if you want to scale a duration by a non-integer factor.
         """
-        return Timedelta(int(self._value // factor))
+        if isinstance(other, Timedelta):
+            return self._value // other._value
+        return Timedelta(self._value // other)
 
-    def __truediv__(self, factor: float) -> "Timedelta":
-        """Divide a duration by a (floating point) factor.
+    @overload
+    def __truediv__(self, other: float) -> "Timedelta":
+        ...
+
+    @overload
+    def __truediv__(self, other: "Timedelta") -> float:
+        ...
+
+    def __truediv__(
+        self, other: Union[float, "Timedelta"]
+    ) -> Union["Timedelta", float]:
+        """Divide a duration by a floating point or :class:`Timedelta`.
 
         >>> (Timedelta.from_s(10) / 2.5).precise_string
         '4s'
@@ -296,11 +320,15 @@ class Timedelta:
 
         where :code:`td: Timedelta` and :code:`x: float`.
 
+        Division by another :class:`Timedelta` instead yields a :class:`float` result.
+
         Note:
-            Use :meth:`__floordiv__` if you know that the factor is an integer,
+            Use :meth:`__floordiv__` if you know that the divisor is an integer,
             this will prevent rounding errors.
         """
-        return Timedelta(int(self._value / factor))
+        if isinstance(other, Timedelta):
+            return self._value / other._value
+        return Timedelta(int(self._value / other))
 
     def __mul__(self, factor: float) -> "Timedelta":
         """Scale a duration by a :class:`float` factor."""
