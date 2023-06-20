@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+## [v5.2.0](https://github.com/metricq/metricq-python/tree/v5.2.0) (2023-06-20)
 
-[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.1.0...HEAD)
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.1.0...v5.2.0)
 
 **Implemented enhancements:**
 
@@ -105,6 +105,7 @@
 - fix: pin black version and apply reformat [\#146](https://github.com/metricq/metricq-python/pull/146) ([tilsche](https://github.com/tilsche))
 - Protobuf version guessing v2 [\#144](https://github.com/metricq/metricq-python/pull/144) ([tilsche](https://github.com/tilsche))
 - fix: exception in update zombifies IntervalSource [\#135](https://github.com/metricq/metricq-python/pull/135) ([bmario](https://github.com/bmario))
+- Unify docstrings to use Google style [\#113](https://github.com/metricq/metricq-python/pull/113) ([phijor](https://github.com/phijor))
 
 ## [v4.2.0](https://github.com/metricq/metricq-python/tree/v4.2.0) (2022-08-25)
 
@@ -187,7 +188,6 @@
 **Merged pull requests:**
 
 - Fix reconnect for HistoryClients [\#116](https://github.com/metricq/metricq-python/pull/116) ([bmario](https://github.com/bmario))
-- Unify docstrings to use Google style [\#113](https://github.com/metricq/metricq-python/pull/113) ([phijor](https://github.com/phijor))
 - Add project setup how-to [\#112](https://github.com/metricq/metricq-python/pull/112) ([phijor](https://github.com/phijor))
 - Feature Drain and Subscription [\#111](https://github.com/metricq/metricq-python/pull/111) ([Daddelhai](https://github.com/Daddelhai))
 
