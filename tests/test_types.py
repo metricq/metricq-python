@@ -195,8 +195,9 @@ def test_timedelta_sub_timestamp_raises_type_error(
 )
 def test_timedelta_truediv(ns: int, factor: int | float, expected_ns: int) -> None:
     timedelta = Timedelta(ns)
-
-    assert (timedelta / factor) == Timedelta(expected_ns)
+    result = timedelta / factor
+    assert isinstance(result, Timedelta)
+    assert result == Timedelta(expected_ns)
 
 
 @pytest.mark.parametrize(
@@ -212,8 +213,9 @@ def test_timedelta_truediv(ns: int, factor: int | float, expected_ns: int) -> No
 )
 def test_timedelta_floordiv(ns: int, factor: int, expected_ns: int) -> None:
     timedelta = Timedelta(ns)
-
-    assert (timedelta // factor) == Timedelta(expected_ns)
+    result = timedelta // factor
+    assert isinstance(result, Timedelta)
+    assert result == Timedelta(expected_ns)
 
 
 @pytest.mark.parametrize("random_timedelta", timedelta_random_list())
@@ -386,3 +388,19 @@ def test_timedelta_modulo_timedelta(
     offset = time_delta_random % time_delta_1s
     assert isinstance(offset, Timedelta)
     assert offset.ns == time_delta_random.ns % time_delta_1s.ns
+
+
+def test_timedelta_floordiv_timedelta(
+    time_delta_random: Timedelta, time_delta_1d: Timedelta
+) -> None:
+    factor = time_delta_random // time_delta_1d
+    assert isinstance(factor, int)
+    assert factor == time_delta_random.ns // time_delta_1d.ns
+
+
+def test_timedelta_truediv_timedelta(
+    time_delta_random: Timedelta, time_delta_1d: Timedelta
+) -> None:
+    factor = time_delta_random / time_delta_1d
+    assert isinstance(factor, float)
+    assert factor == time_delta_random.ns / time_delta_1d.ns
