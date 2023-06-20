@@ -47,6 +47,7 @@ class Timedelta:
         +------------------+--------------------------------------------------+-------------------------------------------------------------------------------------------+
 
         In addition to :code:`<` and :code:`=`, all other relational operations are supported and behave as you would expect.
+        The type is hashable.
     """
 
     def __init__(self, nanoseconds: int):
@@ -322,6 +323,9 @@ class Timedelta:
         if isinstance(other, Timedelta):
             return self._value == other._value
         return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash(self._value)
 
     def __lt__(self, other: Union["Timedelta", datetime.timedelta]) -> bool:
         if isinstance(other, datetime.timedelta):

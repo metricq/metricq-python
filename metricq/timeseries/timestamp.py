@@ -239,6 +239,9 @@ class Timestamp:
 
         return self._value == other._value
 
+    def __hash__(self) -> int:
+        return hash(self._value)
+
     def __str__(self) -> str:
         """Yield a human-readable date-time string in the local timezone:
 
