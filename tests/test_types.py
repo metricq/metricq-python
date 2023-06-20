@@ -344,3 +344,29 @@ def test_timestamp_from_local_datetime_naive(datetime_naive: datetime) -> None:
 )
 def test_timestamp_from_iso8601(date_string: str, expected: Timestamp) -> None:
     assert Timestamp.from_iso8601(date_string) == expected
+
+
+def test_timestamp_hashable(timestamp: Timestamp) -> None:
+    hash(timestamp)
+
+
+def test_timestamp_no_collision(
+    timestamp: Timestamp, time_delta_random: Timedelta
+) -> None:
+    assert hash(timestamp) != hash(timestamp + time_delta_random)
+
+
+def test_timestamp_in_dict(timestamp: Timestamp) -> None:
+    {timestamp: 42}
+
+
+def test_timedelta_hashable(time_delta_random: Timedelta) -> None:
+    hash(time_delta_random)
+
+
+def test_timedelta_no_collision(time_delta_random: Timedelta) -> None:
+    assert hash(time_delta_random) != hash(time_delta_random * 2)
+
+
+def test_timedelta_in_dict(time_delta_random: Timedelta) -> None:
+    {time_delta_random: 42}
