@@ -242,6 +242,17 @@ class Timestamp:
     def __hash__(self) -> int:
         return hash(self._value)
 
+    def __mod__(self, other: Timedelta) -> Timedelta:
+        """
+        Args:
+            other: a time duration
+
+        Returns:
+            the remainder of the division of this timestamp (time since epoch) by a
+            timedelta.
+        """
+        return Timedelta(self._value % other.ns)
+
     def __str__(self) -> str:
         """Yield a human-readable date-time string in the local timezone:
 
