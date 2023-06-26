@@ -83,10 +83,11 @@
   <section id="metric-metadata">
 <span id="id1"></span><h1>Metric Metadata<a class="headerlink" href="#metric-metadata" title="Permalink to this heading"></a></h1>
 <p>Each <a class="reference internal" href="glossary.html#term-Metric"><span class="xref std std-term">metric</span></a> known to the MetricQ network includes metadata in the form of arbitrary
-<cite>field</cite>-<cite>value</cite> pairs, where <cite>fields</cite> are strings and <cite>values</cite> are <cite>JSON</cite> values.
-Metadata keys are free-form and can be used to store any information useful and related to a metric.
+<cite>name</cite>/<cite>value</cite> pairs, where <cite>name</cite> are strings and <cite>values</cite> are <cite>JSON</cite> values.
+Metadata values are free-form and can be used to store any information useful and related to a metric.
 Though, some restrictions apply in the form of <a class="reference internal" href="#metric-metadata-reserved"><span class="std std-ref">reserved fields</span></a>
-and <a class="reference internal" href="#metricq-metadata-standardized"><span class="std std-ref">standardized fields</span></a>.</p>
+and <a class="reference internal" href="#metricq-metadata-standardized"><span class="std std-ref">standardized fields</span></a>.
+Since this is JSON, the <cite>name</cite> should be in camelCase.</p>
 <section id="reserved-fields">
 <span id="metric-metadata-reserved"></span><h2>Reserved Fields<a class="headerlink" href="#reserved-fields" title="Permalink to this heading"></a></h2>
 <p>Reserved fields may not be used when declaring metadata for a metric.
@@ -124,12 +125,17 @@ That is, the SI unit <cite>1</cite> is omitted as it is typically not shown.</p>
 This is a hint to consumers and should be treated as a “best guess”,
 a source does not need to produce values at a perfectly constant rate.</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">interval</span></code> (<cite>string</cite>)</dt><dd><p>This is the reciprocal of <code class="docutils literal notranslate"><span class="pre">rate</span></code>, but as a string.
+It corresponds to <a class="reference internal" href="api/misc.html#metricq.Timedelta.from_string" title="metricq.Timedelta.from_string"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Timedelta.from_string()</span></code></a> /  <a class="reference internal" href="api/misc.html#metricq.Timedelta.precise_string" title="metricq.Timedelta.precise_string"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Timedelta.precise_string</span></code></a>.
+This can allow for more precise values and less floating point shenanigans, e.g., <cite>3s</cite> instead of a rate of <cite>0.3333333</cite>.</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">scope</span></code> (one of <code class="docutils literal notranslate"><span class="pre">&quot;last&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;next&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;point&quot;</span></code>)</dt><dd><p>This describes the temporal validity of a single measurement value.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">quantity</span></code> (<cite>string</cite>)</dt><dd><p>The quantity being measured.
 Ideally this is the same as the last segment of the metric name, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;power&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;temperature&quot;</span></code>.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">chunkSize</span></code> (<cite>number</cite> or <code class="docutils literal notranslate"><span class="pre">null</span></code>)</dt><dd><p>The number of data points sent to the network in a single message,
+<dt><code class="docutils literal notranslate"><span class="pre">chunkSize</span></code> (<cite>number</cite> or <code class="docutils literal notranslate"><span class="pre">null</span></code>)</dt><dd><p>In Python, this is set by the metricq library itself and should not be set by the user.
+The number of data points sent to the network in a single message,
 see <a class="reference internal" href="api/source.html#metricq.Source.chunk_size" title="metricq.Source.chunk_size"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.chunk_size()</span></code></a> and <a class="reference internal" href="api/source.html#metricq.Source.send" title="metricq.Source.send"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.send()</span></code></a>.</p>
 <p>Setting this to <code class="docutils literal notranslate"><span class="pre">null</span></code> means that the chunk size is either
 not known or varies between messages.</p>

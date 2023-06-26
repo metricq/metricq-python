@@ -753,6 +753,15 @@ Accepted units are:</p>
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="metricq.Timedelta.precise_string">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">precise_string</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#metricq.Timedelta.precise_string" title="Permalink to this definition"></a></dt>
+<dd><p>An exact string representation of the duration preserving all nanosecond digits.
+If possible, a human-readable string is returned, e.g. <code class="docutils literal notranslate"><span class="pre">100ms</span></code>.
+The result of this can be parsed by <a class="reference internal" href="#metricq.Timedelta.from_string" title="metricq.Timedelta.from_string"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_string()</span></code></a> without losing
+precision.</p>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="metricq.Timedelta.s">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">s</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.Timedelta.s" title="Permalink to this definition"></a></dt>
 <dd><p>Number of seconds in this duration</p>

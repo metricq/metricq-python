@@ -6,10 +6,11 @@ Metric Metadata
 ===============
 
 Each :term:`metric<Metric>` known to the MetricQ network includes metadata in the form of arbitrary
-`field`-`value` pairs, where `fields` are strings and `values` are `JSON` values.
-Metadata keys are free-form and can be used to store any information useful and related to a metric.
+`name`/`value` pairs, where `name` are strings and `values` are `JSON` values.
+Metadata values are free-form and can be used to store any information useful and related to a metric.
 Though, some restrictions apply in the form of :ref:`reserved fields <metric-metadata-reserved>`
 and :ref:`standardized fields <metricq-metadata-standardized>`.
+Since this is JSON, the `name` should be in camelCase.
 
 .. _metric-metadata-reserved:
 
@@ -60,6 +61,12 @@ Consuming tools might handle and display these fields in a special way.
     This is a hint to consumers and should be treated as a "best guess",
     a source does not need to produce values at a perfectly constant rate.
 
+:literal:`interval` (`string`)
+    This is the reciprocal of :literal:`rate`, but as a string.
+    It corresponds to :meth:`Timedelta.from_string` /  :attr:`Timedelta.precise_string`.
+    This can allow for more precise values and less floating point shenanigans, e.g., `3s` instead of a rate of `0.3333333`.
+
+
 :literal:`scope` (one of :literal:`"last"`, :literal:`"next"` or :literal:`"point"`)
     This describes the temporal validity of a single measurement value.
 
@@ -68,6 +75,7 @@ Consuming tools might handle and display these fields in a special way.
     Ideally this is the same as the last segment of the metric name, e.g. :literal:`"power"` or :literal:`"temperature"`.
 
 :literal:`chunkSize` (`number` or :literal:`null`)
+    In Python, this is set by the metricq library itself and should not be set by the user.
     The number of data points sent to the network in a single message,
     see :meth:`Source.chunk_size` and :meth:`Source.send`.
 
