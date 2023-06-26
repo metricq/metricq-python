@@ -175,6 +175,13 @@ class Timedelta:
 
     @property
     def precise_string(self) -> str:
+        """
+        An exact string representation of the duration preserving all nanosecond digits.
+        If possible, a human-readable string is returned, e.g. ``100ms``.
+        The result of this can be parsed by :meth:`from_string` without losing
+        precision.
+        """
+
         if self._value % 1_000 != 0:
             return f"{self._value}ns"
 
