@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+## [v5.3.0](https://github.com/metricq/metricq-python/tree/v5.3.0) (2023-06-27)
 
-[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.2.0...HEAD)
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.2.0...v5.3.0)
 
 **Implemented enhancements:**
 
@@ -15,6 +15,7 @@
 **Merged pull requests:**
 
 - feat: update docker python base image to 3.11 [\#183](https://github.com/metricq/metricq-python/pull/183) ([tilsche](https://github.com/tilsche))
+- Metadata doc update [\#181](https://github.com/metricq/metricq-python/pull/181) ([tilsche](https://github.com/tilsche))
 
 ## [v5.2.0](https://github.com/metricq/metricq-python/tree/v5.2.0) (2023-06-20)
 
@@ -41,7 +42,6 @@
 
 **Merged pull requests:**
 
-- Metadata doc update [\#181](https://github.com/metricq/metricq-python/pull/181) ([tilsche](https://github.com/tilsche))
 - Subscriber fixes [\#176](https://github.com/metricq/metricq-python/pull/176) ([tilsche](https://github.com/tilsche))
 
 ## [v5.0.2](https://github.com/metricq/metricq-python/tree/v5.0.2) (2023-06-05)
