@@ -277,6 +277,7 @@ class Agent(RPCDispatcher):
         self,
         catch_signals: Iterable[str] = ("SIGINT", "SIGTERM"),
         cancel_on_exception: bool = False,
+        use_uvloop: Optional[bool] = None,
     ) -> None:
         """Run an Agent by calling :meth:`connect` and waiting for it to be stopped via :meth:`stop`.
 
@@ -290,6 +291,10 @@ class Agent(RPCDispatcher):
             cancel_on_exception:
                 Stop the running Agent when an unhandled exception occurs.
                 The exception is reraised from this method.
+            use_uvloop:
+                Use uvloop as the asyncio event loop. If ``None``, uvloop is used if available.
+                If ``True``, uvloop is used and an ImportError is raised if it is not available.
+                If ``False``, uvloop is not used even if it is available.
 
         Raises:
             ConnectFailed:
@@ -298,10 +303,22 @@ class Agent(RPCDispatcher):
             Exception: Any exception passed to :meth:`stop`.
         """
         self._cancel_on_exception = cancel_on_exception
+        coro = self._wait_for_stop(catch_signals)
 
-        logger.debug("Starting event loop ...")
-        asyncio.run(self._wait_for_stop(catch_signals))
-        logger.debug("Event loop completed, exiting...")
+        if use_uvloop is True or use_uvloop is None:
+            try:
+                import uvloop
+
+                logger.debug("Installing uvloop")
+                uvloop.install()
+            except ImportError:
+                if use_uvloop:
+                    logger.error("Failed to import uvloop as requested.")
+                    raise
+                logger.debug("uvloop not available, falling back to asyncio.")
+        logger.debug("Starting runner.")
+        asyncio.run(coro)
+        logger.debug("runner completed.")
 
     async def _wait_for_stop(self, catch_signals: Iterable[str]) -> None:
         self._event_loop.set_exception_handler(self.on_exception)
