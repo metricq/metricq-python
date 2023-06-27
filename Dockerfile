@@ -1,4 +1,4 @@
-FROM python:3.10-slim-bullseye AS BUILDER
+FROM python:3.11-slim-bullseye AS BUILDER
 LABEL maintainer="mario.bielert@tu-dresden.de"
 
 RUN apt-get update \
@@ -16,7 +16,7 @@ USER metricq
 RUN pip install --user . 
 
 
-FROM python:3.10-slim-bullseye
+FROM python:3.11-slim-bullseye
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     libprotobuf23 \
