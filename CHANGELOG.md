@@ -4,9 +4,17 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v5.2.0...HEAD)
 
+**Implemented enhancements:**
+
+- Update docker image to use Python 3.11 [\#182](https://github.com/metricq/metricq-python/issues/182)
+
+**Closed issues:**
+
+- Utilize uvloop in Agent.run if available [\#184](https://github.com/metricq/metricq-python/issues/184)
+
 **Merged pull requests:**
 
-- Metadata doc update [\#181](https://github.com/metricq/metricq-python/pull/181) ([tilsche](https://github.com/tilsche))
+- feat: update docker python base image to 3.11 [\#183](https://github.com/metricq/metricq-python/pull/183) ([tilsche](https://github.com/tilsche))
 
 ## [v5.2.0](https://github.com/metricq/metricq-python/tree/v5.2.0) (2023-06-20)
 
@@ -33,6 +41,7 @@
 
 **Merged pull requests:**
 
+- Metadata doc update [\#181](https://github.com/metricq/metricq-python/pull/181) ([tilsche](https://github.com/tilsche))
 - Subscriber fixes [\#176](https://github.com/metricq/metricq-python/pull/176) ([tilsche](https://github.com/tilsche))
 
 ## [v5.0.2](https://github.com/metricq/metricq-python/tree/v5.0.2) (2023-06-05)
@@ -128,10 +137,6 @@
 - Documentation for HistoryClient and Subscriber contains errors [\#129](https://github.com/metricq/metricq-python/issues/129)
 - Add ContextManager for metricq.Client [\#127](https://github.com/metricq/metricq-python/issues/127)
 
-**Merged pull requests:**
-
-- Fix reconnect for HistoryClients [\#116](https://github.com/metricq/metricq-python/pull/116) ([bmario](https://github.com/bmario))
-
 ## [v4.1.0](https://github.com/metricq/metricq-python/tree/v4.1.0) (2022-07-11)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v4.0.0...v4.1.0)
@@ -198,6 +203,7 @@
 
 **Merged pull requests:**
 
+- Fix reconnect for HistoryClients [\#116](https://github.com/metricq/metricq-python/pull/116) ([bmario](https://github.com/bmario))
 - Unify docstrings to use Google style [\#113](https://github.com/metricq/metricq-python/pull/113) ([phijor](https://github.com/phijor))
 - Add project setup how-to [\#112](https://github.com/metricq/metricq-python/pull/112) ([phijor](https://github.com/phijor))
 - Feature Drain and Subscription [\#111](https://github.com/metricq/metricq-python/pull/111) ([Daddelhai](https://github.com/Daddelhai))
