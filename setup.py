@@ -42,11 +42,22 @@ class ProtocWrapper:
     def _get_protoc_version(protoc: str) -> tuple[int, int, int]:
         protoc_version_string = str(subprocess.check_output([protoc, "--version"]))
         version_search = re.search(
-            r"((?P<major>(0|[1-9]\d*))\.(?P<minor>(0|[1-9]\d*))\.(?P<patch>(0|[1-9]\d*)))",
+            r"(((?P<major>(0|[1-9]\d*))\.)?(?P<minor>(0|[1-9]\d*))\.(?P<patch>(0|[1-9]\d*)))",
             protoc_version_string,
         )
 
-        return tuple(int(version_search.group(g)) for g in ("major", "minor", "patch"))  # type: ignore
+        if version_search is None:
+            raise ValueError("Invalid protoc version supplied")
+
+        return (
+            int(
+                version_search.group("major")
+                if version_search.group("major") is not None
+                else 3
+            ),
+            int(version_search.group("minor")),
+            int(version_search.group("patch")),
+        )
 
     _executable: str | None
     _version: tuple[int, int, int] | None
@@ -116,6 +127,7 @@ def make_protobuf_requirement(major: int, minor: int, patch: int) -> str:
     protobuf_version_mapping = (
         (3, 0),
         (4, 21),
+        (5, 26),
     )
 
     # We must subtract one because bisect gives the insertion point after...
