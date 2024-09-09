@@ -35,6 +35,7 @@ import click
 import click_log  # type: ignore
 
 import metricq
+from metricq.cli import metricq_command
 from metricq.pandas import PandasHistoryClient
 
 logger = metricq.get_logger()
@@ -81,9 +82,7 @@ async def aget_history(server: str, token: str, metric: str) -> None:
         click.echo("----------")
 
 
-@click.command()
-@click.option("--server", default="amqp://localhost/")
-@click.option("--token", default="history-py-dummy")
+@metricq_command(default_token="history-py-dummy")
 @click.option("--metric", default="example.quantity")
 @click_log.simple_verbosity_option(logger)  # type: ignore
 def get_history(server: str, token: str, metric: str) -> None:

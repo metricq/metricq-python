@@ -36,6 +36,7 @@ import click
 import click_log  # type: ignore
 
 import metricq
+from metricq.cli import metricq_command
 
 logger = metricq.get_logger()
 
@@ -98,9 +99,7 @@ async def aget_history(
             click.echo(aggregate)
 
 
-@click.command()
-@click.option("--server", default="amqp://localhost/")
-@click.option("--token", default="history-py-dummy")
+@metricq_command(default_token="history-py-dummy")
 @click.option("--metric", default=None)
 @click.option("--list-metrics", is_flag=True)
 @click.option("--list-metadata", is_flag=True)

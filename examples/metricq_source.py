@@ -31,10 +31,10 @@ import logging
 import random
 from typing import Any
 
-import click
 import click_log  # type: ignore
 
 import metricq
+from metricq.cli import metricq_command
 from metricq.logging import get_logger
 
 logger = get_logger()
@@ -74,9 +74,7 @@ class DummySource(metricq.IntervalSource):
         )
 
 
-@click.command()
-@click.option("--server", default="amqp://localhost/")
-@click.option("--token", default="source-py-dummy")
+@metricq_command(default_token="source-py-dummy")
 @click_log.simple_verbosity_option(logger)  # type: ignore
 def source(server: str, token: str) -> None:
     src = DummySource(token=token, url=server)

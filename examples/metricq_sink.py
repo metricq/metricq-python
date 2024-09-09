@@ -35,6 +35,7 @@ import click_log  # type: ignore
 
 import metricq
 from metricq import Metric
+from metricq.cli import metricq_command
 from metricq.logging import get_logger
 
 logger = get_logger()
@@ -76,9 +77,7 @@ class DummySink(metricq.Sink):
         )
 
 
-@click.command()
-@click.option("--server", default="amqp://localhost/")
-@click.option("--token", default="sink-py-dummy")
+@metricq_command(default_token="sink-py-dummy")
 @click.option("-m", "--metrics", multiple=True, required=True)
 @click_log.simple_verbosity_option(logger)  # type: ignore
 def source(server: str, token: str, metrics: list[Metric]) -> None:
