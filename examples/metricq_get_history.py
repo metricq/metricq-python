@@ -28,24 +28,17 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import asyncio
-import logging
 import pprint
 from datetime import timedelta
 
 import click
-import click_log  # type: ignore
 
 import metricq
+from metricq.cli import metricq_command
+from metricq.cli.decorator import metricq_metric_option
+from metricq.logging import get_logger
 
-logger = metricq.get_logger()
-
-click_log.basic_config(logger)
-logger.setLevel("INFO")
-# Use this if we ever use threads
-# logger.handlers[0].formatter = logging.Formatter(fmt='%(asctime)s %(threadName)-16s %(levelname)-8s %(message)s')
-logger.handlers[0].formatter = logging.Formatter(
-    fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
-)
+logger = get_logger()
 
 
 async def aget_history(
@@ -98,13 +91,10 @@ async def aget_history(
             click.echo(aggregate)
 
 
-@click.command()
-@click.option("--server", default="amqp://localhost/")
-@click.option("--token", default="history-py-dummy")
-@click.option("--metric", default=None)
+@metricq_command(default_token="history-py-dummy")
+@metricq_metric_option()
 @click.option("--list-metrics", is_flag=True)
 @click.option("--list-metadata", is_flag=True)
-@click_log.simple_verbosity_option(logger)  # type: ignore
 def get_history(
     server: str, token: str, metric: str, list_metrics: bool, list_metadata: bool
 ) -> None:

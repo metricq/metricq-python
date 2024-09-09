@@ -14,3 +14,4 @@ API Reference
     client-common
     exceptions
     misc
+    cli
