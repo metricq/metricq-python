@@ -43,10 +43,10 @@ import asyncio
 import logging
 
 import aiomonitor  # type: ignore
-import click
 import click_log  # type: ignore
 
 import metricq
+from metricq.cli import metricq_command
 
 logger = metricq.get_logger()
 click_log.basic_config(logger)
@@ -66,9 +66,7 @@ async def run(server: str, token: str) -> None:
             await client.stopped()
 
 
-@click.command()
-@click.option("--server", default="amqp://admin:admin@localhost/")
-@click.option("--token", default="client-py-example")
+@metricq_command(default_token="client-py-example")
 @click_log.simple_verbosity_option(logger)  # type: ignore
 def main(server: str, token: str) -> None:
     asyncio.run(run(server, token))
