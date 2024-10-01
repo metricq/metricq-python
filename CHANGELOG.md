@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.3.0...HEAD)
+
+**Closed issues:**
+
+- bug: Github Actions automatically fail due to old versions [\#195](https://github.com/metricq/metricq-python/issues/195)
+
+**Merged pull requests:**
+
+- bug: updating the github action to newest version [\#196](https://github.com/metricq/metricq-python/pull/196) ([devmaxde](https://github.com/devmaxde))
+
 ## [v5.3.0](https://github.com/metricq/metricq-python/tree/v5.3.0) (2023-06-27)
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v5.2.0...v5.3.0)
