@@ -4,13 +4,19 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v5.3.0...HEAD)
 
+**Fixed bugs:**
+
+- Setup Fails, if local protoc version has no patch applied [\#191](https://github.com/metricq/metricq-python/issues/191)
+
 **Closed issues:**
 
 - bug: Github Actions automatically fail due to old versions [\#195](https://github.com/metricq/metricq-python/issues/195)
+- Setup Fails, in protobuf version 27.3 [\#194](https://github.com/metricq/metricq-python/issues/194)
 
 **Merged pull requests:**
 
 - bug: updating the github action to newest version [\#196](https://github.com/metricq/metricq-python/pull/196) ([devmaxde](https://github.com/devmaxde))
+- bug: protoc updated version naming conventions [\#190](https://github.com/metricq/metricq-python/pull/190) ([devmaxde](https://github.com/devmaxde))
 
 ## [v5.3.0](https://github.com/metricq/metricq-python/tree/v5.3.0) (2023-06-27)
 
