@@ -13,9 +13,9 @@ jobs:
         python-version: ["3.10", "3.11"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Protoc
@@ -49,9 +49,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ env.release-python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.release-python-version }}
       - name: Install Protoc
@@ -64,7 +64,7 @@ jobs:
       - name: Build Python distribution
         run: pip wheel --wheel-dir dist/ .
       - name: Upload distribution artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: distribution-packages
           path: dist/metricq-*.whl
@@ -76,7 +76,7 @@ jobs:
 
     steps:
       - name: Download distribution artifacts
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with:
           name: distribution-packages
           path: dist/
@@ -106,7 +106,7 @@ jobs:
           base: "none.md" # ignore the HISTORY.md file
           output: release-changelog.md
       - name: Upload release changelog artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: release-changelog
           path: release-changelog.md
@@ -131,7 +131,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ env.release-python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ env.release-python-version }}
       - name: Install Protoc
@@ -149,7 +149,7 @@ jobs:
           # run HTML builder (-b) in nitpicky mode (-n) in a fresh environment (-E)
           sphinx-build -b html -n -E docs ${{ env.OUTPUT_DIR }}
       - name: Upload generated HTML as build artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           path: ${{ env.OUTPUT_DIR }}
           name: docs
