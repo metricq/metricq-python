@@ -17,6 +17,7 @@
 
 - bug: updating the github action to newest version [\#196](https://github.com/metricq/metricq-python/pull/196) ([devmaxde](https://github.com/devmaxde))
 - bug: protoc updated version naming conventions [\#190](https://github.com/metricq/metricq-python/pull/190) ([devmaxde](https://github.com/devmaxde))
+- feat: update docker python base image to 3.11 [\#183](https://github.com/metricq/metricq-python/pull/183) ([tilsche](https://github.com/tilsche))
 
 ## [v5.3.0](https://github.com/metricq/metricq-python/tree/v5.3.0) (2023-06-27)
 
@@ -32,7 +33,6 @@
 
 **Merged pull requests:**
 
-- feat: update docker python base image to 3.11 [\#183](https://github.com/metricq/metricq-python/pull/183) ([tilsche](https://github.com/tilsche))
 - Metadata doc update [\#181](https://github.com/metricq/metricq-python/pull/181) ([tilsche](https://github.com/tilsche))
 
 ## [v5.2.0](https://github.com/metricq/metricq-python/tree/v5.2.0) (2023-06-20)
