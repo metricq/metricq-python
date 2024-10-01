@@ -122,8 +122,8 @@ The directory <code class="file docutils literal notranslate"><span class="pre">
 project, create a new file <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> in the project root,
 and declare the necessary build dependencies:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
-<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;setuptools&gt;=40.6.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wheel&quot;</span><span class="p">]</span>
-<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;setuptools.build_meta&#39;</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;setuptools&gt;=40.6.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;wheel&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;setuptools.build_meta&#39;</span>
 </pre></div>
 </div>
 <p>This enables tools like <code class="docutils literal notranslate"><span class="pre">pip</span></code> to create packages from the project.</p>
@@ -218,7 +218,7 @@ itself is licensed under the terms of the <cite>BSD 3-clause “New” or “Rev
 </section>
 <section id="command-line-interfaces">
 <h2>Command line interfaces<a class="headerlink" href="#command-line-interfaces" title="Permalink to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">setuptools</span></code> allows declaration of <a class="reference external" href="https://docs.python.org/3/library/importlib.metadata.html#entry-points" title="(in Python v3.11)"><span>Entry points</span></a>.
+<p><code class="docutils literal notranslate"><span class="pre">setuptools</span></code> allows declaration of <a class="reference external" href="https://docs.python.org/3/library/importlib.metadata.html#entry-points" title="(in Python v3.12)"><span>Entry points</span></a>.
 An entry point of type <code class="docutils literal notranslate"><span class="pre">console_script</span></code> makes a python function the
 entry point of a script that is added to the <code class="code docutils literal notranslate"><span class="pre">$PATH</span></code> of your Python environment:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
@@ -268,18 +268,18 @@ Where possible, use a <cite>semver</cite>-compatible version scheme.
 Use <code class="code docutils literal notranslate"><span class="pre">setuptools_scm</span></code> as a <strong>build dependency</strong> to create a version string
 that will automatically be added to the package metadata and is accessible to
 code at runtime:</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="c1"># in pythonproject.toml</span>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span># in pythonproject.toml
 
-<span class="k">[build-system]</span>
-<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="p">...,</span><span class="w"> </span><span class="c1"># other build dependencies here</span>
-<span class="w">    </span><span class="s">&quot;setuptools_scm[toml]~=6.0&quot;</span><span class="p">,</span>
-<span class="p">]</span>
+[build-system]
+requires = [
+    ..., # other build dependencies here
+    &quot;setuptools_scm[toml]~=6.0&quot;,
+]
 
-<span class="c1"># ...</span>
+# ...
 
-<span class="k">[tool.setuptools_scm]</span>
-<span class="n">write_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;metricq_example/version.py&quot;</span>
+[tool.setuptools_scm]
+write_to = &quot;metricq_example/version.py&quot;
 </pre></div>
 </div>
 <p>On installation, this creates a file <code class="file docutils literal notranslate"><span class="pre">metricq_example/version.py</span></code> that
