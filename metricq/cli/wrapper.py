@@ -1,6 +1,7 @@
 import logging
 import re
 from functools import wraps
+from logging.handlers import SysLogHandler
 from typing import Callable, Optional, cast
 
 import click
@@ -48,6 +49,16 @@ def get_metric_command_looger() -> logging.Logger:
     logger.setLevel(logging.WARNING)
     click_log.basic_config(logger)
 
+    return logger
+
+
+def configure_syslog_logger(logger: logging.Logger, syslog_url: str) -> logging.Logger:
+    syslog_handler = SysLogHandler(address=syslog_url)
+    syslog_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter("%(name)s: %(message)s")
+    syslog_handler.setFormatter(formatter)
+    logger.addHandler(syslog_handler)
+    logger.setLevel(logging.INFO)
     return logger
 
 
@@ -104,6 +115,26 @@ def metric_input(
                 raise Exception("Input metric is missing.")
 
             return func(*args, metric=metric, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def syslog_option() -> Callable[[FC], FC]:
+    def decorator(func):  # type: ignore
+        @click.option(
+            "--syslog",
+            type=str,
+            help="Syslog server URL (e.g., localhost)",
+            required=False,
+        )
+        @wraps(func)
+        def wrapper(*args, syslog: str, **kwargs):  # type: ignore
+            logger = get_logger()  # Get the logger instance
+            if syslog:
+                configure_syslog_logger(logger, syslog)
+            return func(*args, **kwargs)
 
         return wrapper
 
