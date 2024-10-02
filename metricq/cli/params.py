@@ -3,12 +3,12 @@ from contextlib import suppress
 from getpass import getuser
 from socket import gethostname
 from string import Template
-from typing import Any, Generic, List, Optional, Type, TypeVar, Union, cast
+from typing import Any, Generic, List, Optional, Type, TypeVar, Union, cast, Callable
 
-import click
 from click import Context, Parameter, ParamType, option
 
 from ..timeseries import Timedelta, Timestamp
+from .types import FC
 
 _C = TypeVar("_C", covariant=True)
 
@@ -169,3 +169,28 @@ class TemplateStringParam(ParamType):
         if not isinstance(value, str):
             raise TypeError("expected a string type for TemplateStringParam")
         return Template(value).safe_substitute(self.mapping)
+
+
+class MetricInputParam(ParamType):
+    pattern = re.compile(r"([a-zA-Z][a-zA-Z0-9_]+\.)+[a-zA-Z][a-zA-Z0-9_]+")
+
+    def convert(
+        self, value: Any, param: Optional[Parameter], ctx: Optional[Context]
+    ) -> str:
+        if not isinstance(value, str):
+            raise TypeError("expected a string type for the metric input")
+        if not self.pattern.match(value):
+            raise ValueError(f"Invalid metric format: '{value}'.")
+        return value
+
+
+def metric_input(default: Optional[str] = None) -> Callable[[FC], FC]:
+    return option(
+        "--metric",
+        type=MetricInputParam(),
+        metavar="METRIC",
+        show_default=True,
+        required=default is None,
+        default=default,
+        help="Use the -–metric parameter to specify which metric the program should use",
+    )

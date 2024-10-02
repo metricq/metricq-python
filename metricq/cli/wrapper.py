@@ -7,7 +7,8 @@ from click import option
 from dotenv import find_dotenv, load_dotenv
 
 from .. import get_logger
-from .params import FC, TemplateStringParam
+from .params import TemplateStringParam
+from .types import FC
 
 # We do not interpolate (i.e. replace ${VAR} with corresponding environment variables).
 # That is because we want to be able to interpolate ourselves for metrics and tokens
