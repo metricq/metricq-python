@@ -1,5 +1,7 @@
 import logging
-from typing import Callable, cast
+import re
+from functools import wraps
+from typing import Callable, Optional, cast
 
 import click
 import click_log  # type: ignore
@@ -7,7 +9,8 @@ from click import option
 from dotenv import find_dotenv, load_dotenv
 
 from .. import get_logger
-from .params import FC, TemplateStringParam
+from .params import TemplateStringParam
+from .types import FC
 
 # We do not interpolate (i.e. replace ${VAR} with corresponding environment variables).
 # That is because we want to be able to interpolate ourselves for metrics and tokens
@@ -80,5 +83,28 @@ def metricq_command(
                 )
             )
         )
+
+    return decorator
+
+
+def metric_input(
+    required: bool = True, default: Optional[str] = None
+) -> Callable[[FC], FC]:
+    valid_metric_regex = r"([a-zA-Z][a-zA-Z0-9_]+\.)+[a-zA-Z][a-zA-Z0-9_]+"
+
+    def decorator(func):  # type: ignore
+        @click.option("--metric", default=default, help="Metric input")
+        @wraps(func)
+        def wrapper(*args, metric, **kwargs):  # type: ignore
+            if metric is not None:
+                if not re.match(valid_metric_regex, metric):
+                    raise ValueError(f"Invalid metric format: {metric}")
+
+            if metric is None and required:
+                raise Exception("Input metric is missing.")
+
+            return func(*args, metric=metric, **kwargs)
+
+        return wrapper
 
     return decorator

@@ -1,4 +1,3 @@
-from .command import metricq_command
 from .params import (
     ChoiceParam,
     CommandLineChoice,
@@ -7,6 +6,7 @@ from .params import (
     TemplateStringParam,
     TimestampParam,
 )
+from .wrapper import metric_input, metricq_command
 
 __all__ = [
     "ChoiceParam",
@@ -16,4 +16,5 @@ __all__ = [
     "TemplateStringParam",
     "TimestampParam",
     "metricq_command",
+    "metric_input",
 ]

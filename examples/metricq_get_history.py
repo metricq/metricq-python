@@ -36,7 +36,7 @@ import click
 import click_log  # type: ignore
 
 import metricq
-from metricq.cli import metricq_command
+from metricq.cli import metric_input, metricq_command
 
 logger = metricq.get_logger()
 
@@ -100,7 +100,7 @@ async def aget_history(
 
 
 @metricq_command(default_token="history-py-dummy")
-@click.option("--metric", default=None)
+@metric_input()
 @click.option("--list-metrics", is_flag=True)
 @click.option("--list-metadata", is_flag=True)
 @click_log.simple_verbosity_option(logger)  # type: ignore
