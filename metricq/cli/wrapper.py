@@ -1,0 +1,141 @@
+import logging
+import re
+from functools import wraps
+from logging.handlers import SysLogHandler
+from typing import Callable, Optional, cast
+
+import click
+import click_log  # type: ignore
+from click import option
+from dotenv import find_dotenv, load_dotenv
+
+from .. import get_logger
+from .params import TemplateStringParam
+from .types import FC
+
+# We do not interpolate (i.e. replace ${VAR} with corresponding environment variables).
+# That is because we want to be able to interpolate ourselves for metrics and tokens
+# using the same syntax. If it was only ${USER} for the token, we could use the
+# override functionality, but most unfortunately there is no standard environment
+# variable for the hostname. Even $HOST on zsh is not actually part of the environment.
+# ``override=false`` just means that environment variables have priority over the
+# env files.
+load_dotenv(dotenv_path=find_dotenv(".metricq"), interpolate=False, override=False)
+
+
+def metricq_server_option() -> Callable[[FC], FC]:
+    return option(
+        "--server",
+        type=TemplateStringParam(),
+        metavar="URL",
+        required=True,
+        help="MetricQ server URL.",
+    )
+
+
+def metricq_token_option(default: str) -> Callable[[FC], FC]:
+    return option(
+        "--token",
+        type=TemplateStringParam(),
+        metavar="CLIENT_TOKEN",
+        default=default,
+        show_default=True,
+        help="A token to identify this client on the MetricQ network.",
+    )
+
+
+def get_metric_command_looger() -> logging.Logger:
+    logger = get_logger()
+    logger.setLevel(logging.WARNING)
+    click_log.basic_config(logger)
+
+    return logger
+
+
+def configure_syslog_logger(logger: logging.Logger, syslog_url: str) -> logging.Logger:
+    syslog_handler = SysLogHandler(address=syslog_url)
+    syslog_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter("%(name)s: %(message)s")
+    syslog_handler.setFormatter(formatter)
+    logger.addHandler(syslog_handler)
+    logger.setLevel(logging.INFO)
+    return logger
+
+
+def metricq_command(
+    default_token: str, client_version: str | None = None
+) -> Callable[[FC], click.Command]:
+    logger = get_metric_command_looger()
+
+    log_decorator = cast(
+        Callable[[FC], FC], click_log.simple_verbosity_option(logger, default="warning")
+    )
+    context_settings = {"auto_envvar_prefix": "METRICQ"}
+    epilog = (
+        "All options can be passed as environment variables prefixed with 'METRICQ_'."
+        "I.e., 'METRICQ_SERVER=amqps://...'.\n"
+        "\n"
+        "You can also create a '.metricq' file in the current or home directory that "
+        "contains environment variable settings in the same format.\n"
+        "\n"
+        "Some options, including server and token, can contain placeholders for $USER "
+        "and $HOST."
+    )
+
+    def decorator(func: FC) -> click.Command:
+        return click.version_option(version=client_version)(
+            log_decorator(
+                metricq_token_option(default_token)(
+                    metricq_server_option()(
+                        click.command(context_settings=context_settings, epilog=epilog)(
+                            func
+                        )
+                    )
+                )
+            )
+        )
+
+    return decorator
+
+
+def metric_input(
+    required: bool = True, default: Optional[str] = None
+) -> Callable[[FC], FC]:
+    valid_metric_regex = r"([a-zA-Z][a-zA-Z0-9_]+\.)+[a-zA-Z][a-zA-Z0-9_]+"
+
+    def decorator(func):  # type: ignore
+        @click.option("--metric", default=default, help="Metric input")
+        @wraps(func)
+        def wrapper(*args, metric, **kwargs):  # type: ignore
+            if metric is not None:
+                if not re.match(valid_metric_regex, metric):
+                    raise ValueError(f"Invalid metric format: {metric}")
+
+            if metric is None and required:
+                raise Exception("Input metric is missing.")
+
+            return func(*args, metric=metric, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def syslog_option() -> Callable[[FC], FC]:
+    def decorator(func):  # type: ignore
+        @click.option(
+            "--syslog",
+            type=str,
+            help="Syslog server URL (e.g., localhost)",
+            required=False,
+        )
+        @wraps(func)
+        def wrapper(*args, syslog: str, **kwargs):  # type: ignore
+            logger = get_logger()  # Get the logger instance
+            if syslog:
+                configure_syslog_logger(logger, syslog)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator

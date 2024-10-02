@@ -33,10 +33,10 @@ import logging
 import random
 import time
 
-import click
 import click_log  # type: ignore
 
 from metricq import SynchronousSource, Timestamp, get_logger
+from metricq.cli import metricq_command
 
 logger = get_logger()
 
@@ -47,9 +47,7 @@ logger.handlers[0].formatter = logging.Formatter(
 )
 
 
-@click.command()
-@click.option("--server", default="amqp://localhost/")
-@click.option("--token", default="source-py-dummy")
+@metricq_command(default_token="source-py-dummy")
 @click_log.simple_verbosity_option(logger)  # type: ignore
 def synchronous_source(server: str, token: str) -> None:
     ssource = SynchronousSource(token=token, url=server)
