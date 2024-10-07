@@ -31,6 +31,7 @@
 import asyncio
 import functools
 import json
+import re
 import signal
 import textwrap
 import threading
@@ -183,6 +184,13 @@ class Agent(RPCDispatcher):
             type(self).__qualname__,
             __version__,
         )
+
+    @property
+    def url(self) -> str:
+        """
+        Redacts login information from the management URL.
+        """
+        return re.sub(r"(?<=//)[^:@]+:[^@]+@", "****:****@", self._management_url)
 
     def derive_address(self, address: str) -> str:
         """Add the credentials from the management connection to the provided address
