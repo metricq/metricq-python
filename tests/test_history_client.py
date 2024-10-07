@@ -1,3 +1,4 @@
+import math
 from typing import Any
 
 import pytest
@@ -66,6 +67,24 @@ async def test_history_aggregate(
     assert await history_client.history_aggregate(
         DEFAULT_METRIC
     ) == TimeAggregate.from_proto(timestamp=time, proto=aggregate)
+
+
+def test_history_aggregate_with_zero_count(
+    history_client: HistoryClient, mocker: MockerFixture
+) -> None:
+    time = Timestamp(0)
+    aggregate = history_pb2.HistoryResponse.Aggregate(count=0)
+
+    response = mock_history_response(
+        time_delta=[time.posix_ns],
+        aggregate=[aggregate],
+    )
+
+    patch_history_data_request(mocker, response)
+
+    agg = TimeAggregate.from_proto(timestamp=time, proto=aggregate)
+
+    assert math.isnan(agg.mean_sum)
 
 
 async def test_history_no_aggregate(

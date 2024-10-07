@@ -135,7 +135,7 @@ class TimeAggregate:
         This value will be `NaN` if there are no raw data points in the
         aggregate interval.
         """
-        return self.sum / self.count
+        return self.sum / self.count if self.count != 0 else float("NaN")
 
     @deprecated(
         version="5.0.0",
