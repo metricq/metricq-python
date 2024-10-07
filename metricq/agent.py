@@ -184,6 +184,16 @@ class Agent(RPCDispatcher):
             __version__,
         )
 
+    @property
+    def url(self) -> str:
+        """
+        The management URL with the password replaced by '******', if user present.
+        """
+        url = URL(self._management_url)
+        if url.user:
+            return str(url.with_password("******"))
+        return self._management_url
+
     def derive_address(self, address: str) -> str:
         """Add the credentials from the management connection to the provided address
 
@@ -244,7 +254,7 @@ class Agent(RPCDispatcher):
         """Connect to the MetricQ network"""
         logger.info(
             "establishing management connection to {}",
-            URL(self._management_url).with_password("******"),
+            self.url,
         )
 
         try:
