@@ -27,23 +27,14 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import logging
 import random
 from typing import Any
 
-import click
-import click_log  # type: ignore
-
 import metricq
+from metricq.cli import metricq_command
 from metricq.logging import get_logger
 
 logger = get_logger()
-
-click_log.basic_config(logger)
-logger.setLevel("INFO")
-logger.handlers[0].formatter = logging.Formatter(
-    fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
-)
 
 
 class DummySource(metricq.IntervalSource):
@@ -74,10 +65,7 @@ class DummySource(metricq.IntervalSource):
         )
 
 
-@click.command()
-@click.option("--server", default="amqp://localhost/")
-@click.option("--token", default="source-py-dummy")
-@click_log.simple_verbosity_option(logger)  # type: ignore
+@metricq_command(default_token="source-py-dummy")
 def source(server: str, token: str) -> None:
     src = DummySource(token=token, url=server)
     src.run()

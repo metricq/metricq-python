@@ -40,20 +40,13 @@ with an aiomonitor. After this setup, you can connect to the monitor using
 `telnet localhost 50101` (or `netcat`), inspect tasks and run code in a REPL.
 """
 import asyncio
-import logging
 
 import aiomonitor  # type: ignore
-import click
-import click_log  # type: ignore
 
 import metricq
+from metricq.cli import metricq_command
 
 logger = metricq.get_logger()
-click_log.basic_config(logger)
-logger.setLevel("INFO")
-logger.handlers[0].formatter = logging.Formatter(
-    fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
-)
 
 
 async def run(server: str, token: str) -> None:
@@ -66,10 +59,7 @@ async def run(server: str, token: str) -> None:
             await client.stopped()
 
 
-@click.command()
-@click.option("--server", default="amqp://admin:admin@localhost/")
-@click.option("--token", default="client-py-example")
-@click_log.simple_verbosity_option(logger)  # type: ignore
+@metricq_command(default_token="client-py-example")
 def main(server: str, token: str) -> None:
     asyncio.run(run(server, token))
 
