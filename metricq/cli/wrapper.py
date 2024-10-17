@@ -1,5 +1,5 @@
 import logging
-from typing import Callable, cast
+from typing import Callable, Optional, cast
 
 import click
 import click_log  # type: ignore
@@ -7,7 +7,7 @@ from click import option
 from dotenv import find_dotenv, load_dotenv
 
 from .. import get_logger
-from .params import TemplateStringParam
+from .params import MetricParam, TemplateStringParam
 from .types import FC
 
 # We do not interpolate (i.e. replace ${VAR} with corresponding environment variables).
@@ -51,6 +51,7 @@ def metricq_metric_option(default: Optional[str] = None) -> Callable[[FC], FC]:
         default=default,
         help="Use the -–metric parameter to specify which metric the program should use",
     )
+
 
 
 def get_metric_command_logger() -> logging.Logger:

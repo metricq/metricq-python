@@ -4,9 +4,13 @@ from .params import (
     DurationParam,
     TemplateStringParam,
     TimestampParam,
-    metric_input,
 )
-from .wrapper import metricq_command
+from .wrapper import (
+    metricq_command,
+    metricq_metric_option,
+    metricq_server_option,
+    metricq_token_option,
+)
 
 __all__ = [
     "ChoiceParam",
@@ -15,5 +19,7 @@ __all__ = [
     "TemplateStringParam",
     "TimestampParam",
     "metricq_command",
-    "metric_input",
+    "metricq_metric_option",
+    "metricq_server_option",
+    "metricq_token_option",
 ]

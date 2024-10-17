@@ -27,11 +27,9 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import logging
 from typing import Any
 
 import click
-import click_log  # type: ignore
 
 import metricq
 from metricq import Metric
@@ -39,12 +37,6 @@ from metricq.cli import metricq_command
 from metricq.logging import get_logger
 
 logger = get_logger()
-
-click_log.basic_config(logger)
-logger.setLevel("INFO")
-logger.handlers[0].formatter = logging.Formatter(
-    fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
-)
 
 
 # To implement a MetricQ Sink, subclass metricq.Sink
@@ -79,7 +71,6 @@ class DummySink(metricq.Sink):
 
 @metricq_command(default_token="sink-py-dummy")
 @click.option("-m", "--metrics", multiple=True, required=True)
-@click_log.simple_verbosity_option(logger)  # type: ignore
 def source(server: str, token: str, metrics: list[Metric]) -> None:
     # Initialize the DummySink class with a list of metrics given on the
     # command line.

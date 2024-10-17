@@ -28,25 +28,16 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import asyncio
-import logging
 from datetime import timedelta
 
 import click
-import click_log  # type: ignore
 
 import metricq
-from metricq.cli import metric_input, metricq_command
+from metricq.cli import metricq_command
+from metricq.cli.wrapper import metricq_metric_option
 from metricq.pandas import PandasHistoryClient
 
 logger = metricq.get_logger()
-
-click_log.basic_config(logger)
-logger.setLevel("INFO")
-# Use this if we ever use threads
-# logger.handlers[0].formatter = logging.Formatter(fmt='%(asctime)s %(threadName)-16s %(levelname)-8s %(message)s')
-logger.handlers[0].formatter = logging.Formatter(
-    fmt="%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
-)
 
 
 async def aget_history(server: str, token: str, metric: str) -> None:
@@ -83,8 +74,7 @@ async def aget_history(server: str, token: str, metric: str) -> None:
 
 
 @metricq_command(default_token="history-py-dummy")
-@metric_input(default="example.quantity")
-@click_log.simple_verbosity_option(logger)  # type: ignore
+@metricq_metric_option(default="example.quantity")
 def get_history(server: str, token: str, metric: str) -> None:
     asyncio.run(aget_history(server, token, metric))
 
