@@ -1,6 +1,9 @@
 import logging
 import re
+import socket
+import time
 from functools import wraps
+from logging.handlers import SysLogHandler
 from typing import Callable, Optional, cast
 
 import click
@@ -104,6 +107,69 @@ def metric_input(
                 raise Exception("Input metric is missing.")
 
             return func(*args, metric=metric, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+class SyslogFormatter(logging.Formatter):
+    def __init__(self, *args, name: str = "metricq", **kwargs):  # type: ignore
+        super().__init__(*args, **kwargs)
+        self.program = name
+
+    def format(self, record: logging.LogRecord) -> str:
+        severity_map = {
+            logging.CRITICAL: 2,  # LOG_CRIT
+            logging.ERROR: 3,  # LOG_ERR
+            logging.WARNING: 4,  # LOG_WARNING
+            logging.INFO: 6,  # LOG_INFO
+            logging.DEBUG: 7,  # LOG_DEBUG
+        }
+        severity = severity_map.get(record.levelno, 6)
+
+        timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(record.created))
+        hostname = socket.gethostname()
+        pid = record.process
+        program = self.program
+        pri = (SysLogHandler.LOG_USER * 8) + severity
+
+        # Format the header as "<PRI> TIMESTAMP HOSTNAME PROGRAM[PID]: MESSAGE"
+        syslog_header = f"<{pri}> {timestamp} {hostname} {program}[{pid}]: "
+
+        message = super().format(record)
+        return syslog_header + message
+
+
+def metric_syslog(
+    required: bool = True, default: Optional[str] = None
+) -> Callable[[FC], FC]:
+    validation_regex = r"^((?:(?:\d{1,3}\.){3}\d{1,3})|(?:[a-zA-Z0-9-]{1,63}\.?)+[a-zA-Z]{2,63}):([0-9]{1,5})$"
+
+    def decorator(func):  # type: ignore
+        @click.option("--syslog", default=default, help="Syslog url")
+        @wraps(func)
+        def wrapper(*args, syslog, **kwargs):  # type: ignore
+            if syslog is not None:
+                if not re.match(validation_regex, syslog):
+                    raise ValueError(
+                        "The syslog input is malformed. Use the following syntax: ip:port or hostname:port"
+                    )
+                logger = get_logger()
+
+                ip, port = syslog.split(":")
+                program_name = "metricq-process"
+
+                if kwargs.get("token") is not None:
+                    program_name = str(kwargs.get("token"))
+
+                handler = SysLogHandler(
+                    address=(ip, int(port)), facility=SysLogHandler.LOG_USER
+                )
+                handler.setFormatter(SyslogFormatter(name=program_name))
+                logger.addHandler(handler)
+
+            return func(*args, **kwargs)
 
         return wrapper
 

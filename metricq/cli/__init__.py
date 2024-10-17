@@ -6,7 +6,7 @@ from .params import (
     TemplateStringParam,
     TimestampParam,
 )
-from .wrapper import metric_input, metricq_command
+from .wrapper import metric_input, metric_syslog, metricq_command
 
 __all__ = [
     "ChoiceParam",
@@ -17,4 +17,5 @@ __all__ = [
     "TimestampParam",
     "metricq_command",
     "metric_input",
+    "metric_syslog",
 ]
