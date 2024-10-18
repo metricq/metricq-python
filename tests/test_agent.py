@@ -25,3 +25,13 @@ def test_agent_url_and_management_url() -> None:
                 url="amqps://test.invalid",
                 management_url="amqps://test.invalid",
             )
+
+
+def test_agent_redacted_url() -> None:
+    agent = Agent(token="test", url="amqps://user:password@test.invalid")
+    assert agent.url == "amqps://user:******@test.invalid"
+
+
+def test_agent_redacted_url_no_login_info() -> None:
+    agent = Agent(token="test", url="amqps://test.invalid")
+    assert agent.url == "amqps://test.invalid"
