@@ -41,17 +41,21 @@ def metricq_token_option(default: str) -> Callable[[FC], FC]:
     )
 
 
-def metricq_metric_option(default: Optional[str] = None) -> Callable[[FC], FC]:
+def metricq_metric_option(
+    default: Optional[str] = None, multiple: bool = False
+) -> Callable[[FC], FC]:
+    response_default = default if (default is None or not multiple) else [default]
     return option(
         "--metric",
+        "-m",
         type=MetricParam(),
         metavar="METRIC",
         show_default=True,
         required=default is None,
-        default=default,
+        default=response_default,
+        multiple=multiple,
         help="Use the -–metric parameter to specify which metric the program should use",
     )
-
 
 
 def get_metric_command_logger() -> logging.Logger:

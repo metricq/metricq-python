@@ -2,6 +2,7 @@ from .params import (
     ChoiceParam,
     CommandLineChoice,
     DurationParam,
+    MetricParam,
     TemplateStringParam,
     TimestampParam,
 )
@@ -18,6 +19,7 @@ __all__ = [
     "DurationParam",
     "TemplateStringParam",
     "TimestampParam",
+    "MetricParam",
     "metricq_command",
     "metricq_metric_option",
     "metricq_server_option",

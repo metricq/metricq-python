@@ -34,6 +34,7 @@ import click
 import metricq
 from metricq import Metric
 from metricq.cli import metricq_command
+from metricq.cli.wrapper import metricq_metric_option
 from metricq.logging import get_logger
 
 logger = get_logger()
@@ -70,11 +71,11 @@ class DummySink(metricq.Sink):
 
 
 @metricq_command(default_token="sink-py-dummy")
-@click.option("-m", "--metrics", multiple=True, required=True)
-def source(server: str, token: str, metrics: list[Metric]) -> None:
+@metricq_metric_option(multiple=True)
+def source(server: str, token: str, metric: list[Metric]) -> None:
     # Initialize the DummySink class with a list of metrics given on the
     # command line.
-    sink = DummySink(metrics=metrics, token=token, url=server)
+    sink = DummySink(metrics=metric, token=token, url=server)
 
     # Run the sink.  This call will block until the connection is closed.
     sink.run()
