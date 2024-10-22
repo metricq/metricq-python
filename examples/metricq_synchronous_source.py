@@ -38,9 +38,11 @@ from metricq.cli import metricq_command
 from metricq.logging import get_logger
 
 
+logger = get_logger()
+
+
 @metricq_command(default_token="source-py-dummy")
 def synchronous_source(server: str, token: str) -> None:
-    logger = get_logger()
     ssource = SynchronousSource(token=token, url=server)
     ssource.declare_metrics(
         {
