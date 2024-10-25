@@ -122,6 +122,9 @@ class TimeAggregate:
         is outside the of the interval from the earliest to the latest
         measurement point.
         """
+        if self.active_time.ns == 0:
+            return float("NaN")
+
         return self.integral_ns / self.active_time.ns
 
     @property
