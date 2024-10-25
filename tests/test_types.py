@@ -1,7 +1,7 @@
 from collections.abc import Iterator
 from datetime import datetime
 from logging import getLogger
-from math import isclose
+from math import isclose, isnan
 from random import Random
 
 import pytest
@@ -239,8 +239,7 @@ def test_timeaggregate_from_value(timestamp: Timestamp) -> None:
     assert isclose(agg.mean, VALUE)
     assert isclose(agg.mean_sum, VALUE)
 
-    with pytest.raises(ZeroDivisionError):
-        agg.mean_integral
+    assert isnan(agg.mean_integral)
 
 
 def test_timeaggregate_from_value_pair(
