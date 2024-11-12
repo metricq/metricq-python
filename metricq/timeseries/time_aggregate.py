@@ -122,6 +122,9 @@ class TimeAggregate:
         is outside the of the interval from the earliest to the latest
         measurement point.
         """
+        if self.active_time.ns == 0:
+            return float("NaN")
+
         return self.integral_ns / self.active_time.ns
 
     @property
@@ -135,6 +138,9 @@ class TimeAggregate:
         This value will be `NaN` if there are no raw data points in the
         aggregate interval.
         """
+        if self.count == 0:
+            return float("NaN")
+
         return self.sum / self.count
 
     @deprecated(
