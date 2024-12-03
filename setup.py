@@ -18,7 +18,7 @@ import sys
 from bisect import bisect_right
 from datetime import datetime
 from distutils.errors import DistutilsFileError
-from distutils.log import ERROR, INFO
+from distutils.log import ERROR, INFO  # type: ignore
 from distutils.spawn import find_executable
 from operator import itemgetter
 from typing import Any, Iterable, Optional
@@ -134,7 +134,7 @@ def make_protobuf_requirement(major: int, minor: int, patch: int) -> str:
     py_major = protobuf_version_mapping[
         bisect_right(protobuf_version_mapping, minor, key=itemgetter(1)) - 1
     ][0]
-    return f"protobuf>={py_major}.{minor}, <{py_major}.{minor+1}"
+    return f"protobuf>={py_major}.{minor}, <{py_major}.{minor + 1}"
 
 
 def get_protobuf_requirement_from_protoc() -> str:

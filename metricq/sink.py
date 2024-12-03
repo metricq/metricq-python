@@ -77,7 +77,7 @@ class Sink(DataClient):
         self._data_consumer_tag = await self._data_queue.consume(self._on_data_message)
 
     def _on_data_connection_reconnect(
-        self, sender: aio_pika.abc.AbstractConnection
+        self, sender: Optional[aio_pika.abc.AbstractConnection]
     ) -> None:
         logger.info("Sink data connection ({}) reestablished!", sender)
 
@@ -86,6 +86,8 @@ class Sink(DataClient):
                 "Sink data connection was reestablished, but another resubscribe task is still running!"
             )
             self._resubscribe_task.cancel()
+
+        assert sender is not None
 
         self._resubscribe_task = self._event_loop.create_task(self._resubscribe(sender))
 

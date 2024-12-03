@@ -127,12 +127,12 @@ class DataClient(Client):
 
     def _on_data_connection_close(
         self,
-        sender: aio_pika.abc.AbstractRobustConnection,
+        sender: Optional[aio_pika.abc.AbstractConnection],
         _exception: Optional[BaseException],
     ) -> None:
         self._data_connection_watchdog.set_closed()
 
     def _on_data_connection_reconnect(
-        self, sender: aio_pika.abc.AbstractRobustConnection
+        self, sender: Optional[aio_pika.abc.AbstractConnection]
     ) -> None:
         self._data_connection_watchdog.set_established()
