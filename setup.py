@@ -353,7 +353,7 @@ class ProtoDevelop(develop):
 # For all other setuptools options, see setup.cfg
 setup(
     install_requires=[
-        "aio-pika~=9.0",
+        "aio-pika==9.4.3",
         get_protobuf_requirement(),
         "Deprecated~=1.2.13",
         "python-dateutil ~= 2.8, >=2.8.1",
