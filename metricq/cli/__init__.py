@@ -2,6 +2,7 @@ from .decorator import (
     metricq_command,
     metricq_metric_option,
     metricq_server_option,
+    metricq_syslog_option,
     metricq_token_option,
 )
 from .params import (
@@ -23,5 +24,6 @@ __all__ = [
     "metricq_command",
     "metricq_metric_option",
     "metricq_server_option",
+    "metricq_syslog_option",
     "metricq_token_option",
 ]
