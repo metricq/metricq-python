@@ -2,7 +2,7 @@
 # We need mypy-protobuf during build - it is a plugin to protoc.
 # The version requirement is iffy, there is no way to know whether
 # this is going to be compatible to the installed protoc or not.
-requires = ["setuptools>=55.0.0", "wheel", "mypy-protobuf~=3.4.0"]
+requires = ["setuptools>=75.6.0", "wheel", "mypy-protobuf~=3.4.0"]
 build-backend = 'setuptools.build_meta'
 
 [tool.black]
