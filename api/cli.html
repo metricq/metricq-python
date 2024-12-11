@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pandas History Client &mdash; MetricQ  documentation</title>
+  <title>CLI &mdash; MetricQ  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Drain" href="drain.html" />
-    <link rel="prev" title="History Client" href="history-client.html" /> 
+    <link rel="next" title="Metric Metadata" href="../metadata.html" />
+    <link rel="prev" title="Miscellaneous" href="misc.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,13 +50,17 @@
 <li class="toctree-l2"><a class="reference internal" href="sink.html">Sink</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source.html">Source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="history-client.html">History Client</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Pandas History Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pandas.html">Pandas History Client</a></li>
 <li class="toctree-l2"><a class="reference internal" href="drain.html">Drain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="subscriber.html">Subscriber</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-common.html">Common client operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="exceptions.html">Exceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="misc.html">Miscellaneous</a></li>
-<li class="toctree-l2"><a class="reference internal" href="cli.html">CLI</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">CLI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#decorators">Decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameter">Parameter</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../metadata.html">Metric Metadata</a></li>
@@ -79,9 +83,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
-      <li class="breadcrumb-item active">Pandas History Client</li>
+      <li class="breadcrumb-item active">CLI</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/api/pandas.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/api/cli.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -89,16 +93,29 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="pandas-history-client">
-<h1>Pandas History Client<a class="headerlink" href="#pandas-history-client" title="Permalink to this heading"></a></h1>
+  <section id="cli">
+<h1>CLI<a class="headerlink" href="#cli" title="Permalink to this heading"></a></h1>
+<p>This module provides CLI utilities and decorators for MetricQ applications, including custom parameter types for choices, durations, timestamps, templates, and metrics.</p>
+<p>The main focus of this module is to standardize the CLI interfaces of different programs.</p>
+<p>To use this part of the package you need to install additional dependencies. You can install the dependencies using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;metricq[cli]&quot;</span>
+</pre></div>
+</div>
+<section id="decorators">
+<h2>Decorators<a class="headerlink" href="#decorators" title="Permalink to this heading"></a></h2>
+</section>
+<section id="parameter">
+<h2>Parameter<a class="headerlink" href="#parameter" title="Permalink to this heading"></a></h2>
+<p>For you convenience, we provide a set of custom parameter types that you can use as custom types in your click option definitions.</p>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="history-client.html" class="btn btn-neutral float-left" title="History Client" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="drain.html" class="btn btn-neutral float-right" title="Drain" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="misc.html" class="btn btn-neutral float-left" title="Miscellaneous" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../metadata.html" class="btn btn-neutral float-right" title="Metric Metadata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
