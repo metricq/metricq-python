@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v5.3.0...HEAD)
 
+**Implemented enhancements:**
+
+- Add click command for standardized CLI parameters  [\#188](https://github.com/metricq/metricq-python/issues/188)
+
 **Fixed bugs:**
 
 - Setup Fails, if local protoc version has no patch applied [\#191](https://github.com/metricq/metricq-python/issues/191)
@@ -15,7 +19,10 @@
 
 **Merged pull requests:**
 
+- feat\(time\_aggregate\): mean\_sum return NaN [\#198](https://github.com/metricq/metricq-python/pull/198) ([floork](https://github.com/floork))
+- feat\(agent\): redacted url [\#197](https://github.com/metricq/metricq-python/pull/197) ([floork](https://github.com/floork))
 - bug: updating the github action to newest version [\#196](https://github.com/metricq/metricq-python/pull/196) ([devmaxde](https://github.com/devmaxde))
+- feat: standardized CLI [\#193](https://github.com/metricq/metricq-python/pull/193) ([devmaxde](https://github.com/devmaxde))
 - bug: protoc updated version naming conventions [\#190](https://github.com/metricq/metricq-python/pull/190) ([devmaxde](https://github.com/devmaxde))
 
 ## [v5.3.0](https://github.com/metricq/metricq-python/tree/v5.3.0) (2023-06-27)
