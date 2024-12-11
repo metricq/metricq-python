@@ -18,7 +18,7 @@ import sys
 from bisect import bisect_right
 from datetime import datetime
 from distutils.errors import DistutilsFileError
-from distutils.log import ERROR, INFO  # type: ignore
+from distutils.log import ERROR, INFO
 from distutils.spawn import find_executable
 from operator import itemgetter
 from typing import Any, Iterable, Optional
