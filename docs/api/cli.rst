@@ -17,7 +17,7 @@ Decorators
 ----------
 
 .. automodule:: metricq.cli.decorator
-    :members: metricq_command, metricq_metric_option, metricq_server_option, metricq_token_option,
+    :members: metricq_command, metricq_metric_option, metricq_server_option, metricq_syslog_option, metricq_token_option,
 
 
 Parameter
