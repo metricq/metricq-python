@@ -1,12 +1,15 @@
 # Changelog
 
-## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
+## [vv5.4.0](https://github.com/metricq/metricq-python/tree/vv5.4.0) (2024-12-19)
 
-[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.3.0...HEAD)
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.3.0...vv5.4.0)
 
 **Implemented enhancements:**
 
+- Add `--syslog` parameter [\#189](https://github.com/metricq/metricq-python/issues/189)
 - Add click command for standardized CLI parameters  [\#188](https://github.com/metricq/metricq-python/issues/188)
+- Pandas division by zero [\#186](https://github.com/metricq/metricq-python/issues/186)
+- Add Agent.url property [\#169](https://github.com/metricq/metricq-python/issues/169)
 
 **Fixed bugs:**
 
