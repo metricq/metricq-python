@@ -19,6 +19,7 @@
 
 **Merged pull requests:**
 
+- feat: metricq\_syslog\_option [\#201](https://github.com/metricq/metricq-python/pull/201) ([devmaxde](https://github.com/devmaxde))
 - feat\(time\_aggregate\): mean\_sum return NaN [\#198](https://github.com/metricq/metricq-python/pull/198) ([floork](https://github.com/floork))
 - feat\(agent\): redacted url [\#197](https://github.com/metricq/metricq-python/pull/197) ([floork](https://github.com/floork))
 - bug: updating the github action to newest version [\#196](https://github.com/metricq/metricq-python/pull/196) ([devmaxde](https://github.com/devmaxde))
