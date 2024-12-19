@@ -1,13 +1,15 @@
 import logging
+import sys
 from typing import Any, Callable, Optional, TypeVar, Union, cast
 
 import click
 import click_log  # type: ignore
-from click import option
+from click import Context, option
 from dotenv import find_dotenv, load_dotenv
 
 from .. import get_logger
 from .params import MetricParam, TemplateStringParam
+from .syslog import SyslogFormatter, get_syslog_handler
 
 # We do not interpolate (i.e. replace ${VAR} with corresponding environment variables).
 # That is because we want to be able to interpolate ourselves for metrics and tokens
@@ -20,6 +22,41 @@ load_dotenv(dotenv_path=find_dotenv(".metricq"), interpolate=False, override=Fal
 
 
 FC = TypeVar("FC", bound=Union[Callable[..., Any], click.Command])
+
+
+def metricq_syslog_option() -> Callable[[FC], FC]:
+    """
+    Exposes the -\\-syslog option as a click param.
+
+    The program will try read the 'token' from the click params.
+    if the token is not set, the default value of 'metricq.program' will be used.
+    That's why the @metricq_syslog_option should be the 2nd decorator in the chain.
+
+    It is recommended to use the :py:func:`~metricq.cli.decorator.metricq_command` decorator instead of using this
+    function directly.
+    """
+
+    def enable_syslog(ctx: Context, param: Any | None, value: Optional[str]) -> None:
+        if value is not None:
+            logger = get_logger()
+            if value == "":
+                value = None
+
+            program_name = ctx.params.get("token", sys.argv[0])
+
+            handler = get_syslog_handler(value)
+            handler.setFormatter(SyslogFormatter(name=program_name))
+            logger.addHandler(handler)
+
+    return option(
+        "--syslog",
+        help="Enable syslog logging by specifying the a Unix socket or host:port for the logger. If --syslog is set "
+        "but no value is specified, the default of localhost:514 will be used.",
+        callback=enable_syslog,
+        expose_value=False,
+        is_flag=False,
+        flag_value="",
+    )
 
 
 def metricq_server_option() -> Callable[[FC], FC]:
@@ -144,10 +181,20 @@ def metricq_command(
     -  -\\-token:
         The Token is used to identify each program on the metricq network. for example: sink-py-dummy
 
-        The token param can be set using the environment variable METRICQ_TOKEN or adding the --token {value} option to the cli command
+        The token param can be set using the environment variable METRICQ_TOKEN or adding the --token {value} option
+        to the cli command
+
+    -  -\\-syslog:
+        The Syslog param is used to enable syslog. It can be used with or without parameter.
+
+        If used without parameter (for example: ``metricq-check --syslog`` ) the Syslog will default to localhost:514.
+
+        You can also specify a Unix socket (for example: /dev/log) or a custom host (for example: example.com:514)
+        by adding the value to the syslog flag (for example: ``metricq-check --syslog example.com:514``)
+
 
     Full example:
-    ``metricq-check --server amqp://localhost/ --token sink-py-dummy``
+    ``metricq-check --server amqp://localhost/ --token sink-py-dummy --syslog``
 
     **Example**::
 
@@ -185,8 +232,10 @@ def metricq_command(
             log_decorator(
                 metricq_token_option(default_token)(
                     metricq_server_option()(
-                        click.command(context_settings=context_settings, epilog=epilog)(
-                            func
+                        metricq_syslog_option()(
+                            click.command(
+                                context_settings=context_settings, epilog=epilog
+                            )(func)
                         )
                     )
                 )
