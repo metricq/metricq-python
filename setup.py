@@ -13,13 +13,11 @@ import importlib.util
 import logging
 import os
 import re
+import shutil
 import subprocess
 import sys
 from bisect import bisect_right
 from datetime import datetime
-from distutils.errors import DistutilsFileError
-from distutils.log import ERROR, INFO
-from distutils.spawn import find_executable
 from operator import itemgetter
 from typing import Any, Iterable, Optional
 
@@ -29,6 +27,9 @@ logger = logging.getLogger()
 metricq_package_dir = "metricq"
 protobuf_version_module_file = "_protobuf_version.py"
 
+INFO = 2
+ERROR = 4
+
 
 class ProtocWrapper:
     @staticmethod
@@ -36,7 +37,7 @@ class ProtocWrapper:
         if "PROTOC" in os.environ and os.path.exists(os.environ["PROTOC"]):
             return os.environ["PROTOC"]
 
-        return find_executable("protoc")
+        return shutil.which("protoc")
 
     @staticmethod
     def _get_protoc_version(protoc: str) -> tuple[int, int, int]:
@@ -78,7 +79,7 @@ class ProtocWrapper:
                     os.environ.get("PROTOC", "Not set")
                 )
             )
-            raise DistutilsFileError("protoc not found")
+            raise ValueError("protoc not found")
 
     @property
     def executable(self) -> str:
@@ -242,7 +243,7 @@ class BuildProtobuf(Command):
 
         if not filenames:
             self.error(f"no protobuf files found in {self.proto_dir}")
-            raise DistutilsFileError(f"No protobuf files found in {self.proto_dir}")
+            raise ValueError(f"No protobuf files found in {self.proto_dir}")
 
         self.info(f"found protobuf files: {filenames}")
 
