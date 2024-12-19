@@ -50,7 +50,18 @@
 <li class="toctree-l2"><a class="reference internal" href="sink.html">Sink</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source.html">Source</a></li>
 <li class="toctree-l2"><a class="reference internal" href="history-client.html">History Client</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Pandas History Client</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Pandas History Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#metricq.pandas.PandasHistoryClient"><code class="docutils literal notranslate"><span class="pre">PandasHistoryClient</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.pandas.PandasHistoryClient.connect"><code class="docutils literal notranslate"><span class="pre">PandasHistoryClient.connect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.pandas.PandasHistoryClient.stop"><code class="docutils literal notranslate"><span class="pre">PandasHistoryClient.stop()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.pandas.PandasHistoryClient.client"><code class="docutils literal notranslate"><span class="pre">PandasHistoryClient.client</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.pandas.PandasHistoryClient.get_metrics"><code class="docutils literal notranslate"><span class="pre">PandasHistoryClient.get_metrics()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.pandas.PandasHistoryClient.history_aggregate_timeline"><code class="docutils literal notranslate"><span class="pre">PandasHistoryClient.history_aggregate_timeline()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metricq.pandas.PandasHistoryClient.history_raw_timeline"><code class="docutils literal notranslate"><span class="pre">PandasHistoryClient.history_raw_timeline()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="drain.html">Drain</a></li>
 <li class="toctree-l2"><a class="reference internal" href="subscriber.html">Subscriber</a></li>
 <li class="toctree-l2"><a class="reference internal" href="client-common.html">Common client operation</a></li>
@@ -91,6 +102,97 @@
              
   <section id="pandas-history-client">
 <h1>Pandas History Client<a class="headerlink" href="#pandas-history-client" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="metricq.pandas.PandasHistoryClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metricq.pandas.</span></span><span class="sig-name descname"><span class="pre">PandasHistoryClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.pandas.PandasHistoryClient" title="Permalink to this definition"></a></dt>
+<dd><p>This can be used similarly to a <a class="reference internal" href="history-client.html#metricq.HistoryClient" title="metricq.HistoryClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.HistoryClient</span></code></a>, but the data
+methods return pandas structures.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Consider this class experimental, the type signatures may change at any time.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.pandas.PandasHistoryClient.connect">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.pandas.PandasHistoryClient.connect" title="Permalink to this definition"></a></dt>
+<dd><p>Connect to the MetricQ network.
+You can either use this method, or use the class as an async context manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.pandas.PandasHistoryClient.stop">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.pandas.PandasHistoryClient.stop" title="Permalink to this definition"></a></dt>
+<dd><p>Stop the client and disconnect from the MetricQ network.
+Do not call this if you use the class as an async context manager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="metricq.pandas.PandasHistoryClient.client">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">client</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="history-client.html#metricq.HistoryClient" title="metricq.history_client.HistoryClient"><span class="pre">HistoryClient</span></a></em><a class="headerlink" href="#metricq.pandas.PandasHistoryClient.client" title="Permalink to this definition"></a></dt>
+<dd><p>Access the underlying <a class="reference internal" href="history-client.html#metricq.HistoryClient" title="metricq.HistoryClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.HistoryClient</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.pandas.PandasHistoryClient.get_metrics">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.pandas.PandasHistoryClient.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>The method works like <a class="reference internal" href="client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">metricq.Client.get_metrics()</span></code></a>, but sets
+<code class="code docutils literal notranslate"><span class="pre">historic=True</span></code> by default. See documentation there for a detailed
+description of the remaining arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.pandas.PandasHistoryClient.history_aggregate_timeline">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">history_aggregate_timeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.pandas.PandasHistoryClient.history_aggregate_timeline" title="Permalink to this definition"></a></dt>
+<dd><p>The method works like <a class="reference internal" href="history-client.html#metricq.HistoryClient.history_aggregate_timeline" title="metricq.HistoryClient.history_aggregate_timeline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">metricq.HistoryClient.history_aggregate_timeline()</span></code></a>,
+but returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.
+The dataframe will have the following columns:
+:rtype: <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+<ul class="simple">
+<li><p>timestamp</p></li>
+<li><p>minimum</p></li>
+<li><p>maximum</p></li>
+<li><p>sum</p></li>
+<li><p>count</p></li>
+<li><p>integral_ns</p></li>
+<li><p>active_time</p></li>
+<li><p>mean</p></li>
+<li><p>mean_integral</p></li>
+<li><p>mean_sum</p></li>
+<li><p>integral_s</p></li>
+</ul>
+<p>For details of those, see the documentation of <a class="reference internal" href="misc.html#metricq.TimeAggregate" title="metricq.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.TimeAggregate</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="metricq.pandas.PandasHistoryClient.history_raw_timeline">
+<em class="property"><span class="pre">await</span> </em><span class="sig-name descname"><span class="pre">history_raw_timeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.pandas.PandasHistoryClient.history_raw_timeline" title="Permalink to this definition"></a></dt>
+<dd><p>The method works like <a class="reference internal" href="history-client.html#metricq.HistoryClient.history_raw_timeline" title="metricq.HistoryClient.history_raw_timeline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">metricq.HistoryClient.history_raw_timeline()</span></code></a>,
+but returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> instead of a list of
+<a class="reference internal" href="misc.html#metricq.TimeValue" title="metricq.TimeValue"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.TimeValue</span></code></a> objects.
+The dataframe will have the following columns:
+:rtype: <code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></p>
+<ul class="simple">
+<li><p>timestamp</p></li>
+<li><p>value</p></li>
+</ul>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
 
