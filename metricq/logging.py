@@ -1,6 +1,7 @@
 # FROM https://stackoverflow.com/a/36294984/620382
 import functools
 import logging
+import sys
 import types
 from collections.abc import Callable
 from typing import Optional, TypeVar
@@ -40,3 +41,15 @@ def get_logger(name: Optional[str] = None) -> logging.Logger:
         log.handle = _handle_wrap(log.handle)  # type: ignore[method-assign]
     setattr(log, "_newstyle", True)
     return log
+
+
+# We do not want to depend on click_log here, so instead we do a VERY
+# basic root logger setup
+FORMAT = "%(asctime)s [%(levelname)-8s] [%(name)-20s] %(message)s"
+_logger = get_logger()
+logging.root.handlers = []
+logging.basicConfig(
+    level=logging.WARNING,
+    format=FORMAT,
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
