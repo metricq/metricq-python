@@ -82,7 +82,7 @@ class IntervalSource(Source):
         if period is None:
             self._period = None
         else:
-            self.period = period  # type: ignore # https://github.com/python/mypy/issues/3004
+            self.period = period
 
     @property
     def period(self) -> Optional[Timedelta]:

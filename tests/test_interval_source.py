@@ -47,7 +47,7 @@ def test_period_no_reset(interval_source: _TestIntervalSource) -> None:
     """Currently, the interval source period cannot be reset to None"""
 
     with pytest.raises(TypeError, match=r"Setting .* to None is not supported"):
-        interval_source.period = None
+        interval_source.period = None  # type: ignore
 
 
 def test_period_no_explicit_init() -> None:
@@ -66,9 +66,12 @@ def test_period_no_explicit_init() -> None:
                     token="source-interval-test", url="amqps://test.invalid"
                 )
 
-                self.period = None
+                self.period = None  # type: ignore
 
-        with pytest.raises(TypeError, match=r"Setting .* to None is not supported"):
+        with pytest.raises(
+            TypeError,
+            match=r"Setting .* to None is not supported",
+        ):
             _FaultySource()
 
 
