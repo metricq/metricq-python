@@ -94,7 +94,11 @@ class ChoiceParam(Generic[ChoiceType], ParamType):
         self.cls = cls
         self.name = name
 
-    def get_metavar(self, param: click.Parameter) -> str:
+    def get_metavar(
+        self,
+        param: click.Parameter,
+        ctx: Optional[Context] = None,
+    ) -> str:
         return f"({'|'.join(self.cls.as_choice_list())})"
 
     def convert(

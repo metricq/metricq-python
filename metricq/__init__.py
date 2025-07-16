@@ -52,6 +52,11 @@ from .timeseries import (
 )
 from .version import __version__
 
+try:
+    from . import cli
+except ImportError:
+    pass
+
 # Please keep sorted alphabetically to avoid merge conflicts
 __all__ = [
     "Agent",
@@ -76,4 +81,5 @@ __all__ = [
     "Timestamp",
     "TimeValue",
     "__version__",
+    "cli",
 ]

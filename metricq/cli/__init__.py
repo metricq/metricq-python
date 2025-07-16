@@ -1,9 +1,9 @@
 from .decorator import (
-    metricq_command,
-    metricq_metric_option,
-    metricq_server_option,
-    metricq_syslog_option,
-    metricq_token_option,
+    command,
+    metric_option,
+    server_option,
+    syslog_option,
+    token_option,
 )
 from .params import (
     ChoiceParam,
@@ -21,9 +21,9 @@ __all__ = [
     "TemplateStringParam",
     "TimestampParam",
     "MetricParam",
-    "metricq_command",
-    "metricq_metric_option",
-    "metricq_server_option",
-    "metricq_syslog_option",
-    "metricq_token_option",
+    "command",
+    "metric_option",
+    "server_option",
+    "syslog_option",
+    "token_option",
 ]

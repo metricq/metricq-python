@@ -33,11 +33,8 @@ import click
 
 import metricq
 from metricq import Metric
-from metricq.cli import metricq_command
-from metricq.cli.decorator import metricq_metric_option
-from metricq.logging import get_logger
 
-logger = get_logger()
+logger = metricq.get_logger()
 
 
 # To implement a MetricQ Sink, subclass metricq.Sink
@@ -70,8 +67,8 @@ class DummySink(metricq.Sink):
         )
 
 
-@metricq_command(default_token="sink-py-dummy")
-@metricq_metric_option(multiple=True)
+@metricq.cli.command(default_token="sink-py-dummy")
+@metricq.cli.metric_option(multiple=True)
 def source(server: str, token: str, metric: list[Metric]) -> None:
     # Initialize the DummySink class with a list of metrics given on the
     # command line.

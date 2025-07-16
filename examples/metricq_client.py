@@ -44,7 +44,6 @@ import asyncio
 import aiomonitor  # type: ignore
 
 import metricq
-from metricq.cli import metricq_command
 
 logger = metricq.get_logger()
 
@@ -59,7 +58,7 @@ async def run(server: str, token: str) -> None:
             await client.stopped()
 
 
-@metricq_command(default_token="client-py-example")
+@metricq.cli.command(default_token="client-py-example")
 def main(server: str, token: str) -> None:
     asyncio.run(run(server, token))
 

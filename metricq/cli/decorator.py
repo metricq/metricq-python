@@ -1,6 +1,6 @@
 import logging
 import sys
-from typing import Any, Callable, Optional, TypeVar, Union, cast
+from typing import Any, Callable, List, Optional, TypeVar, Union, cast
 
 import click
 import click_log  # type: ignore
@@ -24,19 +24,24 @@ load_dotenv(dotenv_path=find_dotenv(".metricq"), interpolate=False, override=Fal
 FC = TypeVar("FC", bound=Union[Callable[..., Any], click.Command])
 
 
-def metricq_syslog_option() -> Callable[[FC], FC]:
+def syslog_option() -> Callable[[FC], FC]:
     """
     Exposes the -\\-syslog option as a click param.
 
     The program will try read the 'token' from the click params.
-    if the token is not set, the default value of 'metricq.program' will be used.
-    That's why the @metricq_syslog_option should be the 2nd decorator in the chain.
+    If the token is not set, the default value of 'metricq.program' will be
+    used. That's why the @syslog_option should be the 2nd decorator in the
+    chain.
 
-    It is recommended to use the :py:func:`~metricq.cli.decorator.metricq_command` decorator instead of using this
-    function directly.
+    It is recommended to use the :py:func:`~metricq.cli.decorator.command`
+    decorator instead of using this decorator directly.
     """
 
-    def enable_syslog(ctx: Context, param: Any | None, value: Optional[str]) -> None:
+    def enable_syslog(
+        ctx: Context,
+        param: Any | None,
+        value: Optional[str],
+    ) -> None:
         if value is not None:
             logger = get_logger()
             if value == "":
@@ -50,8 +55,9 @@ def metricq_syslog_option() -> Callable[[FC], FC]:
 
     return option(
         "--syslog",
-        help="Enable syslog logging by specifying the a Unix socket or host:port for the logger. If --syslog is set "
-        "but no value is specified, the default of localhost:514 will be used.",
+        help="""Enable syslog logging by specifying the a Unix socket or
+        host:port for the logger. If --syslog is set but no value is
+        specified, the default of localhost:514 will be used.""",
         callback=enable_syslog,
         expose_value=False,
         is_flag=False,
@@ -59,12 +65,13 @@ def metricq_syslog_option() -> Callable[[FC], FC]:
     )
 
 
-def metricq_server_option() -> Callable[[FC], FC]:
+def server_option() -> Callable[[FC], FC]:
     """
-    Allows the User to provide a -\\-server option. This option has no input validation and therefore can be any string.
+    Allows the User to provide a -\\-server option. This option has no input
+    validation and therefore can be any string.
 
-    It is recommended to use the :py:func:`~metricq.cli.decorator.metricq_command` decorator instead
-    of using this function directly.
+    It is recommended to use the :py:func:`~metricq.cli.decorator.command`
+    decorator instead of using this function directly.
 
     """
     return option(
@@ -76,13 +83,13 @@ def metricq_server_option() -> Callable[[FC], FC]:
     )
 
 
-def metricq_token_option(default: str) -> Callable[[FC], FC]:
+def token_option(default: str) -> Callable[[FC], FC]:
     """
-    Allows the User to provide a -\\-metric option. The input must follow the specification provided
-    `here <https://github.com/metricq/metricq/wiki/Metrics#selecting-good-metric-names>`_.
+    Allows the User to provide a -\\-metric option. The input must follow the
+    specification provided `here <https://github.com/metricq/metricq/wiki/Metrics#selecting-good-metric-names>`_.
 
-    It is recommended to use the :py:func:`~metricq.cli.decorator.metricq_command` decorator instead of using this
-    function directly.
+    It is recommended to use the :py:func:`~metricq.cli.decorator.command`
+    decorator instead of using this function directly.
     """
     return option(
         "--token",
@@ -94,37 +101,41 @@ def metricq_token_option(default: str) -> Callable[[FC], FC]:
     )
 
 
-def metricq_metric_option(
-    default: Optional[str] = None, multiple: bool = False, required: bool = False
+def metric_option(
+    default: Optional[str | List[str]] = None,
+    multiple: bool = False,
+    required: bool = False,
 ) -> Callable[[FC], FC]:
     """
-    The metric option can be used to select one or more metrics the program should use.
-    The metric can be set with the -\\-metric or -m parameter. If no default value is set, the parameter is required.
-    The Metric syntax is specified by the :py:class:`~metricq.cli.params.MetricParam`.
+    The metric option can be used to select one or more metrics the program
+    should use. The metric can be set with the -\\-metric or -m parameter.
+    If no default value is set, the parameter is required. The Metric syntax is
+    specified by the :py:class:`~metricq.cli.params.MetricParam`.
 
     Args:
-        default: The default metric. Defaults to `None`. You can only set one default, even if the program allows
-                multiple inputs.
-        multiple: If `True`, allows multiple metrics to be specified. Defaults to `False`.
-        required: If `True`, makes the -\\-metric option required. Defaults to `False`. If required is set and no
-                default is provided, at least one metric input is required.
+        default: The default metric. Defaults to `None`.
+        multiple: If `True`, allows multiple metrics to be specified. Defaults
+                  to `False`.
+        required: If `True`, makes the -\\-metric option required. Defaults to
+                  `False`. If required is set and no default is provided, at
+                  least one metric input is required.
 
     **Example**::
 
-        @metricq_command(default_token="example.program")
-        @metricq_metricq_option(required=true, default="example.metric")
-        def metric_example(
+        @metricq.cli.command(default_token="example.program")
+        @metricq.cli.metric_option(required=true, default="example.metric")
+        def example_cli_tool(
             server: str, token: str, metric: str
         ) -> None:
-            # Initialize the DummySink class with a list of metrics given on the
-            # command line.
+            # Initialize the DummySink class with a list of metrics given on
+            # the command line.
             sink = DummySink(metrics=metric, token=token, url=server)
 
-            # Run the sink. This call will block until the connection is closed.
+            # Run the sink. This call will block until the connection is closed
             sink.run()
 
-        @metricq_command(default_token="example.program")
-        @metricq_metricq_option(required=true, multiple=True) # <-- multiple is set
+        @metricq.cli.command(default_token="example.program")
+        @metricq.cli.metric_option(required=true, multiple=True)
         def multi_metric_example(
             server: str, token: str, metric: List[str]
         ) -> None:
@@ -132,8 +143,21 @@ def metricq_metric_option(
             sink.run()
 
     """
-    response_default = default if (default is None or not multiple) else [default]
-    help = "Use the -–metric / -m parameter to specify which metric the program should use."
+    response_default: Optional[str | List[str]]
+    if default is None:
+        response_default = None
+    elif multiple:
+        if isinstance(default, list):
+            response_default = default
+        else:
+            response_default = [default]
+    else:
+        assert isinstance(default, str)
+        response_default = default
+
+    help = """Use the -–metric / -m parameter to specify which metric the
+    program should use.
+    """
     if multiple:
         help += " Can be used multiple times to specify several metrics."
 
@@ -158,7 +182,7 @@ def get_metric_command_logger() -> logging.Logger:
     return logger
 
 
-def metricq_command(
+def command(
     default_token: str, client_version: str | None = None
 ) -> Callable[[FC], click.Command]:
     """Standardized wrapper for click commands
@@ -170,27 +194,34 @@ def metricq_command(
     Returns:
         Callable[[FC], click.Command]: click command
 
-    The :py:func:`~metricq.cli.wrapper.metricq_command` is the first parameter of any given click/cli command. The main purpose is to provide the most used parameters.
-    These parameters are 'server' and 'token'.
+    The :py:func:`~metricq.cli.wrapper.command` is the first parameter of any
+    given click/cli command. The main purpose is to provide the most used
+    parameters. These parameters are 'server' and 'token'.
 
     -  -\\-server:
-        The Server param is used to specify the amqp url of the Network. for example: amqp://localhost/
+        The server parameter is used to specify the URL of the Network.
+        For example: amqp://localhost/
 
-        The server param can be set using the environment variable METRICQ_SERVER or adding the --server {value} option to the cli command
+        The server parameter can also be set by using the environment variable
+        METRICQ_SERVER or the SERVER variable in the .metricq environment file
 
     -  -\\-token:
-        The Token is used to identify each program on the metricq network. for example: sink-py-dummy
+        The Token is used to identify each program on the metricq network.
+        For example: sink-py-dummy
 
-        The token param can be set using the environment variable METRICQ_TOKEN or adding the --token {value} option
-        to the cli command
+        The token param can be set using the environment variable METRICQ_TOKEN
+        or the TOKEN variable in the .metricq environment file
 
     -  -\\-syslog:
-        The Syslog param is used to enable syslog. It can be used with or without parameter.
+        The Syslog param is used to enable syslog. It can be used with or
+        without parameter.
 
-        If used without parameter (for example: ``metricq-check --syslog`` ) the Syslog will default to localhost:514.
+        If used without parameter (for example: ``metricq-check --syslog`` )
+        the Syslog will default to localhost:514.
 
-        You can also specify a Unix socket (for example: /dev/log) or a custom host (for example: example.com:514)
-        by adding the value to the syslog flag (for example: ``metricq-check --syslog example.com:514``)
+        You can also specify a Unix socket (for example: /dev/log) or a custom
+        host (for example: example.com:514) by adding the value to the syslog
+        flag (for example: ``metricq-check --syslog example.com:514``)
 
 
     Full example:
@@ -198,7 +229,7 @@ def metricq_command(
 
     **Example**::
 
-        @metricq_command(default_token="source-py-dummy")
+        @metricq.cli.command(default_token="source-py-dummy")
         def dummy(
             server: str, token: str
         ) -> None:
@@ -230,9 +261,9 @@ def metricq_command(
     def decorator(func: FC) -> click.Command:
         return click.version_option(version=client_version)(
             log_decorator(
-                metricq_token_option(default_token)(
-                    metricq_server_option()(
-                        metricq_syslog_option()(
+                token_option(default_token)(
+                    server_option()(
+                        syslog_option()(
                             click.command(
                                 context_settings=context_settings, epilog=epilog
                             )(func)
