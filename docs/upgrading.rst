@@ -190,3 +190,19 @@ Renaming of setup.py options
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The user option ``out-dir`` has been renamed to ``package-dir``.
+
+`5.x` → `6.0`
+-------------
+
+Renaming of CLI decorators
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The docorators of the CLI feature have been renamed.
+
+- `metricq_syslog_option` -> :func:`cli.decorator.syslog_option`
+- `metricq_server_option` -> :func:`cli.decorator.server_option`
+- `metricq_token_option` -> :func:`cli.decorator.token_option`
+- `metricq_metric_option` -> :func:`cli.decorator.metric_option`
+- `metricq_command` -> :func:`cli.decorator.command`
+
+

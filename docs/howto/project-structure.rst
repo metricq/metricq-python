@@ -196,11 +196,11 @@ code at runtime:
 
 .. code-block:: toml
 
-    # in pythonproject.toml
+    # in pyproject.toml
 
     [build-system]
     requires = [
-        ..., # other build dependencies here
+        # ..., other build dependencies here
         "setuptools_scm[toml]~=6.0",
     ]
 
