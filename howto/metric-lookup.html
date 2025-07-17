@@ -1,22 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Metric lookup &mdash; MetricQ  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -90,14 +89,14 @@
            <div itemprop="articleBody">
              
   <section id="metric-lookup">
-<span id="id1"></span><h1>Metric lookup<a class="headerlink" href="#metric-lookup" title="Permalink to this heading"></a></h1>
+<span id="id1"></span><h1>Metric lookup<a class="headerlink" href="#metric-lookup" title="Link to this heading"></a></h1>
 <p>The method <a class="reference internal" href="../api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Client.get_metrics()</span></code></a> provides an interface for searching metrics available on the network.
 Depending on the arguments passed, a different search strategy is applied.
 If <code class="code docutils literal notranslate"><span class="pre">metadata=True</span></code>, the result will be a dictionary mapping matching metrics to their metadata.
 Otherwise a plain list of matching metric names is returned.
 See the API documentation at <a class="reference internal" href="../api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_metrics()</span></code></a> for more details.</p>
 <section id="search-by-regex">
-<h2>Search by regex<a class="headerlink" href="#search-by-regex" title="Permalink to this heading"></a></h2>
+<h2>Search by regex<a class="headerlink" href="#search-by-regex" title="Link to this heading"></a></h2>
 <p>If the <code class="code docutils literal notranslate"><span class="pre">selector</span></code> is a <em>PCRE</em>-style regex, all metrics whose name matches are returned:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get_metrics</span><span class="p">(</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">selector</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;elab\.ariel\..*&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">historic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">50</span>
@@ -124,7 +123,7 @@ See the API documentation at <a class="reference internal" href="../api/client-c
 This is useful if you know want to retrieve metadata for a metric you already know exists.</p>
 </section>
 <section id="search-by-prefix-infix">
-<h2>Search by prefix/infix<a class="headerlink" href="#search-by-prefix-infix" title="Permalink to this heading"></a></h2>
+<h2>Search by prefix/infix<a class="headerlink" href="#search-by-prefix-infix" title="Link to this heading"></a></h2>
 <p>Call <a class="reference internal" href="../api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_metrics()</span></code></a> with <code class="code docutils literal notranslate"><span class="pre">prefix=...</span></code> to search for metrics whose name starts with the given prefix:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get_metrics</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;ariel&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt;</span>

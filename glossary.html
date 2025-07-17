@@ -1,23 +1,22 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Glossary &mdash; MetricQ  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/typehints.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -77,24 +76,24 @@
            <div itemprop="articleBody">
              
   <section id="glossary">
-<span id="id1"></span><h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this heading"></a></h1>
+<span id="id1"></span><h1>Glossary<a class="headerlink" href="#glossary" title="Link to this heading"></a></h1>
 <p>The key words <em>“MUST”</em>, <em>“MUST NOT”</em>, <em>“REQUIRED”</em>, <em>“SHALL”</em>, <em>“SHALL NOT”</em>, <em>“SHOULD”</em>,
 <em>“SHOULD NOT”</em>, <em>“RECOMMENDED”</em>,  <em>“MAY”</em>, and <em>“OPTIONAL”</em> in this document are to be
 interpreted as described in <span class="target" id="index-0"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc2119.html"><strong>RFC 2119</strong></a>.</p>
 <dl class="glossary">
-<dt id="term-Client">Client<a class="headerlink" href="#term-Client" title="Permalink to this term"></a></dt><dd><p>An application that connects to the MetricQ network.
+<dt id="term-Client">Client<a class="headerlink" href="#term-Client" title="Link to this term"></a></dt><dd><p>An application that connects to the MetricQ network.
 It is uniquely identified on the network by its <a class="reference internal" href="#term-Token"><span class="xref std std-term">Token</span></a>.
 Clients may produce and consume data (see <a class="reference internal" href="#term-Source"><span class="xref std std-term">Source</span></a>, <a class="reference internal" href="#term-Sink"><span class="xref std std-term">Sink</span></a>) or perform management tasks (see <a class="reference internal" href="#term-Manager"><span class="xref std std-term">Manager</span></a>).</p>
 </dd>
-<dt id="term-Data-Point">Data Point<a class="headerlink" href="#term-Data-Point" title="Permalink to this term"></a></dt><dd><p>A <em>time-value pair</em>, describing a measurement of a measurand at a specific point in time.</p>
+<dt id="term-Data-Point">Data Point<a class="headerlink" href="#term-Data-Point" title="Link to this term"></a></dt><dd><p>A <em>time-value pair</em>, describing a measurement of a measurand at a specific point in time.</p>
 </dd>
-<dt id="term-Manager">Manager<a class="headerlink" href="#term-Manager" title="Permalink to this term"></a></dt><dd><p>A <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> responsible for managing RPC requests on the network.</p>
+<dt id="term-Manager">Manager<a class="headerlink" href="#term-Manager" title="Link to this term"></a></dt><dd><p>A <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> responsible for managing RPC requests on the network.</p>
 </dd>
-<dt id="term-Metadata">Metadata<a class="headerlink" href="#term-Metadata" title="Permalink to this term"></a></dt><dd><p>Each <a class="reference internal" href="#term-Metric"><span class="xref std std-term">Metric</span></a> may be declared by a <a class="reference internal" href="#term-Source"><span class="xref std std-term">Source</span></a> with additional metadata attached.
+<dt id="term-Metadata">Metadata<a class="headerlink" href="#term-Metadata" title="Link to this term"></a></dt><dd><p>Each <a class="reference internal" href="#term-Metric"><span class="xref std std-term">Metric</span></a> may be declared by a <a class="reference internal" href="#term-Source"><span class="xref std std-term">Source</span></a> with additional metadata attached.
 These are arbitrary <cite>field</cite>-<cite>value</cite> pairs where <cite>value</cite> is an arbitrary <cite>JSON</cite> values.
 See <a class="reference internal" href="metadata.html#metric-metadata"><span class="std std-ref">Metric Metadata</span></a> for more details.</p>
 </dd>
-<dt id="term-Metric">Metric<a class="headerlink" href="#term-Metric" title="Permalink to this term"></a></dt><dd><p>A <em>named</em> series of <em>time-value pairs</em>, called <a class="reference internal" href="#term-Data-Point"><span class="xref std std-term">Data Points</span></a>.
+<dt id="term-Metric">Metric<a class="headerlink" href="#term-Metric" title="Link to this term"></a></dt><dd><p>A <em>named</em> series of <em>time-value pairs</em>, called <a class="reference internal" href="#term-Data-Point"><span class="xref std std-term">Data Points</span></a>.
 Metrics are at the core of the MetricQ data exchange.
 They describe how one specific <em>measurand</em> (e.g. the temperature in room E27 in ℃, CPU utilization on system <code class="docutils literal notranslate"><span class="pre">hal-9000</span></code> in %) evolves over time.
 Clients must ensure the following properties for metrics they produce:</p>
@@ -107,14 +106,14 @@ If <span class="math notranslate nohighlight">\((t₁, v₁)\)</span> is sent to
 </dd>
 </dl>
 </dd>
-<dt id="term-Sink">Sink<a class="headerlink" href="#term-Sink" title="Permalink to this term"></a></dt><dd><p>A <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> that receives <a class="reference internal" href="#term-Data-Point"><span class="xref std std-term">Data Points</span></a> for one or several <a class="reference internal" href="#term-Metric"><span class="xref std std-term">Metrics</span></a> provided by other clients on the network.</p>
+<dt id="term-Sink">Sink<a class="headerlink" href="#term-Sink" title="Link to this term"></a></dt><dd><p>A <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> that receives <a class="reference internal" href="#term-Data-Point"><span class="xref std std-term">Data Points</span></a> for one or several <a class="reference internal" href="#term-Metric"><span class="xref std std-term">Metrics</span></a> provided by other clients on the network.</p>
 <p>Use <a class="reference internal" href="api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a> to build your own Sinks;
 see <a class="reference internal" href="howto/sink.html#sink-how-to"><span class="std std-ref">Building a MetricQ Sink</span></a> for a quick how-to.</p>
 </dd>
-<dt id="term-Source">Source<a class="headerlink" href="#term-Source" title="Permalink to this term"></a></dt><dd><p>A <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> that produces <a class="reference internal" href="#term-Data-Point"><span class="xref std std-term">Data Points</span></a> for one or several <a class="reference internal" href="#term-Metric"><span class="xref std std-term">Metrics</span></a>.
+<dt id="term-Source">Source<a class="headerlink" href="#term-Source" title="Link to this term"></a></dt><dd><p>A <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> that produces <a class="reference internal" href="#term-Data-Point"><span class="xref std std-term">Data Points</span></a> for one or several <a class="reference internal" href="#term-Metric"><span class="xref std std-term">Metrics</span></a>.
 These are then available for consumption by other Clients on the network.</p>
 </dd>
-<dt id="term-Token">Token<a class="headerlink" href="#term-Token" title="Permalink to this term"></a></dt><dd><p>A string uniquely identifying a <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> on the MetricQ network.</p>
+<dt id="term-Token">Token<a class="headerlink" href="#term-Token" title="Link to this term"></a></dt><dd><p>A string uniquely identifying a <a class="reference internal" href="#term-Client"><span class="xref std std-term">Client</span></a> on the MetricQ network.</p>
 <dl>
 <dt>Tokens shall be <em>unique</em> on the network:</dt><dd><p>Any set of Clients online at the same time must have distinct Tokens.</p>
 </dd>
@@ -132,7 +131,7 @@ for the concrete host (instance) <code class="docutils literal notranslate"><spa
 <p>Sometimes it is desirable for multiple instances of the same Client to be online at same.
 They shall be distinguished by a unique suffix:</p>
 <blockquote>
-<div><p>Append a UUID, version 4 (according to <span class="target" id="index-1"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc4122.html#section-4.1.3"><strong>RFC 4122#section-4.1.3</strong></a>) as a hex string to the token like so:</p>
+<div><p>Append a UUID, version 4 (according to <span class="target" id="index-1"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc4122.html#section-4.1.3"><strong>RFC 4122 Section 4.1.3</strong></a>) as a hex string to the token like so:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">client</span><span class="o">-</span><span class="n">example</span><span class="o">-</span><span class="mi">4198</span><span class="n">bdddab794e9f8d774a590651cdc1</span>
 </pre></div>
 </div>

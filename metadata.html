@@ -1,22 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Metric Metadata &mdash; MetricQ  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/typehints.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -81,7 +80,7 @@
            <div itemprop="articleBody">
              
   <section id="metric-metadata">
-<span id="id1"></span><h1>Metric Metadata<a class="headerlink" href="#metric-metadata" title="Permalink to this heading"></a></h1>
+<span id="id1"></span><h1>Metric Metadata<a class="headerlink" href="#metric-metadata" title="Link to this heading"></a></h1>
 <p>Each <a class="reference internal" href="glossary.html#term-Metric"><span class="xref std std-term">metric</span></a> known to the MetricQ network includes metadata in the form of arbitrary
 <cite>name</cite>/<cite>value</cite> pairs, where <cite>name</cite> are strings and <cite>values</cite> are <cite>JSON</cite> values.
 Metadata values are free-form and can be used to store any information useful and related to a metric.
@@ -89,7 +88,7 @@ Though, some restrictions apply in the form of <a class="reference internal" hre
 and <a class="reference internal" href="#metricq-metadata-standardized"><span class="std std-ref">standardized fields</span></a>.
 Since this is JSON, the <cite>name</cite> should be in camelCase.</p>
 <section id="reserved-fields">
-<span id="metric-metadata-reserved"></span><h2>Reserved Fields<a class="headerlink" href="#reserved-fields" title="Permalink to this heading"></a></h2>
+<span id="metric-metadata-reserved"></span><h2>Reserved Fields<a class="headerlink" href="#reserved-fields" title="Link to this heading"></a></h2>
 <p>Reserved fields may not be used when declaring metadata for a metric.
 Tools consuming metadata are free to make use of these fields, though.</p>
 <dl class="simple">
@@ -109,7 +108,7 @@ Set by the manager.</p>
 </dl>
 </section>
 <section id="standardized-fields">
-<span id="metricq-metadata-standardized"></span><h2>Standardized Fields<a class="headerlink" href="#standardized-fields" title="Permalink to this heading"></a></h2>
+<span id="metricq-metadata-standardized"></span><h2>Standardized Fields<a class="headerlink" href="#standardized-fields" title="Link to this heading"></a></h2>
 <p>Some <cite>fields</cite> have a defined meaning that should be respected.
 Consuming tools might handle and display these fields in a special way.</p>
 <dl>

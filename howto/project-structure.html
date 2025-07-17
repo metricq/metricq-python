@@ -1,22 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Creating a new project for MetricQ &mdash; MetricQ  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -102,7 +101,7 @@
            <div itemprop="articleBody">
              
   <section id="creating-a-new-project-for-metricq">
-<h1>Creating a new project for MetricQ<a class="headerlink" href="#creating-a-new-project-for-metricq" title="Permalink to this heading"></a></h1>
+<h1>Creating a new project for MetricQ<a class="headerlink" href="#creating-a-new-project-for-metricq" title="Link to this heading"></a></h1>
 <p>In this section, we explain some of the conventions that we (the <code class="docutils literal notranslate"><span class="pre">metricq</span></code>
 authors) use when setting up a new project using the library.
 Python packaging has many (at times confusing) options;  these conventions help
@@ -113,9 +112,9 @@ filesystem paths are relative to the project root directory (<code class="file d
 The Python package built from this project is called <code class="docutils literal notranslate"><span class="pre">metricq-example</span></code>,
 and its source code lives in the subdirectory <code class="file docutils literal notranslate"><span class="pre">metricq_example</span></code> of the project root.</p>
 <section id="dependencies-building-and-installation">
-<h2>Dependencies, building and installation<a class="headerlink" href="#dependencies-building-and-installation" title="Permalink to this heading"></a></h2>
+<h2>Dependencies, building and installation<a class="headerlink" href="#dependencies-building-and-installation" title="Link to this heading"></a></h2>
 <section id="build-system">
-<h3>Build system<a class="headerlink" href="#build-system" title="Permalink to this heading"></a></h3>
+<h3>Build system<a class="headerlink" href="#build-system" title="Link to this heading"></a></h3>
 <p>Any new projects should use a <span class="target" id="index-0"></span><a class="pep reference external" href="https://peps.python.org/pep-0517/"><strong>PEP 517</strong></a>-compliant build system.
 Use <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> for this.
 The directory <code class="file docutils literal notranslate"><span class="pre">metricq_example</span></code> contains the Python source code of the
@@ -129,7 +128,7 @@ and declare the necessary build dependencies:</p>
 <p>This enables tools like <code class="docutils literal notranslate"><span class="pre">pip</span></code> to create packages from the project.</p>
 </section>
 <section id="runtime-dependencies">
-<h3>Runtime dependencies<a class="headerlink" href="#runtime-dependencies" title="Permalink to this heading"></a></h3>
+<h3>Runtime dependencies<a class="headerlink" href="#runtime-dependencies" title="Link to this heading"></a></h3>
 <p>In <code class="file docutils literal notranslate"><span class="pre">setup.cfg</span></code>, declare the project runtime dependencies.
 Under section <code class="docutils literal notranslate"><span class="pre">[options]</span></code>, point <code class="docutils literal notranslate"><span class="pre">packages</span></code> to the project source directory (i.e. <code class="docutils literal notranslate"><span class="pre">metricq_example</span></code>).
 Remember to set a minimum required Python version to prevent issues at runtime.
@@ -153,7 +152,7 @@ to prevent breakage caused by incompatibilities introduced in future releases of
 <p>For compatibility with older release of <code class="docutils literal notranslate"><span class="pre">pip</span></code> and to enable <cite>editable installs</cite> for development,
 include a dummy <code class="file docutils literal notranslate"><span class="pre">setup.py</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># setup.py:</span>
-<span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">setuptools</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup</span>
 
 <span class="n">setup</span><span class="p">()</span>
 </pre></div>
@@ -168,7 +167,7 @@ that is compatible with the host-installed version of the <code class="docutils 
 </div>
 </section>
 <section id="optional-dependencies">
-<h3>Optional dependencies<a class="headerlink" href="#optional-dependencies" title="Permalink to this heading"></a></h3>
+<h3>Optional dependencies<a class="headerlink" href="#optional-dependencies" title="Link to this heading"></a></h3>
 <p>If your project has <em>optional</em> features that requires additional dependencies,
 include them in section <code class="code docutils literal notranslate"><span class="pre">options.extras_require</span></code> of <code class="file docutils literal notranslate"><span class="pre">setup.cfg</span></code>.
 For each feature <code class="code docutils literal notranslate"><span class="pre">my_feature</span></code>, define a new <em>extra</em> that lists all
@@ -191,7 +190,7 @@ $<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </sp
 </div>
 </section>
 <section id="package-metadata">
-<h3>Package metadata<a class="headerlink" href="#package-metadata" title="Permalink to this heading"></a></h3>
+<h3>Package metadata<a class="headerlink" href="#package-metadata" title="Link to this heading"></a></h3>
 <p>Also in <code class="file docutils literal notranslate"><span class="pre">setup.cfg</span></code>, include relevant package metadata:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
 
@@ -217,7 +216,7 @@ itself is licensed under the terms of the <cite>BSD 3-clause “New” or “Rev
 </section>
 </section>
 <section id="command-line-interfaces">
-<h2>Command line interfaces<a class="headerlink" href="#command-line-interfaces" title="Permalink to this heading"></a></h2>
+<h2>Command line interfaces<a class="headerlink" href="#command-line-interfaces" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">setuptools</span></code> allows declaration of <a class="reference external" href="https://docs.python.org/3/library/importlib.metadata.html#entry-points" title="(in Python v3.13)"><span>Entry points</span></a>.
 An entry point of type <code class="docutils literal notranslate"><span class="pre">console_script</span></code> makes a python function the
 entry point of a script that is added to the <code class="code docutils literal notranslate"><span class="pre">$PATH</span></code> of your Python environment:</p>
@@ -236,7 +235,7 @@ Then, decorate the script entry point with the appropriate command line argument
 If you are building a <code class="docutils literal notranslate"><span class="pre">metricq</span></code> <a class="reference internal" href="../glossary.html#term-Client"><span class="xref std std-term">client</span></a>,
 include <cite>at least</cite> options to configure the MetricQ network URL and a <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">client token</span></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In metricq_example/cli.py:</span>
-<span class="kn">import</span> <span class="nn">click</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
 
 <span class="o">...</span>
 
@@ -255,31 +254,31 @@ include <cite>at least</cite> options to configure the MetricQ network URL and a
     <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;A token to identify this client on the MetricQ network.&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">server</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">server</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="o">...</span>
 </pre></div>
 </div>
 </section>
 <section id="project-versioning">
-<h2>Project versioning<a class="headerlink" href="#project-versioning" title="Permalink to this heading"></a></h2>
+<h2>Project versioning<a class="headerlink" href="#project-versioning" title="Link to this heading"></a></h2>
 <p>In order to be a good network citizen, any MetricQ client should provide a version string when asked.
 The single source of truth of a project’s version should be its <code class="code docutils literal notranslate"><span class="pre">git</span></code> tags.
 Where possible, use a <cite>semver</cite>-compatible version scheme.
 Use <code class="code docutils literal notranslate"><span class="pre">setuptools_scm</span></code> as a <strong>build dependency</strong> to create a version string
 that will automatically be added to the package metadata and is accessible to
 code at runtime:</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span># in pythonproject.toml
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="c1"># in pyproject.toml</span>
 
-[build-system]
-requires = [
-    ..., # other build dependencies here
-    &quot;setuptools_scm[toml]~=6.0&quot;,
-]
+<span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="c1"># ..., other build dependencies here</span>
+<span class="w">    </span><span class="s2">&quot;setuptools_scm[toml]~=6.0&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 
-# ...
+<span class="c1"># ...</span>
 
-[tool.setuptools_scm]
-write_to = &quot;metricq_example/version.py&quot;
+<span class="k">[tool.setuptools_scm]</span>
+<span class="n">write_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;metricq_example/version.py&quot;</span>
 </pre></div>
 </div>
 <p>On installation, this creates a file <code class="file docutils literal notranslate"><span class="pre">metricq_example/version.py</span></code> that
@@ -302,14 +301,14 @@ When building a client, declare an identifier <code class="code docutils literal
 module</em> as your client class to have it be picked up automatically by the
 <code class="docutils literal notranslate"><span class="pre">metricq</span></code> library:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in metricq_example/client.py</span>
-<span class="kn">import</span> <span class="nn">metricq</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">metricq</span>
 
 <span class="c1"># import this project&#39;s version string</span>
-<span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">version</span> <span class="k">as</span> <span class="n">__version__</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span> <span class="k">as</span> <span class="n">__version__</span>
 
 
 <span class="c1"># This could also be a Sink, HistoryClient, etc.</span>
-<span class="k">class</span> <span class="nc">MySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
     <span class="c1"># __version__ will be picked up automatically as this client&#39;s version</span>
     <span class="o">...</span>
 </pre></div>
@@ -317,35 +316,35 @@ module</em> as your client class to have it be picked up automatically by the
 <p>If you prefer less magic, explicitly provide the version string to the client’s
 base class constructor:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in metricq_example/client.py</span>
-<span class="kn">import</span> <span class="nn">metricq</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">metricq</span>
 
-<span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">version</span> <span class="k">as</span> <span class="n">client_version</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span> <span class="k">as</span> <span class="n">client_version</span>
 
 
-<span class="k">class</span> <span class="nc">MySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
         <span class="o">...</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">client_version</span><span class="o">=</span><span class="n">client_version</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>When creating a new command line tool, also add a <code class="code docutils literal notranslate"><span class="pre">--version</span></code> option:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In metricq_example/cli.py:</span>
-<span class="kn">import</span> <span class="nn">click</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
 
-<span class="kn">from</span> <span class="nn">.version</span> <span class="kn">import</span> <span class="n">version</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span>
 
 <span class="o">...</span>
 
 <span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">version_option</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">)</span>
 <span class="o">...</span>
-<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
     <span class="o">...</span>
 </pre></div>
 </div>
 </section>
 <section id="development-setup">
-<h2>Development setup<a class="headerlink" href="#development-setup" title="Permalink to this heading"></a></h2>
+<h2>Development setup<a class="headerlink" href="#development-setup" title="Link to this heading"></a></h2>
 <p>To enable an easy development setup, define an extra <code class="docutils literal notranslate"><span class="pre">dev</span></code>,
 that transitively includes all optional dependencies needed for a local development setup:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
@@ -369,7 +368,7 @@ and then (with this environment activated) set up a local development environmen
 </div>
 <p>in the project directory.</p>
 <section id="tests">
-<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this heading"></a></h3>
+<h3>Tests<a class="headerlink" href="#tests" title="Link to this heading"></a></h3>
 <p>We use <a class="reference external" href="pytest.org">pytest</a> to define project tests.
 Create an extra <code class="docutils literal notranslate"><span class="pre">test</span></code> that pulls <code class="docutils literal notranslate"><span class="pre">pytest</span></code>,
 and <code class="docutils literal notranslate"><span class="pre">pytest-asyncio</span></code> when testing <code class="code docutils literal notranslate"><span class="pre">async</span></code> code:</p>
@@ -390,18 +389,18 @@ Place tests for module <code class="code docutils literal notranslate"><span cla
 For example, to test the function in module <code class="code docutils literal notranslate"><span class="pre">metricq_example.hello</span></code>…</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In metricq_example/hello.py</span>
 
-<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Hello, </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">!&quot;</span>
 </pre></div>
 </div>
 <p>…create a test like so:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In tests/test_hello.py</span>
 
-<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">metricq_example.hello</span> <span class="kn">import</span> <span class="n">hello</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">metricq_example.hello</span><span class="w"> </span><span class="kn">import</span> <span class="n">hello</span>
 
-<span class="k">def</span> <span class="nf">test_hello</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_hello</span><span class="p">():</span>
     <span class="k">assert</span> <span class="n">hello</span><span class="p">(</span><span class="s2">&quot;Tester&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Hello, Tester!&quot;</span>
 </pre></div>
 </div>
@@ -412,7 +411,7 @@ see the notes <a class="reference external" href="https://docs.pytest.org/en/lat
 </div>
 </section>
 <section id="linting">
-<h3>Linting<a class="headerlink" href="#linting" title="Permalink to this heading"></a></h3>
+<h3>Linting<a class="headerlink" href="#linting" title="Link to this heading"></a></h3>
 <p>We recommend a basic set of linters that (hopefully) help producing better code:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
 

@@ -1,22 +1,21 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Building a MetricQ Source &mdash; MetricQ  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/typehints.css" type="text/css" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
   
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -92,7 +91,7 @@
            <div itemprop="articleBody">
              
   <section id="building-a-metricq-source">
-<span id="source-how-to"></span><h1>Building a MetricQ Source<a class="headerlink" href="#building-a-metricq-source" title="Permalink to this heading"></a></h1>
+<span id="source-how-to"></span><h1>Building a MetricQ Source<a class="headerlink" href="#building-a-metricq-source" title="Link to this heading"></a></h1>
 <p><a class="reference internal" href="../glossary.html#term-Source"><span class="xref std std-term">Sources</span></a> provide data points for a set of <a class="reference internal" href="../glossary.html#term-Metric"><span class="xref std std-term">Metrics</span></a> to the MetricQ network.
 Usually, they are programs that continually measure some kind of quantity, for example:</p>
 <ul class="simple">
@@ -102,11 +101,11 @@ Usually, they are programs that continually measure some kind of quantity, for e
 </ul>
 <p>Here, we will build a simple Source that sends a random value between 0 and 1 at a configurable interval.</p>
 <section id="defining-a-new-source-using-metricq-source">
-<h2>Defining a new Source: using <a class="reference internal" href="../api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Source</span></code></a><a class="headerlink" href="#defining-a-new-source-using-metricq-source" title="Permalink to this heading"></a></h2>
+<h2>Defining a new Source: using <a class="reference internal" href="../api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Source</span></code></a><a class="headerlink" href="#defining-a-new-source-using-metricq-source" title="Link to this heading"></a></h2>
 <p>Similarly to Sinks, we create a new Source by subclassing <a class="reference internal" href="../api/source.html#metricq.Source" title="metricq.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Source</span></code></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">metricq</span>
 
-<span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
     <span class="k">pass</span>
 </pre></div>
 </div>
@@ -122,16 +121,16 @@ For our purposes it’s quite minimal, it only includes the rate at which to sen
 <p>This is different from the Sink we built in <a class="reference internal" href="sink.html#sink-how-to"><span class="std std-ref">Building a MetricQ Sink</span></a>;
 we won’t pass the update rate on the command line,
 instead we install a callback that is triggered every time a new configuration is received:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">metricq</span>
 
-<span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># This will be set to the number of values we want to send per second:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@metricq</span><span class="o">.</span><span class="n">rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received new configuration: </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rate</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;rate&quot;</span><span class="p">]</span>
 </pre></div>
@@ -143,13 +142,13 @@ containing our new configuration.</p>
 <p>So far, our Source would work, but it wouldn’t do anything useful at all.
 To change that, we first declare for which metric we want to send values,
 including some helpful <a class="reference internal" href="../metadata.html#metric-metadata"><span class="std std-ref">metadata</span></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">metricq</span>
 
-<span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
     <span class="o">...</span> <span class="c1"># as above</span>
 
     <span class="nd">@metricq</span><span class="o">.</span><span class="n">rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received new configuration: </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;scale&quot;</span><span class="p">]</span>
 
@@ -165,17 +164,17 @@ including some helpful <a class="reference internal" href="../metadata.html#metr
 <p>To finally send some values, we override <a class="reference internal" href="../api/source.html#metricq.Source.task" title="metricq.Source.task"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Source.task()</span></code></a>.
 This method gets called once our Source is connected and received its initial configuration.
 It should be build to stop upon <a class="reference internal" href="../api/source.html#metricq.Source.task_stop_future" title="metricq.Source.task_stop_future"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Source.task_stop_future</span></code></a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
-<span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">metricq</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 
-<span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
     <span class="o">...</span> <span class="c1"># as above</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">wait_for_sensor_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">wait_for_sensor_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="k">await</span> <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># Just simulate waiting for data</span>
         <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">task_stop_future</span><span class="o">.</span><span class="n">done</span><span class="p">():</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_sensor_value</span><span class="p">()</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
@@ -197,7 +196,7 @@ Please refer to the implementation of <cite>task</cite> in <a class="reference i
 </div>
 </section>
 <section id="improving-constant-rate-sources-using-intervalsource">
-<h2>Improving constant-rate sources: using <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a><a class="headerlink" href="#improving-constant-rate-sources-using-intervalsource" title="Permalink to this heading"></a></h2>
+<h2>Improving constant-rate sources: using <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a><a class="headerlink" href="#improving-constant-rate-sources-using-intervalsource" title="Link to this heading"></a></h2>
 <p>The above situation where we send values at a fixed rate is so common
 that we can use the convenience class <a class="reference internal" href="../api/source.html#metricq.IntervalSource" title="metricq.IntervalSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource</span></code></a>, which
 does all the heavy lifting for us.</p>
@@ -210,14 +209,14 @@ See the documentation for <a class="reference internal" href="../api/source.html
 </div>
 <p>To adapt the above example, we simply set <a class="reference internal" href="../api/source.html#metricq.IntervalSource.period" title="metricq.IntervalSource.period"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource.period</span></code></a> to the period of time between consecutive updates and replace <a class="reference internal" href="../api/source.html#metricq.Source.task" title="metricq.Source.task"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source.task</span></code></a> with <a class="reference internal" href="../api/source.html#metricq.IntervalSource.update" title="metricq.IntervalSource.update"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntervalSource.update</span></code></a>,
 which gets called at a constant rate:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metricq</span>
-<span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">metricq</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 
-<span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
 
     <span class="nd">@metricq</span><span class="o">.</span><span class="n">rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
         <span class="c1"># Set the update period</span>
         <span class="n">rate</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;rate&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">rate</span>
@@ -227,7 +226,7 @@ which gets called at a constant rate:</p>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">declare_metrics</span><span class="p">({</span><span class="s2">&quot;test.py.interval-dummy&quot;</span><span class="p">:</span> <span class="n">metadata</span><span class="p">})</span>
 
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
             <span class="s2">&quot;example.py.interval-dummy&quot;</span><span class="p">,</span>
             <span class="n">time</span><span class="o">=</span><span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
@@ -237,10 +236,10 @@ which gets called at a constant rate:</p>
 </div>
 </section>
 <section id="running-a-source">
-<h2>Running a Source<a class="headerlink" href="#running-a-source" title="Permalink to this heading"></a></h2>
+<h2>Running a Source<a class="headerlink" href="#running-a-source" title="Link to this heading"></a></h2>
 <p><a class="reference internal" href="sink.html#sink-how-to-run"><span class="std std-ref">Similarly to Sinks</span></a>, a Source is started by calling <a class="reference internal" href="../api/client-common.html#metricq.Client.run" title="metricq.Client.run"><code class="xref py py-meth docutils literal notranslate"><span class="pre">run</span></code></a>.
 On construction, we need to supply a unique <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">Token</span></a> for identification and a URL of the network.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
 
     <span class="o">...</span> <span class="c1"># as above</span>
 
@@ -254,7 +253,7 @@ On construction, we need to supply a unique <a class="reference internal" href="
 </div>
 </section>
 <section id="complete-example">
-<h2>Complete Example<a class="headerlink" href="#complete-example" title="Permalink to this heading"></a></h2>
+<h2>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading"></a></h2>
 <p>To obtain the dependencies required for this example, install the <code class="docutils literal notranslate"><span class="pre">examples</span></code>-extra from the <a class="reference external" href="metricq-python">git repo</a>:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;.[examples]&#39;</span>
 </pre></div>
@@ -293,23 +292,21 @@ On construction, we need to supply a unique <a class="reference internal" href="
 <span class="c1"># NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
 <span class="c1"># SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
 
-<span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">import</span> <span class="nn">metricq</span>
-<span class="kn">from</span> <span class="nn">metricq.cli</span> <span class="kn">import</span> <span class="n">metricq_command</span>
-<span class="kn">from</span> <span class="nn">metricq.logging</span> <span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">metricq</span>
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
 
 
-<span class="k">class</span> <span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">IntervalSource</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DummySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">IntervalSource</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;initializing DummySource&quot;</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@metricq</span><span class="o">.</span><span class="n">rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;DummySource config: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
 
         <span class="c1"># Set the update period</span>
@@ -324,15 +321,15 @@ On construction, we need to supply a unique <a class="reference internal" href="
         <span class="p">}</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">declare_metrics</span><span class="p">({</span><span class="s2">&quot;test.py.dummy&quot;</span><span class="p">:</span> <span class="n">metadata</span><span class="p">})</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Send a random value at the current time:</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
             <span class="s2">&quot;test.py.dummy&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">value</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
         <span class="p">)</span>
 
 
-<span class="nd">@metricq_command</span><span class="p">(</span><span class="n">default_token</span><span class="o">=</span><span class="s2">&quot;source-py-dummy&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">source</span><span class="p">(</span><span class="n">server</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="nd">@metricq</span><span class="o">.</span><span class="n">cli</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">default_token</span><span class="o">=</span><span class="s2">&quot;source-py-dummy&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">source</span><span class="p">(</span><span class="n">server</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">src</span> <span class="o">=</span> <span class="n">DummySource</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">server</span><span class="p">)</span>
     <span class="n">src</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 

@@ -17,11 +17,11 @@ Decorators
 ----------
 
 .. automodule:: metricq.cli.decorator
-    :members: metricq_command, metricq_metric_option, metricq_server_option, metricq_syslog_option, metricq_token_option,
+    :members: command, metric_option, server_option, syslog_option, token_option,
 
 
-Parameter
----------
+Parameters
+----------
 For you convenience, we provide a set of custom parameter types that you can use as custom types in your click option definitions.
 
 .. automodule:: metricq.cli.params
