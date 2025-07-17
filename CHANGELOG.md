@@ -1,8 +1,16 @@
 # Changelog
 
-## [vv5.4.0](https://github.com/metricq/metricq-python/tree/vv5.4.0) (2024-12-19)
+## [Unreleased](https://github.com/metricq/metricq-python/tree/HEAD)
 
-[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.3.0...vv5.4.0)
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.4.0...HEAD)
+
+**Merged pull requests:**
+
+- Rework CLI interface [\#203](https://github.com/metricq/metricq-python/pull/203) ([bmario](https://github.com/bmario))
+
+## [v5.4.0](https://github.com/metricq/metricq-python/tree/v5.4.0) (2024-12-19)
+
+[Full Changelog](https://github.com/metricq/metricq-python/compare/v5.3.0...v5.4.0)
 
 **Implemented enhancements:**
 
