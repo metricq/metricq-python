@@ -33,8 +33,6 @@ from datetime import timedelta
 import click
 
 import metricq
-from metricq.cli import metricq_command
-from metricq.cli.decorator import metricq_metric_option
 from metricq.history_client import HistoryRequestType
 
 
@@ -73,8 +71,8 @@ async def aget_history(server: str, token: str, metric: str) -> None:
     await client.stop(None)
 
 
-@metricq_command(default_token="history-py-dummy")
-@metricq_metric_option()
+@metricq.cli.command(default_token="history-py-dummy")
+@metricq.cli.metric_option()
 def get_history(server: str, token: str, metric: str) -> None:
     asyncio.run(aget_history(server, token, metric))
 

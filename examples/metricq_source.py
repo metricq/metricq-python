@@ -31,10 +31,8 @@ import random
 from typing import Any
 
 import metricq
-from metricq.cli import metricq_command
-from metricq.logging import get_logger
 
-logger = get_logger()
+logger = metricq.get_logger()
 
 
 class DummySource(metricq.IntervalSource):
@@ -65,7 +63,7 @@ class DummySource(metricq.IntervalSource):
         )
 
 
-@metricq_command(default_token="source-py-dummy")
+@metricq.cli.command(default_token="source-py-dummy")
 def source(server: str, token: str) -> None:
     src = DummySource(token=token, url=server)
     src.run()

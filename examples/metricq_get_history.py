@@ -34,11 +34,8 @@ from datetime import timedelta
 import click
 
 import metricq
-from metricq.cli import metricq_command
-from metricq.cli.decorator import metricq_metric_option
-from metricq.logging import get_logger
 
-logger = get_logger()
+logger = metricq.get_logger()
 
 
 async def aget_history(
@@ -91,8 +88,8 @@ async def aget_history(
             click.echo(aggregate)
 
 
-@metricq_command(default_token="history-py-dummy")
-@metricq_metric_option()
+@metricq.cli.command(default_token="history-py-dummy")
+@metricq.cli.metric_option()
 @click.option("--list-metrics", is_flag=True)
 @click.option("--list-metadata", is_flag=True)
 def get_history(

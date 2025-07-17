@@ -56,7 +56,7 @@ class ChoiceParam(Generic[ChoiceType], ParamType):
         from enum import Enum, auto
         from click import option
 
-        from metricq.cli import metricq_command, ChoiceParam, CommandLineChoice
+        from metricq.cli import command, ChoiceParam, CommandLineChoice
 
 
         class OutputFormat(CommandLineChoice, Enum):
@@ -71,7 +71,7 @@ class ChoiceParam(Generic[ChoiceType], ParamType):
         FORMAT = ChoiceParam(OutputFormat, "format")
 
 
-        @metricq_command(default_token="example.program")
+        @command(default_token="example.program")
         @option(
             "--format",
             type=FORMAT,
@@ -94,7 +94,11 @@ class ChoiceParam(Generic[ChoiceType], ParamType):
         self.cls = cls
         self.name = name
 
-    def get_metavar(self, param: click.Parameter) -> str:
+    def get_metavar(
+        self,
+        param: click.Parameter,
+        ctx: Optional[Context] = None,
+    ) -> str:
         return f"({'|'.join(self.cls.as_choice_list())})"
 
     def convert(
@@ -123,8 +127,8 @@ class DurationParam(ParamType):
     """
     A custom parameter type for Click, enabling Time values.
 
-    Accepts the following string inputs
-    - <value>[<unit>] eg:
+    Accepts the following string inputs:
+        - <value>[<unit>], e.g.: 10s
 
     The following units are supported:
         - 's' / 'seconds[s]' for seconds
@@ -139,11 +143,11 @@ class DurationParam(ParamType):
         from click import option
 
         from metricq import Timedelta
-        from metricq.cli import metricq_command, DurationParam
+        from metricq.cli import command, DurationParam
 
         TIMEOUT = DurationParam(default=None)
 
-        @metricq_command(default_token="example.program")
+        @command(default_token="example.program")
         @option(
             "--timeout",
             type=TIMEOUT,
@@ -192,21 +196,21 @@ class TimestampParam(ParamType):
     """
     Convert strings to :py:class:`metricq.Timestamp` objects.
 
-    Accepts the following string inputs
-    - ISO-8601 timestamp (with timezone)
-    - Past Duration, e.g., '-10h' from now
-    - Posix timestamp, float seconds since 1.1.1970 midnight. (UTC)
-    - 'now'
-    - 'epoch', i.e., 1.1.1970 midnight
+    Accepts the following string inputs:
+        - ISO-8601 timestamp (with timezone)
+        - Past Duration, e.g., '-10h' from now
+        - Posix timestamp, float seconds since 1.1.1970 midnight. (UTC)
+        - 'now'
+        - 'epoch', i.e., 1.1.1970 midnight
 
     **Example**::
 
         from click import option
 
-        from metricq.cli import metricq_command, TimestampParam
+        from metricq.cli import command, TimestampParam
 
 
-        @metricq_command(default_token="example.program")
+        @command(default_token="example.program")
         @option(
                 "--start",
                 type=TimestampParam(),
@@ -271,10 +275,10 @@ class TemplateStringParam(ParamType):
 
         from click import option
 
-        from metricq.cli import metricq_command, TemplateStringParam
+        from metricq.cli import command, TemplateStringParam
 
 
-        @metricq_command(default_token="example.program")
+        @command(default_token="example.program")
         @option(
                 "--user",
                 type=TemplateStringParam(),
@@ -317,8 +321,8 @@ class MetricParam(ParamType):
     The String has to follow the
     `Metric Syntax <https://github.com/metricq/metricq/wiki/Metrics#selecting-good-metric-names>`_
 
-    It is recommended to use the :py:func:`~metricq.cli.decorator.metricq_metric_option` or the
-    :py:func:`~metricq.cli.decorator.metricq_token_option` decorator instead of using this class directly.
+    It is recommended to use the :func:`~metricq.cli.decorator.metric_option`
+    decorator instead of using this class directly.
 
     """
 
