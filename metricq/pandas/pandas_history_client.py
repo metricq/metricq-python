@@ -93,7 +93,9 @@ class PandasHistoryClient:
                 (
                     {
                         "timestamp": pd.Timestamp(
-                            aggregate.timestamp.posix_ns, unit="ns"
+                            aggregate.timestamp.posix_ns,
+                            unit="ns",
+                            tz="UTC",
                         ),
                         "active_time": pd.Timedelta(
                             aggregate.active_time.ns, unit="ns"
@@ -124,7 +126,11 @@ class PandasHistoryClient:
         return pd.DataFrame(
             (
                 {
-                    "timestamp": pd.Timestamp(time_value.timestamp.posix_ns, unit="ns"),
+                    "timestamp": pd.Timestamp(
+                        time_value.timestamp.posix_ns,
+                        unit="ns",
+                        tz="UTC",
+                    ),
                     "value": time_value.value,
                 }
                 for time_value in data
