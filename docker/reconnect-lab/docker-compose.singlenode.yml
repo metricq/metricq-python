@@ -1,0 +1,91 @@
+x-python-client-build: &python-client-build
+  context: ../..
+  dockerfile: docker/reconnect-lab/Dockerfile
+
+services:
+  metricq-manager:
+    image: ghcr.io/metricq/metricq-manager:edge
+    command: --couchdb-url http://couchdb-server:5984 --couchdb-user admin --couchdb-password admin amqp://admin:admin@rabbitmq-server/ vhost:/
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq-server
+      - couchdb-setup
+    networks:
+      - metricq-network
+
+  rabbitmq-server:
+    # NOTE: rabbitmq >= 4 dropped classic queue mirroring / changed defaults
+    # that broke metricq-manager's queue setup -- pin to the 3.x series.
+    image: rabbitmq:3-management-alpine
+    hostname: rabbitmq-server
+    environment:
+      RABBITMQ_DEFAULT_USER: "admin"
+      RABBITMQ_DEFAULT_PASS: "admin"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    networks:
+      - metricq-network
+    ports:
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
+
+  couchdb-server:
+    image: couchdb:3
+    environment:
+      COUCHDB_USER: "admin"
+      COUCHDB_PASSWORD: "admin"
+    networks:
+      - metricq-network
+    ports:
+      - "127.0.0.1:5984:5984"
+    command: /opt/couchdb/bin/couchdb
+
+  couchdb-setup:
+    build: ./couchdb-setup
+    image: metricq-reconnect-lab-couchdb-setup
+    depends_on:
+      - couchdb-server
+    networks:
+      - metricq-network
+
+  source-py-dummy:
+    build: *python-client-build
+    image: metricq-reconnect-lab-client
+    depends_on:
+      - rabbitmq-server
+      - metricq-manager
+      - couchdb-setup
+    networks:
+      - metricq-network
+    restart: unless-stopped
+    command: ["python", "examples/metricq_source.py", "--server", "amqp://admin:admin@rabbitmq-server/", "--token", "source-py-dummy", "-v", "DEBUG"]
+
+  sink-py-dummy:
+    build: *python-client-build
+    image: metricq-reconnect-lab-client
+    depends_on:
+      - rabbitmq-server
+      - metricq-manager
+      - couchdb-setup
+    networks:
+      - metricq-network
+    restart: unless-stopped
+    command: ["python", "examples/metricq_sink.py", "--server", "amqp://admin:admin@rabbitmq-server/", "--metric", "test.py.dummy", "-v", "DEBUG"]
+
+  # DurableSink: fixed token (no UUID), registers via sink.register and gets
+  # the *same* data queue back across restarts -- use this to compare against
+  # sink-py-dummy's data-loss behaviour when killed for a while.
+  sink-py-durable-dummy:
+    build: *python-client-build
+    image: metricq-reconnect-lab-client
+    depends_on:
+      - rabbitmq-server
+      - metricq-manager
+      - couchdb-setup
+    networks:
+      - metricq-network
+    restart: unless-stopped
+    command: ["python", "examples/metricq_durable_sink.py", "--server", "amqp://admin:admin@rabbitmq-server/", "--metric", "test.py.dummy", "-v", "DEBUG"]
+
+networks:
+  metricq-network:
+    driver: bridge
