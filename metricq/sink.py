@@ -27,7 +27,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from abc import abstractmethod
-from asyncio import CancelledError, Task
+from asyncio import CancelledError, Task, sleep
 from collections.abc import Iterable
 from typing import Any, Optional
 
@@ -51,6 +51,14 @@ class Sink(DataClient):
             whether to append a randomly generated UUID to this Sink's :term:`Token`.
             This is useful to distinguish different instances of the same Sink.
     """
+
+    #: Delay between resubscription attempts after the data connection came
+    #: back but the sink.subscribe RPC (or the subsequent queue declare/
+    #: consume) failed, e.g. because the manager or the queue's cluster node
+    #: hadn't caught up yet. Without a retry here, a single failed attempt
+    #: leaves the sink stuck (subscribed to nothing) until the *connection*
+    #: watchdog eventually times out and tears down the whole agent.
+    _resubscribe_retry_delay: float = 5
 
     def __init__(self, *args: Any, add_uuid: bool = True, **kwargs: Any):
         super().__init__(*args, add_uuid=add_uuid, **kwargs)
@@ -112,21 +120,35 @@ class Sink(DataClient):
         self._subscribe_args.update(dataQueue=self._data_queue.name)
 
         metrics = tuple(self._subscribed_metrics)
-        logger.info(
-            "Resubscribing to {} metric(s) with RPC parameters {}...",
-            len(metrics),
-            self._subscribe_args,
-        )
-        response = await self.rpc(
-            "sink.subscribe", metrics=metrics, **self._subscribe_args
-        )
-        assert response is not None
-        await self._declare_data_queue(response["dataQueue"])
 
-        logger.debug("Restarting consume...")
-        await self._data_queue.consume(
-            self._on_data_message, consumer_tag=self._data_consumer_tag
-        )
+        while True:
+            logger.info(
+                "Resubscribing to {} metric(s) with RPC parameters {}...",
+                len(metrics),
+                self._subscribe_args,
+            )
+            try:
+                response = await self.rpc(
+                    "sink.subscribe", metrics=metrics, **self._subscribe_args
+                )
+                assert response is not None
+                await self._declare_data_queue(response["dataQueue"])
+
+                logger.debug("Restarting consume...")
+                await self._data_queue.consume(
+                    self._on_data_message, consumer_tag=self._data_consumer_tag
+                )
+            except CancelledError:
+                raise
+            except Exception as e:
+                logger.warning(
+                    "Resubscribing failed ({}), retrying in {} second(s)...",
+                    e,
+                    self._resubscribe_retry_delay,
+                )
+                await sleep(self._resubscribe_retry_delay)
+                continue
+            return
 
     async def subscribe(
         self,

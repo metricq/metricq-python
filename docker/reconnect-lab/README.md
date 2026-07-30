@@ -139,26 +139,32 @@ testing explicitly if you're debugging reconnect robustness:
   stop/kill/`app-stop`. If you're debugging "why didn't it reconnect yet",
   check how long it's actually been -- a partition is not a blip.
 - When `_resubscribe()` finally ran, its `sink.subscribe` RPC publish came
-  back as a `Basic.Nack` (`aiormq.exceptions.DeliveryError`), logged as an
-  *unhandled exception* rather than retried. One sink (`sink-py-dummy` in
-  this run) then sat fully stuck -- process alive, no data, no further
-  resubscribe attempt -- until its container's `restart: unless-stopped`
-  eventually cycled it (`docker inspect --format '{{.RestartCount}}'` is a
-  quick way to notice this happened). The other (`sink-py-durable-dummy`)
-  recovered cleanly once the partition healed. Recommend treating this
-  as a known rough edge in `Sink._resubscribe`/`resubscribe_done`
-  ([`metricq/sink.py:79-129`](../../metricq/sink.py)) if you're chasing
-  reconnect bug reports that mention long, silent outages: a failed
-  resubscribe isn't retried, it just surfaces as an unhandled task
-  exception and relies on the *connection* watchdog (which doesn't know
-  the *subscription* is what's actually broken) to eventually notice.
+  back as a `Basic.Nack` (`aiormq.exceptions.DeliveryError`). Before the fix
+  below, that surfaced as an *unhandled exception* rather than being
+  retried: `sink-py-dummy` sat fully stuck -- process alive, no data, no
+  further resubscribe attempt -- until its container's
+  `restart: unless-stopped` eventually cycled it (losing its subscription
+  state and, for a plain `Sink`, its identity). `sink-py-durable-dummy`
+  happened to recover once the partition healed, but only because its next
+  scheduled retry (the underlying connection's own `reconnect_interval`)
+  happened to land after the heal, not because the failed resubscribe was
+  itself retried.
+
+  **Fixed** in `Sink._resubscribe`
+  ([`metricq/sink.py`](../../metricq/sink.py)): a failed `sink.subscribe`
+  RPC (or the queue declare/consume after it) is now retried on a short
+  delay (`Sink._resubscribe_retry_delay`, default 5s) instead of being
+  logged as terminal. See `tests/test_sink.py` for the regression tests
+  (retry-until-success, and that a genuine reconnect/cancellation still
+  aborts the retry loop cleanly instead of being swallowed).
 
 Reproduce with:
 
 ```sh
 ./chaos.sh -f docker-compose.cluster.yml partition rabbitmq-server-node0
-# watch: nothing happens for a while, then a Nack/unhandled exception,
-# then (for a plain Sink) possibly a silent stall until container restart
+# watch: nothing happens for a while (this is the slow part -- a partition
+# is not a blip), then a Nack, then repeated "Resubscribing failed ...,
+# retrying in 5 second(s)..." warnings instead of a stall
 ./chaos.sh -f docker-compose.cluster.yml logs sink-py-dummy
 ./chaos.sh -f docker-compose.cluster.yml logs sink-py-durable-dummy
 ./chaos.sh -f docker-compose.cluster.yml heal rabbitmq-server-node0
