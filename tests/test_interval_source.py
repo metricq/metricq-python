@@ -7,8 +7,6 @@ from metricq import Timedelta
 from metricq.exceptions import AgentStopped
 from metricq.interval_source import IntervalSource
 
-pytestmark = pytest.mark.asyncio
-
 
 class _TestIntervalSource(IntervalSource):
     async def update(self) -> None:
@@ -75,6 +73,7 @@ def test_period_no_explicit_init() -> None:
             _FaultySource()
 
 
+@pytest.mark.asyncio
 async def test_update_method_exception() -> None:
     class TestException(Exception):
         pass

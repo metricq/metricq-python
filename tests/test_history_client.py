@@ -8,8 +8,6 @@ from metricq import HistoryClient, TimeAggregate, Timestamp, TimeValue, history_
 from metricq.exceptions import HistoryError, InvalidHistoryResponse
 from metricq.history_client import HistoryResponse, HistoryResponseType
 
-pytestmark = pytest.mark.asyncio
-
 
 @pytest.fixture
 def history_client() -> HistoryClient:
@@ -51,6 +49,7 @@ def test_iterate_empty_history_response(
     assert len(list(empty_history_response.aggregates())) == 0
 
 
+@pytest.mark.asyncio
 async def test_history_aggregate(
     history_client: HistoryClient, mocker: MockerFixture
 ) -> None:
@@ -87,6 +86,7 @@ def test_history_aggregate_with_zero_count(
     assert math.isnan(agg.mean_sum)
 
 
+@pytest.mark.asyncio
 async def test_history_no_aggregate(
     history_client: HistoryClient,
     mocker: MockerFixture,
@@ -98,6 +98,7 @@ async def test_history_no_aggregate(
         await history_client.history_aggregate(DEFAULT_METRIC)
 
 
+@pytest.mark.asyncio
 async def test_history_error(
     history_client: HistoryClient,
     mocker: MockerFixture,
@@ -109,6 +110,7 @@ async def test_history_error(
         mock_history_response(error="A test error")
 
 
+@pytest.mark.asyncio
 async def test_history_last_value(
     history_client: HistoryClient, mocker: MockerFixture
 ) -> None:
@@ -127,6 +129,7 @@ async def test_history_last_value(
     )
 
 
+@pytest.mark.asyncio
 async def test_history_no_last_value(
     history_client: HistoryClient,
     mocker: MockerFixture,
@@ -137,6 +140,7 @@ async def test_history_no_last_value(
     assert await history_client.history_last_value(DEFAULT_METRIC) is None
 
 
+@pytest.mark.asyncio
 async def test_timelime_empty(
     history_client: HistoryClient,
     mocker: MockerFixture,
@@ -147,6 +151,7 @@ async def test_timelime_empty(
     assert list(await history_client.history_raw_timeline(DEFAULT_METRIC)) == []
 
 
+@pytest.mark.asyncio
 async def test_get_metrics_historic_only(
     history_client: HistoryClient,
     mocker: MockerFixture,
@@ -168,6 +173,7 @@ async def test_get_metrics_historic_only(
     assert await history_client.get_metrics(selector=DEFAULT_METRIC) is result
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize(("historic_override"), [True, False])
 async def test_get_metrics_historic_override(
     historic_override: bool,

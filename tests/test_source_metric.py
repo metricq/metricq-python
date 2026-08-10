@@ -10,9 +10,6 @@ from metricq.datachunk_pb2 import DataChunk
 from metricq.source import Source
 from metricq.source_metric import ChunkSize, SourceMetric
 
-pytestmark = pytest.mark.asyncio
-
-
 _Metric = Iterator[tuple[Timestamp, float]]
 
 
@@ -88,6 +85,7 @@ def test_source_metric_empty_after_init(source: Source) -> None:
     assert source_metric.empty
 
 
+@pytest.mark.asyncio
 async def test_source_metric_default_send_immediately(
     source_metric: SourceMetric, metric: _Metric
 ) -> None:
@@ -97,6 +95,7 @@ async def test_source_metric_default_send_immediately(
     source_metric.source._send.assert_called_once()  # type: ignore
 
 
+@pytest.mark.asyncio
 async def test_source_metric_no_send_if_empty(source_metric: SourceMetric) -> None:
     assert source_metric.empty
 
@@ -106,6 +105,7 @@ async def test_source_metric_no_send_if_empty(source_metric: SourceMetric) -> No
     assert not source_metric.source._send.called  # type: ignore
 
 
+@pytest.mark.asyncio
 async def test_source_metric_send_chunked(
     source_metric: SourceMetric, metric: _Metric
 ) -> None:
@@ -125,6 +125,7 @@ async def test_source_metric_send_chunked(
     assert len(source_metric.source._send.mock_calls) == 1  # type: ignore
 
 
+@pytest.mark.asyncio
 async def test_source_send_no_chunking(
     source_metric: SourceMetric, metric: _Metric
 ) -> None:
@@ -145,6 +146,7 @@ async def test_source_send_no_chunking(
     source_metric.source._send.assert_called_once_with(source_metric.id, chunk)  # type: ignore
 
 
+@pytest.mark.asyncio
 async def test_source_send_error_value_is_none(source_metric: SourceMetric) -> None:
     async def send(metric: SourceMetric, chunk: DataChunk) -> None:
         assert len(chunk.value) == 1 and isnan(chunk.value[0])
