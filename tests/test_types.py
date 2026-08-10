@@ -218,7 +218,7 @@ def test_timedelta_floordiv(ns: int, factor: int, expected_ns: int) -> None:
     assert result == Timedelta(expected_ns)
 
 
-@pytest.mark.parametrize("random_timedelta", timedelta_random_list())
+@pytest.mark.parametrize("random_timedelta", list(timedelta_random_list()))
 def test_timedelta_random_floordiv_one(random_timedelta: Timedelta) -> None:
     assert random_timedelta // 1 == random_timedelta
 
@@ -266,6 +266,7 @@ def test_timeaggregate_from_value_pair(
     assert isclose(agg.mean_sum, VALUE)
 
 
+@pytest.mark.filterwarnings("ignore::DeprecationWarning")
 def test_dict_from_aggregate(timestamp: Timestamp, time_delta_10s: Timedelta) -> None:
     VALUE = 42.0
     later = timestamp + time_delta_10s
@@ -282,6 +283,7 @@ def test_dict_from_aggregate(timestamp: Timestamp, time_delta_10s: Timedelta) ->
     assert isclose(agg["mean"], VALUE)
 
 
+@pytest.mark.filterwarnings("ignore::DeprecationWarning")
 def test_dict_from_value(timestamp: Timestamp) -> None:
     VALUE = 42.0
 
