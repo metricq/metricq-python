@@ -129,6 +129,8 @@ def make_protobuf_requirement(major: int, minor: int, patch: int) -> str:
         (3, 0),
         (4, 21),
         (5, 26),
+        (6, 30),
+        (7, 34),
     )
 
     # We must subtract one because bisect gives the insertion point after...
