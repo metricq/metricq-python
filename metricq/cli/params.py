@@ -3,14 +3,12 @@ from contextlib import suppress
 from getpass import getuser
 from socket import gethostname
 from string import Template
-from typing import Any, Generic, List, Optional, Type, TypeVar, Union, cast
+from typing import Any, Self, TypeVar, cast
 
 import click
 from click import Context, ParamType
 
 from ..timeseries import Timedelta, Timestamp
-
-_C = TypeVar("_C", covariant=True)
 
 
 def camelcase_to_kebabcase(camelcase: str) -> str:
@@ -25,28 +23,26 @@ def kebabcase_to_camelcase(kebabcase: str) -> str:
 
 class CommandLineChoice:
     @classmethod
-    def as_choice_list(cls) -> List[str]:
-        return [
-            camelcase_to_kebabcase(name) for name in getattr(cls, "__members__").keys()
-        ]
+    def as_choice_list(cls: type[Self]) -> list[str]:
+        return [camelcase_to_kebabcase(name) for name in getattr(cls, "__members__")]
 
     def as_choice(self) -> str:
         return camelcase_to_kebabcase(getattr(self, "name"))
 
     @classmethod
-    def default(cls: Type[_C]) -> Optional[_C]:
+    def default(cls: type[Self]) -> Self | None:
         return None
 
     @classmethod
-    def from_choice(cls: Type[_C], option: str) -> _C:
+    def from_choice(cls: type[Self], option: str) -> Self:
         member_name = kebabcase_to_camelcase(option.lower())
-        return cast(_C, getattr(cls, "__members__")[member_name])
+        return cast(Self, getattr(cls, "__members__")[member_name])
 
 
 ChoiceType = TypeVar("ChoiceType", bound=CommandLineChoice)
 
 
-class ChoiceParam(Generic[ChoiceType], ParamType):
+class ChoiceParam(ParamType[ChoiceType]):
     """
     A custom parameter type for Click, enabling choice-based selection.
 
@@ -90,23 +86,23 @@ class ChoiceParam(Generic[ChoiceType], ParamType):
 
     """
 
-    def __init__(self, cls: Type[ChoiceType], name: str):
+    def __init__(self, cls: type[ChoiceType], name: str):
         self.cls = cls
         self.name = name
 
     def get_metavar(
         self,
         param: click.Parameter,
-        ctx: Optional[Context] = None,
+        ctx: Context | None = None,
     ) -> str:
         return f"({'|'.join(self.cls.as_choice_list())})"
 
-    def convert(
+    def convert(  # type: ignore[override]
         self,
-        value: Union[str, ChoiceType],
-        param: Optional[click.Parameter],
-        ctx: Optional[Context],
-    ) -> Optional[ChoiceType]:
+        value: str | ChoiceType | None,
+        param: click.Parameter | None,
+        ctx: Context | None,
+    ) -> ChoiceType | None:
         if value is None:
             return None
 
@@ -123,7 +119,7 @@ class ChoiceParam(Generic[ChoiceType], ParamType):
             )
 
 
-class DurationParam(ParamType):
+class DurationParam(ParamType[Timedelta]):
     """
     A custom parameter type for Click, enabling Time values.
 
@@ -168,15 +164,15 @@ class DurationParam(ParamType):
 
     name = "duration"
 
-    def __init__(self, default: Optional[Timedelta]):
+    def __init__(self, default: Timedelta | None):
         self.default = default
 
-    def convert(
+    def convert(  # type: ignore[override]
         self,
-        value: Union[str, Timedelta],
-        param: Optional[click.Parameter],
-        ctx: Optional[Context],
-    ) -> Optional[Timedelta]:
+        value: str | Timedelta | None,
+        param: click.Parameter | None,
+        ctx: Context | None,
+    ) -> Timedelta | None:
         if value is None:
             return None
         elif isinstance(value, str):
@@ -192,7 +188,7 @@ class DurationParam(ParamType):
             return value
 
 
-class TimestampParam(ParamType):
+class TimestampParam(ParamType[Timestamp]):
     """
     Convert strings to :py:class:`metricq.Timestamp` objects.
 
@@ -242,9 +238,12 @@ class TimestampParam(ParamType):
 
         return Timestamp.from_iso8601(value)
 
-    def convert(
-        self, value: Any, param: Optional[click.Parameter], ctx: Optional[Context]
-    ) -> Optional[Timestamp]:
+    def convert(  # type: ignore[override]
+        self,
+        value: Any,
+        param: click.Parameter | None,
+        ctx: Context | None,
+    ) -> Timestamp | None:
         if value is None:
             return None
         elif isinstance(value, Timestamp):
@@ -263,7 +262,7 @@ class TimestampParam(ParamType):
             self.fail("unexpected type to convert to TimeStamp", param=param, ctx=ctx)
 
 
-class TemplateStringParam(ParamType):
+class TemplateStringParam(ParamType[str]):
     """
     A custom parameter type for Click, enabling template-based string substitution
     with dynamic values for 'USER' and 'HOST'.
@@ -307,14 +306,17 @@ class TemplateStringParam(ParamType):
             self.mapping["HOST"] = gethostname()
 
     def convert(
-        self, value: Any, param: Optional[click.Parameter], ctx: Optional[Context]
+        self,
+        value: Any,
+        param: click.Parameter | None,
+        ctx: Context | None,
     ) -> str:
         if not isinstance(value, str):
             raise TypeError("expected a string type for TemplateStringParam")
         return Template(value).safe_substitute(self.mapping)
 
 
-class MetricParam(ParamType):
+class MetricParam(ParamType[str]):
     """
     Converts the input to a valid metric.
 
@@ -329,7 +331,10 @@ class MetricParam(ParamType):
     pattern = re.compile(r"([a-zA-Z][a-zA-Z0-9_]+\.)+[a-zA-Z][a-zA-Z0-9_]+")
 
     def convert(
-        self, value: Any, param: Optional[click.Parameter], ctx: Optional[Context]
+        self,
+        value: Any,
+        param: click.Parameter | None,
+        ctx: Context | None,
     ) -> str:
         if not isinstance(value, str):
             raise TypeError("expected a string type for the MetricParam")

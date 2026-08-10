@@ -1,7 +1,7 @@
 import getpass
 import socket
 from enum import Enum, auto
-from typing import Union
+from typing import Any, Union
 
 import pytest
 from click import ParamType
@@ -27,7 +27,7 @@ class Choice(CommandLineChoice, Enum):
     "param_class",
     [DurationParam(default=None), TimestampParam(), ChoiceParam(Choice, name="test")],
 )
-def test_click_param_contracts(param_class: ParamType) -> None:
+def test_click_param_contracts(param_class: ParamType[Any]) -> None:
     """Custom parameter types should meet these requirements.
 
     See https://click.palletsprojects.com/en/7.x/api/#click.ParamType.
