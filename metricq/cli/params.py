@@ -3,7 +3,7 @@ from contextlib import suppress
 from getpass import getuser
 from socket import gethostname
 from string import Template
-from typing import Any, Self, TypeVar, cast
+from typing import Any, Generic, Self, TypeVar, cast
 
 import click
 from click import Context, ParamType
@@ -42,7 +42,11 @@ class CommandLineChoice:
 ChoiceType = TypeVar("ChoiceType", bound=CommandLineChoice)
 
 
-class ChoiceParam(ParamType[ChoiceType]):
+# click's `ParamType` only became subscriptable at runtime in click 8.4; on
+# older versions `ParamType[...]` raises `TypeError: type 'ParamType' is not
+# subscriptable`. Since we don't want to require click>=8.4, we inherit from
+# the plain, unparametrized class and ignore mypy's `[type-arg]` complaint.
+class ChoiceParam(ParamType, Generic[ChoiceType]):  # type: ignore[type-arg]
     """
     A custom parameter type for Click, enabling choice-based selection.
 
@@ -97,7 +101,7 @@ class ChoiceParam(ParamType[ChoiceType]):
     ) -> str:
         return f"({'|'.join(self.cls.as_choice_list())})"
 
-    def convert(  # type: ignore[override]
+    def convert(
         self,
         value: str | ChoiceType | None,
         param: click.Parameter | None,
@@ -119,7 +123,7 @@ class ChoiceParam(ParamType[ChoiceType]):
             )
 
 
-class DurationParam(ParamType[Timedelta]):
+class DurationParam(ParamType):  # type: ignore[type-arg]
     """
     A custom parameter type for Click, enabling Time values.
 
@@ -167,7 +171,7 @@ class DurationParam(ParamType[Timedelta]):
     def __init__(self, default: Timedelta | None):
         self.default = default
 
-    def convert(  # type: ignore[override]
+    def convert(
         self,
         value: str | Timedelta | None,
         param: click.Parameter | None,
@@ -188,7 +192,7 @@ class DurationParam(ParamType[Timedelta]):
             return value
 
 
-class TimestampParam(ParamType[Timestamp]):
+class TimestampParam(ParamType):  # type: ignore[type-arg]
     """
     Convert strings to :py:class:`metricq.Timestamp` objects.
 
@@ -238,7 +242,7 @@ class TimestampParam(ParamType[Timestamp]):
 
         return Timestamp.from_iso8601(value)
 
-    def convert(  # type: ignore[override]
+    def convert(
         self,
         value: Any,
         param: click.Parameter | None,
@@ -262,7 +266,7 @@ class TimestampParam(ParamType[Timestamp]):
             self.fail("unexpected type to convert to TimeStamp", param=param, ctx=ctx)
 
 
-class TemplateStringParam(ParamType[str]):
+class TemplateStringParam(ParamType):  # type: ignore[type-arg]
     """
     A custom parameter type for Click, enabling template-based string substitution
     with dynamic values for 'USER' and 'HOST'.
@@ -316,7 +320,7 @@ class TemplateStringParam(ParamType[str]):
         return Template(value).safe_substitute(self.mapping)
 
 
-class MetricParam(ParamType[str]):
+class MetricParam(ParamType):  # type: ignore[type-arg]
     """
     Converts the input to a valid metric.
 
