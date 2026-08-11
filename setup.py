@@ -356,9 +356,9 @@ class ProtoDevelop(develop):
 # For all other setuptools options, see setup.cfg
 setup(
     install_requires=[
-        "aio-pika~=9.0",
+        "aio-pika~=10.0",
         get_protobuf_requirement(),
-        "Deprecated~=1.2.13",
+        "Deprecated~=1.3.1",
         "python-dateutil ~= 2.8, >=2.8.1",
         "yarl",
         "setuptools",
