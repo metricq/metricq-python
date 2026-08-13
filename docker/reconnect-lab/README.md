@@ -107,6 +107,24 @@ Examples:
 in `.chaos-state/` next to this README; it's gitignored scratch state, feel
 free to delete it.
 
+## Running the predefined scenario set
+
+`run-scenarios.sh` runs a fixed battery of the above through `chaos.sh` and
+reports whether source/sink data flow recovered within a scenario-specific
+timeout -- a repeatable smoke test rather than a substitute for manually
+digging into a specific failure mode. Requires the stack to already be up
+and happily exchanging `test.py.dummy` data.
+
+```sh
+docker compose -f docker-compose.singlenode.yml up -d --build
+./run-scenarios.sh                       # everything applicable
+./run-scenarios.sh blip kill              # just a subset
+./run-scenarios.sh -f docker-compose.cluster.yml
+```
+
+Known: `node_partition_heal` (cluster only) can legitimately never recover
+within any timeout -- that's not a runner bug, see the next section.
+
 ## Findings: queues, cluster nodes, and network partitions
 
 Classic RabbitMQ queues (what `metricq-manager` declares by default -- no
@@ -169,6 +187,25 @@ Reproduce with:
 ./chaos.sh -f docker-compose.cluster.yml logs sink-py-durable-dummy
 ./chaos.sh -f docker-compose.cluster.yml heal rabbitmq-server-node0
 ```
+
+**Still open, and NOT fixed by the above:** `run-scenarios.sh`'s
+`node_partition_heal` reproduced this on its own during testing (no special
+setup): the sink's *management* connection was on node1, its *data*
+connection (and therefore its data queue) on node0. Partitioning node0
+killed the queue -- confirmed gone cluster-wide via
+`GET /api/queues` -- while the data connection itself never dropped (both
+connections kept heartbeating throughout, never closed, never reconnected).
+The source kept happily `send()`-ing the whole time. The sink just silently
+stopped receiving data, forever, with zero log output indicating anything
+was wrong. This is the `Basic.Cancel`-swallowed-by-aiormq gap: unlike the
+Nack case above, nothing ever closes or throws, so there's no reconnect
+event to hook a retry onto with the current client/channel/queue APIs (see
+the design discussion this session -- confirmed unfixed as of aio-pika
+10.0.1, not just the `~9.0` pinned here). Only a manual restart of the sink
+process clears it (`./chaos.sh -f docker-compose.cluster.yml restart
+sink-py-dummy`). A watchdog that tracks time-since-last-message and forces a
+reconnect after some threshold is the only viable mitigation given aio_pika
+provides no hook for this -- not yet implemented.
 
 ## Cleaning up
 
