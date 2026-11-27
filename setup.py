@@ -361,7 +361,6 @@ setup(
         "Deprecated~=1.3.1",
         "python-dateutil ~= 2.8, >=2.8.1",
         "yarl",
-        "setuptools",
     ],
     cmdclass={
         "build_protobuf": BuildProtobuf,
