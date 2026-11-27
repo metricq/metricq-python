@@ -8,14 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Building a MetricQ Sink &mdash; MetricQ  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_autodoc_typehints.css?v=057ac668" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -149,7 +150,7 @@ We provide <a class="reference internal" href="../api/sink.html#metricq.Sink.on_
         <span class="n">timestamp</span><span class="p">:</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">,</span>
         <span class="n">value</span><span class="p">:</span> <span class="nb">float</span>
     <span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Here, <code class="docutils literal notranslate"><span class="pre">metric</span></code> is the name of the metric for which a new data point arrived; <code class="docutils literal notranslate"><span class="pre">value</span></code> holds the numeric value this metric had at time indicated by <code class="docutils literal notranslate"><span class="pre">timestamp</span></code>.</p>
@@ -169,11 +170,11 @@ as there is code in place that generates a unique token automatically
 <span class="k">class</span><span class="w"> </span><span class="nc">DummySink</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Sink</span><span class="p">):</span>
     <span class="o">...</span> <span class="c1"># as above</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
     <span class="n">sink</span> <span class="o">=</span> <span class="n">DummySink</span><span class="p">(</span>
-        <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;test.py.dummy&quot;</span><span class="p">],</span>
-        <span class="n">token</span><span class="o">=</span><span class="s2">&quot;sink-py-dummy&quot;</span><span class="p">,</span>
-        <span class="n">url</span><span class="o">=</span><span class="s2">&quot;amqp://localhost/&quot;</span>
+        <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">"test.py.dummy"</span><span class="p">],</span>
+        <span class="n">token</span><span class="o">=</span><span class="s2">"sink-py-dummy"</span><span class="p">,</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">"amqp://localhost/"</span>
     <span class="p">)</span>
     <span class="n">sink</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
@@ -194,7 +195,7 @@ Running this script, you should now see something like this appearing on standar
 <section id="complete-example">
 <span id="the-end-of-this-page"></span><h2>Complete example<a class="headerlink" href="#complete-example" title="Link to this heading"></a></h2>
 <p>To obtain the dependencies required for this example, install the <code class="docutils literal notranslate"><span class="pre">examples</span></code>-extra from the <a class="reference external" href="metricq-python">git repo</a>:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;.[examples]&#39;</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">'.[examples]'</span>
 </pre></div>
 </div>
 <p>and run it like so:</p>
@@ -220,7 +221,7 @@ Running this script, you should now see something like this appearing on standar
 <span class="c1">#       without specific prior written permission.</span>
 <span class="c1">#</span>
 <span class="c1"># THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS</span>
-<span class="c1"># &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT</span>
+<span class="c1"># "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT</span>
 <span class="c1"># LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR</span>
 <span class="c1"># A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR</span>
 <span class="c1"># CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,</span>
@@ -243,10 +244,10 @@ Running this script, you should now see something like this appearing on standar
 
 <span class="c1"># To implement a MetricQ Sink, subclass metricq.Sink</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">DummySink</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Sink</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple :term:`Sink` which, given a list of Metrics, will print their values as they arrive from the MetricQ network.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""A simple :term:`Sink` which, given a list of Metrics, will print their values as they arrive from the MetricQ network."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Metric</span><span class="p">],</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;initializing DummySink&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"initializing DummySink"</span><span class="p">)</span>
         <span class="c1"># `metrics` contains the names of Metrics for which this Sink should print values</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_metrics</span> <span class="o">=</span> <span class="n">metrics</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -267,11 +268,11 @@ Running this script, you should now see something like this appearing on standar
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># For this example, we just print the datapoints to standard output</span>
         <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span>
-            <span class="n">click</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">fg</span><span class="o">=</span><span class="s2">&quot;bright_blue&quot;</span><span class="p">)</span>
+            <span class="n">click</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="s2">"</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">fg</span><span class="o">=</span><span class="s2">"bright_blue"</span><span class="p">)</span>
         <span class="p">)</span>
 
 
-<span class="nd">@metricq</span><span class="o">.</span><span class="n">cli</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">default_token</span><span class="o">=</span><span class="s2">&quot;sink-py-dummy&quot;</span><span class="p">)</span>
+<span class="nd">@metricq</span><span class="o">.</span><span class="n">cli</span><span class="o">.</span><span class="n">command</span><span class="p">(</span><span class="n">default_token</span><span class="o">=</span><span class="s2">"sink-py-dummy"</span><span class="p">)</span>
 <span class="nd">@metricq</span><span class="o">.</span><span class="n">cli</span><span class="o">.</span><span class="n">metric_option</span><span class="p">(</span><span class="n">multiple</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">source</span><span class="p">(</span><span class="n">server</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">metric</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Metric</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="c1"># Initialize the DummySink class with a list of metrics given on the</span>
@@ -282,7 +283,7 @@ Running this script, you should now see something like this appearing on standar
     <span class="n">sink</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
     <span class="n">source</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -292,7 +293,7 @@ Running this script, you should now see something like this appearing on standar
 <p>Most sinks are transient and not unique and do not have a configuration.
 To create persistent sink with a configuration, subclass <a class="reference internal" href="../api/sink.html#metricq.DurableSink" title="metricq.DurableSink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.DurableSink</span></code></a> instead of <a class="reference internal" href="../api/sink.html#metricq.Sink" title="metricq.Sink"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.Sink</span></code></a>.
 Further, you need to implement an RPC handler for <cite>config</cite>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@metricq</span><span class="o">.</span><span class="n">rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@metricq</span><span class="o">.</span><span class="n">rpc_handler</span><span class="p">(</span><span class="s2">"config"</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
     <span class="o">...</span>
 </pre></div>

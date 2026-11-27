@@ -194,6 +194,13 @@ The user option ``out-dir`` has been renamed to ``package-dir``.
 `5.x` → `6.0`
 -------------
 
+Changed required Python version to 3.11
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Python 3.10 has reached end of life, therefore the minimum required version
+was changed to *3.11*. Make sure, a matching Python version is available on
+the system.
+
 Renaming of CLI decorators
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 

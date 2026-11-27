@@ -8,14 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Upgrading metricq &mdash; MetricQ  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/sphinx_autodoc_typehints.css?v=057ac668" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -78,6 +79,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#x-6-0"><cite>5.x</cite> → <cite>6.0</cite></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#changed-required-python-version-to-3-11">Changed required Python version to 3.11</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#renaming-of-cli-decorators">Renaming of CLI decorators</a></li>
 </ul>
 </li>
@@ -129,7 +131,7 @@ Make sure, a matching Python version is available on the system.</p>
 <p>All exception classes have moved into the module <a class="reference internal" href="api/exceptions.html#module-metricq.exceptions" title="metricq.exceptions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metricq.exceptions</span></code></a>,
 documented <a class="reference internal" href="api/exceptions.html#exceptions"><span class="std std-ref">here</span></a>.
 If you are importing exceptions from other submodules directly, your code might
-now fail with an <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ImportError" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">ImportError</span></code></a>.</p>
+now fail with an <a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ImportError" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">ImportError</span></code></a>.</p>
 <dl class="simple">
 <dt><code class="code docutils literal notranslate"><span class="pre">AgentStoppedError</span></code>, <code class="code docutils literal notranslate"><span class="pre">ConnectFailedError</span></code>, <code class="code docutils literal notranslate"><span class="pre">ReceivedSignalError</span></code>, <code class="code docutils literal notranslate"><span class="pre">PublishFailedError</span></code>:</dt><dd><p>Import them from <a class="reference internal" href="api/exceptions.html#module-metricq.exceptions" title="metricq.exceptions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">metricq.exceptions</span></code></a>, without the <code class="docutils literal notranslate"><span class="pre">...Error</span></code>-suffix:</p>
 <ul class="simple">
@@ -193,7 +195,7 @@ we gave them appropriate wrapper types that make it harder to accidentally misus
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span> <span class="o">=</span> <span class="n">TimeAggregate</span><span class="o">.</span><span class="n">from_value_pair</span><span class="p">(</span><span class="n">now</span><span class="p">,</span> <span class="n">now</span> <span class="o">+</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_ms</span><span class="p">(</span><span class="mi">500</span><span class="p">),</span> <span class="n">value</span><span class="o">=</span><span class="mf">42.0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">agg</span><span class="o">.</span><span class="n">active_time</span><span class="o">.</span><span class="n">precise_string</span>
-<span class="go">&#39;500ms&#39;</span>
+<span class="go">'500ms'</span>
 </pre></div>
 </div>
 </dd>
@@ -286,6 +288,12 @@ This should not affect any user code.</p>
 </section>
 <section id="x-6-0">
 <h2><cite>5.x</cite> → <cite>6.0</cite><a class="headerlink" href="#x-6-0" title="Link to this heading"></a></h2>
+<section id="changed-required-python-version-to-3-11">
+<h3>Changed required Python version to 3.11<a class="headerlink" href="#changed-required-python-version-to-3-11" title="Link to this heading"></a></h3>
+<p>Python 3.10 has reached end of life, therefore the minimum required version
+was changed to <em>3.11</em>. Make sure, a matching Python version is available on
+the system.</p>
+</section>
 <section id="renaming-of-cli-decorators">
 <h3>Renaming of CLI decorators<a class="headerlink" href="#renaming-of-cli-decorators" title="Link to this heading"></a></h3>
 <p>The docorators of the CLI feature have been renamed.</p>

@@ -8,14 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Building a MetricQ Drain &mdash; MetricQ  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_autodoc_typehints.css?v=057ac668" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -112,8 +113,8 @@ and <a class="reference internal" href="../api/drain.html#metricq.Drain" title="
 <p>In particular, the first connection is handled by the <a class="reference internal" href="../api/subscriber.html#metricq.Subscriber" title="metricq.Subscriber"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subscriber</span></code></a>.</p>
 <p>Provide the MetricQ URL to connect to, a <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">Token</span></a> to identify the client and
 a list of metrics, we want to subscribe to:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;drain-example&quot;</span>
-<span class="n">server</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;amqps://user:pass@metricq.example.org/&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"drain-example"</span>
+<span class="n">server</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"amqps://user:pass@metricq.example.org/"</span>
 <span class="n">metrics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
     <span class="c1"># ...</span>
 <span class="p">]</span>
@@ -137,7 +138,7 @@ subscribe request. In particular, in the above context, the <cite>subscriber</ci
 object does not have an open connection even within the <cite>with</cite>-statement.</p>
 </div>
 <p>Within this <cite>with</cite>-context, you can now perform any task, for instance start
-the measured program with <a class="reference external" href="https://docs.python.org/3/library/asyncio-subprocess.html#asyncio.create_subprocess_exec" title="(in Python v3.13)"><code class="xref py py-func docutils literal notranslate"><span class="pre">asyncio.create_subprocess_exec()</span></code></a>.</p>
+the measured program with <a class="reference external" href="https://docs.python.org/3/library/asyncio-subprocess.html#asyncio.create_subprocess_exec" title="(in Python v3.15)"><code class="xref py py-func docutils literal notranslate"><span class="pre">asyncio.create_subprocess_exec()</span></code></a>.</p>
 </section>
 <section id="stop-the-measurement-and-receive-the-buffered-metric-data">
 <h2>Stop the measurement and receive the buffered metric data<a class="headerlink" href="#stop-the-measurement-and-receive-the-buffered-metric-data" title="Link to this heading"></a></h2>

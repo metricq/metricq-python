@@ -8,14 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fetching historical metric data &mdash; MetricQ  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_autodoc_typehints.css?v=057ac668" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -115,8 +116,8 @@ we won’t need to define our own client, we can use <a class="reference interna
 <section id="connecting-to-the-network">
 <h2>Connecting to the network<a class="headerlink" href="#connecting-to-the-network" title="Link to this heading"></a></h2>
 <p>Provide the MetricQ URL to connect to and a <a class="reference internal" href="../glossary.html#term-Token"><span class="xref std std-term">Token</span></a> to identify the client:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="s2">&quot;history-example&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">server</span> <span class="o">=</span> <span class="s2">&quot;amqps://user:pass@metricq.example.org/&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">token</span> <span class="o">=</span> <span class="s2">"history-example"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">server</span> <span class="o">=</span> <span class="s2">"amqps://user:pass@metricq.example.org/"</span>
 </pre></div>
 </div>
 <p>Then define the <a class="reference internal" href="../api/history-client.html#metricq.HistoryClient" title="metricq.HistoryClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">HistoryClient</span></code></a> and connect it to the network:</p>
@@ -135,19 +136,19 @@ Client tokens connected to MetricQ must be unique, the parameter ensures this fo
 <h2>Fetching metric metadata<a class="headerlink" href="#fetching-metric-metadata" title="Link to this heading"></a></h2>
 <p>All metrics passing through the MetricQ network have <a class="reference internal" href="../glossary.html#term-Metadata"><span class="xref std std-term">Metadata</span></a> associated with them.
 Using <a class="reference internal" href="../api/client-common.html#metricq.Client.get_metrics" title="metricq.Client.get_metrics"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_metrics()</span></code></a>, we can explore for which metrics there is historical data:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.s0.dram.power&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">"elab.ariel.s0.dram.power"</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get_metrics</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">historic</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="go">{</span>
-<span class="go">    &#39;elab.ariel.s0.dram.power&#39;: {</span>
-<span class="go">        &#39;_id&#39;: &#39;elab.ariel.s0.dram.power&#39;,</span>
-<span class="go">        &#39;_rev&#39;: &#39;779-20e76d0b06769485e428d866a40a19e9&#39;,</span>
-<span class="go">        &#39;bandwidth&#39;: &#39;cycle&#39;,</span>
-<span class="go">        &#39;rate&#39;: 20.0,</span>
-<span class="go">        &#39;scope&#39;: &#39;last&#39;,</span>
-<span class="go">        &#39;unit&#39;: &#39;W&#39;,</span>
-<span class="go">        &#39;source&#39;: &#39;source-elab-lmg670&#39;,</span>
-<span class="go">        &#39;date&#39;: &#39;2020-10-02T02:00:04.325960+00:00&#39;,</span>
-<span class="go">        &#39;historic&#39;: True</span>
+<span class="go">    'elab.ariel.s0.dram.power': {</span>
+<span class="go">        '_id': 'elab.ariel.s0.dram.power',</span>
+<span class="go">        '_rev': '779-20e76d0b06769485e428d866a40a19e9',</span>
+<span class="go">        'bandwidth': 'cycle',</span>
+<span class="go">        'rate': 20.0,</span>
+<span class="go">        'scope': 'last',</span>
+<span class="go">        'unit': 'W',</span>
+<span class="go">        'source': 'source-elab-lmg670',</span>
+<span class="go">        'date': '2020-10-02T02:00:04.325960+00:00',</span>
+<span class="go">        'historic': True</span>
 <span class="go">    }</span>
 <span class="go">}</span>
 </pre></div>
@@ -158,11 +159,11 @@ More complicated queries are supported by <a class="reference internal" href="..
 <section id="getting-the-last-value-of-a-metric">
 <h2>Getting the last value of a metric<a class="headerlink" href="#getting-the-last-value-of-a-metric" title="Link to this heading"></a></h2>
 <p>To retrieve only the last value of a metric saved to a database base, use</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.s0.dram.power&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">"elab.ariel.s0.dram.power"</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">history_last_value</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">age</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="n">timestamp</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Last entry: </span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">age</span><span class="si">}</span><span class="s2"> ago) value: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Last entry: </span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">age</span><span class="si">}</span><span class="s2"> ago) value: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="go">Last entry: [1607604944653649318] 2020-12-10 13:55:44.653649+01:00 (0.624169682s ago) value: 5.2123122215271</span>
 </pre></div>
 </div>
@@ -174,15 +175,15 @@ for example minimum/maximum/average value, sum, integral, number of data points 
 Use <a class="reference internal" href="../api/history-client.html#metricq.HistoryClient.history_aggregate" title="metricq.HistoryClient.history_aggregate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.history_aggregate()</span></code></a> to summarize a metric in this way.</p>
 <p>In the example below, we retrieve information about the metric <code class="docutils literal notranslate"><span class="pre">elab.ariel.s0.dram.power</span></code>
 over the last 10 minutes.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.s0.dram.power&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">"elab.ariel.s0.dram.power"</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">delta</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;10min&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delta</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">"10min"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="n">delta</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aggregate</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">history_aggregate</span><span class="p">(</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">metric</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">now</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Values in the last </span><span class="si">{</span><span class="n">delta</span><span class="o">.</span><span class="n">precise_string</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">aggregate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Values in the last </span><span class="si">{</span><span class="n">delta</span><span class="o">.</span><span class="n">precise_string</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">aggregate</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="go">Values in the last 10min: TimeAggregate(timestamp=Timestamp(1607605522779676000), minimum=4.275346755981445, maximum=11.466414451599121, sum=55397.53575706482, count=11998, integral=2770119258139.6226, active_time=599930363353)</span>
 </pre></div>
 </div>
@@ -195,9 +196,9 @@ Omit either of them or both to aggregate all historical values since/until some 
 It returns an iterator of aggregates where each aggregate spans at most a duration of <code class="code docutils literal notranslate"><span class="pre">interval_max</span></code>.</p>
 <p>This is useful if you want to obtain a rough overview for a metric over a longer period of time.
 In the example below we get an overview of a metric over the last 365 days, with each aggregate covering at most 30 days:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.s0.dram.power&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">delta</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;356d&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">interval_max</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;30d&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">"elab.ariel.s0.dram.power"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">delta</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">"356d"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">interval_max</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">"30d"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="n">delta</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Fetch aggregates for values over the past 2 hours, each at most an hour long:</span>
@@ -205,7 +206,7 @@ In the example below we get an overview of a metric over the last 365 days, with
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">metric</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">now</span><span class="p">,</span> <span class="n">interval_max</span><span class="o">=</span><span class="n">interval_max</span><span class="p">,</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Values for the last </span><span class="si">{</span><span class="n">delta</span><span class="o">.</span><span class="n">precise_string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Values for the last </span><span class="si">{</span><span class="n">delta</span><span class="o">.</span><span class="n">precise_string</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">aggregate</span> <span class="ow">in</span> <span class="n">aggregates</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">aggregate</span><span class="p">)</span>
 <span class="go">Values for the last 356d</span>
@@ -248,13 +249,13 @@ Still, we get a rough idea of how this metric behaved over the past year without
 <section id="fetching-raw-values">
 <h2>Fetching raw values<a class="headerlink" href="#fetching-raw-values" title="Link to this heading"></a></h2>
 <p>If you are interested in raw values instead of a aggregates, use <a class="reference internal" href="../api/history-client.html#metricq.HistoryClient.history_raw_timeline" title="metricq.HistoryClient.history_raw_timeline"><code class="xref py py-meth docutils literal notranslate"><span class="pre">HistoryClient.history_raw_timeline()</span></code></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.s0.dram.power&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p">(</span><span class="s2">&quot;2020-01-01T00:00:00.0Z&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">end_time</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p">(</span><span class="s2">&quot;2020-01-01T00:00:00.1Z&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">"elab.ariel.s0.dram.power"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p">(</span><span class="s2">"2020-01-01T00:00:00.0Z"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">end_time</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p">(</span><span class="s2">"2020-01-01T00:00:00.1Z"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">values</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">history_raw_timeline</span><span class="p">(</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">metric</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw values of the first 100ms of 2020:&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">"Raw values of the first 100ms of 2020:"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">raw_tv</span> <span class="ow">in</span>  <span class="n">values</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="nb">print</span><span class="p">(</span><span class="n">raw_tv</span><span class="p">)</span>
 <span class="go">Raw values of the first 100ms of 2020:</span>
@@ -276,11 +277,11 @@ Still, we get a rough idea of how this metric behaved over the past year without
 <h2>Getting Pandas DataFrames<a class="headerlink" href="#getting-pandas-dataframes" title="Link to this heading"></a></h2>
 <p>You can get historic data in the form of Pandas DataFrames using <a class="reference internal" href="../api/pandas.html#metricq.pandas.PandasHistoryClient" title="metricq.pandas.PandasHistoryClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">metricq.pandas.PandasHistoryClient</span></code></a>.
 This is useful if you want to use the data in a Jupyter notebook or similar.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.power&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">"elab.ariel.power"</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;356d&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">"356d"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df_aggregate</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">history_aggregate_timeline</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">now</span><span class="p">,</span> <span class="n">interval_max</span><span class="o">=</span><span class="n">metr</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">icq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;30d&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">icq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">"30d"</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df_aggregate</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 
 <span class="go">                  timestamp    minimum     maximum           sum  ...        mean  mean_integral    mean_sum    integral_s</span>
@@ -332,9 +333,9 @@ This is useful if you want to use the data in a Jupyter notebook or similar.</p>
 
 <span class="go"> [16 rows x 11 columns]</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">&quot;elab.ariel.power&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="s2">"elab.ariel.power"</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">now</span> <span class="o">=</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;60s&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_time</span> <span class="o">=</span> <span class="n">now</span> <span class="o">-</span> <span class="n">metricq</span><span class="o">.</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">"60s"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df_raw</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">history_raw_timeline</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">now</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">df_raw</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 

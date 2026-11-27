@@ -8,14 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Miscellaneous &mdash; MetricQ  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_autodoc_typehints.css?v=057ac668" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -118,12 +119,12 @@
 <h2>Timestamps<a class="headerlink" href="#timestamps" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="metricq.Timestamp">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">Timestamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nanoseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">Timestamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nanoseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp" title="Link to this definition"></a></dt>
 <dd><p>A MetricQ Timestamp</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>nanoseconds</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span></span></dt></dt><dd><p>number of nanoseconds elapsed since the UNIX epoch</p>
+<dt><strong>nanoseconds</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span></span></dt></dt><dd><p>number of nanoseconds elapsed since the UNIX epoch</p>
 </dd>
 </dl>
 </dd>
@@ -133,9 +134,9 @@
 <span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.__add__" title="Link to this definition"></a></dt>
 <dd><p>Return the timestamp <cite>delta</cite> in the future (or in the past, if <cite>delta</cite> is negative), relative to a <a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a> instance.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">epoch</span> <span class="o">=</span> <span class="n">Timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a_week_later</span> <span class="o">=</span> <span class="n">epoch</span> <span class="o">+</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;7 days&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_week_later</span> <span class="o">=</span> <span class="n">epoch</span> <span class="o">+</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">"7 days"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">a_week_later</span><span class="p">)</span>
-<span class="go">&#39;[604800000000000] 1970-01-08 01:00:00+01:00&#39;</span>
+<span class="go">'[604800000000000] 1970-01-08 01:00:00+01:00'</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
@@ -167,12 +168,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>other</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></span></span></dt></dt><dd><p>another timestamp</p>
+<dt><strong>other</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></span></span></dt></dt><dd><p>another timestamp</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -188,7 +189,7 @@
 </pre></div>
 </div>
 <p>Together with <a class="reference internal" href="#metricq.Timestamp.__eq__" title="metricq.Timestamp.__eq__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__eq__()</span></code></a>, all relational operations (<code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">!=</span></code>, etc.) are supported.
-Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference external" href="https://docs.python.org/3/library/functools.html#functools.total_ordering" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">functools.total_ordering()</span></code></a>).</p>
+Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference external" href="https://docs.python.org/3/library/functools.html#functools.total_ordering" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">functools.total_ordering()</span></code></a>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -197,7 +198,7 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -206,21 +207,21 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 <dt class="sig sig-object py" id="metricq.Timestamp.__str__">
 <span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.__str__" title="Link to this definition"></a></dt>
 <dd><p>Yield a human-readable date-time string in the local timezone:</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
-</dd>
-</dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># in UTC+01:00, it was already 1 in the night when the UNIX epoch happened</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">Timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-<span class="go">&#39;[0] 1970-01-01 01:00:00+01:00&#39;</span>
+<span class="go">'[0] 1970-01-01 01:00:00+01:00'</span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timestamp.ago">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">ago</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.ago" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">classmethod</span> </span><span class="sig-name descname"><span class="pre">ago</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.ago" title="Link to this definition"></a></dt>
 <dd><p>Return a timestamp <cite>delta</cite> in the past.</p>
 <p>This is equivalent to:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">delta</span>
@@ -241,14 +242,14 @@ Timestamps are <cite>totally ordered</cite> (as supplied by <a class="reference 
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.Timestamp.datetime">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">datetime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.13)"><span class="pre">datetime</span></a></em><a class="headerlink" href="#metricq.Timestamp.datetime" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">datetime</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.15)"><span class="pre">datetime</span></a></span><a class="headerlink" href="#metricq.Timestamp.datetime" title="Link to this definition"></a></dt>
 <dd><p>Create an aware UTC datetime object</p>
 <p>All MetricQ timestamps are POSIX timestamps, hence UTC.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timestamp.from_datetime">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_datetime" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">classmethod</span> </span><span class="sig-name descname"><span class="pre">from_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_datetime" title="Link to this definition"></a></dt>
 <dd><p>Create a Timestamp from an aware datetime object. If you have a naive
 datetime object, consider using <a class="reference internal" href="#metricq.Timestamp.from_local_datetime" title="metricq.Timestamp.from_local_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_local_datetime()</span></code></a> instead.</p>
 <dl class="field-list simple">
@@ -260,20 +261,20 @@ datetime object, consider using <a class="reference internal" href="#metricq.Tim
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timestamp.from_iso8601">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_iso8601</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_iso8601" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">classmethod</span> </span><span class="sig-name descname"><span class="pre">from_iso8601</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_iso8601" title="Link to this definition"></a></dt>
 <dd><p>Create a Timestamp from a <cite>ISO 8601</cite> date-time string.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Timestamp</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p">(</span><span class="s2">&quot;1970-01-01T00:00:00.0Z&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Timestamp</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p">(</span><span class="s2">"1970-01-01T00:00:00.0Z"</span><span class="p">)</span> <span class="o">==</span> <span class="n">Timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
 </div>
 <p>This is a convenience method that parses the date-time string into a
-<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a> using
-<a class="reference external" href="https://dateutil.readthedocs.io/en/stable/parser.html#dateutil.parser.isoparse" title="(in dateutil v3.9.0)"><code class="docutils literal notranslate"><span class="pre">dateutil.parser.isoparse()</span></code></a>,
+<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a> using
+<a class="reference external" href="https://dateutil.readthedocs.io/en/stable/parser.html#dateutil.parser.isoparse" title="(in dateutil v4.0.0)"><code class="docutils literal notranslate"><span class="pre">dateutil.parser.isoparse()</span></code></a>,
 and then calls <a class="reference internal" href="#metricq.Timestamp.from_datetime" title="metricq.Timestamp.from_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_datetime()</span></code></a> to create a <a class="reference internal" href="#metricq.Timestamp" title="metricq.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a> from that.</p>
 <p>The provided <cite>iso_string</cite> must include timezone information. To parse
 local time strings, you must convert them yourself and use
 <a class="reference internal" href="#metricq.Timestamp.from_local_datetime" title="metricq.Timestamp.from_local_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_local_datetime()</span></code></a>. Or better yet, somehow create an aware
-<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a> and use <a class="reference internal" href="#metricq.Timestamp.from_datetime" title="metricq.Timestamp.from_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_datetime()</span></code></a>.</p>
+<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a> and use <a class="reference internal" href="#metricq.Timestamp.from_datetime" title="metricq.Timestamp.from_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_datetime()</span></code></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The parser only supports up to <em>6 sub-second digits</em>,
@@ -284,7 +285,7 @@ you need to convert the string to nanoseconds yourself.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>iso_string</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></span></dt></dt><dd><p>a date-time string in <cite>ISO 8601</cite> format including a
+<dt><strong>iso_string</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></span></dt></dt><dd><p>a date-time string in <cite>ISO 8601</cite> format including a
 timezone specifier.</p>
 </dd>
 </dl>
@@ -297,7 +298,7 @@ timezone specifier.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timestamp.from_local_datetime">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_local_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_local_datetime" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">classmethod</span> </span><span class="sig-name descname"><span class="pre">from_local_datetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_local_datetime" title="Link to this definition"></a></dt>
 <dd><p>Create a timestamp from a naive <a class="reference internal" href="#metricq.Timestamp.datetime" title="metricq.Timestamp.datetime"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> object that uses the
 local timezone.
 If you have a proper aware object, use <a class="reference internal" href="#metricq.Timestamp.from_datetime" title="metricq.Timestamp.from_datetime"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_datetime()</span></code></a> instead.</p>
@@ -314,7 +315,7 @@ If you have to use this function, your workflow is probably broken.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timestamp.from_now">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_now</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_now" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">classmethod</span> </span><span class="sig-name descname"><span class="pre">from_now</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_now" title="Link to this definition"></a></dt>
 <dd><p>Return a timestamp <cite>delta</cite> in the future.</p>
 <p>This is equivalent to:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">delta</span>
@@ -335,12 +336,12 @@ If you have to use this function, your workflow is probably broken.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timestamp.from_posix_seconds">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">from_posix_seconds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_posix_seconds" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">classmethod</span> </span><span class="sig-name descname"><span class="pre">from_posix_seconds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.from_posix_seconds" title="Link to this definition"></a></dt>
 <dd><p>Create a Timestamp from a POSIX timestamp</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>seconds</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></span></dt></dt><dd><p>number of seconds since the UNIX epoch</p>
+<dt><strong>seconds</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></span></dt></dt><dd><p>number of seconds since the UNIX epoch</p>
 </dd>
 </dl>
 </dd>
@@ -355,7 +356,7 @@ If you have to use this function, your workflow is probably broken.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timestamp.now">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">now</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.now" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">classmethod</span> </span><span class="sig-name descname"><span class="pre">now</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timestamp.now" title="Link to this definition"></a></dt>
 <dd><p>Return a Timestamp corresponding to “now”</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -369,25 +370,25 @@ If you have to use this function, your workflow is probably broken.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.Timestamp.posix">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">posix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.Timestamp.posix" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">posix</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.Timestamp.posix" title="Link to this definition"></a></dt>
 <dd><p>Number of seconds since the UNIX epoch</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.Timestamp.posix_ms">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">posix_ms</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.Timestamp.posix_ms" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">posix_ms</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.Timestamp.posix_ms" title="Link to this definition"></a></dt>
 <dd><p>Number of milliseconds since the UNIX epoch</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.Timestamp.posix_ns">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">posix_ns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></em><a class="headerlink" href="#metricq.Timestamp.posix_ns" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">posix_ns</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><a class="headerlink" href="#metricq.Timestamp.posix_ns" title="Link to this definition"></a></dt>
 <dd><p>Number of nanoseconds since the UNIX epoch</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.Timestamp.posix_us">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">posix_us</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.Timestamp.posix_us" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">posix_us</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.Timestamp.posix_us" title="Link to this definition"></a></dt>
 <dd><p>Number of microseconds since the UNIX epoch</p>
 </dd></dl>
 
@@ -398,12 +399,12 @@ If you have to use this function, your workflow is probably broken.</p>
 <h2>Timedeltas (Durations)<a class="headerlink" href="#timedeltas-durations" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="metricq.Timedelta">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">Timedelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nanoseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">Timedelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nanoseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta" title="Link to this definition"></a></dt>
 <dd><p>A (possibly negative) duration of time</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>nanoseconds</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span></span></dt></dt><dd><p>duration in nanoseconds</p>
+<dt><strong>nanoseconds</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span></span></dt></dt><dd><p>duration in nanoseconds</p>
 </dd>
 </dl>
 </dd>
@@ -427,7 +428,7 @@ If you have to use this function, your workflow is probably broken.</p>
 <tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">d</span> <span class="pre">+</span> <span class="pre">dt</span></code></p></td>
 <td><ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">d</span></code>: <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">dt</span></code>: <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">dt</span></code>: <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a></p></li>
 </ul>
 </td>
 <td><p>the combined duration of <code class="code docutils literal notranslate"><span class="pre">d</span></code> and
@@ -452,11 +453,11 @@ If you have to use this function, your workflow is probably broken.</p>
 <tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">d</span> <span class="pre">==</span> <span class="pre">dt</span></code></p></td>
 <td><ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">d</span></code>: <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">dt</span></code>: <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">dt</span></code>: <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a></p></li>
 </ul>
 </td>
 <td><p><code class="code docutils literal notranslate"><span class="pre">True</span></code> if <code class="code docutils literal notranslate"><span class="pre">d.datetime</span> <span class="pre">==</span> <span class="pre">dt</span></code>
-(see <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a>)</p></td>
+(see <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a>)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">d1</span> <span class="pre">&lt;</span> <span class="pre">d2</span></code></p></td>
 <td><ul class="simple">
@@ -468,16 +469,16 @@ If you have to use this function, your workflow is probably broken.</p>
 <tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">d</span> <span class="pre">&lt;</span> <span class="pre">dt</span></code></p></td>
 <td><ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">d</span></code>: <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">dt</span></code>: <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">dt</span></code>: <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a></p></li>
 </ul>
 </td>
 <td><p><code class="code docutils literal notranslate"><span class="pre">True</span></code> if <code class="code docutils literal notranslate"><span class="pre">d.datetime</span> <span class="pre">&lt;</span> <span class="pre">dt</span></code>
-(see <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a>)</p></td>
+(see <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a>)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">d</span> <span class="pre">*</span> <span class="pre">c</span></code></p></td>
 <td><ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">d</span></code>: <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">c</span></code>: <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">c</span></code>: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> or <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p></li>
 </ul>
 </td>
 <td><p>The duration scaled by the factor <code class="code docutils literal notranslate"><span class="pre">c</span></code>, truncated to nanosecond precision
@@ -486,7 +487,7 @@ See <a class="reference internal" href="#metricq.Timedelta.__mul__" title="metri
 <tr class="row-even"><td><p><code class="code docutils literal notranslate"><span class="pre">d</span> <span class="pre">/</span> <span class="pre">c</span></code></p></td>
 <td><ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">d</span></code>: <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">c</span></code>: <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">c</span></code>: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></p></li>
 </ul>
 </td>
 <td><p>The duration divided by <code class="code docutils literal notranslate"><span class="pre">c</span></code>, truncated to nanosecond precision.
@@ -495,7 +496,7 @@ See <a class="reference internal" href="#metricq.Timedelta.__truediv__" title="m
 <tr class="row-odd"><td><p><code class="code docutils literal notranslate"><span class="pre">d</span> <span class="pre">//</span> <span class="pre">n</span></code></p></td>
 <td><ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">d</span></code>: <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">n</span></code>: <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">n</span></code>: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></p></li>
 </ul>
 </td>
 <td><p>The duration divided by an <em>integer</em> factor <code class="code docutils literal notranslate"><span class="pre">n</span></code>, truncated to nanosecond precision.
@@ -512,15 +513,18 @@ The type is hashable.</p>
 <span class="sig-name descname"><span class="pre">__floordiv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__floordiv__" title="Link to this definition"></a></dt>
 <dd><p>Divide a duration by an integer or another <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span></p>
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>) → <span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span></p></li>
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span>) → <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span></p></li>
+</ul>
 </dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">td</span> <span class="o">=</span> <span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">//</span> <span class="mi">3</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">td</span><span class="o">.</span><span class="n">s</span>
 <span class="go">3.333333333</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">td</span><span class="o">.</span><span class="n">precise_string</span>
-<span class="go">&#39;3333333333ns&#39;</span>
+<span class="go">'3333333333ns'</span>
 </pre></div>
 </div>
 <p>This divides the number of nanoseconds in this duration by <cite>factor</cite>
@@ -544,7 +548,7 @@ Use <a class="reference internal" href="#metricq.Timedelta.__truediv__" title="m
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timedelta.__mul__">
 <span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__mul__" title="Link to this definition"></a></dt>
-<dd><p>Scale a duration by a <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> factor.</p>
+<dd><p>Scale a duration by a <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> factor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span></p>
@@ -556,15 +560,15 @@ Use <a class="reference internal" href="#metricq.Timedelta.__truediv__" title="m
 <dt class="sig sig-object py" id="metricq.Timedelta.__str__">
 <span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__str__" title="Link to this definition"></a></dt>
 <dd><p>A string containing the number of seconds of this duration</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
-</dd>
-</dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;One day has </span><span class="si">{}</span><span class="s2"> seconds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;1 day&quot;</span><span class="p">))</span>
-<span class="go">&#39;One day has 86400.0s seconds&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">"One day has </span><span class="si">{}</span><span class="s2"> seconds"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">"1 day"</span><span class="p">))</span>
+<span class="go">'One day has 86400.0s seconds'</span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -572,12 +576,15 @@ Use <a class="reference internal" href="#metricq.Timedelta.__truediv__" title="m
 <span class="sig-name descname"><span class="pre">__truediv__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.__truediv__" title="Link to this definition"></a></dt>
 <dd><p>Divide a duration by a floating point or <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>]</span></p>
+<dt class="field-odd">Overloads<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>) → <span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span></p></li>
+<li><p><strong>other</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></span>) → <span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></p></li>
+</ul>
 </dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_s</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.5</span><span class="p">)</span><span class="o">.</span><span class="n">precise_string</span>
-<span class="go">&#39;4s&#39;</span>
+<span class="go">'4s'</span>
 </pre></div>
 </div>
 <p>This divides the number of nanoseconds in this duration by <cite>factor</cite>
@@ -587,7 +594,7 @@ but truncates the result to an <code class="code docutils literal notranslate"><
 </pre></div>
 </div>
 <p>where <code class="code docutils literal notranslate"><span class="pre">td:</span> <span class="pre">Timedelta</span></code> and <code class="code docutils literal notranslate"><span class="pre">x:</span> <span class="pre">float</span></code>.</p>
-<p>Division by another <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> instead yields a <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> result.</p>
+<p>Division by another <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> instead yields a <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a> result.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Use <a class="reference internal" href="#metricq.Timedelta.__floordiv__" title="metricq.Timedelta.__floordiv__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__floordiv__()</span></code></a> if you know that the divisor is an integer,
@@ -597,12 +604,12 @@ this will prevent rounding errors.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timedelta.from_ms">
-<em class="property"><span class="pre">staticmethod</span> </em><span class="sig-name descname"><span class="pre">from_ms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">milliseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_ms" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">staticmethod</span> </span><span class="sig-name descname"><span class="pre">from_ms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">milliseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_ms" title="Link to this definition"></a></dt>
 <dd><p>Create a duration from a number of milliseconds</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>milliseconds</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></span></dt></dt><dd><p>number of milliseconds</p>
+<dt><strong>milliseconds</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></span></dt></dt><dd><p>number of milliseconds</p>
 </dd>
 </dl>
 </dd>
@@ -617,12 +624,12 @@ this will prevent rounding errors.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timedelta.from_s">
-<em class="property"><span class="pre">staticmethod</span> </em><span class="sig-name descname"><span class="pre">from_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_s" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">staticmethod</span> </span><span class="sig-name descname"><span class="pre">from_s</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_s" title="Link to this definition"></a></dt>
 <dd><p>Create a duration from a number of seconds</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>seconds</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></span></dt></dt><dd><p>number of seconds</p>
+<dt><strong>seconds</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></span></dt></dt><dd><p>number of seconds</p>
 </dd>
 </dl>
 </dd>
@@ -637,16 +644,16 @@ this will prevent rounding errors.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timedelta.from_string">
-<em class="property"><span class="pre">staticmethod</span> </em><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration_str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_string" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">staticmethod</span> </span><span class="sig-name descname"><span class="pre">from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration_str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_string" title="Link to this definition"></a></dt>
 <dd><p>Parse a human-readable string representation of a duration.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;One day has </span><span class="si">{}</span><span class="s2"> seconds&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;1 day&quot;</span><span class="p">))</span>
-<span class="go">&#39;One day has 86400.0s seconds&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">"One day has </span><span class="si">{}</span><span class="s2"> seconds"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Timedelta</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">"1 day"</span><span class="p">))</span>
+<span class="go">'One day has 86400.0s seconds'</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>duration_str</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></span></dt></dt><dd><p><p>A duration string in the form of “<cite>&lt;number&gt; &lt;unit&gt;</cite>”.
+<dt><strong>duration_str</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></span></dt></dt><dd><p><p>A duration string in the form of “<cite>&lt;number&gt; &lt;unit&gt;</cite>”.
 Accepted units are:</p>
 <blockquote>
 <div><table class="docutils align-default">
@@ -699,19 +706,19 @@ Accepted units are:</p>
 <dd class="field-odd"><p>The parsed <a class="reference internal" href="#metricq.Timedelta" title="metricq.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a> object</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.13)"><strong>ValueError</strong></a> – if the string is not of the correct format or an invalid unit was specified</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – if the string is not of the correct format or an invalid unit was specified</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timedelta.from_timedelta">
-<em class="property"><span class="pre">staticmethod</span> </em><span class="sig-name descname"><span class="pre">from_timedelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_timedelta" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">staticmethod</span> </span><span class="sig-name descname"><span class="pre">from_timedelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_timedelta" title="Link to this definition"></a></dt>
 <dd><p>Convert from a standard <code class="docutils literal notranslate"><span class="pre">timedelta</span></code> object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>delta</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a></span></span></dt></dt><dd><p>a standard <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a> object</p>
+<dt><strong>delta</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">timedelta</span></code></a></span></span></dt></dt><dd><p>a standard <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a> object</p>
 </dd>
 </dl>
 </dd>
@@ -726,12 +733,12 @@ Accepted units are:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.Timedelta.from_us">
-<em class="property"><span class="pre">staticmethod</span> </em><span class="sig-name descname"><span class="pre">from_us</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">microseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_us" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">staticmethod</span> </span><span class="sig-name descname"><span class="pre">from_us</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">microseconds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.Timedelta.from_us" title="Link to this definition"></a></dt>
 <dd><p>Create a duration from a number of microseconds</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>microseconds</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></span></dt></dt><dd><p>number of microseconds</p>
+<dt><strong>microseconds</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span></span></dt></dt><dd><p>number of microseconds</p>
 </dd>
 </dl>
 </dd>
@@ -746,19 +753,19 @@ Accepted units are:</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.Timedelta.ms">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ms</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.Timedelta.ms" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ms</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.Timedelta.ms" title="Link to this definition"></a></dt>
 <dd><p>Number of milliseconds in this duration</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.Timedelta.ns">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><span class="pre">int</span></a></em><a class="headerlink" href="#metricq.Timedelta.ns" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ns</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><a class="headerlink" href="#metricq.Timedelta.ns" title="Link to this definition"></a></dt>
 <dd><p>Number of nanoseconds in this duration</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.Timedelta.precise_string">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">precise_string</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><span class="pre">str</span></a></em><a class="headerlink" href="#metricq.Timedelta.precise_string" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">precise_string</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span><a class="headerlink" href="#metricq.Timedelta.precise_string" title="Link to this definition"></a></dt>
 <dd><p>An exact string representation of the duration preserving all nanosecond digits.
 If possible, a human-readable string is returned, e.g. <code class="docutils literal notranslate"><span class="pre">100ms</span></code>.
 The result of this can be parsed by <a class="reference internal" href="#metricq.Timedelta.from_string" title="metricq.Timedelta.from_string"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_string()</span></code></a> without losing
@@ -767,19 +774,19 @@ precision.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.Timedelta.s">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">s</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.Timedelta.s" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">s</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.Timedelta.s" title="Link to this definition"></a></dt>
 <dd><p>Number of seconds in this duration</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.Timedelta.timedelta">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">timedelta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.13)"><span class="pre">timedelta</span></a></em><a class="headerlink" href="#metricq.Timedelta.timedelta" title="Link to this definition"></a></dt>
-<dd><p>This duration as a standard <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a> object</p>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">timedelta</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.15)"><span class="pre">timedelta</span></a></span><a class="headerlink" href="#metricq.Timedelta.timedelta" title="Link to this definition"></a></dt>
+<dd><p>This duration as a standard <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">datetime.timedelta</span></code></a> object</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.Timedelta.us">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">us</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.Timedelta.us" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">us</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.Timedelta.us" title="Link to this definition"></a></dt>
 <dd><p>Number of microseconds in this duration</p>
 </dd></dl>
 
@@ -790,7 +797,7 @@ precision.</p>
 <h2>Time-value pairs and aggregates<a class="headerlink" href="#time-value-pairs-and-aggregates" title="Link to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="metricq.TimeValue">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">TimeValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeValue" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">TimeValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeValue" title="Link to this definition"></a></dt>
 <dd><p>A <cite>timestamp-value</cite> pair.</p>
 <p>Unpack it like so:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tv</span> <span class="o">=</span> <span class="n">TimeValue</span><span class="p">(</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="mf">42.0</span><span class="p">)</span>
@@ -808,72 +815,72 @@ timestamp type.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.TimeValue.timestamp">
-<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></em><a class="headerlink" href="#metricq.TimeValue.timestamp" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">timestamp</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><span class="pre">Timestamp</span></a></span><a class="headerlink" href="#metricq.TimeValue.timestamp" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.TimeValue.value">
-<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#metricq.TimeValue.value" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">value</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.TimeValue.value" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="metricq.TimeAggregate">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">TimeAggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integral_ns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">TimeAggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">integral_ns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">active_time</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate" title="Link to this definition"></a></dt>
 <dd><p>Summary of a metric’s values within a certain period of time.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.timestamp">
-<span class="sig-name descname"><span class="pre">timestamp</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timestamp</span></code></a></em><a class="headerlink" href="#metricq.TimeAggregate.timestamp" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">timestamp</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#metricq.Timestamp" title="metricq.timeseries.timestamp.Timestamp"><span class="pre">Timestamp</span></a></span><a class="headerlink" href="#metricq.TimeAggregate.timestamp" title="Link to this definition"></a></dt>
 <dd><p>starting time of this aggregate</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.minimum">
-<span class="sig-name descname"><span class="pre">minimum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#metricq.TimeAggregate.minimum" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">minimum</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.TimeAggregate.minimum" title="Link to this definition"></a></dt>
 <dd><p>minimum value</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.maximum">
-<span class="sig-name descname"><span class="pre">maximum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#metricq.TimeAggregate.maximum" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">maximum</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.TimeAggregate.maximum" title="Link to this definition"></a></dt>
 <dd><p>maximum value</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.sum">
-<span class="sig-name descname"><span class="pre">sum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#metricq.TimeAggregate.sum" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">sum</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.TimeAggregate.sum" title="Link to this definition"></a></dt>
 <dd><p>sum of all values</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.count">
-<span class="sig-name descname"><span class="pre">count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><a class="headerlink" href="#metricq.TimeAggregate.count" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">count</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><a class="headerlink" href="#metricq.TimeAggregate.count" title="Link to this definition"></a></dt>
 <dd><p>total number of values</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.integral_ns">
-<span class="sig-name descname"><span class="pre">integral_ns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></em><a class="headerlink" href="#metricq.TimeAggregate.integral_ns" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">integral_ns</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.TimeAggregate.integral_ns" title="Link to this definition"></a></dt>
 <dd><p>Integral of values in this aggregate over its active time, nanoseconds-based</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.active_time">
-<span class="sig-name descname"><span class="pre">active_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><code class="xref py py-class docutils literal notranslate"><span class="pre">Timedelta</span></code></a></em><a class="headerlink" href="#metricq.TimeAggregate.active_time" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">active_time</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#metricq.Timedelta" title="metricq.timeseries.timedelta.Timedelta"><span class="pre">Timedelta</span></a></span><a class="headerlink" href="#metricq.TimeAggregate.active_time" title="Link to this definition"></a></dt>
 <dd><p>time spanned by this aggregate</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.from_proto">
-<em class="property"><span class="pre">staticmethod</span> </em><span class="sig-name descname"><span class="pre">from_proto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate.from_proto" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">staticmethod</span> </span><span class="sig-name descname"><span class="pre">from_proto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate.from_proto" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#metricq.TimeAggregate" title="metricq.timeseries.time_aggregate.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a></span></p>
@@ -883,7 +890,7 @@ timestamp type.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.from_value">
-<em class="property"><span class="pre">staticmethod</span> </em><span class="sig-name descname"><span class="pre">from_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate.from_value" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">staticmethod</span> </span><span class="sig-name descname"><span class="pre">from_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate.from_value" title="Link to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#metricq.TimeAggregate" title="metricq.timeseries.time_aggregate.TimeAggregate"><code class="xref py py-class docutils literal notranslate"><span class="pre">TimeAggregate</span></code></a></span></p>
@@ -893,7 +900,7 @@ timestamp type.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.from_value_pair">
-<em class="property"><span class="pre">staticmethod</span> </em><span class="sig-name descname"><span class="pre">from_value_pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp_before</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate.from_value_pair" title="Link to this definition"></a></dt>
+<span class="property"><span class="pre">staticmethod</span> </span><span class="sig-name descname"><span class="pre">from_value_pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp_before</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#metricq.TimeAggregate.from_value_pair" title="Link to this definition"></a></dt>
 <dd><p>Create a TimeAggregate from a pair of timestamps (class:<cite>Timestamp</cite>) and one value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
@@ -907,13 +914,13 @@ timestamp type.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.integral_s">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">integral_s</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.TimeAggregate.integral_s" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">integral_s</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.TimeAggregate.integral_s" title="Link to this definition"></a></dt>
 <dd><p>Integral of values in this aggregate over its active time, seconds-based</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.mean">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mean</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.TimeAggregate.mean" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">mean</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.TimeAggregate.mean" title="Link to this definition"></a></dt>
 <dd><p>Mean value of this aggregate.
 This is the general way to access the mean value if nothing specific
 is known about the underlying raw data.</p>
@@ -923,7 +930,7 @@ is known about the underlying raw data.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.mean_integral">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mean_integral</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.TimeAggregate.mean_integral" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">mean_integral</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.TimeAggregate.mean_integral" title="Link to this definition"></a></dt>
 <dd><p>Mean value of this aggregate, calculated from the integral.
 Use this if you want to explicitly force this property.</p>
 <p>In the HTA context, this should only be <cite>NaN</cite> if the aggregate interval
@@ -933,7 +940,7 @@ measurement point.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="metricq.TimeAggregate.mean_sum">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mean_sum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><span class="pre">float</span></a></em><a class="headerlink" href="#metricq.TimeAggregate.mean_sum" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">mean_sum</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><a class="headerlink" href="#metricq.TimeAggregate.mean_sum" title="Link to this definition"></a></dt>
 <dd><p>Mean value of this aggregate, calculated from the sum.
 This can be useful when the underlying metric should be at regular
 intervals, but there are gaps in the data. Otherwise,
@@ -953,7 +960,7 @@ Keys are <cite>timestamp</cite>, <cite>minimum</cite>, <cite>mean</cite>, <cite>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -966,13 +973,13 @@ Keys are <cite>timestamp</cite>, <cite>minimum</cite>, <cite>mean</cite>, <cite>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.Metric">
 <span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">Metric</span></span><a class="headerlink" href="#metricq.Metric" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
+<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="metricq.JsonDict">
 <span class="sig-prename descclassname"><span class="pre">metricq.</span></span><span class="sig-name descname"><span class="pre">JsonDict</span></span><a class="headerlink" href="#metricq.JsonDict" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
 </dd></dl>
 
 </section>
@@ -985,12 +992,12 @@ Keys are <cite>timestamp</cite>, <cite>minimum</cite>, <cite>mean</cite>, <cite>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>function_tags</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></span></dt></dt><dd><p>The names of the RPCs that this method should handle</p>
+<dt><strong>function_tags</strong> <span class="classifier"><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></span></dt></dt><dd><p>The names of the RPCs that this method should handle</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]]], <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]]]</span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/constants.html#Ellipsis" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]]], <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Callable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/constants.html#Ellipsis" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]]]</span></p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -1000,9 +1007,9 @@ Keys are <cite>timestamp</cite>, <cite>minimum</cite>, <cite>mean</cite>, <cite>
 
     <span class="o">...</span>
 
-    <span class="nd">@rpc_handler</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span>
+    <span class="nd">@rpc_handler</span><span class="p">(</span><span class="s2">"config"</span><span class="p">)</span>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Received configuration: </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Received configuration: </span><span class="si">{</span><span class="n">config</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="o">...</span>
 </pre></div>

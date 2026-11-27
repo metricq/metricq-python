@@ -8,14 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Creating a new project for MetricQ &mdash; MetricQ  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx_autodoc_typehints.css?v=057ac668" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -121,8 +122,8 @@ The directory <code class="file docutils literal notranslate"><span class="pre">
 project, create a new file <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> in the project root,
 and declare the necessary build dependencies:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
-<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;setuptools&gt;=40.6.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;wheel&quot;</span><span class="p">]</span>
-<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;setuptools.build_meta&#39;</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">"setuptools&gt;=40.6.0"</span><span class="p">,</span><span class="w"> </span><span class="s2">"wheel"</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'setuptools.build_meta'</span>
 </pre></div>
 </div>
 <p>This enables tools like <code class="docutils literal notranslate"><span class="pre">pip</span></code> to create packages from the project.</p>
@@ -183,9 +184,9 @@ additional dependencies:</p>
 </div>
 <p>The package can then be installed with the feature enabled like so:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="c1"># Local installation</span>
-$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;/path/to/metricq-example[my_feature]&#39;</span>
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">'/path/to/metricq-example[my_feature]'</span>
 $<span class="w"> </span><span class="c1"># Installation from PyPI</span>
-$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;metricq-example[my_feature]&#39;</span>
+$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">'metricq-example[my_feature]'</span>
 </pre></div>
 </div>
 </section>
@@ -201,7 +202,7 @@ $<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </sp
 <span class="na">long_description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file: README.rst</span>
 <span class="na">long_description_content_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">text/rst</span>
 <span class="na">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">https://example.com/metricq-example</span>
-<span class="na">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">BSD 3-clause &quot;New&quot; or &quot;Revised License&quot;</span>
+<span class="na">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">BSD 3-clause "New" or "Revised License"</span>
 <span class="na">license_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">LICENSE</span>
 <span class="na">classifiers</span><span class="w"> </span><span class="o">=</span>
 <span class="w">    </span><span class="na">License</span><span class="w"> </span><span class="o">:</span><span class="s">: OSI Approved :: BSD License</span>
@@ -217,7 +218,7 @@ itself is licensed under the terms of the <cite>BSD 3-clause “New” or “Rev
 </section>
 <section id="command-line-interfaces">
 <h2>Command line interfaces<a class="headerlink" href="#command-line-interfaces" title="Link to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">setuptools</span></code> allows declaration of <a class="reference external" href="https://docs.python.org/3/library/importlib.metadata.html#entry-points" title="(in Python v3.13)"><span>Entry points</span></a>.
+<p><code class="docutils literal notranslate"><span class="pre">setuptools</span></code> allows declaration of <a class="reference external" href="https://docs.python.org/3/library/importlib.metadata.html#entry-points" title="(in Python v3.15)"><span>Entry points</span></a>.
 An entry point of type <code class="docutils literal notranslate"><span class="pre">console_script</span></code> makes a python function the
 entry point of a script that is added to the <code class="code docutils literal notranslate"><span class="pre">$PATH</span></code> of your Python environment:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># In setup.cfg:</span>
@@ -241,18 +242,18 @@ include <cite>at least</cite> options to configure the MetricQ network URL and a
 
 <span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
-    <span class="s2">&quot;--server&quot;</span><span class="p">,</span>
-    <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="s2">&quot;amqp://localhost/&quot;</span><span class="p">,</span>
+    <span class="s2">"--server"</span><span class="p">,</span>
+    <span class="n">metavar</span><span class="o">=</span><span class="s2">"URL"</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="s2">"amqp://localhost/"</span><span class="p">,</span>
     <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;MetricQ server URL.&quot;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">"MetricQ server URL."</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
-    <span class="s2">&quot;--token&quot;</span><span class="p">,</span>
-    <span class="n">metavar</span><span class="o">=</span><span class="s2">&quot;CLIENT_TOKEN&quot;</span><span class="p">,</span>
+    <span class="s2">"--token"</span><span class="p">,</span>
+    <span class="n">metavar</span><span class="o">=</span><span class="s2">"CLIENT_TOKEN"</span><span class="p">,</span>
     <span class="n">default</span><span class="o">=</span><span class="n">default</span><span class="p">,</span>
     <span class="n">show_default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;A token to identify this client on the MetricQ network.&quot;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">"A token to identify this client on the MetricQ network."</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">server</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="o">...</span>
@@ -272,13 +273,13 @@ code at runtime:</p>
 <span class="k">[build-system]</span>
 <span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="c1"># ..., other build dependencies here</span>
-<span class="w">    </span><span class="s2">&quot;setuptools_scm[toml]~=6.0&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">"setuptools_scm[toml]~=6.0"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="c1"># ...</span>
 
 <span class="k">[tool.setuptools_scm]</span>
-<span class="n">write_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;metricq_example/version.py&quot;</span>
+<span class="n">write_to</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"metricq_example/version.py"</span>
 </pre></div>
 </div>
 <p>On installation, this creates a file <code class="file docutils literal notranslate"><span class="pre">metricq_example/version.py</span></code> that
@@ -303,13 +304,13 @@ module</em> as your client class to have it be picked up automatically by the
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in metricq_example/client.py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">metricq</span>
 
-<span class="c1"># import this project&#39;s version string</span>
+<span class="c1"># import this project's version string</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">version</span> <span class="k">as</span> <span class="n">__version__</span>
 
 
 <span class="c1"># This could also be a Sink, HistoryClient, etc.</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">MySource</span><span class="p">(</span><span class="n">metricq</span><span class="o">.</span><span class="n">Source</span><span class="p">):</span>
-    <span class="c1"># __version__ will be picked up automatically as this client&#39;s version</span>
+    <span class="c1"># __version__ will be picked up automatically as this client's version</span>
     <span class="o">...</span>
 </pre></div>
 </div>
@@ -363,7 +364,7 @@ that transitively includes all optional dependencies needed for a local developm
 <p>The string <code class="docutils literal notranslate"><span class="pre">%(foo)</span></code> includes all dependencies of extra <code class="docutils literal notranslate"><span class="pre">foo</span></code> in another extra.
 Create a new <em>virtual environment</em> for this project,
 and then (with this environment activated) set up a local development environment by executing</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;.[dev]&#39;</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s1">'.[dev]'</span>
 </pre></div>
 </div>
 <p>in the project directory.</p>
@@ -390,7 +391,7 @@ For example, to test the function in module <code class="code docutils literal n
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In metricq_example/hello.py</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Hello, </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">!&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"Hello, </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">!"</span>
 </pre></div>
 </div>
 <p>…create a test like so:</p>
@@ -401,7 +402,7 @@ For example, to test the function in module <code class="code docutils literal n
 <span class="kn">from</span><span class="w"> </span><span class="nn">metricq_example.hello</span><span class="w"> </span><span class="kn">import</span> <span class="n">hello</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">test_hello</span><span class="p">():</span>
-    <span class="k">assert</span> <span class="n">hello</span><span class="p">(</span><span class="s2">&quot;Tester&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Hello, Tester!&quot;</span>
+    <span class="k">assert</span> <span class="n">hello</span><span class="p">(</span><span class="s2">"Tester"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"Hello, Tester!"</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -462,7 +463,7 @@ A sensible default configuration includes the following:</p>
 <span class="w">    </span><span class="na">N</span>
 <span class="c1"># Rules to ignore.  Add a reason why.</span>
 <span class="na">ignore</span><span class="w"> </span><span class="o">=</span>
-<span class="w">    </span><span class="c1"># E203: whitespace before &#39;:&#39; (not PEP8 compliant)</span>
+<span class="w">    </span><span class="c1"># E203: whitespace before ':' (not PEP8 compliant)</span>
 <span class="w">    </span><span class="na">E203</span>
 <span class="w">    </span><span class="c1"># E501: line too long (replaced by B950)</span>
 <span class="w">    </span><span class="na">E501</span>
@@ -488,14 +489,14 @@ Configure it in <code class="file docutils literal notranslate"><span class="pre
 <span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.8.0</span>
 <span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">isort</span>
-<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;--check&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--diff&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"--check"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"--diff"</span><span class="p p-Indicator">]</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/psf/black</span>
 <span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">21.5b1</span>
 <span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">black</span>
-<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;--check&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;--diff&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"--check"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"--diff"</span><span class="p p-Indicator">]</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/mgedmin/check-manifest</span>
-<span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0.46&quot;</span>
+<span class="w">  </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="s">"0.46"</span>
 <span class="w">  </span><span class="nt">hooks</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">check-manifest</span>
 </pre></div>
