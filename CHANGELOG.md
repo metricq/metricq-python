@@ -4,8 +4,14 @@
 
 [Full Changelog](https://github.com/metricq/metricq-python/compare/v5.4.0...HEAD)
 
+**Fixed bugs:**
+
+- Pandas timezone [\#185](https://github.com/metricq/metricq-python/issues/185)
+
 **Merged pull requests:**
 
+- build\(deps\): bump actions/setup-python from 5 to 7 [\#207](https://github.com/metricq/metricq-python/pull/207) ([dependabot[bot]](https://github.com/apps/dependabot))
+- build\(deps\): bump frabert/replace-string-action from 1.1 to 2.5 [\#205](https://github.com/metricq/metricq-python/pull/205) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Rework CLI interface [\#203](https://github.com/metricq/metricq-python/pull/203) ([bmario](https://github.com/bmario))
 
 ## [v5.4.0](https://github.com/metricq/metricq-python/tree/v5.4.0) (2024-12-19)
