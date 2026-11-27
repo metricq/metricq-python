@@ -103,7 +103,7 @@ jobs:
         id: get_last_tag
         run: echo "::set-output name=last_tag::$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1))"
       - name: Generate release changelog
-        uses: charmixer/auto-changelog-action@v1.1
+        uses: charmixer/auto-changelog-action@v1.4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           since_tag: ${{ steps.get_last_tag.outputs.last_tag }}

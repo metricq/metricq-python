@@ -25,7 +25,7 @@ jobs:
       - name: Set version number
         run: echo -n "${{ github.event.inputs.version }}" > .version
       - name: Generate changelog
-        uses: charmixer/auto-changelog-action@v1.1
+        uses: charmixer/auto-changelog-action@v1.4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           future_release: "v${{ github.event.inputs.version }}"
