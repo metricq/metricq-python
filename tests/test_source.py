@@ -28,7 +28,6 @@ def assert_declare_metrics(
     ]
 
 
-@pytest.mark.asyncio
 async def test_source_declare_metrics_augment_chunk_size(source: _TestSource) -> None:
     """Assert that chunkSize is added to metadata when declaring metrics"""
     source.chunk_size = 42
@@ -37,7 +36,6 @@ async def test_source_declare_metrics_augment_chunk_size(source: _TestSource) ->
     assert_declare_metrics(source, metrics={"test.foo": {"chunkSize": 42}})
 
 
-@pytest.mark.asyncio
 async def test_source_declare_metrics_augment_chunk_size_override(
     source: _TestSource,
 ) -> None:
