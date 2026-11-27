@@ -91,7 +91,7 @@ jobs:
           password: ${{ secrets.pypi_password }}
       - name: Reformat version number
         id: reformat_release
-        uses: frabert/replace-string-action@v1.1
+        uses: frabert/replace-string-action@v2.5
         with:
           pattern: 'refs\/tags\/v([0-9.]+)'
           string: ${{ github.ref }}
