@@ -92,7 +92,7 @@ jobs:
           pattern: 'refs\/tags\/v([0-9.]+)'
           string: ${{ github.ref }}
           replace-with: "$1"
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Get last tag
@@ -129,9 +129,9 @@ jobs:
       OUTPUT_DIR: build/sphinx
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ env.release-python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.release-python-version }}
       - name: Install Protoc
@@ -154,9 +154,9 @@ jobs:
           path: ${{ env.OUTPUT_DIR }}
           name: docs
       - name: Deploy documentation to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+        uses: JamesIves/github-pages-deploy-action@v4
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         with:
-          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: ${{ env.OUTPUT_DIR }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: ${{ env.OUTPUT_DIR }}
