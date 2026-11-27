@@ -359,8 +359,8 @@ setup(
         "aio-pika~=10.0",
         get_protobuf_requirement(),
         "Deprecated~=1.3.1",
-        "python-dateutil ~= 2.8, >=2.8.1",
-        "yarl",
+        "python-dateutil~=2.9",
+        "yarl>=1.0",
     ],
     cmdclass={
         "build_protobuf": BuildProtobuf,
