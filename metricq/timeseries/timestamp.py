@@ -188,12 +188,10 @@ class Timestamp:
         return Timestamp(self._value + delta.ns)
 
     @overload
-    def __sub__(self, other: Timedelta) -> "Timestamp":
-        ...
+    def __sub__(self, other: Timedelta) -> "Timestamp": ...
 
     @overload
-    def __sub__(self, other: "Timestamp") -> Timedelta:
-        ...
+    def __sub__(self, other: "Timestamp") -> Timedelta: ...
 
     def __sub__(
         self, other: Union[Timedelta, "Timestamp"]

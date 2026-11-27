@@ -154,9 +154,9 @@ class Agent(RPCDispatcher):
         self._management_broadcast_exchange_name = "metricq.broadcast"
         self._management_exchange_name = "metricq.management"
 
-        self._management_connection: Optional[
-            aio_pika.abc.AbstractRobustConnection
-        ] = None
+        self._management_connection: Optional[aio_pika.abc.AbstractRobustConnection] = (
+            None
+        )
         self._management_connection_watchdog = ConnectionWatchdog(
             on_timeout_callback=lambda watchdog: self._schedule_stop(
                 ReconnectTimeout(
@@ -170,14 +170,14 @@ class Agent(RPCDispatcher):
 
         self.management_rpc_queue: Optional[aio_pika.abc.AbstractQueue] = None
 
-        self._management_broadcast_exchange: Optional[
-            aio_pika.abc.AbstractExchange
-        ] = None
+        self._management_broadcast_exchange: Optional[aio_pika.abc.AbstractExchange] = (
+            None
+        )
         self._management_exchange: Optional[aio_pika.abc.AbstractExchange] = None
 
-        self._rpc_response_handlers: dict[
-            str, tuple[Callable[..., None], bool]
-        ] = dict()
+        self._rpc_response_handlers: dict[str, tuple[Callable[..., None], bool]] = (
+            dict()
+        )
         logger.info(
             "Initialized Agent `{}` (running version `metricq=={}`)",
             type(self).__qualname__,

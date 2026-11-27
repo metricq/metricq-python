@@ -39,6 +39,7 @@ This example shows how to set up a pure `metricq.Client` that can  controlled
 with an aiomonitor. After this setup, you can connect to the monitor using
 `telnet localhost 50101` (or `netcat`), inspect tasks and run code in a REPL.
 """
+
 import asyncio
 
 import aiomonitor  # type: ignore

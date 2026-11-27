@@ -307,7 +307,7 @@ class BuildProtobuf(Command):
             )
 
     def _write_protobuf_version_file(self) -> None:
-        (major, minor, patch) = protoc_wrapper.version
+        major, minor, patch = protoc_wrapper.version
         assert self.package_dir is not None
         version_file = os.path.join(self.package_dir, protobuf_version_module_file)
         self.info(

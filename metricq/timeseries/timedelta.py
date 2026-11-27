@@ -229,16 +229,13 @@ class Timedelta:
         return datetime.timedelta(microseconds=microseconds)
 
     @overload
-    def __add__(self, other: "Timedelta") -> "Timedelta":
-        ...
+    def __add__(self, other: "Timedelta") -> "Timedelta": ...
 
     @overload
-    def __add__(self, other: "Timestamp") -> "Timestamp":
-        ...
+    def __add__(self, other: "Timestamp") -> "Timestamp": ...
 
     @overload
-    def __add__(self, other: datetime.timedelta) -> "Timedelta":
-        ...
+    def __add__(self, other: datetime.timedelta) -> "Timedelta": ...
 
     def __add__(
         self, other: Union["Timedelta", "Timestamp", datetime.timedelta]
@@ -251,12 +248,10 @@ class Timedelta:
         return other + self
 
     @overload
-    def __sub__(self, other: "Timedelta") -> "Timedelta":
-        ...
+    def __sub__(self, other: "Timedelta") -> "Timedelta": ...
 
     @overload
-    def __sub__(self, other: datetime.timedelta) -> "Timedelta":
-        ...
+    def __sub__(self, other: datetime.timedelta) -> "Timedelta": ...
 
     def __sub__(self, other: Union["Timedelta", datetime.timedelta]) -> "Timedelta":
         if isinstance(other, Timedelta):
@@ -268,12 +263,10 @@ class Timedelta:
         )
 
     @overload
-    def __floordiv__(self, other: int) -> "Timedelta":
-        ...
+    def __floordiv__(self, other: int) -> "Timedelta": ...
 
     @overload
-    def __floordiv__(self, other: "Timedelta") -> int:
-        ...
+    def __floordiv__(self, other: "Timedelta") -> int: ...
 
     def __floordiv__(self, other: Union[int, "Timedelta"]) -> Union["Timedelta", int]:
         """Divide a duration by an integer or another :class:`Timedelta`.
@@ -304,12 +297,10 @@ class Timedelta:
         return Timedelta(self._value // other)
 
     @overload
-    def __truediv__(self, other: float) -> "Timedelta":
-        ...
+    def __truediv__(self, other: float) -> "Timedelta": ...
 
     @overload
-    def __truediv__(self, other: "Timedelta") -> float:
-        ...
+    def __truediv__(self, other: "Timedelta") -> float: ...
 
     def __truediv__(
         self, other: Union[float, "Timedelta"]
