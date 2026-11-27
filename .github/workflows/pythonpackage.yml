@@ -4,6 +4,7 @@ on: [push, pull_request, workflow_dispatch]
 
 env:
   release-python-version: "3.11"
+  docs-python-version: "3.13"
   protoc-version: "36.x"
 
 jobs:
@@ -133,10 +134,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python ${{ env.release-python-version }}
+      - name: Set up Python ${{ env.docs-python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.release-python-version }}
+          python-version: ${{ env.docs-python-version }}
       - name: Install Protoc
         uses: arduino/setup-protoc@v3
         with:
