@@ -68,7 +68,7 @@ jobs:
       - name: Build Python distribution
         run: pip wheel --wheel-dir dist/ .
       - name: Upload distribution artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: distribution-packages
           path: dist/metricq-*.whl
@@ -110,7 +110,7 @@ jobs:
           base: "none.md" # ignore the HISTORY.md file
           output: release-changelog.md
       - name: Upload release changelog artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-changelog
           path: release-changelog.md
@@ -154,7 +154,7 @@ jobs:
           # run HTML builder (-b) in nitpicky mode (-n) in a fresh environment (-E)
           sphinx-build -b html -n -E docs ${{ env.OUTPUT_DIR }}
       - name: Upload generated HTML as build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           path: ${{ env.OUTPUT_DIR }}
           name: docs
