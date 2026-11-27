@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+- build\(deps-dev\): update mypy-protobuf requirement from ~=3.4.0 to ~=5.1.0 [\#210](https://github.com/metricq/metricq-python/pull/210) ([dependabot[bot]](https://github.com/apps/dependabot))
 - build\(deps-dev\): update setuptools requirement from \>=75.6.0 to \>=84.2.1 [\#209](https://github.com/metricq/metricq-python/pull/209) ([dependabot[bot]](https://github.com/apps/dependabot))
 - build\(deps\): bump charmixer/auto-changelog-action from 1.1 to 1.4 [\#208](https://github.com/metricq/metricq-python/pull/208) ([dependabot[bot]](https://github.com/apps/dependabot))
 - build\(deps\): bump actions/setup-python from 5 to 7 [\#207](https://github.com/metricq/metricq-python/pull/207) ([dependabot[bot]](https://github.com/apps/dependabot))
