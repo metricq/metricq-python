@@ -10,7 +10,9 @@
 
 **Merged pull requests:**
 
+- build\(deps\): bump charmixer/auto-changelog-action from 1.1 to 1.4 [\#208](https://github.com/metricq/metricq-python/pull/208) ([dependabot[bot]](https://github.com/apps/dependabot))
 - build\(deps\): bump actions/setup-python from 5 to 7 [\#207](https://github.com/metricq/metricq-python/pull/207) ([dependabot[bot]](https://github.com/apps/dependabot))
+- build\(deps\): bump actions/checkout from 4 to 7 [\#206](https://github.com/metricq/metricq-python/pull/206) ([dependabot[bot]](https://github.com/apps/dependabot))
 - build\(deps\): bump frabert/replace-string-action from 1.1 to 2.5 [\#205](https://github.com/metricq/metricq-python/pull/205) ([dependabot[bot]](https://github.com/apps/dependabot))
 - build\(deps\): bump actions/upload-artifact from 4 to 7 [\#204](https://github.com/metricq/metricq-python/pull/204) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Rework CLI interface [\#203](https://github.com/metricq/metricq-python/pull/203) ([bmario](https://github.com/bmario))
@@ -127,7 +129,7 @@
 **Implemented enhancements:**
 
 - Dealing with naive datetime objects [\#138](https://github.com/metricq/metricq-python/issues/138)
-- Allow `url` instead of `management\_url` kwarg in `metricq.Client` [\#130](https://github.com/metricq/metricq-python/issues/130)
+- Allow `url` instead of `management_url` kwarg in `metricq.Client` [\#130](https://github.com/metricq/metricq-python/issues/130)
 - Simple export of history data to panda dataframe [\#128](https://github.com/metricq/metricq-python/issues/128)
 - Improve datatime parsing of Timestamp [\#125](https://github.com/metricq/metricq-python/issues/125)
 - Update aio-pika to \>=8.0 [\#124](https://github.com/metricq/metricq-python/issues/124)
@@ -188,8 +190,8 @@
 
 **Implemented enhancements:**
 
-- Add `dict\(\)` method to `TimeValue` and `TimeAggregate` [\#121](https://github.com/metricq/metricq-python/issues/121)
-- feat: add `dict\(\)` to value and aggrate types [\#122](https://github.com/metricq/metricq-python/pull/122) ([bmario](https://github.com/bmario))
+- Add `dict()` method to `TimeValue` and `TimeAggregate` [\#121](https://github.com/metricq/metricq-python/issues/121)
+- feat: add `dict()` to value and aggrate types [\#122](https://github.com/metricq/metricq-python/pull/122) ([bmario](https://github.com/bmario))
 
 **Fixed bugs:**
 
