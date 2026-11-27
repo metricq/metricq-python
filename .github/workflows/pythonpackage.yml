@@ -4,6 +4,7 @@ on: [push, pull_request, workflow_dispatch]
 
 env:
   release-python-version: "3.11"
+  protoc-version: "36.x"
 
 jobs:
   test:
@@ -19,9 +20,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install Protoc
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y protobuf-compiler
+        uses: arduino/setup-protoc@v3
+        with:
+          version: ${{ env.protoc-version }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -55,9 +57,10 @@ jobs:
         with:
           python-version: ${{ env.release-python-version }}
       - name: Install Protoc
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y protobuf-compiler
+        uses: arduino/setup-protoc@v3
+        with:
+          version: ${{ env.protoc-version }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -135,9 +138,10 @@ jobs:
         with:
           python-version: ${{ env.release-python-version }}
       - name: Install Protoc
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y protobuf-compiler
+        uses: arduino/setup-protoc@v3
+        with:
+          version: ${{ env.protoc-version }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install pip
         run: |
           python -m pip install --upgrade pip
